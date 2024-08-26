@@ -35,11 +35,15 @@ BaseComponent* GameObject::AddComponent(const std::string& _name, BaseComponent*
         return nullptr;
     }
     _comp->m_pOwner = this;
+    //들어온 BaseComponent* [Component]의 매개변수는 BaseComponent가 가지고 있는 m_pOwner에 들어온 매개변수를 대입한다.
     
     m_mapComp.insert({ _name, _comp });
-    
+    //맵에 저장한다 이름, 컴포넌트의 종류(해당하는 게임 오브젝트)
+    //GameObject에 있는 map에도 저장해준다.
+
     
     CompManager::GetInst()->AddComponent(_name,_comp);
+    //컴포넌트 매니저에도 저장해준다
     return _comp;
 }
 

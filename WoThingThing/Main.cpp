@@ -35,7 +35,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		
 	Level::MainMenu_Lvl MainMenu_lvl;
 	Level::Stage01_Lvl Stage01_lvl;
-
+	//여기에 스테이지 하나 만들어서 연결시켜준다.
 
 	gsm->ChangeLevel(new Level::MainMenu_Lvl);
 

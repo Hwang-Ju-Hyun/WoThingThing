@@ -37,7 +37,8 @@ void Level::Stage01_Lvl::Init()
     goalPost2 = new GameObject("GoalPost2");
     UpperPost = new GameObject("UpperPost");
     DownPost = new GameObject("DownPost");
-
+    //게임 오브젝트 이름으로 Player의 위치값을 받아 다가가게 만들거나 인식하게 만든다.
+    
 	GoManager::GetInst()->AddObject(player1);
 	GoManager::GetInst()->AddObject(player2);
 	GoManager::GetInst()->AddObject(ball);
@@ -45,6 +46,9 @@ void Level::Stage01_Lvl::Init()
     GoManager::GetInst()->AddObject(goalPost2);
     GoManager::GetInst()->AddObject(UpperPost);
     GoManager::GetInst()->AddObject(DownPost);
+    //enemy도 AddObject를 사용해서 만들어준다.
+    //색상중에 알파값이 밝기여서 네모를 만들어줘서 적한테 달리게 안보이는 선으로 
+    //플레이어가 닿이면 다가갈 수 있게 만들어준다.
 
 	player1->AddComponent("Transform", new TransComponent(player1));
 	player1->AddComponent("Sprite", new SpriteComponent(player1));
@@ -83,6 +87,7 @@ void Level::Stage01_Lvl::Update()
     //Component 
 	TransComponent* player1_trs = (TransComponent*)player1->FindComponent("Transform");    
 	SpriteComponent* player1_spr = (SpriteComponent*)player1->FindComponent("Sprite");   
+    //스프라이트 부분도 잘 분석하기
 
     TransComponent* player2_trs = (TransComponent*)player2->FindComponent("Transform");    
     SpriteComponent* player2_spr = (SpriteComponent*)player2->FindComponent("Sprite");
@@ -141,7 +146,8 @@ void Level::Stage01_Lvl::Update()
         }       
     }
 
-
+    //이 부분 빡세게 분석하기
+    //오늘 목표 구조 다 이해 + 적 오브젝트 구현 및 플레이어 인식하게 만들기 
     //Check Collider and Add Collider Event
     if (ColliderManager::GetInst()->IsCollision(ball, player1))
     {        
