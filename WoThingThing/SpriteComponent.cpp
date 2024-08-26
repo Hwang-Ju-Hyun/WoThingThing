@@ -63,3 +63,17 @@ void SpriteComponent::Update()
 	
 	return;
 }
+
+BaseRTTI* SpriteComponent::CreateSpriteComponent()
+{
+	return nullptr;
+}
+
+void SpriteComponent::LoadFromJson(const json& str)
+{
+}
+
+json SpriteComponent::SaveToJson()
+{
+	return json();
+}

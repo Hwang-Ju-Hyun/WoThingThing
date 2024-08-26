@@ -46,6 +46,11 @@ public:
     void SetRot(const float& _rot)      { m_fRot = _rot; }
 public:
     virtual void Update() override;
-
+public:
+    static BaseRTTI* CreateTransformComp();
+    static constexpr const char* TransformTypeName = "Transform";
+public:
+    virtual void LoadFromJson(const json& str)override;
+    virtual json SaveToJson()override;
 };
 

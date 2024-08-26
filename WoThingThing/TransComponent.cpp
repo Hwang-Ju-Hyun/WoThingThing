@@ -2,6 +2,7 @@
 #include "BaseComponent.h"
 #include "GameObject.h"
 #include "AEGraphics.h"
+#include "GoManager.h"
 
 TransComponent::TransComponent(GameObject* _owner)
 	:BaseComponent(_owner)	
@@ -15,51 +16,12 @@ TransComponent::TransComponent(GameObject* _owner)
 		m_vScale = { 10,100 };
 		m_fRot = 0.f;
 	}
-	if (_owner->GetName() == "Player2")
+	if (_owner->GetName() == "Platform")
 	{
-		m_vPos = { 755,0 };
-		//m_vScale = { 50,300 };
-		m_vScale = { 10,100 };
+		m_vPos = { 50.f,50.f };
+		m_vScale = { 50.f,50.f };
 		m_fRot = 0.f;
 	}
-	if (_owner->GetName() == "Ball")
-	{
-		m_vPos = { 0,0 };
-		m_vScale = { 50,50 };
-		m_fRot = 0.f;
-	}
-
-	if (_owner->GetName() == "GoalPost1")
-	{
-		m_vPos = { -800,0 };
-		m_vScale = { 30,1000 };
-		m_fRot = 0.f;
-	}
-
-	if (_owner->GetName() == "GoalPost2")
-	{
-		m_vPos = { 800,0 };
-		m_vScale = { 30,1000 };
-		m_fRot = 0.f;
-	}
-
-	if (_owner->GetName() == "UpperPost")
-	{
-		s32 window_width=AEGfxGetWindowWidth();
-		s32 window_height = AEGfxGetWindowHeight();
-		m_vPos = { 0,float(window_height/2.f)};
-		m_vScale = { float(window_width),30};
-		m_fRot = 0.f;
-	}
-	if (_owner->GetName() == "DownPost")
-	{
-		s32 window_width = AEGfxGetWindowWidth();
-		s32 window_height = AEGfxGetWindowHeight();
-		m_vPos = {  0,-float(window_height / 2.f)};
-		m_vScale = { float(window_width),30 };
-		m_fRot = 0.f;
-	}
-	
 	if (_owner->GetName() == "Start")
 	{
 		m_vPos = {50,0};
@@ -99,4 +61,57 @@ void TransComponent::CalculateMatrix()
 void TransComponent::Update()
 {
 	CalculateMatrix();
+}
+
+BaseRTTI* TransComponent::CreateTransformComp()
+{
+	GameObject* lastObj = GoManager::GetInst()->GetLastObj();
+	BaseRTTI* p = lastObj->AddComponent("Transform", new TransComponent(lastObj));
+	//GameObjectManager::GetInst()->GetLastObj()->AddComponent("Transform", TransformComponent();
+	//GetLast()->AddComp<TransformComp>();
+	return p;
+}
+
+void TransComponent::LoadFromJson(const json& str)
+{
+	//Check how you saved. load from there
+
+	auto compData = str.find("CompData");
+	if (compData != str.end())
+	{
+		auto p = compData->find("Pos");
+		m_vPos.x = p->begin().value();
+		m_vPos.y = (p->begin() + 1).value();
+
+		auto s = compData->find("Sca");
+		m_vPos.x = s->begin().value();
+		m_vPos.y = (s->begin() + 1).value();
+
+		auto r = compData->find("Rot");
+		m_fRot = r.value();
+	}
+	//Data is loaded
+
+	//Utilize the data
+	CalculateMatrix();
+}
+
+json TransComponent::SaveToJson()
+{
+	json data;
+	//Save the type
+	data["Type"] = "Transform";
+
+	//Save my data	
+	json compData;
+	//pos
+	compData["Pos"] = { m_vPos.x,m_vPos.y };
+	//sca
+	compData["sca"] = { m_vScale.x,m_vScale.y };
+	//rot
+	compData["Rot"] = m_fRot;
+
+	data["CompData"] = compData;
+
+	return data;
 }

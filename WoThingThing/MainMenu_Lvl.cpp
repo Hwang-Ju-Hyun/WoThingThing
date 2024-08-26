@@ -13,6 +13,7 @@
 #include "TextResource.h"
 #include "Stage01_Lvl.h"
 #include "CompManager.h"
+#include "Serializer.h"
 
 void Level::MainMenu_Lvl::Init()
 {
@@ -111,6 +112,7 @@ void Level::MainMenu_Lvl::Update()
 
 void Level::MainMenu_Lvl::Exit()
 {
+	Serializer::GetInst()->SaveLevel("temp.json");
 #ifndef DEBUG
 	//std::cout << "MainMenu_Lvl Exit" << std::endl;
 #endif	

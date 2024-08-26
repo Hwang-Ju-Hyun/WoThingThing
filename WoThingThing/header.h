@@ -21,6 +21,7 @@ enum Sound
 #include <string>
 #include <vector>
 #include <list>
+#include <fstream>
 #include <map>
 #include "AEEngine.h"
 #include "AEVec2.h"
