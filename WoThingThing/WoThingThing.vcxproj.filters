@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Main">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{a7a5f11d-73a1-4d54-b491-a3f7b4e8fd63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level">
+      <UniqueIdentifier>{39823d9d-5c3b-4b47-870a-8e549e863e75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\MainMenu">
+      <UniqueIdentifier>{cff079e2-a0fb-4fe6-b9e0-4b0640b39962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\Stage01">
+      <UniqueIdentifier>{78d66f76-bc1f-471a-ac8c-5f0d3e406f94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObject">
+      <UniqueIdentifier>{814bd68d-6ad5-45c5-9ab7-52d7b47b2b12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{878465c6-7d3e-4275-8fbe-b37e3896e595}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\GoMgr">
+      <UniqueIdentifier>{62c678b6-c3d2-4ff5-8efe-0c2b6ea34729}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\CompMgr">
+      <UniqueIdentifier>{4ffa77bb-ea59-4053-8c0c-6a3d7323a9de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Transform">
+      <UniqueIdentifier>{adebb184-1193-4bae-bfab-9c119511bf2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Sprite">
+      <UniqueIdentifier>{7c3a7664-1c34-48b4-8a6f-ca0aa5f872b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\CollisionMgr">
+      <UniqueIdentifier>{860ee8e1-90a6-449d-8a5e-d501f71f9302}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\RigidBody">
+      <UniqueIdentifier>{f49bca32-4bed-4051-868b-ef61a94aad24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{98185173-146e-4047-8a52-c5b7904656dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ResMgr">
+      <UniqueIdentifier>{47b678d4-17c0-4bb1-b96f-fe4c64ded81b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\AudioRes">
+      <UniqueIdentifier>{bc3d7089-0437-4d4b-8d5a-f4076a5d5102}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\EventMgr">
+      <UniqueIdentifier>{533b1442-4d6a-47de-9159-e03669106638}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource\Text">
+      <UniqueIdentifier>{16e7cb5e-0e9c-4b16-a517-ea8e2c24cb0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utility">
+      <UniqueIdentifier>{71bd90a8-58a2-4828-922e-a1a7b01650d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\TimeMgr">
+      <UniqueIdentifier>{4dfd4148-98c0-420c-8405-ff7c9091068f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\GSMgr">
+      <UniqueIdentifier>{b27e9634-c134-477f-b871-5f69fb6bea16}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStateManager.cpp">
+      <Filter>Manager\GSMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu_Lvl.cpp">
+      <Filter>Level\MainMenu</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage01_Lvl.cpp">
+      <Filter>Level\Stage01</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseComponent.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GoManager.cpp">
+      <Filter>Manager\GoMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="CompManager.cpp">
+      <Filter>Manager\CompMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="TransComponent.cpp">
+      <Filter>Component\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="SpriteComponent.cpp">
+      <Filter>Component\Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="ColliderManager.cpp">
+      <Filter>Manager\CollisionMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="RigidBodyComponent.cpp">
+      <Filter>Component\RigidBody</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseLevel.cpp">
+      <Filter>Level</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioResource.cpp">
+      <Filter>Resource\AudioRes</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceManager.cpp">
+      <Filter>Manager\ResMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="EventManager.cpp">
+      <Filter>Manager\EventMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="TextResource.cpp">
+      <Filter>Resource\Text</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp">
+      <Filter>Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeManager.cpp">
+      <Filter>Manager\TimeMgr</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Main.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="header.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="GameStateManager.h">
+      <Filter>Manager\GSMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseLevel.h">
+      <Filter>Level</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu_Lvl.h">
+      <Filter>Level\MainMenu</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage01_Lvl.h">
+      <Filter>Level\Stage01</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseComponent.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GoManager.h">
+      <Filter>Manager\GoMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="CompManager.h">
+      <Filter>Manager\CompMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="TransComponent.h">
+      <Filter>Component\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="SpriteComponent.h">
+      <Filter>Component\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="ColliderManager.h">
+      <Filter>Manager\CollisionMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="RigidBodyComponent.h">
+      <Filter>Component\RigidBody</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceManager.h">
+      <Filter>Manager\ResMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioResource.h">
+      <Filter>Resource\AudioRes</Filter>
+    </ClInclude>
+    <ClInclude Include="EventManager.h">
+      <Filter>Manager\EventMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="TextResource.h">
+      <Filter>Resource\Text</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h">
+      <Filter>Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeManager.h">
+      <Filter>Manager\TimeMgr</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.34916.146
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "WoThingThing", "WoThingThing\WoThingThing.vcxproj", "{CFB31390-5722-4EBF-9448-87160C7A818E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CFB31390-5722-4EBF-9448-87160C7A818E}.Debug|x64.ActiveCfg = Debug|x64
+		{CFB31390-5722-4EBF-9448-87160C7A818E}.Debug|x64.Build.0 = Debug|x64
+		{CFB31390-5722-4EBF-9448-87160C7A818E}.Release|x64.ActiveCfg = Release|x64
+		{CFB31390-5722-4EBF-9448-87160C7A818E}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {12A20AD1-7ACE-4D40-8FF8-B318E903A9D4}
+	EndGlobalSection
+EndGlobal
