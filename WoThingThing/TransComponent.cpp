@@ -65,7 +65,7 @@ void TransComponent::Update()
 
 BaseRTTI* TransComponent::CreateTransformComp()
 {
-	GameObject* lastObj = GoManager::GetInst()->GetLastObj();
+	GameObject* lastObj = GoManager::GetInst()->GetLastObj();	//아마 여기가 문제일듯
 	BaseRTTI* p = lastObj->AddComponent("Transform", new TransComponent(lastObj));
 	//GameObjectManager::GetInst()->GetLastObj()->AddComponent("Transform", TransformComponent();
 	//GetLast()->AddComp<TransformComp>();
@@ -84,8 +84,8 @@ void TransComponent::LoadFromJson(const json& str)
 		m_vPos.y = (p->begin() + 1).value();
 
 		auto s = compData->find("Sca");
-		m_vPos.x = s->begin().value();
-		m_vPos.y = (s->begin() + 1).value();
+		m_vPos.x = p->begin().value();
+		m_vPos.y = (p->begin() + 1).value();
 
 		auto r = compData->find("Rot");
 		m_fRot = r.value();

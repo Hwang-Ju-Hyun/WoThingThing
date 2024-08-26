@@ -39,39 +39,38 @@ void Level::Stage01_Lvl::Init()
 	/*player1->AddComponent("Transform", new TransComponent(player1));
 	player1->AddComponent("Sprite", new SpriteComponent(player1));	    */
 
-    std::ifstream StageMapFile("../Extern/Platform/Platform.txt");
-    int PlatformNum;
-    AEVec2 PlatformScale;
-    int PlatformKey; //ÇÃ·§Æû Å¶°ª
-    AEVec2 PlatformPos;
-    if (!StageMapFile.is_open())
-    {
-        std::cerr << "StageMapFile can't open : Stage01_Lvl Init()" << std::endl;
-        return;
-    }
-    else
-    {
-        StageMapFile >> PlatformNum;
-        StageMapFile >> PlatformScale.x>> PlatformScale.y;
-        while (!StageMapFile.eof())
-        {
-            Platform = new GameObject("Platform");
-            GoManager::GetInst()->AddObject(Platform);            
-            StageMapFile >> PlatformPos.x;
-            StageMapFile >> PlatformPos.y;
-            
-            Platform->AddComponent("Transform", new TransComponent(Platform));
-            TransComponent* Platform_trs = (TransComponent*)Platform->FindComponent("Transform");
-            Platform_trs->SetPos(PlatformPos.x, PlatformPos.y);
-            Platform_trs->SetScale({ PlatformScale.x, PlatformScale.y });                        
-            Platform->AddComponent("Sprite", new SpriteComponent(Platform));
-            
+    //std::ifstream StageMapFile("../Extern/Platform/Platform.txt");
+    //int PlatformNum;
+    //AEVec2 PlatformScale;
+    //int PlatformKey; //ÇÃ·§Æû Å¶°ª
+    //AEVec2 PlatformPos;
+    //if (!StageMapFile.is_open())
+    //{
+    //    std::cerr << "StageMapFile can't open : Stage01_Lvl Init()" << std::endl;
+    //    return;
+    //}
+    //else
+    //{
+    //    StageMapFile >> PlatformNum;
+    //    StageMapFile >> PlatformScale.x>> PlatformScale.y;
+    //    while (!StageMapFile.eof())
+    //    {
+    //        Platform = new GameObject("Platform");
+    //        GoManager::GetInst()->AddObject(Platform);            
+    //        StageMapFile >> PlatformPos.x;
+    //        StageMapFile >> PlatformPos.y;
+    //        
+    //        Platform->AddComponent("Transform", new TransComponent(Platform));
+    //        TransComponent* Platform_trs = (TransComponent*)Platform->FindComponent("Transform");
+    //        Platform_trs->SetPos(PlatformPos.x, PlatformPos.y);
+    //        Platform_trs->SetScale({ PlatformScale.x, PlatformScale.y });                        
+    //        Platform->AddComponent("Sprite", new SpriteComponent(Platform));
+    //        
 
-            
-            m_vecPlatforms.push_back(Platform);
-        }
-    }    
-
+    //        
+    //        m_vecPlatforms.push_back(Platform);
+    //    }
+    //}        
     Serializer::GetInst()->LoadLevel("temp.json");
 
     //Audio Init
