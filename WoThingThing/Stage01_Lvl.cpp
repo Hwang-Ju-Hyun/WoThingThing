@@ -17,7 +17,8 @@
 #include "TimeManager.h"
 #include "EventManager.h"
 #include "AEInput.h"
-
+#include "AEUtil.h"
+#include "AELineSegment2.h"
 
 Level::Stage01_Lvl::Stage01_Lvl()
 {
@@ -30,49 +31,65 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 void Level::Stage01_Lvl::Init()
 {
     //Object and Component Init
-	player1 = new GameObject("Player1");
+	player = new GameObject("Player1");
+	GoManager::GetInst()->AddObject(player);
+	player->AddComponent("Transform", new TransComponent(player));
+	player->AddComponent("Sprite", new SpriteComponent(player));
+    player->AddComponent("RigidBody", new RigidBodyComponent(player));
 
-	GoManager::GetInst()->AddObject(player1);
+    mouseAim = new GameObject("mouseAim");
+    GoManager::GetInst()->AddObject(mouseAim);
+    mouseAim->AddComponent("Transform", new TransComponent(mouseAim));
+    mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
 
-	player1->AddComponent("Transform", new TransComponent(player1));
-	player1->AddComponent("Sprite", new SpriteComponent(player1));
-      
 }
 
 void Level::Stage01_Lvl::Update()
 {
     //Component 
-    TransComponent* player1_trs = (TransComponent*)player1->FindComponent("Transform");
-    SpriteComponent* player1_spr = (SpriteComponent*)player1->FindComponent("Sprite");
+    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
+    SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
+    RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
 
-
+    float dt = AEFrameRateControllerGetFrameTime();
     //PlayerMovement
-    for (auto player : GoManager::GetInst()->Allobj())
+    for (auto obj : GoManager::GetInst()->Allobj())
     {
-        if (player->GetName() == "Player1")
+        if (obj->GetName() == "Player1")
         {
-            if (AEInputCheckCurr(AEVK_W)) //jump
+            if (AEInputCheckTriggered(AEVK_W)) //jump
             {
-                if (player1_trs->GetPos().y < 380)
-                    player1_trs->AddPos(0.f, 10.f);
+                player_rig->Jump(300);
             }
-            if (AEInputCheckCurr(AEVK_S)) //Not exist
+            if (AEInputCheckCurr(AEVK_A)) //Left
             {
-                if (player1_trs->GetPos().y > -380)
-                    player1_trs->AddPos(0.f, -10.f);
+                if (player_trs->GetPos().x > -770)
+                    player_trs->AddPos(-10.f, 0.f);
             }
-            if (AEInputCheckCurr(AEVK_A))
+            if (AEInputCheckCurr(AEVK_D)) //Right
             {
-                if (player1_trs->GetPos().x > -770)
-                    player1_trs->AddPos(-10.f, 0.f);
+                if (player_trs->GetPos().x < 770)
+                    player_trs->AddPos(10.f, 0.f);
             }
-            if (AEInputCheckCurr(AEVK_D))
-            {
-                if (player1_trs->GetPos().x < 770)
-                    player1_trs->AddPos(10.f, 0.f);
-            }
+            //space bar : dash
+            //Right Click : Right attack
+            //left shift : time manipulation
         }
     }
+
+    //mouse position : aim
+    TransComponent* aim_trs = (TransComponent*)mouseAim->FindComponent("Transform");
+    SpriteComponent* aim_spr = (SpriteComponent*)mouseAim->FindComponent("Sprite");
+    s32 mouseX, mouseY;
+    AEInputGetCursorPosition(&mouseX, &mouseY);
+    mouseX -= 800;              //mouse X position lerp
+    mouseY -= 450, mouseY *= -1;//mouse Y position lerp
+    aim_trs->SetPos(mouseX, mouseY);
+
+    //line: player to aim
+
+
+
 
     if (AEInputCheckCurr(AEVK_R) == true)
     {

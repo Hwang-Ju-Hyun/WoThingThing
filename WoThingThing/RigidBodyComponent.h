@@ -28,6 +28,7 @@ public:
         m_vVelocity.x += _velX;
         m_vVelocity.y += _velY;
     }
+    void Jump(float yPos);
     void SetGravity(AEVec2 _g)               { m_vGravity = _g; }
     const AEVec2& GetVelocity()const        { return m_vVelocity; }
     const AEVec2& GetGravity()const          { return m_vGravity; }

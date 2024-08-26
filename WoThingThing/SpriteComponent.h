@@ -3,8 +3,7 @@
 
 class GameObject;
 
-class SpriteComponent :
-    public BaseComponent
+class SpriteComponent : public BaseComponent
 {
 public:
     SpriteComponent(GameObject* _owner);
