@@ -3,14 +3,15 @@
 #include "GameObject.h"
 #include "AEGraphics.h"
 #include "GoManager.h"
+#include "RigidBodyComponent.h"
 
 
 TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_matMatrix{}
 {
-	//이 코드들도 나중에 stage01 _init으로 옮겨야함
-	if (_owner->GetName() == "Player1")
+	if (_owner->GetName() == "Player")
 	{
-		m_vPos = { -755,-380 };
+	//	m_vPos = { -755,-380 };
+		m_vPos = { -755,0 };
 		m_vScale = { 50,50 };
 		m_fRot = 0.f;
 	}
@@ -72,6 +73,41 @@ void TransComponent::CalculateMatrix()
 	AEMtx33Concat(&m_matMatrix, &rotationMtx, &scaleMtx);
 	AEMtx33Concat(&m_matMatrix, &translateMtx, &m_matMatrix);
 }
+
+void TransComponent::AddPos(const AEVec2& _pos)
+{
+	m_vPos.x += _pos.x;
+	m_vPos.y += _pos.y;
+}
+void TransComponent::AddPos(float _posX, float _posY)
+{
+	m_vPos.x += _posX;
+	m_vPos.y += _posY;
+}
+
+void TransComponent::SetPos(const AEVec2& _pos)
+{
+	m_vPos = _pos;
+}
+void TransComponent::SetPos(float _posX, float _posY)
+{
+	m_vPos.x = _posX;
+	m_vPos.y = _posY;
+}
+
+void TransComponent::SetScale(const AEVec2& _scale)
+{
+	m_vScale = _scale;
+}
+
+void TransComponent::SetRot(const float& _rot)
+{
+	m_fRot = _rot;
+}
+//void TransComponent::SetRot(AEVec2 _rot)
+//{
+//	m_fRot = AEVec2Length(&_rot);
+//}
 
 void TransComponent::Update()
 {
