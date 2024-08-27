@@ -11,12 +11,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AiComponent.h" />
     <ClInclude Include="AudioResource.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="BaseEnemyState.h" />
     <ClInclude Include="BaseLevel.h" />
     <ClInclude Include="BaseRTTI.h" />
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="CompManager.h" />
+    <ClInclude Include="EnemyStateManager.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameStateManager.h" />
@@ -38,12 +41,15 @@
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AiComponent.cpp" />
     <ClCompile Include="AudioResource.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="BaseEnemyState.cpp" />
     <ClCompile Include="BaseLevel.cpp" />
     <ClCompile Include="BaseRTTI.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="CompManager.cpp" />
+    <ClCompile Include="EnemyStateManager.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
