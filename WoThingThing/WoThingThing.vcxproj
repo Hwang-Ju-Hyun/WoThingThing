@@ -28,6 +28,7 @@
     <ClInclude Include="RigidBodyComponent.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Stage01_Lvl.h" />
+    <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TextResource.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="TransComponent.h" />
@@ -50,6 +51,7 @@
     <ClCompile Include="RigidBodyComponent.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Stage01_Lvl.cpp" />
+    <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TextResource.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="TransComponent.cpp" />

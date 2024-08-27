@@ -7,6 +7,7 @@
 #include "CompManager.h"
 #include "EventManager.h"
 #include <memory>
+#include "TestLevel.h"//추가부분(백무송)
 
 //float	 g_dt;
 //double	 g_appTime;
@@ -35,7 +36,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		
 	Level::MainMenu_Lvl MainMenu_lvl;
 	Level::Stage01_Lvl Stage01_lvl;
-	//여기에 스테이지 하나 만들어서 연결시켜준다.
+	//Level::TestLevel TestLevel; 테스트용(백무송)
 
 	gsm->ChangeLevel(new Level::MainMenu_Lvl);
 

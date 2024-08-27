@@ -69,6 +69,12 @@
     <Filter Include="Manager\GSMgr">
       <UniqueIdentifier>{b27e9634-c134-477f-b871-5f69fb6bea16}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EnemyAI">
+      <UniqueIdentifier>{34255962-43ba-422c-bf60-6d64cc704307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyAI\Level%28Test%29">
+      <UniqueIdentifier>{41525216-c681-411e-8b27-319c96040101}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -130,6 +136,9 @@
     </ClCompile>
     <ClCompile Include="TimeManager.cpp">
       <Filter>Manager\TimeMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>EnemyAI\Level%28Test%29</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,6 +204,9 @@
     </ClInclude>
     <ClInclude Include="TimeManager.h">
       <Filter>Manager\TimeMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>EnemyAI\Level%28Test%29</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

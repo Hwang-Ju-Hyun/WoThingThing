@@ -73,6 +73,18 @@ TransComponent::TransComponent(GameObject* _owner)
 		m_fRot = 0.f;
 	}
 
+
+	//백무송 파트 플레이어와 적 추가 부분
+	if (_owner->GetName() == "Player") 
+	{
+
+	}
+
+	if (_owner->GetName()=="Enemy")
+	{
+
+	}
+
 }
 
 TransComponent::~TransComponent()

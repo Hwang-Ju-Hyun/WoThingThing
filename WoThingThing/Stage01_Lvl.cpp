@@ -50,6 +50,7 @@ void Level::Stage01_Lvl::Init()
     //색상중에 알파값이 밝기여서 네모를 만들어줘서 적한테 달리게 안보이는 선으로 
     //플레이어가 닿이면 다가갈 수 있게 만들어준다.
 
+
 	player1->AddComponent("Transform", new TransComponent(player1));
 	player1->AddComponent("Sprite", new SpriteComponent(player1));
 

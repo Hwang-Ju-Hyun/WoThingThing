@@ -13,6 +13,9 @@
 #include "TextResource.h"
 #include "Stage01_Lvl.h"
 #include "CompManager.h"
+//추가한 부분(백무송)
+#include "TestLevel.h"
+
 
 void Level::MainMenu_Lvl::Init()
 {
@@ -88,6 +91,7 @@ void Level::MainMenu_Lvl::Update()
 			StartBtn_bottom > mousePosY)
 		{
 			GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
+			//GSM::GameStateManager::GetInst()->ChangeLevel(new Level::TestLevel); 테스트용 백무송
 		}
 		else if (ExitBtn_left < mousePosX &&
 			ExitBtn_right > mousePosX &&
