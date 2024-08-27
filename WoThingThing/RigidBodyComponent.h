@@ -34,5 +34,8 @@ public:
     const AEVec2& GetGravity()const          { return m_vGravity; }
 public:
     virtual void Update() override;
+public:
+    virtual void LoadFromJson(const json& str)override;
+    virtual json SaveToJson()override;
 };
 

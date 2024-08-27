@@ -21,6 +21,11 @@ public:
 	BaseComponent* FindComponent(const std::string& _name);	
 	void DeleteComponent(const std::string& _name);
 public:
+	std::map<std::string, BaseComponent*> GetAllComp()
+	{
+		return m_mapComp;
+	}
+public:
 	friend class BaseComponent;
 };
 

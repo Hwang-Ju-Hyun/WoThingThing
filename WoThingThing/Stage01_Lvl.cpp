@@ -1,3 +1,4 @@
+
 #include "Stage01_Lvl.h"
 #include "header.h"
 #include "MainMenu_Lvl.h"
@@ -16,6 +17,7 @@
 #include "Utility.h"
 #include "TimeManager.h"
 #include "EventManager.h"
+#include "Serializer.h"
 #include "AEInput.h"
 #include "AEUtil.h"
 #include "AELineSegment2.h"
@@ -32,6 +34,7 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 void Level::Stage01_Lvl::Init()
 {
     //Object and Component Init
+
 	player = new GameObject("Player1");
 	GoManager::GetInst()->AddObject(player);
 	player->AddComponent("Transform", new TransComponent(player));
@@ -47,7 +50,11 @@ void Level::Stage01_Lvl::Init()
     GoManager::GetInst()->AddObject(aimTrace);
     aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
     aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));
+      
+    Serializer::GetInst()->LoadLevel("temp.json");
+
 }
+
 
 void Level::Stage01_Lvl::Update()
 {
@@ -127,13 +134,7 @@ void Level::Stage01_Lvl::Update()
 
 void Level::Stage01_Lvl::Exit()
 {
-    //std::cout << "Stage01 : Exit" << std::endl;  
-    //delete All Object 컴포넌트와 컴포넌트 매니저는 game오브젝트 소멸되면서 자동으로 됨
-    //이게 최선일까....
-    //MemoryLeak Problem solved ↓    
     auto res = ResourceManager::GetInst()->GetReource();
-    //밑에 있는거 이렇게 지우면 안됨 수정하셈    
-    //res.FindRes("bgm")->second->UnLoad(); <- 수정중
     ResourceManager::GetInst()->RemoveAllRes();
-    GoManager::GetInst()->RemoveAllObj();    
+    GoManager::GetInst()->RemoveAllObj();
 }

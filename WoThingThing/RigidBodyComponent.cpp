@@ -20,7 +20,6 @@ void RigidBodyComponent::Jump(float yPos)
 	auto trans = GetOwner()->FindComponent("Transform");
 	AEVec2 pos = static_cast<TransComponent*>(trans)->GetPos();
 	float dt = AEFrameRateControllerGetFrameTime();
-
 	m_vVelocity.y = yPos;
 	pos.y += m_vVelocity.y * dt;
 	static_cast<TransComponent*>(trans)->SetPos(pos);
@@ -47,4 +46,14 @@ void RigidBodyComponent::Update()
 	pos.y = pos.y + m_vVelocity.y * dt;
 	static_cast<TransComponent*>(trans)->SetPos(pos);
 
+}
+
+void RigidBodyComponent::LoadFromJson(const json& str)
+{
+	return;
+}
+
+json RigidBodyComponent::SaveToJson()
+{
+	return json();
 }
