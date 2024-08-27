@@ -7,10 +7,7 @@
 #include "CompManager.h"
 #include "EventManager.h"
 #include <memory>
-#include "TestLevel.h"//추가부분(백무송)
-
-//float	 g_dt;
-//double	 g_appTime;
+//#include "TestLevel.h"//추가부분(백무송)
 
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_line, int show)
 {

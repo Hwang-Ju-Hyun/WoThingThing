@@ -1,8 +1,11 @@
 #pragma once
 #include "header.h"
+#include "BaseRTTI.h"
+
 class GameObject;
 
 class BaseComponent
+	:public BaseRTTI
 {
 public:
 	BaseComponent() = delete;
@@ -18,5 +21,6 @@ public:
 	GameObject* GetOwner();
 public:
 	GameObject* m_pOwner;
+public:
 };
 

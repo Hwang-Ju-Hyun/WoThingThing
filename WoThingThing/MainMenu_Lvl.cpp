@@ -13,8 +13,9 @@
 #include "TextResource.h"
 #include "Stage01_Lvl.h"
 #include "CompManager.h"
+#include "Serializer.h"
 //추가한 부분(백무송)
-#include "TestLevel.h"
+//#include "TestLevel.h"
 
 
 void Level::MainMenu_Lvl::Init()
@@ -102,7 +103,8 @@ void Level::MainMenu_Lvl::Update()
 		}
 	}
 
-	auto text_res = ResourceManager::GetInst()->Get("text", "Assets/liberation-mono.ttf");
+
+	auto text_res = ResourceManager::GetInst()->Get("text", "../Extern/Assets/liberation-mono.ttf");
 	TextResource* MenuText_res = static_cast<TextResource*>(text_res);
 	MenuText_res->SetText("START");
 
@@ -119,6 +121,7 @@ void Level::MainMenu_Lvl::Update()
 
 void Level::MainMenu_Lvl::Exit()
 {
+	Serializer::GetInst()->SaveLevel("temp.json");
 #ifndef DEBUG
 	//std::cout << "MainMenu_Lvl Exit" << std::endl;
 #endif	
