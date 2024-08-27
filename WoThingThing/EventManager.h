@@ -50,6 +50,7 @@ public:
 
 class RePosition :public Entity
 {
+	void HandleCollision(GameObject* obj1, GameObject* obj2);
 	virtual void OnEvent(Event* ev)override;
 };
 
@@ -63,8 +64,7 @@ public:
 	SINGLE(EventManager);
 private:
 	//이벤트들
-	std::list<Event*> allEvents;
-	std::list<Entity*> m_listEntity;
+	std::list<Event*> allEvents;	
 	std::map<std::string /*event의 아이디*/, std::list<Entity*>/*구독자들*/> registeredEntities;
 public:
 	//Interface :
@@ -75,17 +75,12 @@ public:
 	//		Register entities to certain event Type
 	//		Unregister entities to certain event Type
 public:
-	void AddEntity(Entity* et);
-	Entity* FindEntity(std::string& str);
-public:
-	void AddEntityList(const std::string& ev_Key, std::list<Entity*>listEntity);
+	void AddEntity(const std::string& evt_name, Entity* et);
+public:	
 	std::list<Entity*>* FindEntityList(std::string ev_Key);
 	// Dispatch All Events		
 	void DispatchEvent(std::string ev_Key);
-
 	// delete undispatched events if any on destructor
-public:
-	std::list<Entity*> GetEntityList();
 public:
 	void Update();
 };

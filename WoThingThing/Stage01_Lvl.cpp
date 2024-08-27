@@ -34,8 +34,9 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 void Level::Stage01_Lvl::Init()
 {
     //Object and Component Init
+    Serializer::GetInst()->LoadLevel("temp.json");
 
-	player = new GameObject("Player1");
+	player = new GameObject("Player");
 	GoManager::GetInst()->AddObject(player);
 	player->AddComponent("Transform", new TransComponent(player));
 	player->AddComponent("Sprite", new SpriteComponent(player));
@@ -50,9 +51,10 @@ void Level::Stage01_Lvl::Init()
     GoManager::GetInst()->AddObject(aimTrace);
     aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
     aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));
-      
-    Serializer::GetInst()->LoadLevel("temp.json");
-
+        
+    //EventManager에서 요거 지우쇼 
+    RePosition* Platform_Player = new RePosition;
+    EventManager::GetInst()->AddEntity("Collision",Platform_Player);
 }
 
 
@@ -67,7 +69,7 @@ void Level::Stage01_Lvl::Update()
     //PlayerMovement
     for (auto obj : GoManager::GetInst()->Allobj())
     {
-        if (obj->GetName() == "Player1")
+        if (obj->GetName() == "Player")
         {
             if (AEInputCheckTriggered(AEVK_W)) //jump
             {
@@ -130,10 +132,26 @@ void Level::Stage01_Lvl::Update()
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
     }
+
+    for (auto obj : GoManager::GetInst()->Allobj())
+    {        
+        if (obj->GetName() == "Platform")
+        {
+            if (ColliderManager::GetInst()->IsCollision(player, obj))
+            {
+                Collision* colEvent = new Collision(player,obj);
+                colEvent->SetEventName("Collision");                
+                EventManager::GetInst()->AddEvent(colEvent);                                
+                //break;
+            }
+        }
+    }
+    
 }
 
 void Level::Stage01_Lvl::Exit()
 {
+
     auto res = ResourceManager::GetInst()->GetReource();
     ResourceManager::GetInst()->RemoveAllRes();
     GoManager::GetInst()->RemoveAllObj();

@@ -33,7 +33,14 @@ public:
         m_vPos.x += _posX;
         m_vPos.y += _posY;
     }
-
+    void SetPosX(float _posX)
+    {
+        m_vPos.x = _posX;
+    }
+    void SetPosY(float _posY)
+    {
+        m_vPos.y = _posY;
+    }
 
     void SetPos(const AEVec2& _pos)     
     {

@@ -23,23 +23,26 @@ bool ColliderManager::IsCollision(GameObject* _obj1, GameObject* _obj2)
 	AEVec2 obj1_Scale = static_cast<TransComponent*>(obj_trs1)->GetScale();
 	AEVec2 obj2_Scale = static_cast<TransComponent*>(obj_trs2)->GetScale();
 
-	float obj1RightX = obj1_Pos.x + obj1_Scale.x/2.f;
-	float obj1LeftX  = obj1_Pos.x - obj1_Scale.x /2.f;
-	float obj1TopY   = obj1_Pos.y - obj1_Scale.y / 2.f;
-	float obj1BotY   = obj1_Pos.y + obj1_Scale.y / 2.f;
+	float obj1Right    = obj1_Pos.x + obj1_Scale.x/2.f;
+	float obj1Left     = obj1_Pos.x - obj1_Scale.x /2.f;
+	float obj1Top      = obj1_Pos.y - obj1_Scale.y / 2.f;
+	float obj1Bot      = obj1_Pos.y + obj1_Scale.y / 2.f;
 	
-	float obj2RightX	= obj2_Pos.x + obj2_Scale.x / 2.f;
-	float obj2LeftX 	= obj2_Pos.x - obj2_Scale.x / 2.f;
-	float obj2TopY  	= obj2_Pos.y - obj2_Scale.y / 2.f;
-	float obj2BotY  	= obj2_Pos.y + obj2_Scale.y / 2.f;
+	float obj2Right	   = obj2_Pos.x + obj2_Scale.x / 2.f;
+	float obj2Left 	   = obj2_Pos.x - obj2_Scale.x / 2.f;
+	float obj2TopY     = obj2_Pos.y - obj2_Scale.y / 2.f;
+	float obj2BotY     = obj2_Pos.y + obj2_Scale.y / 2.f;
 
-	if (obj1RightX > obj2LeftX &&
-		obj2RightX > obj1LeftX &&
-		obj1TopY<obj2BotY &&
-		obj2TopY<obj1BotY)
+	if (obj1Right<obj2Left || obj1Left>obj2Right || obj1Bot<obj2TopY || obj1Top>obj2BotY)
+		return false;
+	return true;
+	/*if (obj1Right > obj2Left &&
+		obj2Right > obj1Left &&
+		obj1Top<obj2BotY &&
+		obj2TopY<obj1Bot)
 	{
 		return true;
 	}
 
-	return false;
+	return false;*/
 }

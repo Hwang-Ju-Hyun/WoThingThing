@@ -1,6 +1,7 @@
 #include "SpriteComponent.h"
 #include "GameObject.h"
 #include "TransComponent.h"
+#include "GoManager.h"
 
 SpriteComponent::SpriteComponent(GameObject* _owner)
 	:BaseComponent(_owner)
@@ -66,14 +67,37 @@ void SpriteComponent::Update()
 
 BaseRTTI* SpriteComponent::CreateSpriteComponent()
 {
-	return nullptr;
+	GameObject* lastObj = GoManager::GetInst()->GetLastObj();	//아마 여기가 문제일듯 <- 아니네	
+	BaseRTTI* p = lastObj->AddComponent("Sprite", new SpriteComponent(lastObj));
+	return p;
 }
 
 void SpriteComponent::LoadFromJson(const json& str)
 {
+	auto compData = str.find("CompData");
+	if (compData != str.end())
+	{
+		auto r = compData->find("RED");
+		m_color.red = r.value();
+		
+		auto b = compData->find("BLUE");
+		m_color.blue= b.value();
+
+		auto g = compData->find("GREEN");
+		m_color.green = g.value();
+	}
 }
 
 json SpriteComponent::SaveToJson()
 {
-	return json();
+	json data;
+	data["Type"] = "Sprite";
+
+	json compData;
+	compData["RED"] = m_color.red;
+	compData["BLUE"] = m_color.blue;
+	compData["GREEN"] = m_color.green;
+
+	data["CompData"] = compData;
+	return data;
 }

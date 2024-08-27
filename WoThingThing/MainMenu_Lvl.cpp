@@ -24,11 +24,8 @@ void Level::MainMenu_Lvl::Init()
 	//std::cout << "MainMenu_Lvl Init" << std::endl;
 #endif
 	StartButton = new GameObject("Start");
-	ExitButton = new GameObject("Exit");
-	
-	GoManager::GetInst()->AddObject(StartButton);
-	//GoManager에 startbutton이라는 오브젝트를 삽입하겠다. vector에 
-	//GoManager::GetInst()이거는 GoManager의 싱글톤을 선언해주고 그 안에 있는 AddObject기능을 사용한다.
+	ExitButton = new GameObject("Exit");	
+	GoManager::GetInst()->AddObject(StartButton);	
 	GoManager::GetInst()->AddObject(ExitButton);
 
 	StartButton->AddComponent("Transform", new TransComponent(StartButton));
@@ -121,11 +118,11 @@ void Level::MainMenu_Lvl::Update()
 
 void Level::MainMenu_Lvl::Exit()
 {
-	Serializer::GetInst()->SaveLevel("temp.json");
+	//Serializer::GetInst()->SaveLevel("temp.json");
 #ifndef DEBUG
 	//std::cout << "MainMenu_Lvl Exit" << std::endl;
 #endif	
-	//ResourceManager::GetInst()->RemoveAllRes();
+	ResourceManager::GetInst()->RemoveAllRes();
 	GoManager::GetInst()->RemoveAllObj();
 	GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
 }

@@ -61,6 +61,9 @@
     <ClCompile Include="TransComponent.cpp" />
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="temp.json" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

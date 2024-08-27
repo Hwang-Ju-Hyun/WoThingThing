@@ -21,7 +21,7 @@ Serializer::~Serializer()
 }
 
 
-//털끝 하나 건들지 말것 
+//털끝 하나 건들지 말것 ↓
 void Serializer::LoadLevel(const std::string& s)
 {
 	//open file
@@ -90,7 +90,7 @@ void Serializer::SaveLevel(const std::string& s)
 		{
 			BaseComponent* comp = c.second;
 			components.push_back(comp->SaveToJson());//Check in a moment
-		}
+		}		
 		obj["Components"] = components;
 		AllData.push_back(obj);
 	}

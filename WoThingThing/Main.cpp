@@ -49,8 +49,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		CompManager::GetInst()->Update();
 		TimeManager::GetInst()->Update();
 		EventManager::GetInst()->Update();
-		gsm->Update();
 
+		gsm->Update();
 
 		// Informing the system about the loop's end
 		AESysFrameEnd();
