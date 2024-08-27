@@ -5,7 +5,7 @@
 #include "GoManager.h"
 
 TransComponent::TransComponent(GameObject* _owner)
-	:BaseComponent(_owner)	
+	:BaseComponent(_owner)
 	, m_matMatrix{}
 {
 	//이 코드들도 나중에 stage01 _init으로 옮겨야함
@@ -24,7 +24,7 @@ TransComponent::TransComponent(GameObject* _owner)
 	}
 	if (_owner->GetName() == "Start")
 	{
-		m_vPos = {50,0};
+		m_vPos = { 50,0 };
 		m_vScale = { 500,100 };
 		m_fRot = 0.f;
 	}
@@ -42,7 +42,7 @@ TransComponent::~TransComponent()
 }
 
 void TransComponent::CalculateMatrix()
-{	
+{
 	//이동 행렬 생성
 	AEMtx33 translateMtx;
 	AEMtx33Trans(&translateMtx, m_vPos.x, m_vPos.y);
@@ -65,7 +65,7 @@ void TransComponent::Update()
 
 BaseRTTI* TransComponent::CreateTransformComp()
 {
-	GameObject* lastObj = GoManager::GetInst()->GetLastObj();
+	GameObject* lastObj = GoManager::GetInst()->GetLastObj();	//아마 여기가 문제일듯 <- 아니네	
 	BaseRTTI* p = lastObj->AddComponent("Transform", new TransComponent(lastObj));
 	//GameObjectManager::GetInst()->GetLastObj()->AddComponent("Transform", TransformComponent();
 	//GetLast()->AddComp<TransformComp>();
@@ -83,9 +83,9 @@ void TransComponent::LoadFromJson(const json& str)
 		m_vPos.x = p->begin().value();
 		m_vPos.y = (p->begin() + 1).value();
 
-		auto s = compData->find("Sca");
-		m_vPos.x = s->begin().value();
-		m_vPos.y = (s->begin() + 1).value();
+		auto s = compData->find("sca");
+		m_vScale.x = s->begin().value();
+		m_vScale.y = (s->begin() + 1).value();
 
 		auto r = compData->find("Rot");
 		m_fRot = r.value();

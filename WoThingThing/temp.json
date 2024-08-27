@@ -1,6 +1,6 @@
 [
   {
-    "Object": 0,
+    "Platform": 0,
     "Components": [
       null,
       {
@@ -20,7 +20,7 @@
     ]
   },
   {
-    "Object": 1,
+    "Platform": 1,
     "Components": [
       null,
       {
