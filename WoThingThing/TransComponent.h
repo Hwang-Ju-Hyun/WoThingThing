@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
+#include "AEVec2.h"
 
 class GameObject;
 
@@ -45,6 +46,7 @@ public:
     }
     void SetScale(const AEVec2& _scale) { m_vScale = _scale; }
     void SetRot(const float& _rot)      { m_fRot = _rot; }
+    void SetRot(AEVec2 _rot) { m_fRot = AEVec2Length(&_rot); }
 public:
     virtual void Update() override;
 

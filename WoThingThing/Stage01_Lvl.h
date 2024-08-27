@@ -9,6 +9,7 @@ namespace Level
     {
         GameObject* player;
         GameObject* mouseAim;
+        GameObject* aimTrace;
 
 
     public:

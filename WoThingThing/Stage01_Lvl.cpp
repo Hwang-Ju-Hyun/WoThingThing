@@ -19,6 +19,7 @@
 #include "AEInput.h"
 #include "AEUtil.h"
 #include "AELineSegment2.h"
+#include "AEMath.h"
 
 Level::Stage01_Lvl::Stage01_Lvl()
 {
@@ -42,6 +43,10 @@ void Level::Stage01_Lvl::Init()
     mouseAim->AddComponent("Transform", new TransComponent(mouseAim));
     mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
 
+    aimTrace = new GameObject("aimTrace");
+    GoManager::GetInst()->AddObject(aimTrace);
+    aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
+    aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));
 }
 
 void Level::Stage01_Lvl::Update()
@@ -87,10 +92,25 @@ void Level::Stage01_Lvl::Update()
     aim_trs->SetPos(mouseX, mouseY);
 
     //line: player to aim
+    TransComponent* aimTrace_trs = (TransComponent*)aimTrace->FindComponent("Transform");
+    SpriteComponent* aimTrace_spr = (SpriteComponent*)aimTrace->FindComponent("Sprite");
+    //position
+    AEVec2 traceDirection = { (mouseX - player_trs->GetPos().x),(mouseY - player_trs->GetPos().y) };
+    aimTrace_trs->SetPos((mouseX + player_trs->GetPos().x)/2.f, (mouseY + player_trs->GetPos().y) / 2.f);
+    //scale
+    float dis = AEVec2Length(&traceDirection);
+    aimTrace_trs->SetScale({dis, 1});
+    //rotation
+    AEVec2 nor_traceDirection = { 0,0 };
+    AEVec2Normalize(& nor_traceDirection, &traceDirection);
 
+    //if mouse position in sector 3, 4 : reverse line
+    if (nor_traceDirection.y < 0)
+        nor_traceDirection.x *= -1;
+    //////////////////////////////////////////////////
 
-
-
+    aimTrace_trs->SetRot(AEACos(nor_traceDirection.x));
+   
     if (AEInputCheckCurr(AEVK_R) == true)
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
