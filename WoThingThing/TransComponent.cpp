@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "AEGraphics.h"
 
+#include"GoManager.h"
+
 TransComponent::TransComponent(GameObject* _owner)
 	:BaseComponent(_owner)	
 	, m_matMatrix{}
@@ -71,18 +73,6 @@ TransComponent::TransComponent(GameObject* _owner)
 		m_vPos = { 50,-200 };
 		m_vScale = { 500,100 };
 		m_fRot = 0.f;
-	}
-
-
-	//백무송 파트 플레이어와 적 추가 부분
-	if (_owner->GetName() == "Player") 
-	{
-
-	}
-
-	if (_owner->GetName()=="Enemy")
-	{
-
 	}
 
 }

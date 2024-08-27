@@ -12,7 +12,7 @@ ColliderManager::~ColliderManager()
 {
 
 }
-
+//나중에 여기 부분 건들기
 bool ColliderManager::IsCollision(GameObject* _obj1, GameObject* _obj2)
 {
 	BaseComponent* obj_trs1 = _obj1->FindComponent("Transform");
