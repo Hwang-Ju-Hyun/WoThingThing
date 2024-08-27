@@ -155,6 +155,9 @@
     <ClCompile Include="Registry.cpp">
       <Filter>RTTI\Registry</Filter>
     </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>EnemyAI\Level%28Test%29</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -228,6 +231,9 @@
     </ClInclude>
     <ClInclude Include="Registry.h">
       <Filter>RTTI\Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>EnemyAI\Level%28Test%29</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
