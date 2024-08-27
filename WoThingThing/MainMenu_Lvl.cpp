@@ -14,6 +14,9 @@
 #include "Stage01_Lvl.h"
 #include "CompManager.h"
 #include "Serializer.h"
+//추가한 부분(백무송)
+//#include "TestLevel.h"
+
 
 void Level::MainMenu_Lvl::Init()
 {
@@ -24,6 +27,8 @@ void Level::MainMenu_Lvl::Init()
 	ExitButton = new GameObject("Exit");
 	
 	GoManager::GetInst()->AddObject(StartButton);
+	//GoManager에 startbutton이라는 오브젝트를 삽입하겠다. vector에 
+	//GoManager::GetInst()이거는 GoManager의 싱글톤을 선언해주고 그 안에 있는 AddObject기능을 사용한다.
 	GoManager::GetInst()->AddObject(ExitButton);
 
 	StartButton->AddComponent("Transform", new TransComponent(StartButton));
@@ -38,16 +43,18 @@ void Level::MainMenu_Lvl::Update()
 {
 
 	TransComponent* StartBtn_trs = (TransComponent*)StartButton->FindComponent("Transform");
+	//AddComponent를 사용하여 map에 저장하는 이유는 저장한 컴포넌트에 해당하는 기능을 다른곳에서도 사용가능하게 할려고 만들어준다.
 	SpriteComponent* StartBtn_spr = (SpriteComponent*)StartButton->FindComponent("Sprite");	
 
 	TransComponent* ExitBtn_trs = (TransComponent*)ExitButton->FindComponent("Transform");
 	SpriteComponent* ExitBtn_spr = (SpriteComponent*)ExitButton->FindComponent("Sprite");		
 
-	for (auto comp : CompManager::GetInst()->AllComp())
+	for (auto comp : CompManager::GetInst()->AllComp())//컴포넌트 매니저에서 맵에 저장한 컴포넌트를 찾는 구문
 	{
 		if (comp->GetName() == "Sprite")
 		{
 			SpriteComponent::Color& BtnColor = static_cast<SpriteComponent*>(comp)->GetColor();
+			//static_cast 완전 정복하기
 			{
 				BtnColor.red = 255;
 				BtnColor.blue = 0;
@@ -85,6 +92,7 @@ void Level::MainMenu_Lvl::Update()
 			StartBtn_bottom > mousePosY)
 		{
 			GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
+			//GSM::GameStateManager::GetInst()->ChangeLevel(new Level::TestLevel); 테스트용 백무송
 		}
 		else if (ExitBtn_left < mousePosX &&
 			ExitBtn_right > mousePosX &&

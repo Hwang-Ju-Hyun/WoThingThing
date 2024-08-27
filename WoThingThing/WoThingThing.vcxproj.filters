@@ -78,6 +78,12 @@
     <Filter Include="RTTI\Registry">
       <UniqueIdentifier>{0f496fb5-cb14-4ff4-b929-0269ec4be456}</UniqueIdentifier>
     </Filter>
+    <Filter Include="EnemyAI">
+      <UniqueIdentifier>{34255962-43ba-422c-bf60-6d64cc704307}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyAI\Level%28Test%29">
+      <UniqueIdentifier>{41525216-c681-411e-8b27-319c96040101}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

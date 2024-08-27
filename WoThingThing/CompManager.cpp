@@ -21,6 +21,7 @@ void CompManager::AddComponent(std::string _name, BaseComponent* _comp)
 	//m_mapCompMgr.insert({ _name,_comp });
 	_comp->SetName(_name);
 	m_vecCompMgr.push_back(_comp );
+	//vector¿¡ ÀúÀå
 }
 
 void CompManager::RemoveComponent()
