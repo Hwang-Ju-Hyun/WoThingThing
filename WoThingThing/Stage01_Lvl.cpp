@@ -37,10 +37,10 @@ void Level::Stage01_Lvl::Init()
 {
     //Object and Component Init
 
-	player = new GameObject("Player");
-	GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
-	player->AddComponent("Transform", new TransComponent(player));
-	player->AddComponent("Sprite", new SpriteComponent(player));
+    player = new GameObject("Player");
+    GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
+    player->AddComponent("Transform", new TransComponent(player));
+    player->AddComponent("Sprite", new SpriteComponent(player));
     player->AddComponent("RigidBody", new RigidBodyComponent(player));
 
     mouseAim = new GameObject("mouseAim");
@@ -52,7 +52,7 @@ void Level::Stage01_Lvl::Init()
     GoManager::GetInst()->AddObject(aimTrace);
     aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
     aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));
-      
+
     Serializer::GetInst()->LoadLevel("temp.json");
 
 }
@@ -64,8 +64,9 @@ void Level::Stage01_Lvl::Update()
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
-    
+
     //Player Movement
+
     //Jump
     if (AEInputCheckTriggered(AEVK_W))
     {
@@ -76,45 +77,33 @@ void Level::Stage01_Lvl::Update()
     //Landing
     if (player_trs->GetPos().y <= -379.f)
         cnt = 0;
-    //Left UP
-    if (AEInputCheckCurr(AEVK_A) && AEInputCheckCurr(AEVK_W))
-    {
-        if (AEInputCheckTriggered(AEVK_SPACE))
-        {
-            player_rig->Dash({ -1, 1 });
-        }
-    }
-    if (AEInputCheckCurr(AEVK_D) && AEInputCheckCurr(AEVK_W))
-    {
-        if (AEInputCheckTriggered(AEVK_SPACE))
-        {
-            player_rig->Dash({ 1, 1 });
-        }
-    }
+
     //Left
     if (AEInputCheckCurr(AEVK_A))
     {
         if (player_trs->GetPos().x > -770)
             player_trs->AddPos(-5.f, 0.f);
+
         //Dash
-        if (AEInputCheckTriggered(AEVK_SPACE))
-        {
+        if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
+            player_rig->Dash({ -1, 1 });
+        else if (AEInputCheckTriggered(AEVK_SPACE))
             player_rig->Dash({ -1, 0 });
-        }
     }
+
     //Right
     if (AEInputCheckCurr(AEVK_D))
     {
         if (player_trs->GetPos().x < 770)
             player_trs->AddPos(5.f, 0.f);
+
         //Dash
-        if (AEInputCheckTriggered(AEVK_SPACE))
-        {
+        if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
+            player_rig->Dash({ 1, 1 });
+        else if (AEInputCheckTriggered(AEVK_SPACE))
             player_rig->Dash({ 1, 0 });
-        }
     }
     //Right Click : Right attack
-    //left shift : time manipulation
 
 
     //Mouse Position

@@ -42,11 +42,16 @@ void RigidBodyComponent::Dash(AEVec2 directVec)
 
 void RigidBodyComponent::Update()
 {
-	float dt = AEFrameRateControllerGetFrameTime();
-
 	auto trans = GetOwner()->FindComponent("Transform");
 	AEVec2 pos = static_cast<TransComponent*>(trans)->GetPos();
 
+	float dt = AEFrameRateControllerGetFrameTime();
+	//left shift : time manipulation
+	if (AEInputCheckCurr(AEVK_LSHIFT))
+	{
+		dt *= 0.1f;
+	}
+	
 	//if dash velocity is too low. set to 0 (dash ended)
 	if (AEVec2Length(&dashVelocity) <= 700.f) 
 	{
