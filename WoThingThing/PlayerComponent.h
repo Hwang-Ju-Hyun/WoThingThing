@@ -4,16 +4,18 @@
 
 class GameObejct;
 
-class PlayerComp : public BaseComponent
+class PlayerComponent : public BaseComponent
 {
     AEVec2  m_vVelocity;
     AEVec2  dashVelocity;
     AEVec2  dash_const;
     AEVec2  jumpVelocity;
     AEVec2  m_vGravity;
+
+    GameObject* player;
 public:
-    PlayerComp(GameObject* _owner);
-    ~PlayerComp() {};
+    PlayerComponent(GameObject* _owner);
+    ~PlayerComponent() {};
 
     void Jump(float jumpVal);
     void Dash(AEVec2 directVec);

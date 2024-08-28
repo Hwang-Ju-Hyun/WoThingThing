@@ -1,28 +1,34 @@
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
-#include "Stage01_Lvl.h"
+#include <iostream>
 #include "header.h"
-#include "MainMenu_Lvl.h"
+
 #include "GameStateManager.h"
+#include "MainMenu_Lvl.h"
+#include "Stage01_Lvl.h"
+
 #include "GameObject.h"
 #include "GoManager.h"
+
 #include "BaseComponent.h"
 #include "TransComponent.h"
 #include "SpriteComponent.h"
-#include "CompManager.h"
-#include "ColliderManager.h"
 #include "RigidBodyComponent.h"
+#include "PlayerComponent.h"
+#include "CompManager.h"
+
+#include "EventManager.h"
+#include "ColliderManager.h"
 #include "ResourceManager.h"
+#include "TimeManager.h"
 #include "AudioResource.h"
 #include "TextResource.h"
-#include "Utility.h"
-#include "TimeManager.h"
-#include "EventManager.h"
+
 #include "Serializer.h"
+
+#include "Utility.h"
 #include "AEInput.h"
 #include "AEUtil.h"
-#include "AELineSegment2.h"
 #include "AEMath.h"
-#include <iostream>
 
 Level::Stage01_Lvl::Stage01_Lvl()
 {
@@ -42,6 +48,7 @@ void Level::Stage01_Lvl::Init()
     player->AddComponent("Transform", new TransComponent(player));
     player->AddComponent("Sprite", new SpriteComponent(player));
     player->AddComponent("RigidBody", new RigidBodyComponent(player));
+    player->AddComponent("PlayerComp", new PlayerComponent(player));
 
     mouseAim = new GameObject("mouseAim");
     GoManager::GetInst()->AddObject(mouseAim);
@@ -60,7 +67,7 @@ void Level::Stage01_Lvl::Init()
     Serializer::GetInst()->LoadLevel("temp.json");
 
 }
-int cnt = 0;
+
 bool katanaActive, shotActive = false;
 void Level::Stage01_Lvl::Update()
 {
@@ -68,47 +75,8 @@ void Level::Stage01_Lvl::Update()
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
 
-    //Player Movement
-
-    //Jump
-    if (AEInputCheckTriggered(AEVK_W))
-    {
-        cnt++;
-        if (cnt <= 100)
-            player_rig->Jump(400);
-    }
-    //Landing
-    if (player_trs->GetPos().y <= -379.f)
-        cnt = 0;
-
-    if (AEInputCheckCurr(AEVK_W)&& AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_SPACE))
-        player_rig->Dash({ 1, 1 });
-    //Left
-    if (AEInputCheckCurr(AEVK_A))
-    {
-        if (player_trs->GetPos().x > -770)
-            player_trs->AddPos(-5.f, 0.f);
-
-        //Dash
-        if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
-            player_rig->Dash({ -1, 1 });
-        else if (AEInputCheckTriggered(AEVK_SPACE))
-            player_rig->Dash({ -1, 0 });
-    }
-
-    //Right
-    if (AEInputCheckCurr(AEVK_D))
-    {
-        if (player_trs->GetPos().x < 770)
-            player_trs->AddPos(5.f, 0.f);
-
-        //Dash
-        if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
-            player_rig->Dash({ 1, 1 });
-        else if (AEInputCheckTriggered(AEVK_SPACE))
-            player_rig->Dash({ 1, 0 });
-    }
     //Right Click : Right attack
 
 
@@ -141,7 +109,6 @@ void Level::Stage01_Lvl::Update()
 
     if(shotActive)
     {
-
         //position
         AEVec2 traceDirection = { (mouseX - player_trs->GetPos().x),(mouseY - player_trs->GetPos().y) };
         aimTrace_trs->SetPos((mouseX + player_trs->GetPos().x) / 2.f, (mouseY + player_trs->GetPos().y) / 2.f);

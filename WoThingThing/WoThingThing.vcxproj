@@ -28,7 +28,7 @@
     <ClInclude Include="IDLE.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainMenu_Lvl.h" />
-    <ClInclude Include="PlayerComp.h" />
+    <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="Registry.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
@@ -59,7 +59,7 @@
     <ClCompile Include="IDLE.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu_Lvl.cpp" />
-    <ClCompile Include="PlayerComp.cpp" />
+    <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="Registry.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
