@@ -176,6 +176,9 @@
     <ClCompile Include="AiComponent.cpp">
       <Filter>EnemyAI\EnemyAiComp</Filter>
     </ClCompile>
+    <ClCompile Include="IDLE.cpp">
+      <Filter>EnemyAI\EnemyState</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -261,6 +264,9 @@
     </ClInclude>
     <ClInclude Include="AiComponent.h">
       <Filter>EnemyAI\EnemyAiComp</Filter>
+    </ClInclude>
+    <ClInclude Include="IDLE.h">
+      <Filter>EnemyAI\EnemyState</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

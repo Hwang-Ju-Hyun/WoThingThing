@@ -25,6 +25,7 @@
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="GoManager.h" />
     <ClInclude Include="header.h" />
+    <ClInclude Include="IDLE.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainMenu_Lvl.h" />
     <ClInclude Include="Registry.h" />
@@ -54,6 +55,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="GoManager.cpp" />
+    <ClCompile Include="IDLE.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu_Lvl.cpp" />
     <ClCompile Include="Registry.cpp" />
