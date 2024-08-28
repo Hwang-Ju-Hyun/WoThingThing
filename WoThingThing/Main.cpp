@@ -42,7 +42,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		AESysFrameStart();
 
 		//set background color
-		AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
+		AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);	
 
 		//Update;
 		CompManager::GetInst()->Update();

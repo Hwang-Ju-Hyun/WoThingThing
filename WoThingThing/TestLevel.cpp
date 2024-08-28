@@ -17,10 +17,10 @@
 #include "TimeManager.h"
 #include "EventManager.h"
 #include "AEInput.h"
-
+#include"AiComponent.h"
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 
-int Level::TestLevel::enemy_dir = 1;//
+bool Level::TestLevel::enemy_dir = true;//
 
 Level::TestLevel::TestLevel()
 {
@@ -44,6 +44,9 @@ void Level::TestLevel::Init()
 
 	Enemy->AddComponent("Transform", new TransComponent(Enemy));
 	Enemy->AddComponent("Sprite", new SpriteComponent(Enemy));
+	Enemy->AddComponent("Ai", new AiComponent(Enemy));
+	AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
+	Enemy_state->SetState("IDLE");
 
 
 	//리지디드 바디 물어보기
@@ -93,12 +96,12 @@ void Level::TestLevel::Update()
 			if (AEInputCheckCurr(VK_LEFT))
 			{
 				Enemy_trs->AddPos(-10.f, 0.f);
-				enemy_dir = 0;
+				enemy_dir = true;
 			}
 			if (AEInputCheckCurr(VK_RIGHT))
 			{
 				Enemy_trs->AddPos(10.f, 0.f);
-				enemy_dir = 1;
+				enemy_dir = false;
 			}
 
 		}

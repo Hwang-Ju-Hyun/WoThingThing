@@ -3,6 +3,7 @@
 #include "BaseComponent.h"
 #include "TransComponent.h"
 #include"TestLevel.h"//일단 테스트용
+#include"IDLE.h"
 
 ColliderManager::ColliderManager()
 {
@@ -75,6 +76,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2)
 			L_SearchPlayer_TopY > obj2_Pos.y)
 		{
 			std::cout << "SearchPlayerLeft" << std::endl;
+			ESM::IDLE::SearchPlayer = true;
 			return true;
 		}
 

@@ -16,4 +16,7 @@ private:
 public:
     virtual void Update() override;
     void SetState(const std::string& state_name);
+public:
+    virtual void LoadFromJson(const json& str)override;
+    virtual json SaveToJson()override;
 };

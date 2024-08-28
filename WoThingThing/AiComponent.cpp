@@ -3,6 +3,9 @@
 #include "TransComponent.h"
 #include"EnemyStateManager.h"
 #include"IDLE.h"
+AiComponent::~AiComponent()
+{
+}
 void AiComponent::Update()
 {
 	//e_state_name에 들어온 이름에 따라
@@ -10,8 +13,9 @@ void AiComponent::Update()
 	//IDLE과 Patrol은 직접 헤더를 include해서 접근하게 시킨다.
 	if (e_state_name == "IDLE") 
 	{
-		//esm->ChangeState(new ESM::IDLE);
-		//esm->Update();
+		ESM::IDLE* p = new ESM::IDLE(m_pOwner);
+		esm->ChangeState(p);//p를 넘겨주면 자기자신을 m_pOwner를 넘겨주는거니 참조 한다는거다
+		esm->Update();
 	}
 	else if (e_state_name == "Patrol") 
 	{
@@ -22,4 +26,13 @@ void AiComponent::Update()
 void AiComponent::SetState(const std::string& state_name)
 {
 	e_state_name = state_name;
+}
+
+void AiComponent::LoadFromJson(const json& str)
+{
+}
+
+json AiComponent::SaveToJson()
+{
+	return json();
 }

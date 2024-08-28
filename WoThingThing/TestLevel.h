@@ -18,8 +18,7 @@ namespace Level
 		GameObject* Test_player;
 		GameObject* Enemy;
 	public:
-		static int enemy_dir;//0이면 왼쪽 방향으로 가고 있다는 뜻, 1이면 오른쪽 방향 (일단 예비용)
+		static bool enemy_dir;//0이면 왼쪽 방향으로 가고 있다는 뜻, 1이면 오른쪽 방향 (일단 예비용)
 	};
 }
-
 
