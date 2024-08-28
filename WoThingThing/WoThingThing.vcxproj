@@ -17,6 +17,7 @@
     <ClInclude Include="BaseEnemyState.h" />
     <ClInclude Include="BaseLevel.h" />
     <ClInclude Include="BaseRTTI.h" />
+    <ClInclude Include="Chase.h" />
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="CompManager.h" />
     <ClInclude Include="EnemyStateManager.h" />
@@ -48,6 +49,7 @@
     <ClCompile Include="BaseEnemyState.cpp" />
     <ClCompile Include="BaseLevel.cpp" />
     <ClCompile Include="BaseRTTI.cpp" />
+    <ClCompile Include="Chase.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="CompManager.cpp" />
     <ClCompile Include="EnemyStateManager.cpp" />

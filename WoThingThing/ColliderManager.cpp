@@ -56,7 +56,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2)
 	float obj2BotY = obj2_Pos.y - obj2_Scale.y / 2.f;
 
 	//영역의 좌표(정사각형 기준)
-	if (Level::TestLevel::enemy_dir == 0) //보는 방향에 따른 영역 변환
+	if (enemy_dir == 0) //보는 방향에 따른 영역 변환
 	{
 		float Search_LeftArea_X = enemy_Pos.x - enemy_Scale.x; //왼쪽 방향으로 가고 있을 때
 		float L_SearchPlayer_RightX = Search_LeftArea_X + enemy_Scale.x / 2.f;
@@ -69,13 +69,12 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2)
 			L_SearchPlayer_BotY < obj2_Pos.y &&
 			L_SearchPlayer_TopY > obj2_Pos.y)
 		{
-			std::cout << "SearchPlayerLeft" << std::endl;
-			ESM::IDLE::SearchPlayer = true;
+			//std::cout << "SearchPlayerLeft" << std::endl;
 			return true;
 		}
 
 	}
-	else if (Level::TestLevel::enemy_dir == 1)
+	else if (enemy_dir == 1)
 	{
 		float Search_RightArea_X = enemy_Pos.x + enemy_Scale.x;//오른쪽 방향으로 가고 있을 때
 		float R_SearchPlayer_LeftX = Search_RightArea_X - enemy_Scale.x / 2.f;
@@ -88,7 +87,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2)
 			R_SearchPlayer_BotY < obj2_Pos.y &&
 			R_SearchPlayer_TopY > obj2_Pos.y)
 		{
-			std::cout << "SearchPlayerRight" << std::endl;
+			//std::cout << "SearchPlayerRight" << std::endl;
 			return true;
 		}
 	}

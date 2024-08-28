@@ -5,17 +5,18 @@ class GameObject;
 
 namespace ESM
 {
-    class IDLE: public BaseEnemyState
+    class Chase : public BaseEnemyState
     {
     public:
         virtual void Init() override;//override는 재정의땜에 같은 virtual이라도 여기 Init()이 호출된다.
         virtual void Update() override;
         virtual void Exit() override;
     private:
-        GameObject* enemy;
-        GameObject* player;
+        GameObject* Chase_enemy;
+        GameObject* Player;
         float accumulatedTime;
+
     public:
-        IDLE(GameObject* _enemy, GameObject* _player);
+        Chase(GameObject* _enemy, GameObject* _player);
     };
 }

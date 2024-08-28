@@ -1,7 +1,7 @@
 #include "EnemyStateManager.h"
 #include"BaseEnemyState.h"
 
-ESM::EnemyStateManager::EnemyStateManager():e_CurrentState(nullptr),e_PreviousState(nullptr)
+ESM::EnemyStateManager::EnemyStateManager() :e_CurrentState(nullptr), e_PreviousState(nullptr)
 {
 
 }
