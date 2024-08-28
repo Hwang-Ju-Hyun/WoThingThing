@@ -89,8 +89,8 @@ void TransComponent::AddPos(float _posX, float _posY)
 	if (AEInputCheckCurr(AEVK_LSHIFT))
 	{
 		//dt *= 0.1f;
-		m_vPos.x += 50 * _posX * (dt);
-		m_vPos.y += 50 * _posY * (dt);
+		m_vPos.x += _posX * (dt * 4.f);
+		m_vPos.y += _posY * (dt * 4.f);
 	}
 	else
 	{

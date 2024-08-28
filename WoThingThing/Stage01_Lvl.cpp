@@ -82,6 +82,8 @@ void Level::Stage01_Lvl::Update()
     if (player_trs->GetPos().y <= -379.f)
         cnt = 0;
 
+    if (AEInputCheckCurr(AEVK_W)&& AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_SPACE))
+        player_rig->Dash({ 1, 1 });
     //Left
     if (AEInputCheckCurr(AEVK_A))
     {

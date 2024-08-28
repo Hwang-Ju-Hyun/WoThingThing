@@ -1,12 +1,9 @@
-#include "RigidBodyComponent.h"
-#include "BaseComponent.h"
+#include "PlayerComp.h"
 #include "TransComponent.h"
-#include "CompManager.h"
 #include "GameObject.h"
-#include "GoManager.h"
 
-RigidBodyComponent::RigidBodyComponent(GameObject* _owner) : BaseComponent(_owner)	
-{	
+PlayerComp::PlayerComp(GameObject* _owner) : BaseComponent(_owner)
+{
 	m_vVelocity = { 0.f, 0.f };
 	dashVelocity = { 0.f, 0.f };
 	dash_const = { 400.f, 400.f };
@@ -14,34 +11,30 @@ RigidBodyComponent::RigidBodyComponent(GameObject* _owner) : BaseComponent(_owne
 	m_vGravity = { 0.f, 600.f };
 }
 
-RigidBodyComponent::~RigidBodyComponent()
-{
-}
-
-void RigidBodyComponent::Jump(float jumpValue)
+void PlayerComp::Jump(float jumpVal)
 {
 	auto trans = GetOwner()->FindComponent("Transform");
 	AEVec2 pos = static_cast<TransComponent*>(trans)->GetPos();
 	float dt = AEFrameRateControllerGetFrameTime();
-	jumpVelocity.y = jumpValue;
+	jumpVelocity.y = jumpVal;
 	pos.y += jumpVelocity.y * dt;
 	static_cast<TransComponent*>(trans)->SetPos(pos);
 }
 
-void RigidBodyComponent::Dash(AEVec2 directVec)
+void PlayerComp::Dash(AEVec2 directVec)
 {
 	auto trans = GetOwner()->FindComponent("Transform");
 	AEVec2 pos = static_cast<TransComponent*>(trans)->GetPos();
 
 	float dt = AEFrameRateControllerGetFrameTime();
-	
+
 	dashVelocity.x = directVec.x * dash_const.x;
 	dashVelocity.y = directVec.y * dash_const.y;
-	
+
 	static_cast<TransComponent*>(trans)->SetPos(pos);
 }
 
-void RigidBodyComponent::Update()
+void PlayerComp::Update()
 {
 	auto trans = GetOwner()->FindComponent("Transform");
 	AEVec2 pos = static_cast<TransComponent*>(trans)->GetPos();
@@ -52,9 +45,9 @@ void RigidBodyComponent::Update()
 	{
 		dt *= 0.1f;
 	}
-	
+
 	//if dash velocity is too low. set to 0 (dash ended)
-	if (AEVec2Length(&dashVelocity) <= 300.f) 
+	if (AEVec2Length(&dashVelocity) <= 300.f)
 	{
 		AEVec2Zero(&dashVelocity);
 	}
@@ -81,12 +74,12 @@ void RigidBodyComponent::Update()
 
 }
 
-void RigidBodyComponent::LoadFromJson(const json& str)
+void PlayerComp::LoadFromJson(const json& str)
 {
 	return;
 }
 
-json RigidBodyComponent::SaveToJson()
+json PlayerComp::SaveToJson()
 {
 	return json();
 }
