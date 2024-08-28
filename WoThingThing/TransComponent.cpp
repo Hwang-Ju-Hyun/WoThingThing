@@ -8,17 +8,11 @@
 
 TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_matMatrix{}
 {
-<<<<<<< HEAD
+
 	//이 코드들도 나중에 stage01 _init으로 옮겨야함
 	if (_owner->GetName() == "Player")
 	{
 		m_vPos = { -750,550 };
-=======
-	if (_owner->GetName() == "Player")
-	{
-	//	m_vPos = { -755,-380 };
-		m_vPos = { -755,0 };
->>>>>>> ce8d10c5a0fe8ed6ec52c55fbf6477fdb75198f4
 		m_vScale = { 50,50 };
 		m_fRot = 0.f;
 	}

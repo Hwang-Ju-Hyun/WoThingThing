@@ -37,18 +37,10 @@ void Level::Stage01_Lvl::Init()
 {
     //Object and Component Init
     Serializer::GetInst()->LoadLevel("temp.json");
-
-<<<<<<< HEAD
-	player = new GameObject("Player");
-	GoManager::GetInst()->AddObject(player);
-	player->AddComponent("Transform", new TransComponent(player));
-	player->AddComponent("Sprite", new SpriteComponent(player));
-=======
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
     player->AddComponent("Sprite", new SpriteComponent(player));
->>>>>>> ce8d10c5a0fe8ed6ec52c55fbf6477fdb75198f4
     player->AddComponent("RigidBody", new RigidBodyComponent(player));
 
     mouseAim = new GameObject("mouseAim");
@@ -60,16 +52,13 @@ void Level::Stage01_Lvl::Init()
     GoManager::GetInst()->AddObject(aimTrace);
     aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
     aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));
-<<<<<<< HEAD
         
     //EventManager에서 요거 지우쇼 
     RePosition* Platform_Player = new RePosition;
     EventManager::GetInst()->AddEntity("Collision",Platform_Player);
-=======
 
     Serializer::GetInst()->LoadLevel("temp.json");
 
->>>>>>> ce8d10c5a0fe8ed6ec52c55fbf6477fdb75198f4
 }
 int cnt = 0;
 bool katanaActive, shotActive = false;
@@ -85,30 +74,8 @@ void Level::Stage01_Lvl::Update()
     //Jump
     if (AEInputCheckTriggered(AEVK_W))
     {
-<<<<<<< HEAD
-        if (obj->GetName() == "Player")
-        {
-            if (AEInputCheckTriggered(AEVK_W)) //jump
-            {
-                player_rig->Jump(300);
-            }
-            if (AEInputCheckCurr(AEVK_A)) //Left
-            {
-                if (player_trs->GetPos().x > -770)
-                    player_trs->AddPos(-10.f, 0.f);
-            }
-            if (AEInputCheckCurr(AEVK_D)) //Right
-            {
-                if (player_trs->GetPos().x < 770)
-                    player_trs->AddPos(10.f, 0.f);
-            }
-            //space bar : dash
-            //Right Click : Right attack
-            //left shift : time manipulation
-        }
-=======
         cnt++;
-        if (cnt <= 2)
+        if (cnt <= 100)
             player_rig->Jump(400);
     }
     //Landing
@@ -126,7 +93,6 @@ void Level::Stage01_Lvl::Update()
             player_rig->Dash({ -1, 1 });
         else if (AEInputCheckTriggered(AEVK_SPACE))
             player_rig->Dash({ -1, 0 });
->>>>>>> ce8d10c5a0fe8ed6ec52c55fbf6477fdb75198f4
     }
 
     //Right
