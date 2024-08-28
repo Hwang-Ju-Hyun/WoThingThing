@@ -19,22 +19,10 @@ void EventManager::AddEvent(Event* ev)
 	allEvents.push_back(ev);
 }
 
-Event* EventManager::FindEvent(std::string& str)
-{
-	std::list<Event*>::iterator iter;
-	for (iter = allEvents.begin(); iter != allEvents.end(); iter++)
-	{
-		if ((*iter)->GetEventName() == str)
-		{
-			return (*iter);
-		}
-	}
-	return nullptr;
-}
 
-void EventManager::AddEntity(const std::string& evt_name,Entity* et)
+void EventManager::AddEntity(const std::string& evt_name, Entity* et)
 {
-	std::map<std::string /*event의 아이디*/, std::list<Entity*>/*구독자들*/>::iterator iter= registeredEntities.find(evt_name);
+	std::map<std::string /*event의 아이디*/, std::list<Entity*>/*구독자들*/>::iterator iter = registeredEntities.find(evt_name);
 	if (iter != registeredEntities.end())
 	{
 		std::list<Entity*>& subscribers = iter->second;
@@ -50,23 +38,18 @@ void EventManager::AddEntity(const std::string& evt_name,Entity* et)
 
 std::list<Entity*>* EventManager::FindEntityList(std::string ev_Key)
 {
-	for (auto iter = registeredEntities.begin(); iter != registeredEntities.end(); iter++)
-	{
-		if ((*iter).first == ev_Key)
-		{
-			return &(*iter).second;
-		}
-	}
-	return nullptr;
+	auto listEntity = registeredEntities.find(ev_Key);
+	if (listEntity == registeredEntities.end())
+		return nullptr;
+	return &(listEntity->second);		
 }
 
-void EventManager::DispatchEvent(std::string ev_Key)
-{
-	Event* ev = FindEvent(ev_Key);
+void EventManager::DispatchEvent(Event* ev)
+{	
 	if (ev == nullptr)
 		return;
 
-	std::list<Entity*>* listEt = FindEntityList(ev_Key);
+	std::list<Entity*>* listEt = FindEntityList(ev->GetEventName());
 
 	if (listEt == nullptr)
 		return;
@@ -82,9 +65,9 @@ void EventManager::Update()
 	//모든 이벤트를 DispatchEvent
 	for (auto iter = allEvents.begin(); iter != allEvents.end(); iter++)
 	{
-		DispatchEvent((*iter)->GetEventName());
+		DispatchEvent(*iter);
 		delete (*iter);
-	}	
+	}
 	allEvents.clear();
 }
 
@@ -92,15 +75,16 @@ void EventManager::Update()
 
 void RePosition::HandleCollision(GameObject* obj1, GameObject* obj2)
 {
-
-	TransComponent* obj_trs1 = static_cast<TransComponent*>(obj1->FindComponent("Transform"));//Player
-	TransComponent* obj_trs2 = static_cast<TransComponent*>(obj2->FindComponent("Transform"));//Platform
+	// Transform 및 RigidBody 컴포넌트 가져오기
+	TransComponent* obj_trs1 = static_cast<TransComponent*>(obj1->FindComponent("Transform"));
+	TransComponent* obj_trs2 = static_cast<TransComponent*>(obj2->FindComponent("Transform"));
 	RigidBodyComponent* obj_rb1 = static_cast<RigidBodyComponent*>(obj1->FindComponent("RigidBody"));
-	AEVec2 obj1_Pos = static_cast<TransComponent*>(obj_trs1)->GetPos();
-	AEVec2 obj2_Pos = static_cast<TransComponent*>(obj_trs2)->GetPos();
 
-	AEVec2 obj1_Scale = static_cast<TransComponent*>(obj_trs1)->GetScale();
-	AEVec2 obj2_Scale = static_cast<TransComponent*>(obj_trs2)->GetScale();
+	AEVec2 obj1_Pos = obj_trs1->GetPos();
+	AEVec2 obj2_Pos = obj_trs2->GetPos();
+
+	AEVec2 obj1_Scale = obj_trs1->GetScale();
+	AEVec2 obj2_Scale = obj_trs2->GetScale();
 
 	float obj1RightX = obj1_Pos.x + obj1_Scale.x / 2.f;
 	float obj1LeftX = obj1_Pos.x - obj1_Scale.x / 2.f;
@@ -112,54 +96,51 @@ void RePosition::HandleCollision(GameObject* obj1, GameObject* obj2)
 	float obj2Bot = obj2_Pos.y - obj2_Scale.y / 2.f;
 	float obj2Top = obj2_Pos.y + obj2_Scale.y / 2.f;
 
-
+	// 충돌 방향 플래그
 	bool rightflag = false;
 	bool leftflag = false;
 	bool botflag = false;
 	bool topflag = false;
-	//플레이어가 플랫폼의 오른쪽을 충돌 
-	if (obj1LeftX < obj2RightX&&
-		obj1RightX>obj2RightX&&
-		obj1LeftX>obj2LeftX)
-	{		
+
+
+	// 모서리 충돌 조건
+	bool nearLeftEdge = obj1RightX < obj2LeftX + obj2_Scale.x * 0.01f;  // obj1이 obj2의 좌측 모서리 근처에 있는가?
+	bool nearRightEdge = obj1LeftX > obj2RightX - obj2_Scale.x * 0.01f; // obj1이 obj2의 우측 모서리 근처에 있는가?
+	bool nearTopEdge = obj1Bot > obj2Top - obj2_Scale.y * 0.1f;
+	bool nearBotEdge = obj1Top < obj2Bot + obj2_Scale.y * 0.1f;
+
+
+	// 윗면 충돌: obj1이 obj2의 윗면에 부딪힘
+	if (obj1Bot < obj2Top && obj1Top > obj2Top && obj1Bot > obj2Bot && !nearLeftEdge && !nearRightEdge)
+	{
+		float ReposY = obj2Top + obj1_Scale.y / 2.f;
+		obj_trs1->SetPos({ obj1_Pos.x, ReposY });				
+		// 속도 0으로 설정하여 멈추게 함				
+	}	
+	// 아랫면 충돌: obj1이 obj2의 아랫면에 부딪힘
+	if (obj1Top > obj2Bot && obj1Bot < obj2Bot && obj1Top < obj2Top && !nearLeftEdge && !nearRightEdge)
+	{
+		float ReposY = obj2Bot - obj1_Scale.y / 2.f;
+		obj_trs1->SetPos({ obj1_Pos.x, ReposY });	
+		// 속도를 중력 방향으로 설정할 수 있음		
+	}
+	// 오른쪽 충돌: obj1이 obj2의 오른쪽에 부딪힘
+	if (obj1LeftX < obj2RightX && obj1RightX > obj2RightX && obj1LeftX > obj2LeftX)
+	{
 		rightflag = true;
-		float ReposX = obj2RightX+obj_trs1->GetScale().x/2.f+1.f ;
-		//float ReposX = obj2RightX  + obj_trs1->GetScale().x / 2.f;
-		obj_trs1->SetPos({ ReposX,obj_trs1->GetPos().y});		
+		float ReposX = obj2RightX + obj1_Scale.x / 2.f + 1.f;		
+		obj_trs1->SetPos({ ReposX, obj1_Pos.y });				
 	}
-
-	//플레이어가 플랫폼의 윗면을 충돌
- 	else if (obj1Bot < obj2Top&&
-		obj1Top>obj2Top&&
-		obj1Bot>obj2Bot)
-	{
-		topflag = true;
-		float ReposY = obj2Top + obj_trs1->GetScale().y / 2.f;		
-		obj_trs1->SetPos({obj_trs1->GetPos().x,ReposY});
-		obj_rb1->SetVelocity({ 0.f, 0.f });		
-	}
-		
-
-	//플레이어가 플랫폼의 아랫면을 충돌
-	else if (obj1Top > obj2Top&&
-			obj1Bot<obj2Bot)
-	{
-		botflag = true;
-		float ReposY = obj2Bot - obj_trs1->GetScale().y / 2.f;		
-		obj_trs1->SetPosY(ReposY);				
-	}
-
-	//플레이어가 플랫폼의 Left을 충돌 <-Hangul Andem tlqk
-	else if (obj1RightX > obj2LeftX&&
-		obj1LeftX<obj2LeftX&&
-		obj1RightX<obj2RightX)
+	// 왼쪽 충돌: obj1이 obj2의 왼쪽에 부딪힘
+	if (obj1RightX > obj2LeftX && obj1LeftX < obj2LeftX && obj1RightX < obj2RightX)
 	{
 		leftflag = true;
-		float ReposX =obj2LeftX - obj_trs1->GetScale().x / 2.f;		
-		obj_trs1->SetPos({ ReposX,obj_trs1->GetPos().y });		
+		float ReposX = obj2LeftX - obj1_Scale.x / 2.f - 1.f;
+		obj_trs1->SetPos({ ReposX, obj1_Pos.y});				
 	}
 	
-	if()
+
+	
 }
 
 void RePosition::OnEvent(Event* ev)
@@ -172,7 +153,7 @@ void RePosition::OnEvent(Event* ev)
 	TransComponent* obj1_trs = static_cast<TransComponent*>(obj1->FindComponent("Transform"));
 	TransComponent* obj2_trs = static_cast<TransComponent*>(obj2->FindComponent("Transform"));
 
-	if (obj1->GetName() == "Player"&&obj2->GetName()=="Platform")
+	if (obj1->GetName() == "Player" && obj2->GetName() == "Platform")
 	{
 		HandleCollision(obj1, obj2);
 	}
@@ -190,4 +171,3 @@ void RePosition::OnEvent(Event* ev)
 	//	}		
 	//}
 }
-

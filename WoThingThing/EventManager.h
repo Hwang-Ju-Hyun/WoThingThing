@@ -79,7 +79,7 @@ public:
 public:	
 	std::list<Entity*>* FindEntityList(std::string ev_Key);
 	// Dispatch All Events		
-	void DispatchEvent(std::string ev_Key);
+	void DispatchEvent(Event* ev);
 	// delete undispatched events if any on destructor
 public:
 	void Update();
