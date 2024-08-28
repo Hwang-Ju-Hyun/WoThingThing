@@ -40,18 +40,21 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 		m_fRot = 0.f;
 	}
 
+	//추가 파트(백무송)
 
-	//백무송 파트 플레이어와 적 추가 부분
-	if (_owner->GetName() == "Player") 
+	if (_owner->GetName() == "Test_player")
 	{
-
+		m_vPos = {200,200 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
 	}
 
-	if (_owner->GetName()=="Enemy")
+	if (_owner->GetName() == "Enemy")
 	{
-
+		m_vPos = { -100,100 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
 	}
-
 }
 
 TransComponent::~TransComponent()

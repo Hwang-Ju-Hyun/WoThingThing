@@ -83,6 +83,15 @@
     </Filter>
     <Filter Include="Manager\CameraMgr">
       <UniqueIdentifier>{4906040b-1b86-402e-a028-99cb8da10bc3}</UniqueIdentifier>
+	</Filter>
+    <Filter Include="EnemyAI\EnemyStateManager">
+      <UniqueIdentifier>{ecdfafd2-8270-40ba-a348-c67898da36a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyAI\EnemyState">
+      <UniqueIdentifier>{70d8b8fd-5baa-4e3e-b685-76a3613a0065}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyAI\EnemyAiComp">
+      <UniqueIdentifier>{c3c961d9-23da-4492-acfa-78beb9fc9a60}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -157,6 +166,21 @@
     </ClCompile>
     <ClCompile Include="CameraManager.cpp">
       <Filter>Manager\CameraMgr</Filter>
+	</ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>EnemyAI\Level%28Test%29</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseEnemyState.cpp">
+      <Filter>EnemyAI\EnemyStateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStateManager.cpp">
+      <Filter>EnemyAI\EnemyStateManager</Filter>
+    </ClCompile>
+    <ClCompile Include="AiComponent.cpp">
+      <Filter>EnemyAI\EnemyAiComp</Filter>
+    </ClCompile>
+    <ClCompile Include="IDLE.cpp">
+      <Filter>EnemyAI\EnemyState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -234,6 +258,21 @@
     </ClInclude>
     <ClInclude Include="CameraManager.h">
       <Filter>Manager\CameraMgr</Filter>
+	</ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>EnemyAI\Level%28Test%29</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStateManager.h">
+      <Filter>EnemyAI\EnemyStateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEnemyState.h">
+      <Filter>EnemyAI\EnemyStateManager</Filter>
+    </ClInclude>
+    <ClInclude Include="AiComponent.h">
+      <Filter>EnemyAI\EnemyAiComp</Filter>
+    </ClInclude>
+    <ClInclude Include="IDLE.h">
+      <Filter>EnemyAI\EnemyState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

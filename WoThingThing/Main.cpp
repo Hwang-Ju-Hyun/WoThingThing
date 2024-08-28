@@ -8,7 +8,7 @@
 #include "EventManager.h"
 #include "CameraManager.h"
 #include <memory>
-//#include "TestLevel.h"//추가부분(백무송)
+#include "TestLevel.h"//추가부분(백무송)
 
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_line, int show)
 {
@@ -34,16 +34,15 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		
 	Level::MainMenu_Lvl MainMenu_lvl;
 	Level::Stage01_Lvl Stage01_lvl;
-	//Level::TestLevel TestLevel; 테스트용(백무송)
-
-	gsm->ChangeLevel(new Level::MainMenu_Lvl);
+	Level::TestLevel Test;
+	gsm->ChangeLevel(new Level::TestLevel);
 
 	while(gsm->ShouldExit()==false)
 	{
 		AESysFrameStart();
 
 		//set background color
-		AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
+		AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);	
 
 		//Update;
 		CompManager::GetInst()->Update();
