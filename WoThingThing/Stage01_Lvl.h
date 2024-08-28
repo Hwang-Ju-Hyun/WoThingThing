@@ -24,7 +24,6 @@ namespace Level
         virtual void Exit() override;
 
     private:
-        GameObject* player1;
         std::vector<GameObject*> m_vecPlatforms;
         GameObject* Platform;
     public:       

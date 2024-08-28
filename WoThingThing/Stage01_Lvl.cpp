@@ -1,4 +1,4 @@
-
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #include "Stage01_Lvl.h"
 #include "header.h"
 #include "MainMenu_Lvl.h"
@@ -22,6 +22,7 @@
 #include "AEUtil.h"
 #include "AELineSegment2.h"
 #include "AEMath.h"
+#include <iostream>
 
 Level::Stage01_Lvl::Stage01_Lvl()
 {
@@ -31,15 +32,23 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 {
 }
 
+
 void Level::Stage01_Lvl::Init()
 {
     //Object and Component Init
     Serializer::GetInst()->LoadLevel("temp.json");
 
+<<<<<<< HEAD
 	player = new GameObject("Player");
 	GoManager::GetInst()->AddObject(player);
 	player->AddComponent("Transform", new TransComponent(player));
 	player->AddComponent("Sprite", new SpriteComponent(player));
+=======
+    player = new GameObject("Player");
+    GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
+    player->AddComponent("Transform", new TransComponent(player));
+    player->AddComponent("Sprite", new SpriteComponent(player));
+>>>>>>> ce8d10c5a0fe8ed6ec52c55fbf6477fdb75198f4
     player->AddComponent("RigidBody", new RigidBodyComponent(player));
 
     mouseAim = new GameObject("mouseAim");
@@ -51,13 +60,19 @@ void Level::Stage01_Lvl::Init()
     GoManager::GetInst()->AddObject(aimTrace);
     aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
     aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));
+<<<<<<< HEAD
         
     //EventManager에서 요거 지우쇼 
     RePosition* Platform_Player = new RePosition;
     EventManager::GetInst()->AddEntity("Collision",Platform_Player);
+=======
+
+    Serializer::GetInst()->LoadLevel("temp.json");
+
+>>>>>>> ce8d10c5a0fe8ed6ec52c55fbf6477fdb75198f4
 }
-
-
+int cnt = 0;
+bool katanaActive, shotActive = false;
 void Level::Stage01_Lvl::Update()
 {
     //Component 
@@ -65,10 +80,12 @@ void Level::Stage01_Lvl::Update()
     SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
 
-    float dt = AEFrameRateControllerGetFrameTime();
-    //PlayerMovement
-    for (auto obj : GoManager::GetInst()->Allobj())
+    //Player Movement
+
+    //Jump
+    if (AEInputCheckTriggered(AEVK_W))
     {
+<<<<<<< HEAD
         if (obj->GetName() == "Player")
         {
             if (AEInputCheckTriggered(AEVK_W)) //jump
@@ -89,9 +106,45 @@ void Level::Stage01_Lvl::Update()
             //Right Click : Right attack
             //left shift : time manipulation
         }
+=======
+        cnt++;
+        if (cnt <= 2)
+            player_rig->Jump(400);
+    }
+    //Landing
+    if (player_trs->GetPos().y <= -379.f)
+        cnt = 0;
+
+    //Left
+    if (AEInputCheckCurr(AEVK_A))
+    {
+        if (player_trs->GetPos().x > -770)
+            player_trs->AddPos(-5.f, 0.f);
+
+        //Dash
+        if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
+            player_rig->Dash({ -1, 1 });
+        else if (AEInputCheckTriggered(AEVK_SPACE))
+            player_rig->Dash({ -1, 0 });
+>>>>>>> ce8d10c5a0fe8ed6ec52c55fbf6477fdb75198f4
     }
 
-    //mouse position : aim
+    //Right
+    if (AEInputCheckCurr(AEVK_D))
+    {
+        if (player_trs->GetPos().x < 770)
+            player_trs->AddPos(5.f, 0.f);
+
+        //Dash
+        if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
+            player_rig->Dash({ 1, 1 });
+        else if (AEInputCheckTriggered(AEVK_SPACE))
+            player_rig->Dash({ 1, 0 });
+    }
+    //Right Click : Right attack
+
+
+    //Mouse Position
     TransComponent* aim_trs = (TransComponent*)mouseAim->FindComponent("Transform");
     SpriteComponent* aim_spr = (SpriteComponent*)mouseAim->FindComponent("Sprite");
     s32 mouseX, mouseY;
@@ -100,26 +153,45 @@ void Level::Stage01_Lvl::Update()
     mouseY -= 450, mouseY *= -1;//mouse Y position lerp
     aim_trs->SetPos(mouseX, mouseY);
 
+    if (AEInputCheckTriggered(AEVK_1))
+    {
+        katanaActive = true, shotActive = false;
+    }
+    if (AEInputCheckTriggered(AEVK_2))
+    {
+        katanaActive = false, shotActive = true;
+    }
+
+
     //line: player to aim
     TransComponent* aimTrace_trs = (TransComponent*)aimTrace->FindComponent("Transform");
     SpriteComponent* aimTrace_spr = (SpriteComponent*)aimTrace->FindComponent("Sprite");
-    //position
-    AEVec2 traceDirection = { (mouseX - player_trs->GetPos().x),(mouseY - player_trs->GetPos().y) };
-    aimTrace_trs->SetPos((mouseX + player_trs->GetPos().x)/2.f, (mouseY + player_trs->GetPos().y) / 2.f);
-    //scale
-    float dis = AEVec2Length(&traceDirection);
-    aimTrace_trs->SetScale({dis, 1});
-    //rotation
-    AEVec2 nor_traceDirection = { 0,0 };
-    AEVec2Normalize(& nor_traceDirection, &traceDirection);
+    if (katanaActive)
+    {
+        aimTrace_trs->SetScale({ 0, 0 });
+    }
 
-    //if mouse position in sector 3, 4 : reverse line
-    if (nor_traceDirection.y < 0)
-        nor_traceDirection.x *= -1;
-    //////////////////////////////////////////////////
+    if(shotActive)
+    {
 
-    aimTrace_trs->SetRot(AEACos(nor_traceDirection.x));
-   
+        //position
+        AEVec2 traceDirection = { (mouseX - player_trs->GetPos().x),(mouseY - player_trs->GetPos().y) };
+        aimTrace_trs->SetPos((mouseX + player_trs->GetPos().x) / 2.f, (mouseY + player_trs->GetPos().y) / 2.f);
+        //scale
+        float dis = AEVec2Length(&traceDirection);
+        aimTrace_trs->SetScale({ dis, 1 });
+        //rotation
+        AEVec2 nor_traceDirection = { 0,0 };
+        AEVec2Normalize(&nor_traceDirection, &traceDirection);
+
+        //if mouse position in sector 3, 4 : reverse line
+        if (nor_traceDirection.y < 0)
+            nor_traceDirection.x *= -1;
+        //////////////////////////////////////////////////
+        aimTrace_trs->SetRot(AEACos(nor_traceDirection.x));
+    }
+
+
     if (AEInputCheckCurr(AEVK_R) == true)
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);

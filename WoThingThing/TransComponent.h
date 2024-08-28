@@ -23,6 +23,7 @@ public:
     const float& GetRot()         { return m_fRot; }
     const AEMtx33& GetMatrix()    { return m_matMatrix; }
 
+<<<<<<< HEAD
     void AddPos(const AEVec2& _pos)
     {
         m_vPos.x += _pos.x;
@@ -54,6 +55,17 @@ public:
     void SetScale(const AEVec2& _scale) { m_vScale = _scale; }
     void SetRot(const float& _rot)      { m_fRot = _rot; }
     void SetRot(AEVec2 _rot) { m_fRot = AEVec2Length(&_rot); }
+=======
+    void AddPos(const AEVec2& _pos);
+    void AddPos(float _posX, float _posY);
+    void SetPos(const AEVec2& _pos);
+    void SetPos(float _posX, float _posY);
+
+    void SetScale(const AEVec2& _scale);
+    void SetRot(const float& _rot);
+    //void SetRot(AEVec2 _rot);
+    
+>>>>>>> ce8d10c5a0fe8ed6ec52c55fbf6477fdb75198f4
 public:
     virtual void Update() override;
 public:
