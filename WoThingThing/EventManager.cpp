@@ -86,61 +86,77 @@ void RePosition::HandleCollision(GameObject* obj1, GameObject* obj2)
 	AEVec2 obj1_Scale = obj_trs1->GetScale();
 	AEVec2 obj2_Scale = obj_trs2->GetScale();
 
-	float obj1RightX = obj1_Pos.x + obj1_Scale.x / 2.f;
-	float obj1LeftX = obj1_Pos.x - obj1_Scale.x / 2.f;
+	float obj1Right = obj1_Pos.x + obj1_Scale.x / 2.f;
+	float obj1Left = obj1_Pos.x - obj1_Scale.x / 2.f;
 	float obj1Bot = obj1_Pos.y - obj1_Scale.y / 2.f;
 	float obj1Top = obj1_Pos.y + obj1_Scale.y / 2.f;
 
-	float obj2RightX = obj2_Pos.x + obj2_Scale.x / 2.f;
-	float obj2LeftX = obj2_Pos.x - obj2_Scale.x / 2.f;
+	float obj2Right = obj2_Pos.x + obj2_Scale.x / 2.f;
+	float obj2Left = obj2_Pos.x - obj2_Scale.x / 2.f;
 	float obj2Bot = obj2_Pos.y - obj2_Scale.y / 2.f;
 	float obj2Top = obj2_Pos.y + obj2_Scale.y / 2.f;
 
-	// 충돌 방향 플래그
-	bool rightflag = false;
-	bool leftflag = false;
-	bool botflag = false;
-	bool topflag = false;
 
+	//check 4 distance
+	float distanceUpper = std::fabs(obj2_Pos.y+(obj2_Scale.y/2.f) - (obj1_Pos.y-obj1_Scale.y  / 2.f));
+	float distanceDown = std::fabs(obj2_Pos.y -(obj2_Scale.y/2.f) - (obj1_Pos.y+ obj1_Scale.y / 2.f));
+	float distanceRight = std::fabs(obj2_Pos.x+(obj2_Scale.x/2.f) - (obj1_Pos.x - obj1_Scale.x / 2.f));
+	float distanceLeft = std::fabs(obj2_Pos.x -(obj2_Scale.x/2.f) - (obj1_Pos.x + obj1_Scale.x / 2.f));
 
-	// 모서리 충돌 조건
-	bool nearLeftEdge = obj1RightX < obj2LeftX + obj2_Scale.x * 0.01f;  // obj1이 obj2의 좌측 모서리 근처에 있는가?
-	bool nearRightEdge = obj1LeftX > obj2RightX - obj2_Scale.x * 0.01f; // obj1이 obj2의 우측 모서리 근처에 있는가?
-	bool nearTopEdge = obj1Bot > obj2Top - obj2_Scale.y * 0.1f;
-	bool nearBotEdge = obj1Top < obj2Bot + obj2_Scale.y * 0.1f;
-
-
-	// 윗면 충돌: obj1이 obj2의 윗면에 부딪힘
-	if (obj1Bot < obj2Top && obj1Top > obj2Top && obj1Bot > obj2Bot && !nearLeftEdge && !nearRightEdge)
+	float distArr[4] = { distanceUpper,distanceRight,distanceLeft,distanceDown };
+	float minDistance = distArr[0];
+	int direct = 0;
+	for (int i = 1; i < 4; i++)
 	{
-		float ReposY = obj2Top + obj1_Scale.y / 2.f;
-		obj_trs1->SetPos({ obj1_Pos.x, ReposY });				
-		// 속도 0으로 설정하여 멈추게 함				
-	}	
-	// 아랫면 충돌: obj1이 obj2의 아랫면에 부딪힘
-	if (obj1Top > obj2Bot && obj1Bot < obj2Bot && obj1Top < obj2Top && !nearLeftEdge && !nearRightEdge)
-	{
-		float ReposY = obj2Bot - obj1_Scale.y / 2.f;
-		obj_trs1->SetPos({ obj1_Pos.x, ReposY });	
-		// 속도를 중력 방향으로 설정할 수 있음		
+		if (minDistance > distArr[i])
+		{
+			minDistance = distArr[i];
+			direct = i;
+		}			
 	}
-	// 오른쪽 충돌: obj1이 obj2의 오른쪽에 부딪힘
-	if (obj1LeftX < obj2RightX && obj1RightX > obj2RightX && obj1LeftX > obj2LeftX)
-	{
-		rightflag = true;
-		float ReposX = obj2RightX + obj1_Scale.x / 2.f + 1.f;		
-		obj_trs1->SetPos({ ReposX, obj1_Pos.y });				
-	}
-	// 왼쪽 충돌: obj1이 obj2의 왼쪽에 부딪힘
-	if (obj1RightX > obj2LeftX && obj1LeftX < obj2LeftX && obj1RightX < obj2RightX)
-	{
-		leftflag = true;
-		float ReposX = obj2LeftX - obj1_Scale.x / 2.f - 1.f;
-		obj_trs1->SetPos({ ReposX, obj1_Pos.y});				
-	}
-	
 
-	
+	switch (direct)
+	{
+	case 0://Upper
+		obj_trs1->AddPos({ 0,minDistance});
+		obj_rb1->SetJumpVelocityZero();
+		break;
+	case 1://Right
+		obj_trs1->AddPos({ minDistance , 0});
+		break;
+	case 2://Left
+		obj_trs1->AddPos({ -minDistance, 0 });
+		break;
+	case 3://Down
+		obj_trs1->AddPos({ 0,-minDistance});
+		obj_rb1->SetJumpVelocityZero();
+		break;
+	}
+
+
+	////Platform UpperCollision
+	//if (obj1Bot < obj2Top && obj1Top > obj2Top && obj1Bot > obj2Bot )
+	//{
+	//	float ReposY = obj2Top + obj1_Scale.y / 2.f;							
+	//}	
+	//
+	////Platform BottomCollision
+	//if (obj1Top > obj2Bot && obj1Bot < obj2Bot && obj1Top < obj2Top )
+	//{
+	//	float ReposY = obj2Bot - obj1_Scale.y / 2.f;					
+	//}
+	//
+	////Platform Right Collision
+	//if (obj1Left < obj2Right && obj1Right > obj2Right && obj1Left > obj2Left)
+	//{		
+	//	float ReposX = obj2Right + obj1_Scale.x / 2.f;			
+	//}
+
+	////Platform Left Collision
+	//if (obj1Right > obj2Left && obj1Left < obj2Left && obj1Right < obj2Right)
+	//{	
+	//	float ReposX = obj2Left - obj1_Scale.x / 2.f - 1.f;			
+	//}		
 }
 
 void RePosition::OnEvent(Event* ev)

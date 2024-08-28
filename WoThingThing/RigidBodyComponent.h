@@ -14,7 +14,8 @@ class RigidBodyComponent : public BaseComponent
 public:
     RigidBodyComponent(GameObject* _owner);
     ~RigidBodyComponent();
-    void SetVelocityZero() { m_vVelocity = { 0.f,0.f }; }
+    void SetVelocityZero() { m_vVelocity = { 0.f,0.f };}
+    void SetJumpVelocityZero() { jumpVelocity = { 0.f,0.f };}
     void SetVelocityXNegative(){m_vVelocity.x*=-1;}    
     void SetVelocityYNegative() { m_vVelocity.y *= -1; }
     void SetGravityNegative() { m_vGravity.y*=-1; }

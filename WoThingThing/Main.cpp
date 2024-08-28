@@ -6,6 +6,7 @@
 #include "TimeManager.h"
 #include "CompManager.h"
 #include "EventManager.h"
+#include "CameraManager.h"
 #include <memory>
 //#include "TestLevel.h"//추가부분(백무송)
 
@@ -37,7 +38,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 
 	gsm->ChangeLevel(new Level::MainMenu_Lvl);
 
-
 	while(gsm->ShouldExit()==false)
 	{
 		AESysFrameStart();
@@ -48,10 +48,9 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		//Update;
 		CompManager::GetInst()->Update();
 		TimeManager::GetInst()->Update();
-		EventManager::GetInst()->Update();
-
+		EventManager::GetInst()->Update();		
 		gsm->Update();
-
+		
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 

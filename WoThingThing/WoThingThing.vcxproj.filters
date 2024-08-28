@@ -81,6 +81,9 @@
     <Filter Include="Json">
       <UniqueIdentifier>{d9696803-b578-4afb-aa17-0fc3c0a5b9c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\CameraMgr">
+      <UniqueIdentifier>{4906040b-1b86-402e-a028-99cb8da10bc3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -151,6 +154,9 @@
     </ClCompile>
     <ClCompile Include="Registry.cpp">
       <Filter>RTTI\Registry</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Manager\CameraMgr</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +231,9 @@
     </ClInclude>
     <ClInclude Include="Registry.h">
       <Filter>RTTI\Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Manager\CameraMgr</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

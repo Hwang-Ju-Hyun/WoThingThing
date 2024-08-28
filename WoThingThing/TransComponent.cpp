@@ -13,7 +13,7 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	if (_owner->GetName() == "Player")
 	{
 		m_vPos = { -750,550 };
-		m_vScale = { 50,50 };
+		m_vScale = { 35,35 };
 		m_fRot = 0.f;
 	}
 	if (_owner->GetName() == "mouseAim")
@@ -86,8 +86,8 @@ void TransComponent::AddPos(float _posX, float _posY)
 	if (AEInputCheckCurr(AEVK_LSHIFT))
 	{
 		//dt *= 0.1f;
-		m_vPos.x += 50 * _posX * (dt);
-		m_vPos.y += 50 * _posY * (dt);
+		m_vPos.x += _posX * (dt * 4.f);
+		m_vPos.y += _posY * (dt * 4.f);
 	}
 	else
 	{
