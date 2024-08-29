@@ -47,6 +47,8 @@ void Level::TestLevel::Init()
 	Enemy->AddComponent("Ai", new AiComponent(Enemy));
 	AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
 	Enemy_state->SetTarget(Test_player);
+	Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+	Enemy_state->Setdir_time(15.0f);
 	Enemy_state->SetState("IDLE");
 	//Enemy_state->SetTarget(Test_player);
 

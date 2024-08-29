@@ -15,8 +15,8 @@ namespace ESM
         GameObject* Chase_enemy;
         GameObject* Player;
         float accumulatedTime;
-
+        bool dir_state;
     public:
-        Chase(GameObject* _enemy, GameObject* _player);
+        Chase(GameObject* _enemy, GameObject* _player, bool dir);
     };
 }

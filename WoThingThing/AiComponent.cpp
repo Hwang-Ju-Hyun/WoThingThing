@@ -23,7 +23,7 @@ void AiComponent::SetState(const std::string& state_name)
 	if (e_state_name == "IDLE")
 	{
 		std::cout << "Aicomp" << std::endl;
-		ESM::IDLE* p = new ESM::IDLE(m_pOwner, Player);
+		ESM::IDLE* p = new ESM::IDLE(m_pOwner, Player, set_dir, Time_dir);
 		esm->ChangeState(p);//p를 넘겨주면 자기자신을 m_pOwner를 넘겨주는거니 참조 한다는거다
 	}
 	else if (e_state_name == "Patrol")
@@ -38,9 +38,15 @@ void AiComponent::SetTarget(GameObject* _player)
 	Player = _player;
 }
 
-void AiComponent::Setdir(int dir)
+void AiComponent::Setdir(bool dir)//true가 왼쪽, false가 오른쪽
 {
+	set_dir = dir;
+}
 
+
+void AiComponent::Setdir_time(float Time)//고개돌리는 시간 정해주기
+{
+	Time_dir = Time;
 }
 
 

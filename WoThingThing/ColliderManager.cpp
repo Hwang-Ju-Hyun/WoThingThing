@@ -40,7 +40,7 @@ bool ColliderManager::IsCollision(GameObject* _obj1, GameObject* _obj2)
 	return true;
 }
 
-bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2)
+bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool enemy_dir)
 {
 	BaseComponent* enemy_trs = _obj1->FindComponent("Transform");
 	BaseComponent* obj_trs2 = _obj2->FindComponent("Transform");
@@ -56,7 +56,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2)
 	float obj2BotY = obj2_Pos.y - obj2_Scale.y / 2.f;
 
 	//영역의 좌표(정사각형 기준)
-	if (enemy_dir == 0) //보는 방향에 따른 영역 변환
+	if (enemy_dir == true) //보는 방향에 따른 영역 변환
 	{
 		float Search_LeftArea_X = enemy_Pos.x - enemy_Scale.x; //왼쪽 방향으로 가고 있을 때
 		float L_SearchPlayer_RightX = Search_LeftArea_X + enemy_Scale.x / 2.f;
@@ -74,7 +74,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2)
 		}
 
 	}
-	else if (enemy_dir == 1)
+	else if (enemy_dir == false)
 	{
 		float Search_RightArea_X = enemy_Pos.x + enemy_Scale.x;//오른쪽 방향으로 가고 있을 때
 		float R_SearchPlayer_LeftX = Search_RightArea_X - enemy_Scale.x / 2.f;
