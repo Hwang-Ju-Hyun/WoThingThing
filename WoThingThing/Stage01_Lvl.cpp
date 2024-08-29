@@ -50,10 +50,10 @@ void Level::Stage01_Lvl::Init()
     player->AddComponent("RigidBody", new RigidBodyComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
 
-    mouseAim = new GameObject("mouseAim");
-    GoManager::GetInst()->AddObject(mouseAim);
-    mouseAim->AddComponent("Transform", new TransComponent(mouseAim));
-    mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
+    //mouseAim = new GameObject("mouseAim");
+    //GoManager::GetInst()->AddObject(mouseAim);
+    //mouseAim->AddComponent("Transform", new TransComponent(mouseAim));
+    //mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
 
     aimTrace = new GameObject("aimTrace");
     GoManager::GetInst()->AddObject(aimTrace);
@@ -68,7 +68,6 @@ void Level::Stage01_Lvl::Init()
 
 }
 
-bool katanaActive, shotActive = false;
 void Level::Stage01_Lvl::Update()
 {
     //Component 
@@ -79,39 +78,19 @@ void Level::Stage01_Lvl::Update()
 
     //Right Click : Right attack
 
-
-    //Mouse Position
-    TransComponent* aim_trs = (TransComponent*)mouseAim->FindComponent("Transform");
-    SpriteComponent* aim_spr = (SpriteComponent*)mouseAim->FindComponent("Sprite");
-    s32 mouseX, mouseY;
-    AEInputGetCursorPosition(&mouseX, &mouseY);
-    mouseX -= 800;              //mouse X position lerp
-    mouseY -= 450, mouseY *= -1;//mouse Y position lerp
-    aim_trs->SetPos(mouseX, mouseY);
-
-    if (AEInputCheckTriggered(AEVK_1))
-    {
-        katanaActive = true, shotActive = false;
-    }
-    if (AEInputCheckTriggered(AEVK_2))
-    {
-        katanaActive = false, shotActive = true;
-    }
-
-
     //line: player to aim
     TransComponent* aimTrace_trs = (TransComponent*)aimTrace->FindComponent("Transform");
     SpriteComponent* aimTrace_spr = (SpriteComponent*)aimTrace->FindComponent("Sprite");
-    if (katanaActive)
+    if (player_comp->GetWeaponType(1))
     {
         aimTrace_trs->SetScale({ 0, 0 });
     }
 
-    if(shotActive)
+    if (player_comp->GetWeaponType(2))
     {
         //position
-        AEVec2 traceDirection = { (mouseX - player_trs->GetPos().x),(mouseY - player_trs->GetPos().y) };
-        aimTrace_trs->SetPos((mouseX + player_trs->GetPos().x) / 2.f, (mouseY + player_trs->GetPos().y) / 2.f);
+        AEVec2 traceDirection = { (player_comp->GetMousePos().x - player_trs->GetPos().x),(player_comp->GetMousePos().y - player_trs->GetPos().y)};
+        aimTrace_trs->SetPos((player_comp->GetMousePos().x + player_trs->GetPos().x) / 2.f, (player_comp->GetMousePos().y + player_trs->GetPos().y) / 2.f);
         //scale
         float dis = AEVec2Length(&traceDirection);
         aimTrace_trs->SetScale({ dis, 1 });

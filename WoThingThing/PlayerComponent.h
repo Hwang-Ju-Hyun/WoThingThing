@@ -2,7 +2,7 @@
 #include "BaseComponent.h"
 #include "AEVec2.h"
 
-class GameObejct;
+class GameObject;
 
 class PlayerComponent : public BaseComponent
 {
@@ -12,16 +12,36 @@ class PlayerComponent : public BaseComponent
     AEVec2  jumpVelocity;
     AEVec2  m_vGravity;
 
-    GameObject* player;
+    AEVec2 mousePos;
+    GameObject* mouseAim;
+    
+    GameObject* melee;
+
+
+    static int jumpCnt;
+    static bool meleeActive, shotActive;
 public:
     PlayerComponent(GameObject* _owner);
     ~PlayerComponent() {};
 
+
+
+    //About Player's movement
     void Jump(float jumpVal);
     void Dash(AEVec2 directVec);
+    void MoveMent();
+
+    //About mouse
+    void MouseAim();
+    AEVec2 GetMousePos();
+
+    //About Player's attack
+    bool GetWeaponType(int n);
+    void MeleeAttack();
+
+
 
     virtual void Update() override;
-
     virtual void LoadFromJson(const json& str)override;
     virtual json SaveToJson()override;
 };
