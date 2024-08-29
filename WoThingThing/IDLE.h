@@ -12,11 +12,14 @@ namespace ESM
         virtual void Update() override;
         virtual void Exit() override;
     private:
+        //필수 4요소
         GameObject* enemy;
         GameObject* player;
         bool dir;
-        float accumulatedTime;
         float dir_Time;
+
+        
+        float accumulatedTime;//시간 기록에 필요함
     public:
         IDLE(GameObject* _enemy, GameObject* _player, bool dir_num, float Time);
         //오브젝트 2개와 dir_num은 방향 Time은 방향바꾸는데 걸리는 시간

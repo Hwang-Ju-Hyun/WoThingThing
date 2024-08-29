@@ -51,7 +51,7 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 
 	if (_owner->GetName() == "Enemy")
 	{
-		m_vPos = { 200,200 };
+		m_vPos = { 0,0 };
 		m_vScale = { 50,100 };
 		m_fRot = 0.f;
 	}
