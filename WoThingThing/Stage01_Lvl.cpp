@@ -48,7 +48,7 @@ void Level::Stage01_Lvl::Init()
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
     player->AddComponent("Sprite", new SpriteComponent(player));
-    player->AddComponent("RigidBody", new RigidBodyComponent(player));
+    
     player->AddComponent("PlayerComp", new PlayerComponent(player));
 
     mouseAim = new GameObject("mouseAim");
@@ -64,8 +64,7 @@ void Level::Stage01_Lvl::Init()
     //EventManager에서 요거 지우쇼 
     RePosition* Platform_Player = new RePosition;
     EventManager::GetInst()->AddEntity("Collision",Platform_Player);
-    
-    Serializer::GetInst()->LoadLevel("temp.json");
+        
 
 
     CameraManager::GetInst()->SetMouse(mouseAim);
@@ -83,18 +82,18 @@ void Level::Stage01_Lvl::Update()
 
     //Right Click : Right attack
 
-    //Mouse Position
-    TransComponent* aim_trs = (TransComponent*)mouseAim->FindComponent("Transform");
-    SpriteComponent* aim_spr = (SpriteComponent*)mouseAim->FindComponent("Sprite");
-    s32 mouseX, mouseY;
+    ////Mouse Position
+    //TransComponent* aim_trs = (TransComponent*)mouseAim->FindComponent("Transform");
+    //SpriteComponent* aim_spr = (SpriteComponent*)mouseAim->FindComponent("Sprite");
+    s32 mouseX=0, mouseY=0;
     AEInputGetCursorPosition(&mouseX, &mouseY);
     mouseX -= 800;              //mouse X position lerp
     mouseY -= 450, mouseY *= -1;//mouse Y position lerp
-    
+    //
     AEVec2 player_Cam=CameraManager::GetInst()->GetLookAt();
 
-    aim_trs->SetPos(mouseX, mouseY);
-    aim_trs->AddPos({ player_Cam.x,player_Cam.y });
+    //aim_trs->SetPos(mouseX, mouseY);
+    //aim_trs->AddPos({ player_Cam.x,player_Cam.y });
 
     //line: player to aim
     TransComponent* aimTrace_trs = (TransComponent*)aimTrace->FindComponent("Transform");
@@ -137,18 +136,17 @@ void Level::Stage01_Lvl::Update()
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
     }
-
+    std::cout << "FrameCnt: " << AEFrameRateControllerGetFrameCount() << std::endl;
+    int cnt = 0;
     for (auto obj : GoManager::GetInst()->Allobj())
     {        
         if (obj->GetName() == "Platform")
         {
             if (ColliderManager::GetInst()->IsCollision(player, obj))
             {
-                Collision* colEvent = new Collision(player,obj);
-                colEvent->SetEventName("Collision");                
-                EventManager::GetInst()->AddEvent(colEvent);                                                
+                HandleCollision(player, obj);
             }
-        }
+        }        
     }    
 
     CameraManager::GetInst()->Update();
@@ -160,4 +158,64 @@ void Level::Stage01_Lvl::Exit()
     auto res = ResourceManager::GetInst()->GetReource();
     ResourceManager::GetInst()->RemoveAllRes();
     GoManager::GetInst()->RemoveAllObj();
+}
+
+void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
+{
+    // Transform 및 RigidBody 컴포넌트 가져오기
+    TransComponent* obj_trs1 = static_cast<TransComponent*>(obj1->FindComponent("Transform"));
+    TransComponent* obj_trs2 = static_cast<TransComponent*>(obj2->FindComponent("Transform"));
+    RigidBodyComponent* obj_rb1 = static_cast<RigidBodyComponent*>(obj1->FindComponent("RigidBody"));
+    PlayerComponent* obj_player = static_cast<PlayerComponent*>(obj1->FindComponent("PlayerComp"));
+
+    AEVec2 obj1_Pos = obj_trs1->GetPos();
+    AEVec2 obj2_Pos = obj_trs2->GetPos();
+
+    AEVec2 obj1_Scale = obj_trs1->GetScale();
+    AEVec2 obj2_Scale = obj_trs2->GetScale();
+
+
+    //check 4 distance
+    float distanceUpper = std::fabs(obj2_Pos.y + (obj2_Scale.y / 2.f) - (obj1_Pos.y - obj1_Scale.y / 2.f));
+    float distanceDown = std::fabs(obj2_Pos.y - (obj2_Scale.y / 2.f) - (obj1_Pos.y + obj1_Scale.y / 2.f));
+    float distanceRight = std::fabs(obj2_Pos.x+(obj2_Scale.x/2.f) - (obj1_Pos.x - obj1_Scale.x / 2.f));
+    float distanceLeft = std::fabs(obj2_Pos.x -(obj2_Scale.x/2.f) - (obj1_Pos.x + obj1_Scale.x / 2.f));	
+
+    
+    float distArr[4] = { distanceUpper,distanceRight,distanceLeft,distanceDown };
+    float minDistance = distArr[0];
+    int direct = 0;
+    for (int i = 1; i < 4; i++)
+    {
+        if (minDistance > distArr[i])
+        {
+            minDistance = distArr[i];
+            direct = i;
+        }
+    }
+    std::cout << "FrameCnt: " << AEFrameRateControllerGetFrameCount() << std::endl;
+    std::cout << "Player : " << obj_trs1->GetPos().x << "\t" << obj_trs1->GetPos().y << std::endl;
+    std::cout << "Plat   : " << obj_trs2->GetPos().x << "\t" << obj_trs2->GetPos().y << std::endl;
+    std::cout << "Dis    : " << minDistance << "  " << distArr[0] << "  " << distArr[1] << std::endl;
+    std::cout << "Direct : " << direct << std::endl;
+    std::cout << std::endl;
+
+    switch (direct)
+    {
+    case 0://Upper
+        obj_trs1->AddPos({ 0,minDistance });
+        obj_player->SetJumpVelocityZero();
+        obj_player->SetJumpCntZero();
+        break;
+    case 1://Right
+        obj_trs1->AddPos({ minDistance , 0 });
+        break;
+    case 2://Left		
+        obj_trs1->AddPos({ -minDistance, 0 });
+        break;
+    case 3://Down
+        obj_trs1->AddPos({ 0,-minDistance });
+        obj_player->SetJumpVelocityZero();
+        break;
+    }
 }

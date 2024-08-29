@@ -9,6 +9,7 @@ RigidBodyComponent::RigidBodyComponent(GameObject* _owner) : BaseComponent(_owne
 {	
 	m_vVelocity = { 0.f, 0.f };
 	m_vGravity = { 0.f, 600.f };
+	jumpVelocity = { 0.f,400.f };
 }
 
 RigidBodyComponent::~RigidBodyComponent()

@@ -13,7 +13,12 @@ public:
 	GameObject* AddObject(GameObject* _obj);
 	void RemoveAllObj();
 	GameObject* GetLastObj();	
-	std::vector<GameObject*> Allobj() { return m_vecObj; }
+	std::vector<GameObject*> Allobj() 
+	{
+		m_vecObj;
+
+		return m_vecObj; 
+	}
 
 };
 

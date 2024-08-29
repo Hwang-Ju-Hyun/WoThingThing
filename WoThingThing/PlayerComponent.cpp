@@ -1,7 +1,7 @@
 #include "PlayerComponent.h"
 #include "TransComponent.h"
 #include "SpriteComponent.h"
-
+#include "CameraManager.h"
 #include "GameObject.h"
 #include "GoManager.h"
 int PlayerComponent::jumpCnt = 0;
@@ -13,7 +13,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	m_vVelocity = { 0.f, 0.f };
 	dashVelocity = { 0.f, 0.f };
 	dash_const = { 400.f, 400.f };
-	jumpVelocity = { 0.f, 0.f };
+	jumpVelocity = { 0.f, 400.f };
 	m_vGravity = { 0.f, 600.f };
 
 	melee = new GameObject("Melee");
@@ -38,6 +38,17 @@ void PlayerComponent::Jump(float jumpVal)
 	jumpVelocity.y = jumpVal;
 	pos.y += jumpVelocity.y * dt;
 	static_cast<TransComponent*>(player_trs)->SetPos(pos);
+	std::cout << "FrameCnt: " << AEFrameRateControllerGetFrameCount() << std::endl;
+	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
+	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
+	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
+	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
+	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
+	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
+	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
+	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
+	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
+	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
 }
 void PlayerComponent::Dash(AEVec2 directVec)
 {
@@ -58,20 +69,21 @@ void PlayerComponent::MoveMent()
 	if (AEInputCheckTriggered(AEVK_W))
 	{
 		jumpCnt++;
-		if (jumpCnt <= 100)
+		if (jumpCnt <= 2)
 			Jump(400);
 	}
-	//Landing
-	if (player_trs->GetPos().y <= -379.f)
-		jumpCnt = 0;
+	//Landing	
+	// 황주현 코드 수정 -> 밑에 코드를 setjumpcntzero ::Stage01 handleCollision에서 구현
+	//if (player_trs->GetPos().y <= -379.f)
+	//	jumpCnt = 0;
 
 	if (AEInputCheckCurr(AEVK_W) && AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_SPACE))
 		Dash({ 1, 1 });
 	//Left
 	if (AEInputCheckCurr(AEVK_A))
 	{
-		if (player_trs->GetPos().x > -770)
-			player_trs->AddPos(-5.f, 0.f);
+		player_trs->AddPos(-5.f, 0.f);
+		//if (player_trs->GetPos().x > -770)
 
 		//Dash
 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
@@ -83,8 +95,8 @@ void PlayerComponent::MoveMent()
 	//Right
 	if (AEInputCheckCurr(AEVK_D))
 	{
-		if (player_trs->GetPos().x < 770)
-			player_trs->AddPos(5.f, 0.f);
+		player_trs->AddPos(5.f, 0.f);
+		//if (player_trs->GetPos().x < 770)
 
 		//Dash
 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
@@ -141,7 +153,9 @@ void PlayerComponent::MouseAim()
 	mouseY -= 450, mouseY *= -1;//mouse Y position lerp
 
 	mousePos.x = mouseX, mousePos.y = mouseY;
+	AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
 	aim_trs->SetPos(mousePos);
+	aim_trs->AddPos({ player_Cam.x,player_Cam.y });
 }
 AEVec2 PlayerComponent::GetMousePos()
 {
@@ -186,8 +200,16 @@ void PlayerComponent::MeleeAttack()
 }
 
 
+// 황주현 코드 추가
+void PlayerComponent::SetJumpCntZero()
+{
+	jumpCnt = 0;
+}
 
-
+void PlayerComponent::SetJumpVelocityZero()
+{
+	jumpVelocity.y = 0.f;
+}
 
 void PlayerComponent::Update()
 {
