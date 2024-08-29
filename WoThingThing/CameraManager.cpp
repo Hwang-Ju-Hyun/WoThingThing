@@ -17,8 +17,6 @@ CameraManager::~CameraManager()
 void CameraManager::Update()
 {		
 	TransComponent* player_trs = dynamic_cast<TransComponent*>(m_pPlayer->FindComponent("Transform"));
-	TransComponent* mouse_trs = dynamic_cast<TransComponent*>(m_pMouseAim->FindComponent("Transform"));
-	TransComponent* aim_trs = dynamic_cast<TransComponent*>(m_pAimTracer->FindComponent("Transform"));
 	m_vLookAt = { player_trs->GetPos().x,player_trs->GetPos().y };			
 	AEGfxSetCamPosition(m_vLookAt.x, m_vLookAt.y);
 }

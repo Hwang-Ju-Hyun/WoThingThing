@@ -7,16 +7,21 @@ class GameObject;
 class PlayerComponent : public BaseComponent
 {
     AEVec2  m_vVelocity;
+
     AEVec2  dashVelocity;
     AEVec2  dash_const;
+    
     AEVec2  jumpVelocity;
     AEVec2  m_vGravity;
 
     AEVec2 mousePos;
     GameObject* mouseAim;
-    
-    GameObject* melee;
+    GameObject* aim_line;
 
+    GameObject* melee;
+    GameObject* bullet;
+    AEVec2 bulletVelocity;
+    AEVec2 bullet_const;
 
     static int jumpCnt;
     static bool meleeActive, shotActive;
@@ -33,11 +38,13 @@ public:
 
     //About mouse
     void MouseAim();
+    void MouseTraceLine();
     AEVec2 GetMousePos();
 
     //About Player's attack
     bool GetWeaponType(int n);
-    void MeleeAttack();
+    void Attack();
+
 
     //황주현 코드추가
     void SetJumpCntZero();    

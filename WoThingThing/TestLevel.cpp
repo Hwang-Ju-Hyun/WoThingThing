@@ -42,13 +42,15 @@ void Level::TestLevel::Init()
 
 	Enemy->AddComponent("Transform", new TransComponent(Enemy));
 	Enemy->AddComponent("Sprite", new SpriteComponent(Enemy));
+	//애들
+	Enemy->AddComponent("RigidBody", new RigidBodyComponent(Enemy));
 
-
+	//Ai
 	Enemy->AddComponent("Ai", new AiComponent(Enemy));
 	AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
-	Enemy_state->SetTarget(Test_player);
+	Enemy_state->SetTarget(Test_player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
 	Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
-	Enemy_state->Setdir_time(15.0f);
+	Enemy_state->Setdir_time(1.0f);
 	Enemy_state->SetState("IDLE");
 	//Enemy_state->SetTarget(Test_player);
 
