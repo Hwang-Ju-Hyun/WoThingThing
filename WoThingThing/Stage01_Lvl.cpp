@@ -26,6 +26,7 @@
 #include "Serializer.h"
 
 #include "Utility.h"
+#include "CameraManager.h"
 #include "AEInput.h"
 #include "AEUtil.h"
 #include "AEMath.h"
@@ -40,7 +41,7 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 
 
 void Level::Stage01_Lvl::Init()
-{
+{    
     //Object and Component Init
     Serializer::GetInst()->LoadLevel("temp.json");
     player = new GameObject("Player");
@@ -50,22 +51,26 @@ void Level::Stage01_Lvl::Init()
     player->AddComponent("RigidBody", new RigidBodyComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
 
-    //mouseAim = new GameObject("mouseAim");
-    //GoManager::GetInst()->AddObject(mouseAim);
-    //mouseAim->AddComponent("Transform", new TransComponent(mouseAim));
-    //mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
+    mouseAim = new GameObject("mouseAim");
+    GoManager::GetInst()->AddObject(mouseAim);
+    mouseAim->AddComponent("Transform", new TransComponent(mouseAim));
+    mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
 
     aimTrace = new GameObject("aimTrace");
     GoManager::GetInst()->AddObject(aimTrace);
     aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
-    aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));
-        
+    aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));   
+    
     //EventManager에서 요거 지우쇼 
     RePosition* Platform_Player = new RePosition;
     EventManager::GetInst()->AddEntity("Collision",Platform_Player);
-
+    
     Serializer::GetInst()->LoadLevel("temp.json");
 
+
+    CameraManager::GetInst()->SetMouse(mouseAim);
+    CameraManager::GetInst()->SetPlayer(player);
+    CameraManager::GetInst()->SetAim(aimTrace);
 }
 
 void Level::Stage01_Lvl::Update()
@@ -78,6 +83,19 @@ void Level::Stage01_Lvl::Update()
 
     //Right Click : Right attack
 
+    //Mouse Position
+    TransComponent* aim_trs = (TransComponent*)mouseAim->FindComponent("Transform");
+    SpriteComponent* aim_spr = (SpriteComponent*)mouseAim->FindComponent("Sprite");
+    s32 mouseX, mouseY;
+    AEInputGetCursorPosition(&mouseX, &mouseY);
+    mouseX -= 800;              //mouse X position lerp
+    mouseY -= 450, mouseY *= -1;//mouse Y position lerp
+    
+    AEVec2 player_Cam=CameraManager::GetInst()->GetLookAt();
+
+    aim_trs->SetPos(mouseX, mouseY);
+    aim_trs->AddPos({ player_Cam.x,player_Cam.y });
+
     //line: player to aim
     TransComponent* aimTrace_trs = (TransComponent*)aimTrace->FindComponent("Transform");
     SpriteComponent* aimTrace_spr = (SpriteComponent*)aimTrace->FindComponent("Sprite");
@@ -88,9 +106,10 @@ void Level::Stage01_Lvl::Update()
 
     if (player_comp->GetWeaponType(2))
     {
-        //position
-        AEVec2 traceDirection = { (player_comp->GetMousePos().x - player_trs->GetPos().x),(player_comp->GetMousePos().y - player_trs->GetPos().y)};
-        aimTrace_trs->SetPos((player_comp->GetMousePos().x + player_trs->GetPos().x) / 2.f, (player_comp->GetMousePos().y + player_trs->GetPos().y) / 2.f);
+        AEVec2 traceDirection = { (mouseX + player_Cam.x)-player_Cam.x,(mouseY + player_Cam.y)- player_Cam.y };
+
+        //position        
+        aimTrace_trs->SetPos((mouseX+player_Cam.x +player_Cam.x) / 2.f, (mouseY + player_Cam.y+player_Cam.y) / 2.f);   
         //scale
         float dis = AEVec2Length(&traceDirection);
         aimTrace_trs->SetScale({ dis, 1 });
@@ -108,7 +127,7 @@ void Level::Stage01_Lvl::Update()
 
     if (AEInputCheckCurr(AEVK_R) == true)
     {
-        GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
+        //GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
     }
     else if (AEInputCheckCurr(AEVK_E) == true)
     {
@@ -127,12 +146,12 @@ void Level::Stage01_Lvl::Update()
             {
                 Collision* colEvent = new Collision(player,obj);
                 colEvent->SetEventName("Collision");                
-                EventManager::GetInst()->AddEvent(colEvent);                                
-                //break;
+                EventManager::GetInst()->AddEvent(colEvent);                                                
             }
         }
-    }
-    
+    }    
+
+    CameraManager::GetInst()->Update();
 }
 
 void Level::Stage01_Lvl::Exit()

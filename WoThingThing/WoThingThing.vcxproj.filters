@@ -81,6 +81,9 @@
     <Filter Include="Json">
       <UniqueIdentifier>{d9696803-b578-4afb-aa17-0fc3c0a5b9c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\CameraMgr">
+      <UniqueIdentifier>{4906040b-1b86-402e-a028-99cb8da10bc3}</UniqueIdentifier>
+	</Filter>
     <Filter Include="EnemyAI\EnemyStateManager">
       <UniqueIdentifier>{ecdfafd2-8270-40ba-a348-c67898da36a2}</UniqueIdentifier>
     </Filter>
@@ -161,6 +164,9 @@
     <ClCompile Include="Registry.cpp">
       <Filter>RTTI\Registry</Filter>
     </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Manager\CameraMgr</Filter>
+	</ClCompile>
     <ClCompile Include="TestLevel.cpp">
       <Filter>EnemyAI\Level%28Test%29</Filter>
     </ClCompile>
@@ -250,6 +256,9 @@
     <ClInclude Include="Registry.h">
       <Filter>RTTI\Registry</Filter>
     </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Manager\CameraMgr</Filter>
+	</ClInclude>
     <ClInclude Include="TestLevel.h">
       <Filter>EnemyAI\Level%28Test%29</Filter>
     </ClInclude>

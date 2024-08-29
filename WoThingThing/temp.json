@@ -14,11 +14,11 @@
         "Type": "Transform",
         "CompData": {
           "Pos": [
-            -750.0,
+            -650.0,
             0.0
           ],
           "sca": [
-            100.0,
+            30.0,
             650.0
           ],
           "Rot": 0.0
@@ -72,8 +72,8 @@
             -165.0
           ],
           "sca": [
-            100.0,
-            300.0
+            50.0,
+            160.0
           ],
           "Rot": 0.0
         }
@@ -101,6 +101,60 @@
           "sca": [
             500.0,
             100.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 4,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 241,
+          "BLUE": 126,
+          "GREEN": 136
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            800.0,
+            550.0
+          ],
+          "sca": [
+            500.0,
+            200.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 5,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 41,
+          "BLUE": 226,
+          "GREEN": 136
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            1200.0,
+            900.0
+          ],
+          "sca": [
+            100.0,
+            400.0
           ],
           "Rot": 0.0
         }

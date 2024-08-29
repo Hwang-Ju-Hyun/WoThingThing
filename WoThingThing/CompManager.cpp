@@ -25,6 +25,7 @@ void CompManager::AddComponent(std::string _name, BaseComponent* _comp)
 }
 
 void CompManager::RemoveComponent()
+
 {	
 	bool IsCompExist = false;
 	for (auto iter = m_vecCompMgr.begin(); iter != m_vecCompMgr.end(); iter++)

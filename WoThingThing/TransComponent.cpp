@@ -13,7 +13,7 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	if (_owner->GetName() == "Player")
 	{
 		m_vPos = { -750,550 };
-		m_vScale = { 50,50 };
+		m_vScale = { 35,35 };
 		m_fRot = 0.f;
 	}
 	if (_owner->GetName() == "mouseAim")
