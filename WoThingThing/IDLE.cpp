@@ -7,6 +7,7 @@
 #include"TestLevel.h"//보는 방향 업데이트를 위해서(나중에는 사용될 스테이지에서 사용할 예정)
 //나중에 보는값을 고정시키지말고 내가 직접 입력하여 방향 정하기
 #include"Chase.h"
+#include "EnemyAttack.h"
 
 //위치값과 속도제어 부분
 //게임 오브젝트 자기자신을 받아야함
@@ -14,6 +15,7 @@
 void ESM::IDLE::Init()
 {
 	accumulatedTime = 0;
+	TimeManager::GetInst()->SetAccTime(0.0f);
 }
 
 void ESM::IDLE::Update()
@@ -38,7 +40,7 @@ void ESM::IDLE::Update()
 	if (ColliderManager::GetInst()->PlayerSearch(enemy, player, dir))
 	{
 		//std::cout << "ChaseMode" << std::endl;
-		ESM::Chase* p = new ESM::Chase(enemy, player, dir);
+		ESM::Chase* p = new ESM::Chase(enemy, player, dir, dir_Time);
 		ESM::EnemyStateManager::GetInst()->ChangeState(p);
 	}
 
