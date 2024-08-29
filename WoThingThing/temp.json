@@ -106,5 +106,59 @@
         }
       }
     ]
+  },
+  {
+    "Platform": 4,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 241,
+          "BLUE": 126,
+          "GREEN": 136
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            800.0,
+            550.0
+          ],
+          "sca": [
+            500.0,
+            200.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 5,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 41,
+          "BLUE": 226,
+          "GREEN": 136
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            1200.0,
+            900.0
+          ],
+          "sca": [
+            100.0,
+            400.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
   }
 ]

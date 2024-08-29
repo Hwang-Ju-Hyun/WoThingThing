@@ -61,6 +61,8 @@ void Level::Stage01_Lvl::Init()
     EventManager::GetInst()->AddEntity("Collision",Platform_Player);
     
     Serializer::GetInst()->LoadLevel("temp.json");
+
+
     CameraManager::GetInst()->SetMouse(mouseAim);
     CameraManager::GetInst()->SetPlayer(player);
     CameraManager::GetInst()->SetAim(aimTrace);
@@ -122,7 +124,11 @@ void Level::Stage01_Lvl::Update()
     AEInputGetCursorPosition(&mouseX, &mouseY);
     mouseX -= 800;              //mouse X position lerp
     mouseY -= 450, mouseY *= -1;//mouse Y position lerp
+    
+    AEVec2 player_Cam=CameraManager::GetInst()->GetLookAt();
+
     aim_trs->SetPos(mouseX, mouseY);
+    aim_trs->AddPos({ player_Cam.x,player_Cam.y });
 
     if (AEInputCheckTriggered(AEVK_1))
     {
@@ -144,10 +150,11 @@ void Level::Stage01_Lvl::Update()
 
     if(shotActive)
     {
+        AEVec2 traceDirection = { (mouseX + player_Cam.x)-player_Cam.x,(mouseY + player_Cam.y)- player_Cam.y };
 
-        //position
-        AEVec2 traceDirection = { (mouseX - player_trs->GetPos().x),(mouseY - player_trs->GetPos().y) };
-        aimTrace_trs->SetPos((mouseX + player_trs->GetPos().x) / 2.f, (mouseY + player_trs->GetPos().y) / 2.f);
+        //position        
+        aimTrace_trs->SetPos((mouseX+player_Cam.x +player_Cam.x) / 2.f, (mouseY + player_Cam.y+player_Cam.y) / 2.f);        
+        
         //scale
         float dis = AEVec2Length(&traceDirection);
         aimTrace_trs->SetScale({ dis, 1 });
@@ -188,6 +195,7 @@ void Level::Stage01_Lvl::Update()
             }
         }
     }    
+
     CameraManager::GetInst()->Update();
 }
 

@@ -5,8 +5,7 @@
 #include "TransComponent.h"
 CameraManager::CameraManager()
 	:m_vLookAt{}
-{
-
+{	
 }
 
 CameraManager::~CameraManager()
@@ -17,30 +16,26 @@ CameraManager::~CameraManager()
 
 void CameraManager::Update()
 {		
-	TransComponent* player_trs = dynamic_cast<TransComponent*>(player->FindComponent("Transform"));	
-	TransComponent* mouse_trs = dynamic_cast<TransComponent*>(mouse->FindComponent("Transform"));
-	TransComponent* aim_trs = dynamic_cast<TransComponent*>(aim->FindComponent("Transform"));
-	float playerCamX = player_trs->GetPos().x;
-	float playerCamY = player_trs->GetPos().y;	
-
-	mouse_trs->AddPos({ playerCamX,playerCamY });
-	//aim_trs->AddPos({ playerCamX,playerCamY });
-	AEGfxSetCamPosition(playerCamX, playerCamY);
+	TransComponent* player_trs = dynamic_cast<TransComponent*>(m_pPlayer->FindComponent("Transform"));
+	TransComponent* mouse_trs = dynamic_cast<TransComponent*>(m_pMouseAim->FindComponent("Transform"));
+	TransComponent* aim_trs = dynamic_cast<TransComponent*>(m_pAimTracer->FindComponent("Transform"));
+	m_vLookAt = { player_trs->GetPos().x,player_trs->GetPos().y };			
+	AEGfxSetCamPosition(m_vLookAt.x, m_vLookAt.y);
 }
 
 void CameraManager::SetPlayer(GameObject* _player)
 {
-	player = _player;
+	m_pPlayer = _player;
 }
 
 void CameraManager::SetMouse(GameObject* _mouse)
 {
-	mouse = _mouse;
+	m_pMouseAim = _mouse;
 }
 
 void CameraManager::SetAim(GameObject* _aim)
 {
-	aim = _aim;
+	m_pAimTracer = _aim;
 }
 
 

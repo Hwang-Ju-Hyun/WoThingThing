@@ -11,9 +11,9 @@ private:
 	AEVec2 m_vLookAt;
 	AEVec2 m_vCurLookAt;
 	AEVec2 m_vPrevLookAt;
-	GameObject* player;
-	GameObject* mouse;
-	GameObject* aim;
+	GameObject* m_pPlayer;
+	GameObject* m_pMouseAim;
+	GameObject* m_pAimTracer;
 public:
 	void Update();	
 public:
