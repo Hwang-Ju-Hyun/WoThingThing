@@ -35,7 +35,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	Level::MainMenu_Lvl MainMenu_lvl;
 	Level::Stage01_Lvl Stage01_lvl;
 	Level::TestLevel Test;
-	gsm->ChangeLevel(new Level::TestLevel);
+	gsm->ChangeLevel(new Level::Stage01_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
 		AESysFrameStart();

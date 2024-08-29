@@ -222,7 +222,7 @@ void PlayerComponent::Attack()
 
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 	TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
-	AEVec2 pos = static_cast<TransComponent*>(bullet_trs)->GetPos();
+	AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
 
 	if (meleeActive)
 	{
@@ -233,7 +233,6 @@ void PlayerComponent::Attack()
 		TransComponent* melee_trs = static_cast<TransComponent*>(melee->FindComponent("Transform"));
 
 		//Screen to World
-		AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
 		mousePos.x += player_Cam.x;
 		mousePos.y += player_Cam.y;
 
@@ -241,7 +240,7 @@ void PlayerComponent::Attack()
 		AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
 		AEVec2Normalize(&nor_dVec, &dVec);
 
-		melee_trs->SetPos(player_trs->GetPos().x + (dVec.x / 5.f), player_trs->GetPos().y + (dVec.y / 5.f));
+		melee_trs->SetPos(player_trs->GetPos().x + (nor_dVec.x * 50.f), player_trs->GetPos().y + (nor_dVec.y * 50.f));
 
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
 			melee_trs->SetScale({ 100, 100 });
@@ -259,9 +258,10 @@ void PlayerComponent::Attack()
 			bullet_trs->SetScale({ 10, 10 });
 		}
 	}
+	AEVec2 pos = static_cast<TransComponent*>(bullet_trs)->GetPos();
 	float dt = AEFrameRateControllerGetFrameTime();
-	pos.x += 200.f * dt;
-
+	pos.x += player_Cam.x;
+	pos.x += 20.f * dt;
 	static_cast<TransComponent*>(bullet_trs)->SetPos(pos);
 }
 
