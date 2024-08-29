@@ -20,16 +20,14 @@
 #include"AiComponent.h"
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 
-bool Level::TestLevel::enemy_dir = true;//
-
 Level::TestLevel::TestLevel()
 {
 
 }
 
 Level::TestLevel::~TestLevel()
-{
-
+{	
+	
 }
 
 void Level::TestLevel::Init()
@@ -44,10 +42,15 @@ void Level::TestLevel::Init()
 
 	Enemy->AddComponent("Transform", new TransComponent(Enemy));
 	Enemy->AddComponent("Sprite", new SpriteComponent(Enemy));
+
+
 	Enemy->AddComponent("Ai", new AiComponent(Enemy));
 	AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
+	Enemy_state->SetTarget(Test_player);
+	Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+	Enemy_state->Setdir_time(15.0f);
 	Enemy_state->SetState("IDLE");
-
+	//Enemy_state->SetTarget(Test_player);
 
 	//리지디드 바디 물어보기
 }
@@ -82,37 +85,15 @@ void Level::TestLevel::Update()
 			}
 
         }
-
-		if (player->GetName() == "Enemy")
-		{
-			if (AEInputCheckCurr(VK_UP))
-			{
-				Enemy_trs->AddPos(0.f, 10.f);
-			}
-			if (AEInputCheckCurr(VK_DOWN))
-			{
-				Enemy_trs->AddPos(0.f, -10.f);
-			}
-			if (AEInputCheckCurr(VK_LEFT))
-			{
-				Enemy_trs->AddPos(-10.f, 0.f);
-				enemy_dir = true;
-			}
-			if (AEInputCheckCurr(VK_RIGHT))
-			{
-				Enemy_trs->AddPos(10.f, 0.f);
-				enemy_dir = false;
-			}
-
-		}
     }
-	if (ColliderManager::GetInst()->PlayerSearch(Enemy,Test_player))
-	{
-		//std::cout << "SearchPlayer" << std::endl;
-		Enemy_trs->GetPos();
-		//lerp를 사용해서 enemy_trs에서
-
-	}
+	//if (ColliderManager::GetInst()->PlayerSearch(Enemy,Test_player))
+	//{
+	//	//SetSearch(true);
+	//}
+	//else 
+	//{
+	//	//SetSearch(false);
+	//}
 }
 
 void Level::TestLevel::Exit()
