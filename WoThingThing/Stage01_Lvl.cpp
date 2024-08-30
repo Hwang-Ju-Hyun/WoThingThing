@@ -116,8 +116,7 @@ void Level::Stage01_Lvl::Update()
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
     }
-    
-    
+    int cnt = 0;
     for (auto obj : GoManager::GetInst()->Allobj())
     {        
         if (obj->GetName() == "Platform")
@@ -133,11 +132,8 @@ void Level::Stage01_Lvl::Update()
             {
                 HandleCollision(Enemy, obj);
             }
-        }
-    }    
-
-    
-
+        }            
+    }                   
     CameraManager::GetInst()->Update();
 }
 
