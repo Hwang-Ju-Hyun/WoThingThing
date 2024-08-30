@@ -1,11 +1,13 @@
 #pragma once
 #include "BaseComponent.h"
 #include "AEVec2.h"
+#include <vector>
 
 class GameObject;
 
 class PlayerComponent : public BaseComponent
 {
+    //Player movement
     AEVec2  m_vVelocity;
 
     AEVec2  dashVelocity;
@@ -14,13 +16,23 @@ class PlayerComponent : public BaseComponent
     AEVec2  jumpVelocity;
     AEVec2  m_vGravity;
 
+    //About mouse
     AEVec2 mousePos;
     GameObject* mouseAim;
     GameObject* aim_line;
 
     GameObject* melee;
     GameObject* bullet;
-    AEVec2 bulletVelocity;
+    GameObject* magazine[10];
+
+    //struct magazine
+    //{
+    //    GameObject* bullet;
+    //    TransComponent* bullet_trs;
+    //    SpriteComponent* bullet_spr;
+    //};
+
+    AEVec2 bullet_Vec;
     AEVec2 bullet_const;
 
     static int jumpCnt;

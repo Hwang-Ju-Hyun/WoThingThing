@@ -26,6 +26,7 @@ namespace Level
     private:
         std::vector<GameObject*> m_vecPlatforms;
         GameObject* Platform;
+        GameObject* Enemy;
     public:       
         int counter = 0;
     public:

@@ -42,9 +42,8 @@ void SpriteComponent::Update()
 
 
 	//Set color to Multiply	
-	AEGfxSetColorToMultiply(m_color.red/255.f, m_color.green/255.f, m_color.blue/255.f,1);
-	//AEGfxSetColorToMultiply(m_color.red , m_color.green , m_color.blue, 1);
-	//AEGfxSetColorToMultiply(1, 0, 0, 1);
+	//AEGfxSetColorToMultiply(155/255.f, 155/255.f, 255/255.f,1);	
+	AEGfxSetColorToMultiply(m_color.red/255.f, m_color.green/255.f, m_color.blue/255.f,1);	
 
 	//Set color to add
 	AEGfxSetColorToAdd(0, 0, 0, 0);
@@ -86,6 +85,9 @@ void SpriteComponent::LoadFromJson(const json& str)
 		auto g = compData->find("GREEN");
 		m_color.green = g.value();
 	}
+
+	
+
 }
 
 json SpriteComponent::SaveToJson()

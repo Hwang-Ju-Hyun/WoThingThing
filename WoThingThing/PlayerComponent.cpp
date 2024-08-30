@@ -18,8 +18,8 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	jumpVelocity = { 0.f, 400.f };
 	m_vGravity = { 0.f, 600.f };
 
-	bulletVelocity = { 0.f, 0.f };
-	bullet_const = { 400.f, 400.f };
+	bullet_Vec = { 0.f, 0.f };
+	bullet_const = { 20.f, 20.f };
 
 
 	melee = new GameObject("Melee");
@@ -41,6 +41,14 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	GoManager::GetInst()->AddObject(bullet);
 	bullet->AddComponent("Transform", new TransComponent(bullet));
 	bullet->AddComponent("Sprite", new SpriteComponent(bullet));
+
+	for (int i = 0; i < 10; i++)
+	{
+		magazine[i] = new GameObject("Bullet");
+		GoManager::GetInst()->AddObject(magazine[i]);
+		magazine[i]->AddComponent("Transform", new TransComponent(bullet));
+		magazine[i]->AddComponent("Sprite", new SpriteComponent(bullet));
+	}
 }
 
 
@@ -53,17 +61,6 @@ void PlayerComponent::Jump(float jumpVal)
 	jumpVelocity.y = jumpVal;
 	pos.y += jumpVelocity.y * dt;
 	static_cast<TransComponent*>(player_trs)->SetPos(pos);
-	std::cout << "FrameCnt: " << AEFrameRateControllerGetFrameCount() << std::endl;
-	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
-	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
-	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
-	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
-	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
-	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
-	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
-	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
-	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
-	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
 }
 void PlayerComponent::Dash(AEVec2 directVec)
 {
@@ -74,8 +71,6 @@ void PlayerComponent::Dash(AEVec2 directVec)
 
 	dashVelocity.x = directVec.x * dash_const.x;
 	dashVelocity.y = directVec.y * dash_const.y;
-
-	static_cast<TransComponent*>(player_trs)->SetPos(pos);
 }
 void PlayerComponent::MoveMent()
 {
@@ -84,35 +79,27 @@ void PlayerComponent::MoveMent()
 	if (AEInputCheckTriggered(AEVK_W))
 	{
 		jumpCnt++;
-		if (jumpCnt <= 2)
+		if (jumpCnt <= 2000)
 			Jump(400);
 	}
 	//Landing	
 	// 황주현 코드 수정 -> 밑에 코드를 setjumpcntzero ::Stage01 handleCollision에서 구현
-	//if (player_trs->GetPos().y <= -379.f)
-	//	jumpCnt = 0;
-
 	if (AEInputCheckCurr(AEVK_W) && AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_SPACE))
 		Dash({ 1, 1 });
 	//Left
 	if (AEInputCheckCurr(AEVK_A))
 	{
 		player_trs->AddPos(-5.f, 0.f);
-		//if (player_trs->GetPos().x > -770)
-
 		//Dash
 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
 			Dash({ -1, 1 });
 		else if (AEInputCheckTriggered(AEVK_SPACE))
 			Dash({ -1, 0 });
 	}
-
 	//Right
 	if (AEInputCheckCurr(AEVK_D))
 	{
 		player_trs->AddPos(5.f, 0.f);
-		//if (player_trs->GetPos().x < 770)
-
 		//Dash
 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
 			Dash({ 1, 1 });
@@ -125,9 +112,7 @@ void PlayerComponent::MoveMent()
 	float dt = AEFrameRateControllerGetFrameTime();
 	//left shift : time manipulation
 	if (AEInputCheckCurr(AEVK_LSHIFT))
-	{
 		dt *= 0.1f;
-	}
 
 	//if dash velocity is too low. set to 0 (dash ended)
 	if (AEVec2Length(&dashVelocity) <= 300.f)
@@ -141,17 +126,9 @@ void PlayerComponent::MoveMent()
 
 	pos.x += (dashVelocity.x) * (2 * dt);
 	pos.y += (dashVelocity.y) * (1.f * dt);
-	//auto trans= CompManager::GetInst()->FindComponent("Transform");
 
-	if (pos.y <= -380)
-	{
-		jumpVelocity.y = 0;
-		pos.y = -380.f;
-	}
-	else
-	{
-		jumpVelocity.y -= m_vGravity.y * dt;
-	}
+
+	jumpVelocity.y -= m_vGravity.y * dt;	
 	pos.y = pos.y + jumpVelocity.y * dt;
 	static_cast<TransComponent*>(player_trs)->SetPos(pos);
 }
@@ -169,33 +146,36 @@ void PlayerComponent::MouseAim()
 	mousePos.x = mouseX, mousePos.y = mouseY;
 	AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
 	aim_trs->SetPos(mousePos);
-
 	aim_trs->AddPos({ player_Cam.x,player_Cam.y });
+
+	//Mouse Position Lerp
+	//mousePos == mouse position in world coord
+	//player_Cam == player position in camera coord
+	//so, mousePos += player_Cam == World coord mouse position to Camera coord mouse position.
+	mousePos.x += player_Cam.x;
+	mousePos.y += player_Cam.y;
 }
 void PlayerComponent::MouseTraceLine()
 {
 	TransComponent* aimTrace_trs = (TransComponent*)aim_line->FindComponent("Transform");
 	AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
 
-	AEVec2 traceDirection = { (mousePos.x + player_Cam.x) - player_Cam.x,
-		(mousePos.y + player_Cam.y) - player_Cam.y };
+	aimTrace_trs->SetPos((mousePos.x + player_Cam.x) / 2.f, (mousePos.y + player_Cam.y) / 2.f);
 
-	//position        
-	aimTrace_trs->SetPos((mousePos.x + player_Cam.x + player_Cam.x) / 2.f,
-		(mousePos.y + player_Cam.y + player_Cam.y) / 2.f);
+	AEVec2 lineDirection = { mousePos.x - player_Cam.x, mousePos.y - player_Cam.y };
 	//scale
-	float dis = AEVec2Length(&traceDirection);
+	float dis = AEVec2Length(&lineDirection);
 	aimTrace_trs->SetScale({ dis, 1 });
 	//rotation
-	AEVec2 nor_traceDirection = { 0,0 };
-	AEVec2Normalize(&nor_traceDirection, &traceDirection);
+	AEVec2 nor_lineDirection = { 0,0 };
+	AEVec2Normalize(&nor_lineDirection, &lineDirection);
 
 	//if mouse position in sector 3, 4 : reverse line
-	if (nor_traceDirection.y < 0)
-		nor_traceDirection.x *= -1;
+	if (nor_lineDirection.y < 0)
+		nor_lineDirection.x *= -1;
 	//////////////////////////////////////////////////
 
-	aimTrace_trs->SetRot(AEACos(nor_traceDirection.x));
+	aimTrace_trs->SetRot(AEACos(nor_lineDirection.x));
 	//aim_trs->AddPos({ player_Cam.x,player_Cam.y });
 }
 AEVec2 PlayerComponent::GetMousePos()
@@ -221,28 +201,29 @@ void PlayerComponent::Attack()
 		meleeActive = false, shotActive = true;
 
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
-	TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
-	AEVec2 pos = static_cast<TransComponent*>(bullet_trs)->GetPos();
+
+	TransComponent* bullet_trs = (TransComponent*)magazine[0]->FindComponent("Transform");
+	//for (int i = 0; i < 10; i++)
+	//	bullet_trs[i] = (TransComponent*)magazine[i]->FindComponent("Transform");
+
+	AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
+
+	//Direction Vector between player and mouse
+	AEVec2 dVec = { (mousePos.x - player_trs->GetPos().x), (mousePos.y - player_trs->GetPos().y) }; //direction Vector
+	AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+	AEVec2Normalize(&nor_dVec, &dVec);
 
 	if (meleeActive)
 	{
-		//Remove trace line
+		//Remove about shotAttack
 		TransComponent* aimTrace_spr = (TransComponent*)aim_line->FindComponent("Transform");
+		TransComponent* bullet_spr = (TransComponent*)bullet->FindComponent("Transform");
 		aimTrace_spr->SetScale({ 0,0 });
+		bullet_spr->SetScale({ 0,0 });
+		/////////////////////////
 
 		TransComponent* melee_trs = static_cast<TransComponent*>(melee->FindComponent("Transform"));
-
-		//Screen to World
-		AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
-		mousePos.x += player_Cam.x;
-		mousePos.y += player_Cam.y;
-
-		AEVec2 dVec = { (mousePos.x - player_trs->GetPos().x), (mousePos.y - player_trs->GetPos().y) }; //direction Vector
-		AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
-		AEVec2Normalize(&nor_dVec, &dVec);
-
-		melee_trs->SetPos(player_trs->GetPos().x + (dVec.x / 5.f), player_trs->GetPos().y + (dVec.y / 5.f));
-
+		melee_trs->SetPos(player_trs->GetPos().x + (nor_dVec.x * 50.f), player_trs->GetPos().y + (nor_dVec.y * 50.f));
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
 			melee_trs->SetScale({ 100, 100 });
 		else
@@ -251,18 +232,27 @@ void PlayerComponent::Attack()
 	else if (shotActive)
 	{
 		MouseTraceLine();
-		//Add about shot weapon
+		
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
 		{
-			SpriteComponent* bullet_spr = (SpriteComponent*)bullet->FindComponent("Sprite");
+			//add for
+			bullet_Vec.x = nor_dVec.x * bullet_const.x;
+			bullet_Vec.y = nor_dVec.y * bullet_const.y;
+
+			SpriteComponent* bullet_spr = (SpriteComponent*)magazine[0]->FindComponent("Sprite");
 			bullet_trs->SetPos(player_trs->GetPos());
 			bullet_trs->SetScale({ 10, 10 });
+			//end for
 		}
-	}
-	float dt = AEFrameRateControllerGetFrameTime();
-	pos.x += 200.f * dt;
 
-	static_cast<TransComponent*>(bullet_trs)->SetPos(pos);
+		//add for
+		AEVec2 bullet_pos = static_cast<TransComponent*>(bullet_trs)->GetPos();
+		bullet_pos.x += bullet_Vec.x;
+		bullet_pos.y += bullet_Vec.y;
+		static_cast<TransComponent*>(bullet_trs)->SetPos(bullet_pos);
+		//end for
+	}
+
 }
 
 
@@ -280,8 +270,8 @@ void PlayerComponent::SetJumpVelocityZero()
 void PlayerComponent::Update()
 {
 	MoveMent();
-	Attack();
 	MouseAim();
+	Attack();
 }
 
 void PlayerComponent::LoadFromJson(const json& str)
