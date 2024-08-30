@@ -40,8 +40,8 @@ bool ColliderManager::IsCollision(GameObject* _obj1, GameObject* _obj2)
 	return true;
 }
 
-//근접 캐릭터용 
-bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool enemy_dir)
+//근접 캐릭터용, range부분 더 늘리기?
+bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool enemy_dir, float x_range, float y_range,float bottom_y_range)
 {
 	BaseComponent* enemy_trs = _obj1->FindComponent("Transform");
 	BaseComponent* obj_trs2 = _obj2->FindComponent("Transform");
@@ -61,10 +61,10 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 	{
 		//이 부분 그리게 하기 나중에 코드 작성
 		float Search_LeftArea_X = enemy_Pos.x - enemy_Scale.x; //왼쪽 방향으로 가고 있을 때
-		float L_SearchPlayer_RightX = Search_LeftArea_X + enemy_Scale.x / 2.f;
-		float L_SearchPlayer_LeftX = Search_LeftArea_X - 16.f * (enemy_Scale.x / 2.f);//x축 범위
-		float L_SearchPlayer_TopY = enemy_Pos.y + 8.f * (enemy_Scale.y / 2.f);//y축 범위
-		float L_SearchPlayer_BotY = enemy_Pos.y - enemy_Scale.y / 2.f;
+		float L_SearchPlayer_RightX = Search_LeftArea_X + (enemy_Scale.x / 2.f);
+		float L_SearchPlayer_LeftX = Search_LeftArea_X - x_range * (enemy_Scale.x / 2.f);//x축 범위
+		float L_SearchPlayer_TopY = enemy_Pos.y + y_range * (enemy_Scale.y / 2.f);//y축 범위
+		float L_SearchPlayer_BotY = enemy_Pos.y - bottom_y_range * (enemy_Scale.y / 2.f);
 
 
 
@@ -86,9 +86,9 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 	{
 		float Search_RightArea_X = enemy_Pos.x + enemy_Scale.x;//오른쪽 방향으로 가고 있을 때
 		float R_SearchPlayer_LeftX = Search_RightArea_X - enemy_Scale.x / 2.f;
-		float R_SearchPlayer_RightX = Search_RightArea_X + 16.f * (enemy_Scale.x / 2.f);
-		float R_SearchPlayer_TopY = enemy_Pos.y + 8.f * (enemy_Scale.y / 2.f);
-		float R_SearchPlayer_BotY = enemy_Pos.y - enemy_Scale.y / 2.f;
+		float R_SearchPlayer_RightX = Search_RightArea_X + x_range * (enemy_Scale.x / 2.f);
+		float R_SearchPlayer_TopY = enemy_Pos.y + y_range * (enemy_Scale.y / 2.f);
+		float R_SearchPlayer_BotY = enemy_Pos.y - bottom_y_range * (enemy_Scale.y / 2.f);
 
 		DrawRect(R_SearchPlayer_LeftX, R_SearchPlayer_BotY, R_SearchPlayer_RightX, R_SearchPlayer_TopY, 1, 0, 0);
 		if (R_SearchPlayer_LeftX < obj2_Pos.x &&
@@ -103,6 +103,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 	return false;
 }
 
+//변수값만 잘주기
 bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, bool enemy_dir)
 {
 	BaseComponent* enemy_trs = _obj1->FindComponent("Transform");
@@ -161,6 +162,39 @@ bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, boo
 	}
 	return false;
 }
+
+//매개변수는 무조건 조정예정(지금은 불완정한 값이 들어온 상태 chase에서 하던 여기서 하던Rigid와 trans값을 받아와서 조정예정
+////bool isFacingtheSameDirection(AEVec2 e_pos, AEVec2 player_pos, bool enemy_dir) 이런식으로
+bool ColliderManager::isFacingtheSameDirection(AEVec2 chase_pos, bool enemy_dir)
+{
+	AEVec2 vec2;
+	if (enemy_dir == true) //왼쪽
+	{
+		vec2 = { -1.0f, 0.0f };
+	}
+	else if (enemy_dir == false) //오른쪽
+	{
+		vec2 = { 1.0f, 0.0f };
+	}
+	float dotProduct = Dot(chase_pos, vec2);
+
+	return dotProduct > 0;
+}
+
+float ColliderManager::Dot(const AEVec2& vec1, const AEVec2& vec2)
+{
+	return vec1.x * vec2.x + vec1.y * vec2.y;
+}
+
+
+
+//bool isFacingtheSameDirection(e_pos, player_pos, direction)
+//{
+	// vec1 = enemy->player(적이 플레이어한테 가는 벡터 값
+	// vec2 = enemy가 보고 있는 방향이니 direction 오른쪽인 경우 벡터(1,0) 왼쪽인 경우는 벡터(-1,0)을 준다
+	//vec1과 vec2를 내적해서 나온 값이 양수면 같은방향(true반환) 음수면 다른방향(false반환)
+	//
+//}
 
 void ColliderManager::DrawRect(float bottomleft_x, float bottomleft_y, float topRight_x, float topRight_y, float r, float g, float b)
 {
@@ -221,3 +255,4 @@ void ColliderManager::DrawRect(float bottomleft_x, float bottomleft_y, float top
 
 	return;
 }
+

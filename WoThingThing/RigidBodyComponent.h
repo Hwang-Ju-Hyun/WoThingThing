@@ -8,7 +8,6 @@ class RigidBodyComponent : public BaseComponent
     AEVec2  m_vVelocity;
     AEVec2  m_vGravity;
     AEVec2 jumpVelocity;
-
 public:
     RigidBodyComponent(GameObject* _owner);
     ~RigidBodyComponent();

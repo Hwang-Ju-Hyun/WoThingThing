@@ -19,6 +19,8 @@ namespace ESM
         bool dir_state;
         float dir_Time;
 
+        //공격 딜레이 주기
+        float melee_DelayAtk;
 
     public:
         EnemyAttack(GameObject* _enemy, GameObject* _player, bool dir, float Time);

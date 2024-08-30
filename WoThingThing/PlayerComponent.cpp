@@ -79,7 +79,7 @@ void PlayerComponent::MoveMent()
 	if (AEInputCheckTriggered(AEVK_W))
 	{
 		jumpCnt++;
-		if (jumpCnt <= 2)
+		if (jumpCnt <= 2000)
 			Jump(400);
 	}
 	//Landing	
@@ -127,15 +127,8 @@ void PlayerComponent::MoveMent()
 	pos.x += (dashVelocity.x) * (2 * dt);
 	pos.y += (dashVelocity.y) * (1.f * dt);
 
-	//if (pos.y <= -380)
-	//{
-	//	jumpVelocity.y = 0;
-	//	pos.y = -380.f;
-	//}
-	//else
-	//{
-		jumpVelocity.y -= m_vGravity.y * dt;
-	//}
+
+	jumpVelocity.y -= m_vGravity.y * dt;	
 	pos.y = pos.y + jumpVelocity.y * dt;
 	static_cast<TransComponent*>(player_trs)->SetPos(pos);
 }

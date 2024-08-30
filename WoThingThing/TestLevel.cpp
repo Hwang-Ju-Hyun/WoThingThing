@@ -49,9 +49,19 @@ void Level::TestLevel::Init()
 	Enemy->AddComponent("Ai", new AiComponent(Enemy));
 	AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
 	Enemy_state->SetTarget(Test_player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-	Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+	Enemy_state->Setdir(true);//true가 왼쪽, false가 오른쪽
 	Enemy_state->Setdir_time(1.0f);
-	Enemy_state->SetState("IDLE");
+	//적 ai유형 Melee, Sniper, Boss 
+	//스테이지 많아지면 Boss1,Boss2 이런식으로 관리
+	 
+	
+	//스나이퍼 세팅값은 "IDLE_Sniper", "Sniper"
+	//SetSniper_bullet 추가 필수!! 
+	//총알 오브젝트 무조건 추가해주기
+
+	
+	//근접 세팅값은 "IDLE", "Melee"
+	Enemy_state->SetState("IDLE", "Melee");
 	//Enemy_state->SetTarget(Test_player);
 
 	//리지디드 바디 물어보기
