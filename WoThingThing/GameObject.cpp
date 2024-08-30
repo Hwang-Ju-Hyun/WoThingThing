@@ -72,3 +72,13 @@ void GameObject::DeleteComponent(const std::string& _name)
     delete iter->second;
     m_mapComp.erase(iter);
 }
+
+void GameObject::SetActive(bool sw)
+{
+    active = sw;
+}
+
+bool GameObject::GetActive()
+{
+    return active;
+}

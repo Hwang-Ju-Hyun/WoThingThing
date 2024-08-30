@@ -11,6 +11,7 @@ public:
 	std::vector<GameObject*> m_vecObj;
 public:
 	GameObject* AddObject(GameObject* _obj);
+	void RemoveDeathObj();
 	void RemoveAllObj();
 	GameObject* GetLastObj();	
 	std::vector<GameObject*> Allobj() 

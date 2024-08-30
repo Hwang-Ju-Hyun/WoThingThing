@@ -17,6 +17,19 @@ GameObject* GoManager::AddObject(GameObject* _obj)
     return _obj;
 }
 
+void GoManager::RemoveDeathObj()
+{
+    for (int i=0; i < m_vecObj.size(); i++)
+    {
+        if (m_vecObj[i]->GetActive() == false)
+        {
+            delete m_vecObj[i];
+            m_vecObj.erase(std::find(m_vecObj.begin(), m_vecObj.end(), m_vecObj[i]));
+            i--;
+        }
+    }
+}
+
 void GoManager::RemoveAllObj()
 {   
     for (auto iter = m_vecObj.begin(); iter != m_vecObj.end();)

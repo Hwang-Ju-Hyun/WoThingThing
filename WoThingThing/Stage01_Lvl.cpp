@@ -128,16 +128,38 @@ void Level::Stage01_Lvl::Update()
             {
                 HandleCollision(player, obj);
             }
-        }
-        if (obj->GetName() == "Platform")
-        {
             if (ColliderManager::GetInst()->IsCollision(Enemy, obj))
             {
                 HandleCollision(Enemy, obj);
             }
-        }            
-    }                   
+            //check nullptr
+            //if(player_comp->GetBullet() != nullptr)
+            //{
+            if (ColliderManager::GetInst()->IsCollision(player_comp->GetBullet(), obj) && player_comp->GetBullet()->GetActive())
+            {
+                player_comp->GetBullet()->SetActive(false);
+
+                //TransComponent* bullet_trs = (TransComponent*)player_comp->GetBullet()->FindComponent("Transform");
+                //bullet_trs->SetScale({ 0,0 });
+
+            }
+
+            //}
+        }
+        if (obj->GetName() == "Enemy")
+        {
+            if (ColliderManager::GetInst()->IsCollision(player_comp->GetBullet(), obj))
+            {
+                TransComponent* bullet_trs = (TransComponent*)player_comp->GetBullet()->FindComponent("Transform");
+                bullet_trs->SetScale({ 0,0 });
+                //player_comp->DestroyBullet();
+            }
+        }
+
+    }              
     CameraManager::GetInst()->Update();
+
+    GoManager::GetInst()->RemoveDeathObj();
 }
 
 void Level::Stage01_Lvl::Exit()

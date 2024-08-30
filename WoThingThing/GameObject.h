@@ -5,6 +5,8 @@ class BaseComponent;
 
 class GameObject
 {
+	bool active{ true };
+
 public:
 	GameObject() = delete;
 	GameObject(std::string _name);
@@ -20,6 +22,10 @@ public:
 	BaseComponent* AddComponent(const std::string& _name, BaseComponent* _comp);
 	BaseComponent* FindComponent(const std::string& _name);	
 	void DeleteComponent(const std::string& _name);
+
+	void SetActive(bool sw);
+	bool GetActive();
+
 public:
 	std::map<std::string, BaseComponent*> GetAllComp()
 	{

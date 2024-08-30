@@ -17,6 +17,12 @@ ColliderManager::~ColliderManager()
 //나중에 여기 부분 건들기
 bool ColliderManager::IsCollision(GameObject* _obj1, GameObject* _obj2)
 {
+	if (_obj1 == nullptr || _obj2 == nullptr)
+	{
+		return false;
+	}
+
+
 	BaseComponent* obj_trs1 = _obj1->FindComponent("Transform");
 	BaseComponent* obj_trs2 = _obj2->FindComponent("Transform");
 	AEVec2 obj1_Pos = static_cast<TransComponent*>(obj_trs1)->GetPos();

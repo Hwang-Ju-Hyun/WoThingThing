@@ -61,6 +61,7 @@ public:
     void Attack();
 
     GameObject* GetBullet();
+    void DestroyBullet();
 
     //황주현 코드추가
     void SetJumpCntZero();    

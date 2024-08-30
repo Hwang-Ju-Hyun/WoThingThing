@@ -19,7 +19,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	m_vGravity = { 0.f, 600.f };
 
 	bullet_Vec = { 0.f, 0.f };
-	bullet_const = { 20.f, 20.f };
+	bullet_const = { 50.f, 50.f };
 
 
 	melee = new GameObject("Melee");
@@ -37,20 +37,21 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	aim_line->AddComponent("Transform", new TransComponent(aim_line));
 	aim_line->AddComponent("Sprite", new SpriteComponent(aim_line));
 
-	bullet = new GameObject("Bullet");
-	GoManager::GetInst()->AddObject(bullet);
-	bullet->AddComponent("Transform", new TransComponent(bullet));
-	bullet->AddComponent("Sprite", new SpriteComponent(bullet));
+	bullet = nullptr;
 
-	for (int i = 0; i < 10; i++)
-	{
-		magazine[i] = new GameObject("Bullet");
-		GoManager::GetInst()->AddObject(magazine[i]);
-		magazine[i]->AddComponent("Transform", new TransComponent(bullet));
-		magazine[i]->AddComponent("Sprite", new SpriteComponent(bullet));
-	}
+	//bullet = new GameObject("Bullet");
+	//GoManager::GetInst()->AddObject(bullet);
+	//bullet->AddComponent("Transform", new TransComponent(bullet));
+	//bullet->AddComponent("Sprite", new SpriteComponent(bullet));
+
+	//for (int i = 0; i < 10; i++)
+	//{
+	//	magazine[i] = new GameObject("Bullet");
+	//	GoManager::GetInst()->AddObject(magazine[i]);
+	//	magazine[i]->AddComponent("Transform", new TransComponent(bullet));
+	//	magazine[i]->AddComponent("Sprite", new SpriteComponent(bullet));
+	//}
 }
-
 
 //About Player's movement
 void PlayerComponent::Jump(float jumpVal)
@@ -202,10 +203,6 @@ void PlayerComponent::Attack()
 
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 
-	TransComponent* bullet_trs = (TransComponent*)magazine[0]->FindComponent("Transform");
-	//for (int i = 0; i < 10; i++)
-	//	bullet_trs[i] = (TransComponent*)magazine[i]->FindComponent("Transform");
-
 	AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
 
 	//Direction Vector between player and mouse
@@ -217,9 +214,9 @@ void PlayerComponent::Attack()
 	{
 		//Remove about shotAttack
 		TransComponent* aimTrace_spr = (TransComponent*)aim_line->FindComponent("Transform");
-		TransComponent* bullet_spr = (TransComponent*)bullet->FindComponent("Transform");
+		//TransComponent* bullet_spr = (TransComponent*)bullet->FindComponent("Transform");
 		aimTrace_spr->SetScale({ 0,0 });
-		bullet_spr->SetScale({ 0,0 });
+		//bullet_spr->SetScale({ 0,0 });
 		/////////////////////////
 
 		TransComponent* melee_trs = static_cast<TransComponent*>(melee->FindComponent("Transform"));
@@ -232,33 +229,40 @@ void PlayerComponent::Attack()
 	else if (shotActive)
 	{
 		MouseTraceLine();
-		
-		if (AEInputCheckTriggered(AEVK_LBUTTON))
+		if (AEInputCheckTriggered(AEVK_LBUTTON) &&(bullet == nullptr ||   !bullet->GetActive()))
 		{
-			//add for
+			bullet = new GameObject("Bullet");
+			GoManager::GetInst()->AddObject(bullet);
+			bullet->AddComponent("Transform", new TransComponent(bullet));
+			//bullet->AddComponent("Bullet", new BulletComp(bullet));
+			bullet->AddComponent("Sprite", new SpriteComponent(bullet));
+
+			TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
+
 			bullet_Vec.x = nor_dVec.x * bullet_const.x;
 			bullet_Vec.y = nor_dVec.y * bullet_const.y;
-
-
-			SpriteComponent* bullet_spr = (SpriteComponent*)magazine[0]->FindComponent("Sprite");
+			SpriteComponent* bullet_spr = (SpriteComponent*)bullet->FindComponent("Sprite");
 			bullet_trs->SetPos(player_trs->GetPos());
 			bullet_trs->SetScale({ 10, 10 });
-			//end for
+
+			bullet->SetActive(true);
 		}
 
-		//add for
-		AEVec2 bullet_pos = static_cast<TransComponent*>(bullet_trs)->GetPos();
-		bullet_pos.x += bullet_Vec.x;
-		bullet_pos.y += bullet_Vec.y;
-		static_cast<TransComponent*>(bullet_trs)->SetPos(bullet_pos);
-		//end for
+		//move to Bullet Component
+		
 	}
 
 }
-
 GameObject* PlayerComponent::GetBullet()
 {
-	return nullptr;
+	return bullet;
+}
+void PlayerComponent::DestroyBullet()
+{
+	if (bullet != nullptr)
+		delete bullet;
+
+	bullet = nullptr;
 }
 
 
@@ -267,7 +271,6 @@ void PlayerComponent::SetJumpCntZero()
 {
 	jumpCnt = 0;
 }
-
 void PlayerComponent::SetJumpVelocityZero()
 {
 	jumpVelocity.y = 0.f;
@@ -284,7 +287,6 @@ void PlayerComponent::LoadFromJson(const json& str)
 {
 	return;
 }
-
 json PlayerComponent::SaveToJson()
 {
 	return json();
