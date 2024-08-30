@@ -13,8 +13,6 @@ namespace Level
         GameObject* player;
         GameObject* mouseAim;
         GameObject* aimTrace;
-
-
     public:
         Stage01_Lvl();
         ~Stage01_Lvl();
@@ -27,6 +25,8 @@ namespace Level
         std::vector<GameObject*> m_vecPlatforms;
         GameObject* Platform;
         GameObject* Enemy;
+        GameObject* EnemySniper;
+        GameObject* Enemy_bullet;
     public:       
         int counter = 0;
     public:

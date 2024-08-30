@@ -14,7 +14,7 @@ namespace ESM
         virtual void Exit() override;
     private:
         //가져가야 할 게임오브젝트 2개 보는 방향, 보는 시간
-        GameObject* Chase_enemy;
+        GameObject* TargetAim_enemy;
         GameObject* Player;
         bool dir_state;
         float dir_Time;
@@ -29,8 +29,15 @@ namespace ESM
         //여기는 이제 플레이어 Pos 따라가는 aim 만들기 
         AEVec2 playerPos;
         AEVec2 enemyPos;
+        AEVec2 bulletPos;
         AEVec2 chaseVec;
         AEVec2 unitChaseVec;
+        AEVec2 nor_dVec_bullet{ 0,0 };
+
+
+        AEVec2 bullet_Vec;
+        AEVec2 bullet_const;
+
     public:
         TargetAim_Sniper(GameObject* _enemy, GameObject* _player, bool dir, float Time, GameObject* _bullet);
     };

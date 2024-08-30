@@ -5,6 +5,7 @@
 #include"ColliderManager.h"
 #include"TimeManager.h"
 #include "TargetAim_Sniper.h"
+#include"SpriteComponent.h"
 
 void ESM::IDLE_Sniper::Init()
 {
