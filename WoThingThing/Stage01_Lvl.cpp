@@ -89,7 +89,6 @@ void Level::Stage01_Lvl::Update()
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
     }
-    std::cout << "FrameCnt: " << AEFrameRateControllerGetFrameCount() << std::endl;
     int cnt = 0;
     for (auto obj : GoManager::GetInst()->Allobj())
     {        
@@ -99,6 +98,10 @@ void Level::Stage01_Lvl::Update()
             {
                 HandleCollision(player, obj);
             }
+            //if (ColliderManager::GetInst()->IsCollision(bullet, obj))
+            //{
+            //    removeMemory(bullet);
+            //}
         }        
     }    
 
@@ -146,12 +149,6 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
             direct = i;
         }
     }
-    std::cout << "FrameCnt: " << AEFrameRateControllerGetFrameCount() << std::endl;
-    std::cout << "Player : " << obj_trs1->GetPos().x << "\t" << obj_trs1->GetPos().y << std::endl;
-    std::cout << "Plat   : " << obj_trs2->GetPos().x << "\t" << obj_trs2->GetPos().y << std::endl;
-    std::cout << "Dis    : " << minDistance << "  " << distArr[0] << "  " << distArr[1] << std::endl;
-    std::cout << "Direct : " << direct << std::endl;
-    std::cout << std::endl;
 
     switch (direct)
     {
