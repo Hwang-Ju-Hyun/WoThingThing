@@ -37,7 +37,7 @@ void ESM::IDLE::Update()
 
 
 
-	if (ColliderManager::GetInst()->PlayerSearch(enemy, player, dir))
+	if (ColliderManager::GetInst()->PlayerSearch(enemy, player, dir, 16.f, 8.f, 1.f))
 	{
 		//std::cout << "ChaseMode" << std::endl;
 		ESM::Chase* p = new ESM::Chase(enemy, player, dir, dir_Time);

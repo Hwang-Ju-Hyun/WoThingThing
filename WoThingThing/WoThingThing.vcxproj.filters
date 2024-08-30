@@ -36,9 +36,6 @@
     <Filter Include="Component\Transform">
       <UniqueIdentifier>{adebb184-1193-4bae-bfab-9c119511bf2f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Sprite">
-      <UniqueIdentifier>{7c3a7664-1c34-48b4-8a6f-ca0aa5f872b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager\CollisionMgr">
       <UniqueIdentifier>{860ee8e1-90a6-449d-8a5e-d501f71f9302}</UniqueIdentifier>
     </Filter>
@@ -83,15 +80,27 @@
     </Filter>
     <Filter Include="Manager\CameraMgr">
       <UniqueIdentifier>{4906040b-1b86-402e-a028-99cb8da10bc3}</UniqueIdentifier>
-	</Filter>
-    <Filter Include="EnemyAI\EnemyStateManager">
-      <UniqueIdentifier>{ecdfafd2-8270-40ba-a348-c67898da36a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EnemyAI\EnemyState">
-      <UniqueIdentifier>{70d8b8fd-5baa-4e3e-b685-76a3613a0065}</UniqueIdentifier>
+    <Filter Include="Ai">
+      <UniqueIdentifier>{138cfd1b-1c2c-43ee-9e33-53d19d26e96c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EnemyAI\EnemyAiComp">
-      <UniqueIdentifier>{c3c961d9-23da-4492-acfa-78beb9fc9a60}</UniqueIdentifier>
+    <Filter Include="Ai\Ai_State">
+      <UniqueIdentifier>{eed70f19-9cd9-4979-94a6-136fc23f2b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Melee">
+      <UniqueIdentifier>{5a9a5422-06e2-43e9-b884-9cb4b8b0d7dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Sniper">
+      <UniqueIdentifier>{3675102f-fb52-4a8a-be4a-7cdbed4bf76e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Boss">
+      <UniqueIdentifier>{1bd63408-f2e7-4758-878c-329c3d385711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Aimanager">
+      <UniqueIdentifier>{0062f34b-4be9-484b-8cc2-bc78fdf7d197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Sprite">
+      <UniqueIdentifier>{7c3a7664-1c34-48b4-8a6f-ca0aa5f872b2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -123,7 +132,7 @@
       <Filter>Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="SpriteComponent.cpp">
-      <Filter>Component\Sprite</Filter>
+      <Filter>Main\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="ColliderManager.cpp">
       <Filter>Manager\CollisionMgr</Filter>
@@ -166,21 +175,36 @@
     </ClCompile>
     <ClCompile Include="CameraManager.cpp">
       <Filter>Manager\CameraMgr</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="TestLevel.cpp">
-      <Filter>EnemyAI\Level%28Test%29</Filter>
+      <Filter>Ai</Filter>
     </ClCompile>
-    <ClCompile Include="BaseEnemyState.cpp">
-      <Filter>EnemyAI\EnemyStateManager</Filter>
+    <ClCompile Include="Chase.cpp">
+      <Filter>Ai\Ai_State\Melee</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyStateManager.cpp">
-      <Filter>EnemyAI\EnemyStateManager</Filter>
-    </ClCompile>
-    <ClCompile Include="AiComponent.cpp">
-      <Filter>EnemyAI\EnemyAiComp</Filter>
+    <ClCompile Include="EnemyAttack.cpp">
+      <Filter>Ai\Ai_State\Melee</Filter>
     </ClCompile>
     <ClCompile Include="IDLE.cpp">
-      <Filter>EnemyAI\EnemyState</Filter>
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="IDLE_Sniper.cpp">
+      <Filter>Ai\Ai_State\Sniper</Filter>
+    </ClCompile>
+    <ClCompile Include="AiComponent.cpp">
+      <Filter>Ai\Aimanager</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseEnemyState.cpp">
+      <Filter>Ai\Aimanager</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStateManager.cpp">
+      <Filter>Ai\Aimanager</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetAim_Sniper.cpp">
+      <Filter>Ai\Ai_State\Sniper</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -218,7 +242,7 @@
       <Filter>Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="SpriteComponent.h">
-      <Filter>Component\Sprite</Filter>
+      <Filter>Main\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="ColliderManager.h">
       <Filter>Manager\CollisionMgr</Filter>
@@ -258,21 +282,36 @@
     </ClInclude>
     <ClInclude Include="CameraManager.h">
       <Filter>Manager\CameraMgr</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="TestLevel.h">
-      <Filter>EnemyAI\Level%28Test%29</Filter>
+      <Filter>Ai</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyStateManager.h">
-      <Filter>EnemyAI\EnemyStateManager</Filter>
+    <ClInclude Include="Chase.h">
+      <Filter>Ai\Ai_State\Melee</Filter>
     </ClInclude>
-    <ClInclude Include="BaseEnemyState.h">
-      <Filter>EnemyAI\EnemyStateManager</Filter>
+    <ClInclude Include="EnemyAttack.h">
+      <Filter>Ai\Ai_State\Melee</Filter>
     </ClInclude>
-    <ClInclude Include="AiComponent.h">
-      <Filter>EnemyAI\EnemyAiComp</Filter>
+    <ClInclude Include="IDLE_Sniper.h">
+      <Filter>Ai\Ai_State\Sniper</Filter>
     </ClInclude>
     <ClInclude Include="IDLE.h">
-      <Filter>EnemyAI\EnemyState</Filter>
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="AiComponent.h">
+      <Filter>Ai\Aimanager</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEnemyState.h">
+      <Filter>Ai\Aimanager</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStateManager.h">
+      <Filter>Ai\Aimanager</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetAim_Sniper.h">
+      <Filter>Ai\Ai_State\Sniper</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -10,14 +10,21 @@
 
 void ESM::EnemyAttack::Init()
 {
+	melee_DelayAtk = 0.f;
 }
 
 void ESM::EnemyAttack::Update()
 {
+
+	melee_DelayAtk = TimeManager::GetInst()->GetAccTime();
 	//TransComponent* player_trs = (TransComponent*)Player->FindComponent("Transform");
 	if (ColliderManager::GetInst()->MeleeEnemyAttack(Attack_enemy, Player, dir_state))
 	{
-		std::cout << "Attack Player" << std::endl;
+		if (melee_DelayAtk > 0.3f)
+		{
+			std::cout << "Attack Player" << std::endl;
+			TimeManager::GetInst()->SetAccTime(0.0f);
+		}
 	}
 	else 
 	{
