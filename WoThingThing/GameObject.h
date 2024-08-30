@@ -25,6 +25,13 @@ public:
 	{
 		return m_mapComp;
 	}
+
+//Node Info
+private:
+	int m_nodeCost;
+public:
+	void SetNodeCost(int _cost) { m_nodeCost = _cost; }
+	int GetNodeCost()const		{ return m_nodeCost; }
 public:
 	friend class BaseComponent;
 };

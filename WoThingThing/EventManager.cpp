@@ -174,16 +174,5 @@ void RePosition::OnEvent(Event* ev)
 		HandleCollision(obj1, obj2);
 	}
 
-	//if (obj1->GetName() == "Platform" || obj2->GetName() == "Platform")
-	//{
-	//	if (obj1->GetName() == "Player" || obj2->GetName() == "Player")
-	//	{
-
-	//		
-	//		TransComponent* Platform_trs = obj1->GetName() == "Platform" ? obj1_trs : obj2_trs;
-	//		TransComponent* player_trs = obj1->GetName() == "Player" ? obj1_trs : obj2_trs;
-	//		
-	//		Platform_trs->SetPos(player_trs->GetPos().x + Platform_trs->GetScale().x + Platform_trs->GetScale().x / 2.f, Platform_trs->GetPos().y);		
-	//	}		
-	//}
+	
 }

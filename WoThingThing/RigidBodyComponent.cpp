@@ -19,7 +19,49 @@ RigidBodyComponent::~RigidBodyComponent()
 
 void RigidBodyComponent::Update()
 {
+	TransComponent* obj = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));	
+	//Landing	
+	// 황주현 코드 수정 -> 밑에 코드를 setjumpcntzero ::Stage01 handleCollision에서 구현
+	//if (player_trs->GetPos().y <= -379.f)
+	//	jumpCnt = 0;
 	
+	//Left
+	//if (AEInputCheckCurr(AEVK_A))
+	//{
+	//	obj->AddPos(-5.f, 0.f);
+	//	//if (player_trs->GetPos().x > -770)
+	//}
+
+	////Right
+	//if (AEInputCheckCurr(AEVK_D))
+	//{
+	//	obj->AddPos(5.f, 0.f);
+	//	//if (player_trs->GetPos().x < 770)
+	//}
+
+	AEVec2 pos = static_cast<TransComponent*>(obj)->GetPos();
+
+	float dt = AEFrameRateControllerGetFrameTime();
+	//left shift : time manipulation
+	if (AEInputCheckCurr(AEVK_LSHIFT))
+	{
+		dt *= 0.1f;
+	}			
+	//auto trans= CompManager::GetInst()->FindComponent("Transform");
+
+
+	jumpVelocity.y -= m_vGravity.y * dt;
+	/*if (pos.y <= -380)
+	{
+		jumpVelocity.y = 0;
+		pos.y = -380.f;
+	}
+	else
+	{
+		jumpVelocity.y -= m_vGravity.y * dt;
+	}*/
+	pos.y = pos.y + jumpVelocity.y * dt;
+	static_cast<TransComponent*>(obj)->SetPos(pos);
 }
 
 void RigidBodyComponent::LoadFromJson(const json& str)

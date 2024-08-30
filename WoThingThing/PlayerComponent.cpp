@@ -53,7 +53,7 @@ void PlayerComponent::Jump(float jumpVal)
 	jumpVelocity.y = jumpVal;
 	pos.y += jumpVelocity.y * dt;
 	static_cast<TransComponent*>(player_trs)->SetPos(pos);
-	std::cout << "FrameCnt: " << AEFrameRateControllerGetFrameCount() << std::endl;
+	/*std::cout << "FrameCnt: " << AEFrameRateControllerGetFrameCount() << std::endl;
 	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
 	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
 	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
@@ -63,7 +63,7 @@ void PlayerComponent::Jump(float jumpVal)
 	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
 	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
 	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
-	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;
+	std::cout << "JUMP : " << pos.x << "\t" << pos.y << std::endl;*/
 }
 void PlayerComponent::Dash(AEVec2 directVec)
 {
@@ -84,7 +84,7 @@ void PlayerComponent::MoveMent()
 	if (AEInputCheckTriggered(AEVK_W))
 	{
 		jumpCnt++;
-		if (jumpCnt <= 2)
+		if (jumpCnt <= 2000)
 			Jump(400);
 	}
 	//Landing	
@@ -143,7 +143,9 @@ void PlayerComponent::MoveMent()
 	pos.y += (dashVelocity.y) * (1.f * dt);
 	//auto trans= CompManager::GetInst()->FindComponent("Transform");
 
-	if (pos.y <= -380)
+
+	jumpVelocity.y -= m_vGravity.y * dt;
+	/*if (pos.y <= -380)
 	{
 		jumpVelocity.y = 0;
 		pos.y = -380.f;
@@ -151,7 +153,7 @@ void PlayerComponent::MoveMent()
 	else
 	{
 		jumpVelocity.y -= m_vGravity.y * dt;
-	}
+	}*/
 	pos.y = pos.y + jumpVelocity.y * dt;
 	static_cast<TransComponent*>(player_trs)->SetPos(pos);
 }

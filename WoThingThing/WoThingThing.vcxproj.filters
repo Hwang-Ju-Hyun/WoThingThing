@@ -83,15 +83,30 @@
     </Filter>
     <Filter Include="Manager\CameraMgr">
       <UniqueIdentifier>{4906040b-1b86-402e-a028-99cb8da10bc3}</UniqueIdentifier>
-	</Filter>
-    <Filter Include="EnemyAI\EnemyStateManager">
-      <UniqueIdentifier>{ecdfafd2-8270-40ba-a348-c67898da36a2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EnemyAI\EnemyState">
-      <UniqueIdentifier>{70d8b8fd-5baa-4e3e-b685-76a3613a0065}</UniqueIdentifier>
+    <Filter Include="Component\Player">
+      <UniqueIdentifier>{4220cec6-3c8d-418c-9eb4-4581f485ada7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EnemyAI\EnemyAiComp">
-      <UniqueIdentifier>{c3c961d9-23da-4492-acfa-78beb9fc9a60}</UniqueIdentifier>
+    <Filter Include="Manager\ESMgr">
+      <UniqueIdentifier>{bcd1f22c-2bd6-479f-aa1a-b65a672eb2e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\TestLevel">
+      <UniqueIdentifier>{919dfb86-5278-4c62-be0f-cf78bac682af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\AI">
+      <UniqueIdentifier>{1b416597-eecd-469f-91f8-4529be2ec0c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyState">
+      <UniqueIdentifier>{c1a54eb2-2260-41eb-a702-498d1876595d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyState\Chase">
+      <UniqueIdentifier>{f1a39447-5941-4555-9126-442eac3380ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyState\Attack">
+      <UniqueIdentifier>{a665e672-98de-49c1-ac62-dd634274aa93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="EnemyState\Idle">
+      <UniqueIdentifier>{bd34e0ce-cff0-48f1-b532-509bd8c9aea7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -166,21 +181,30 @@
     </ClCompile>
     <ClCompile Include="CameraManager.cpp">
       <Filter>Manager\CameraMgr</Filter>
-	</ClCompile>
-    <ClCompile Include="TestLevel.cpp">
-      <Filter>EnemyAI\Level%28Test%29</Filter>
     </ClCompile>
-    <ClCompile Include="BaseEnemyState.cpp">
-      <Filter>EnemyAI\EnemyStateManager</Filter>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Component\Player</Filter>
     </ClCompile>
     <ClCompile Include="EnemyStateManager.cpp">
-      <Filter>EnemyAI\EnemyStateManager</Filter>
+      <Filter>Manager\ESMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Level\TestLevel</Filter>
     </ClCompile>
     <ClCompile Include="AiComponent.cpp">
-      <Filter>EnemyAI\EnemyAiComp</Filter>
+      <Filter>Component\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseEnemyState.cpp">
+      <Filter>EnemyState</Filter>
+    </ClCompile>
+    <ClCompile Include="Chase.cpp">
+      <Filter>EnemyState\Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAttack.cpp">
+      <Filter>EnemyState\Attack</Filter>
     </ClCompile>
     <ClCompile Include="IDLE.cpp">
-      <Filter>EnemyAI\EnemyState</Filter>
+      <Filter>EnemyState\Idle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -258,21 +282,30 @@
     </ClInclude>
     <ClInclude Include="CameraManager.h">
       <Filter>Manager\CameraMgr</Filter>
-	</ClInclude>
-    <ClInclude Include="TestLevel.h">
-      <Filter>EnemyAI\Level%28Test%29</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Component\Player</Filter>
     </ClInclude>
     <ClInclude Include="EnemyStateManager.h">
-      <Filter>EnemyAI\EnemyStateManager</Filter>
+      <Filter>Manager\ESMgr</Filter>
     </ClInclude>
-    <ClInclude Include="BaseEnemyState.h">
-      <Filter>EnemyAI\EnemyStateManager</Filter>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Level\TestLevel</Filter>
     </ClInclude>
     <ClInclude Include="AiComponent.h">
-      <Filter>EnemyAI\EnemyAiComp</Filter>
+      <Filter>Component\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEnemyState.h">
+      <Filter>EnemyState</Filter>
+    </ClInclude>
+    <ClInclude Include="Chase.h">
+      <Filter>EnemyState\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttack.h">
+      <Filter>EnemyState\Attack</Filter>
     </ClInclude>
     <ClInclude Include="IDLE.h">
-      <Filter>EnemyAI\EnemyState</Filter>
+      <Filter>EnemyState\Idle</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
