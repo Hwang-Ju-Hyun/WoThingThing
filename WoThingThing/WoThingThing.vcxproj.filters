@@ -36,9 +36,6 @@
     <Filter Include="Component\Transform">
       <UniqueIdentifier>{adebb184-1193-4bae-bfab-9c119511bf2f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Sprite">
-      <UniqueIdentifier>{7c3a7664-1c34-48b4-8a6f-ca0aa5f872b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager\CollisionMgr">
       <UniqueIdentifier>{860ee8e1-90a6-449d-8a5e-d501f71f9302}</UniqueIdentifier>
     </Filter>
@@ -108,6 +105,27 @@
     <Filter Include="EnemyState\Idle">
       <UniqueIdentifier>{bd34e0ce-cff0-48f1-b532-509bd8c9aea7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ai">
+      <UniqueIdentifier>{138cfd1b-1c2c-43ee-9e33-53d19d26e96c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State">
+      <UniqueIdentifier>{eed70f19-9cd9-4979-94a6-136fc23f2b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Melee">
+      <UniqueIdentifier>{5a9a5422-06e2-43e9-b884-9cb4b8b0d7dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Sniper">
+      <UniqueIdentifier>{3675102f-fb52-4a8a-be4a-7cdbed4bf76e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Boss">
+      <UniqueIdentifier>{1bd63408-f2e7-4758-878c-329c3d385711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Aimanager">
+      <UniqueIdentifier>{0062f34b-4be9-484b-8cc2-bc78fdf7d197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Main\Sprite">
+      <UniqueIdentifier>{7c3a7664-1c34-48b4-8a6f-ca0aa5f872b2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -138,7 +156,7 @@
       <Filter>Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="SpriteComponent.cpp">
-      <Filter>Component\Sprite</Filter>
+      <Filter>Main\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="ColliderManager.cpp">
       <Filter>Manager\CollisionMgr</Filter>
@@ -206,6 +224,36 @@
     <ClCompile Include="IDLE.cpp">
       <Filter>EnemyState\Idle</Filter>
     </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="Chase.cpp">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAttack.cpp">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="IDLE.cpp">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="IDLE_Sniper.cpp">
+      <Filter>Ai\Ai_State\Sniper</Filter>
+    </ClCompile>
+    <ClCompile Include="AiComponent.cpp">
+      <Filter>Ai\Aimanager</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseEnemyState.cpp">
+      <Filter>Ai\Aimanager</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStateManager.cpp">
+      <Filter>Ai\Aimanager</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetAim_Sniper.cpp">
+      <Filter>Ai\Ai_State\Sniper</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -242,7 +290,7 @@
       <Filter>Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="SpriteComponent.h">
-      <Filter>Component\Sprite</Filter>
+      <Filter>Main\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="ColliderManager.h">
       <Filter>Manager\CollisionMgr</Filter>
@@ -306,6 +354,36 @@
     </ClInclude>
     <ClInclude Include="IDLE.h">
       <Filter>EnemyState\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="Chase.h">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttack.h">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="IDLE_Sniper.h">
+      <Filter>Ai\Ai_State\Sniper</Filter>
+    </ClInclude>
+    <ClInclude Include="IDLE.h">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="AiComponent.h">
+      <Filter>Ai\Aimanager</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEnemyState.h">
+      <Filter>Ai\Aimanager</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStateManager.h">
+      <Filter>Ai\Aimanager</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetAim_Sniper.h">
+      <Filter>Ai\Ai_State\Sniper</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

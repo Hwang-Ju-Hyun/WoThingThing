@@ -72,7 +72,7 @@ void Level::Stage01_Lvl::Init()
     Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
     Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
     Enemy_state->Setdir_time(1.0f);
-    Enemy_state->SetState("IDLE");
+    Enemy_state->SetState("IDLE","Melee");
 
 
 
