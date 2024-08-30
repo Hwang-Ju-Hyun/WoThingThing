@@ -48,19 +48,17 @@ void Level::Stage01_Lvl::Init()
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
     player->AddComponent("Sprite", new SpriteComponent(player));
-    
     player->AddComponent("PlayerComp", new PlayerComponent(player));
 
     aimTrace = new GameObject("aimTrace");
     GoManager::GetInst()->AddObject(aimTrace);
     aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
     aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));   
-    
+
+
     //EventManager에서 요거 지우쇼 
     RePosition* Platform_Player = new RePosition;
     EventManager::GetInst()->AddEntity("Collision",Platform_Player);
-        
-
 
     CameraManager::GetInst()->SetMouse(mouseAim);
     CameraManager::GetInst()->SetPlayer(player);
@@ -75,6 +73,7 @@ void Level::Stage01_Lvl::Update()
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
 
+    
     //Right Click : Right attack
 
     if (AEInputCheckCurr(AEVK_R) == true)
@@ -98,11 +97,12 @@ void Level::Stage01_Lvl::Update()
             {
                 HandleCollision(player, obj);
             }
-            //if (ColliderManager::GetInst()->IsCollision(bullet, obj))
+
+            //if (ColliderManager::GetInst()->IsCollision(test->bullet, obj))
             //{
-            //    removeMemory(bullet);
+            //    obj_trs->SetScale({ 0,0 });
             //}
-        }        
+        }
     }    
 
     CameraManager::GetInst()->Update();

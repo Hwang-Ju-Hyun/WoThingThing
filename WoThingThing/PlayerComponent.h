@@ -23,14 +23,17 @@ class PlayerComponent : public BaseComponent
 
     GameObject* melee;
     GameObject* bullet;
-    GameObject* magazine[10];
 
+    //Test///
+    GameObject* magazine[10];
     //struct magazine
     //{
     //    GameObject* bullet;
     //    TransComponent* bullet_trs;
     //    SpriteComponent* bullet_spr;
     //};
+    ///////
+
 
     AEVec2 bullet_Vec;
     AEVec2 bullet_const;
@@ -57,6 +60,7 @@ public:
     bool GetWeaponType(int n);
     void Attack();
 
+    GameObject* GetBullet();
 
     //황주현 코드추가
     void SetJumpCntZero();    

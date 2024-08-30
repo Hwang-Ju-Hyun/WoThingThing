@@ -246,6 +246,7 @@ void PlayerComponent::Attack()
 			bullet_Vec.x = nor_dVec.x * bullet_const.x;
 			bullet_Vec.y = nor_dVec.y * bullet_const.y;
 
+
 			SpriteComponent* bullet_spr = (SpriteComponent*)magazine[0]->FindComponent("Sprite");
 			bullet_trs->SetPos(player_trs->GetPos());
 			bullet_trs->SetScale({ 10, 10 });
@@ -260,6 +261,11 @@ void PlayerComponent::Attack()
 		//end for
 	}
 
+}
+
+GameObject* PlayerComponent::GetBullet()
+{
+	return nullptr;
 }
 
 

@@ -10,7 +10,7 @@ public:
 	GameObject(std::string _name);
 	~GameObject();
 private:
-	std::string m_sName;		
+	std::string m_sName;	
 public:
 	void SetName(const std::string& _name) { m_sName = _name; }
 	const std::string& GetName()const { return m_sName; }
