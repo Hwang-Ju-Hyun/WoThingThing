@@ -24,6 +24,9 @@ class PlayerComponent : public BaseComponent
     GameObject* melee;
     GameObject* bullet;
 
+    GameObject* test;
+
+
     //Test///
     GameObject* magazine[10];
     //struct magazine
@@ -62,6 +65,11 @@ public:
 
     GameObject* GetBullet();
     void DestroyBullet();
+
+
+    //test
+    GameObject* GetMelee();
+
 
     //황주현 코드추가
     void SetJumpCntZero();    

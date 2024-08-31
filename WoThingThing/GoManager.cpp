@@ -23,7 +23,7 @@ void GoManager::RemoveDeathObj()
     {
         if (m_vecObj[i]->GetActive() == false)
         {
-            delete m_vecObj[i];
+            //delete m_vecObj[i];
             m_vecObj.erase(std::find(m_vecObj.begin(), m_vecObj.end(), m_vecObj[i]));
             i--;
         }
@@ -46,6 +46,21 @@ void GoManager::RemoveAllObj()
     }
     m_vecObj.clear();
     //m_vecObj.erase(remove(m_vecObj.begin(), m_vecObj.end(), _obj), m_vecObj.end());
+}
+
+//임시코드
+void GoManager::RemoveObj(const std::string& _name)
+{
+    for (int i = 0; i < m_vecObj.size(); i++)
+    {
+        if (m_vecObj[i]->GetName() == _name)
+        {
+            delete m_vecObj[i];
+            m_vecObj.erase(std::find(m_vecObj.begin(), m_vecObj.end(), m_vecObj[i]));
+            i--;
+            break;
+        }
+    }
 }
 
 GameObject* GoManager::GetLastObj()

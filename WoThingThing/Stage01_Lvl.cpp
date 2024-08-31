@@ -137,22 +137,52 @@ void Level::Stage01_Lvl::Update()
             //{
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetBullet(), obj) && player_comp->GetBullet()->GetActive())
             {
-                player_comp->GetBullet()->SetActive(false);
-
-                //TransComponent* bullet_trs = (TransComponent*)player_comp->GetBullet()->FindComponent("Transform");
-                //bullet_trs->SetScale({ 0,0 });
+                //player_comp->GetBullet()->SetActive(false);
+                //int a= GoManager::GetInst()->Allobj().size();
+                //a;
+                //int c = CompManager::GetInst()->AllComp().size();
+                //c;
+                //player_comp->GetBullet()->SetActive(false);
+                //player_comp->DestroyBullet();
+                //int d = CompManager::GetInst()->AllComp().size();
+                //int b = 0;
+                //player_comp->GetBullet()->SetActive(false);
+                 
+                //Change This to Delete : NOT SET SCALE!!!
+                TransComponent* bullet_trs = (TransComponent*)player_comp->GetBullet()->FindComponent("Transform");
+                bullet_trs->SetScale({ 0,0 });
 
             }
-
             //}
         }
         if (obj->GetName() == "Enemy")
         {
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetBullet(), obj))
             {
+                //player_comp->DestroyBullet();
+
+                //Change This to Delete : NOT SET SCALE!!!
                 TransComponent* bullet_trs = (TransComponent*)player_comp->GetBullet()->FindComponent("Transform");
                 bullet_trs->SetScale({ 0,0 });
+            }
+        }
+        if (obj->GetName() == "Test")
+        {
+            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
+            {
                 //player_comp->DestroyBullet();
+                
+                //Change This to Delete : NOT SET SCALE!!!
+                TransComponent* obj_trs = (TransComponent*)obj->FindComponent("Transform");
+                obj_trs->SetScale({ 0,0 });
+
+                //Error!!
+                //Where: in CompManager.cpp
+                //What: Exception thrown: read access violation. && iter->was 0xFFFFFFFFFFFFFFD7.
+                //Why: I think -> obj라는 게임오브젝트를 delete했는데 그 안에 있는 컴포넌트들도 삭제를 안해줘서 CompManager에서 업데이트를 할 때,
+                //객체를 잃어버린 둥둥 떠다니는 컴포넌트들을 업데이트 하려 하니 생긴 오류같다.
+                
+                delete obj;
             }
         }
 
@@ -160,6 +190,10 @@ void Level::Stage01_Lvl::Update()
     CameraManager::GetInst()->Update();
 
     GoManager::GetInst()->RemoveDeathObj();
+    if (AEInputCheckPrev(AEVK_0))
+    {
+        GSM::GameStateManager::GetInst()->Exit();
+    }
 }
 
 void Level::Stage01_Lvl::Exit()

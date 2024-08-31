@@ -17,6 +17,7 @@
     <ClInclude Include="BaseEnemyState.h" />
     <ClInclude Include="BaseLevel.h" />
     <ClInclude Include="BaseRTTI.h" />
+    <ClInclude Include="BulletComponent.h" />
     <ClInclude Include="CameraManager.h" />
     <ClInclude Include="Chase.h" />
     <ClInclude Include="ColliderManager.h" />
@@ -54,6 +55,7 @@
     <ClCompile Include="BaseEnemyState.cpp" />
     <ClCompile Include="BaseLevel.cpp" />
     <ClCompile Include="BaseRTTI.cpp" />
+    <ClCompile Include="BulletComponent.cpp" />
     <ClCompile Include="CameraManager.cpp" />
     <ClCompile Include="Chase.cpp" />
     <ClCompile Include="ColliderManager.cpp" />

@@ -51,6 +51,11 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	//	magazine[i]->AddComponent("Transform", new TransComponent(bullet));
 	//	magazine[i]->AddComponent("Sprite", new SpriteComponent(bullet));
 	//}
+
+	test = new GameObject("Test");
+	GoManager::GetInst()->AddObject(test);
+	test->AddComponent("Transform", new TransComponent(test));
+	test->AddComponent("Sprite", new SpriteComponent(test));
 }
 
 //About Player's movement
@@ -219,6 +224,10 @@ void PlayerComponent::Attack()
 		//bullet_spr->SetScale({ 0,0 });
 		/////////////////////////
 
+		TransComponent* test_trs = static_cast<TransComponent*>(test->FindComponent("Transform"));
+		test_trs->SetPos(0, -300);
+		test_trs->SetScale({ 50, 50 });
+
 		TransComponent* melee_trs = static_cast<TransComponent*>(melee->FindComponent("Transform"));
 		melee_trs->SetPos(player_trs->GetPos().x + (nor_dVec.x * 50.f), player_trs->GetPos().y + (nor_dVec.y * 50.f));
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
@@ -229,27 +238,35 @@ void PlayerComponent::Attack()
 	else if (shotActive)
 	{
 		MouseTraceLine();
-		if (AEInputCheckTriggered(AEVK_LBUTTON) &&(bullet == nullptr ||   !bullet->GetActive()))
+		if ((bullet == nullptr || !bullet->GetActive()))
 		{
-			bullet = new GameObject("Bullet");
-			GoManager::GetInst()->AddObject(bullet);
-			bullet->AddComponent("Transform", new TransComponent(bullet));
-			//bullet->AddComponent("Bullet", new BulletComp(bullet));
-			bullet->AddComponent("Sprite", new SpriteComponent(bullet));
+			if(AEInputCheckTriggered(AEVK_LBUTTON))
+			{
+				bullet = new GameObject("Bullet");
+				GoManager::GetInst()->AddObject(bullet);
+				bullet->AddComponent("Transform", new TransComponent(bullet));
+				bullet->AddComponent("Sprite", new SpriteComponent(bullet));
+				//bullet->AddComponent("Bullet", new BulletComp(bullet));
 
-			TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
+				TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
 
-			bullet_Vec.x = nor_dVec.x * bullet_const.x;
-			bullet_Vec.y = nor_dVec.y * bullet_const.y;
-			SpriteComponent* bullet_spr = (SpriteComponent*)bullet->FindComponent("Sprite");
-			bullet_trs->SetPos(player_trs->GetPos());
-			bullet_trs->SetScale({ 10, 10 });
-
-			bullet->SetActive(true);
+				bullet_Vec.x = nor_dVec.x * bullet_const.x;
+				bullet_Vec.y = nor_dVec.y * bullet_const.y;
+				SpriteComponent* bullet_spr = (SpriteComponent*)bullet->FindComponent("Sprite");
+				bullet_trs->SetPos(player_trs->GetPos());
+				bullet_trs->SetScale({ 10, 10 });
+			}
 		}
 
+		else /*if (bullet != nullptr)*/
 		//move to Bullet Component
-		
+		{
+			TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
+			AEVec2 bullet_pos = static_cast<TransComponent*>(bullet_trs)->GetPos();
+			bullet_pos.x += bullet_Vec.x;
+			bullet_pos.y += bullet_Vec.y;
+			static_cast<TransComponent*>(bullet_trs)->SetPos(bullet_pos);
+		}
 	}
 
 }
@@ -259,10 +276,18 @@ GameObject* PlayerComponent::GetBullet()
 }
 void PlayerComponent::DestroyBullet()
 {
+	//GoManager::GetInst()->RemoveObj("Bullet");
 	if (bullet != nullptr)
-		delete bullet;
+	{				
+		delete bullet;		
+	}
 
 	bullet = nullptr;
+}
+
+GameObject* PlayerComponent::GetMelee()
+{
+	return melee;
 }
 
 

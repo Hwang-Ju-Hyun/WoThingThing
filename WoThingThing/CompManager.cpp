@@ -1,4 +1,5 @@
 #include "CompManager.h"
+#include "GameObject.h"
 #include "BaseComponent.h"
 
 CompManager::CompManager()
@@ -62,6 +63,7 @@ void CompManager::Init()
 
 void CompManager::Update()
 {	
+	
 	for (auto iter : m_vecCompMgr)
 	{
 		if (iter)
@@ -74,4 +76,24 @@ void CompManager::Update()
 void CompManager::Exit()
 {		
 	m_vecCompMgr.clear();
+}
+
+void CompManager::RemoveComponent(const std::string& _objname)
+{
+	bool IsCompExist = false;
+	for (auto iter = m_vecCompMgr.begin(); iter != m_vecCompMgr.end(); iter++)
+	{
+		if ((*iter)->m_pOwner->GetName() == _objname)
+		{
+			m_vecCompMgr.erase(iter);
+			IsCompExist = true;
+			break;
+		}
+		
+	}
+	if (!IsCompExist)
+	{
+		//std::cout << "Can't find Component(RemoveComponent)" << std::endl;
+		return;
+	}
 }

@@ -26,8 +26,8 @@ void BulletComponent::Update()
 	{
 		TransComponent* bullet_trs = (TransComponent*)player->GetBullet()->FindComponent("Transform");
 		AEVec2 bullet_pos = static_cast<TransComponent*>(bullet_trs)->GetPos();
-		bullet_pos.x += bullet_Vec.x;
-		bullet_pos.y += bullet_Vec.y;
+		//bullet_pos.x += bullet_Vec.x;
+		//bullet_pos.y += bullet_Vec.y;
 		static_cast<TransComponent*>(bullet_trs)->SetPos(bullet_pos);
 	}
 }

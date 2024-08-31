@@ -1,7 +1,9 @@
 #include "GameObject.h"
 #include "BaseComponent.h"
+#include "MainMenu_Lvl.h"
 #include "CompManager.h"
 #include "GoManager.h"
+#include "GameStateManager.h"
 
 GameObject::GameObject(std::string _name)
     :m_sName(_name)
@@ -22,9 +24,10 @@ GameObject::~GameObject()
             iter++;
         }
     }
-    m_mapComp.clear();
+    m_mapComp.clear();    
+    
     //delete All Object
-
+    GoManager::GetInst()->RemoveDeathObj(); 
 }
 
 BaseComponent* GameObject::AddComponent(const std::string& _name, BaseComponent* _comp)
@@ -69,6 +72,7 @@ void GameObject::DeleteComponent(const std::string& _name)
         return;
     }
     CompManager::GetInst()->RemoveComponent();
+    
     delete iter->second;
     m_mapComp.erase(iter);
 }

@@ -19,9 +19,14 @@ RigidBodyComponent::~RigidBodyComponent()
 
 void RigidBodyComponent::Update()
 {
-	TransComponent* obj = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));	
+	TransComponent* obj = dynamic_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));	
+	if (obj == nullptr)
+	{
+		std::cout << "RigidBodyComponent Update Error! : can't find TransformComponent" << std::endl;
+		return;
+	}
 	//Landing	
-	// 황주현 코드 수정 -> 밑에 코드를 setjumpcntzero ::Stage01 handleCollision에서 구현
+	// 황주현 코드 수정 -> 밑에 코드를 setjumpcntzero' ::Stage01 handleCollision에서 구현
 	//if (player_trs->GetPos().y <= -379.f)
 	//	jumpCnt = 0;
 	

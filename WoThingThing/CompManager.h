@@ -28,5 +28,7 @@ public:
 	void Init();
 	void Update();
 	void Exit();
+public:
+	void RemoveComponent(const std::string& _objname);
 };
 
