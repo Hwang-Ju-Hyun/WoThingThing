@@ -29,8 +29,17 @@ void BulletComponent::Update()
 {
 	TransComponent* bullet_trs = (TransComponent*)m_pOwner->FindComponent("Transform");
 	AEVec2 bullet_pos = static_cast<TransComponent*>(bullet_trs)->GetPos();
-	bullet_pos.x += bullet_Vec.x;
-	bullet_pos.y += bullet_Vec.y;
+	float dt = AEFrameRateControllerGetFrameTime();
+	if (AEInputCheckCurr(AEVK_LSHIFT))
+	{
+		bullet_pos.x += bullet_Vec.x * dt;
+		bullet_pos.y += bullet_Vec.y * dt;
+	}
+	else
+	{
+		bullet_pos.x += bullet_Vec.x;
+		bullet_pos.y += bullet_Vec.y;
+	}
 	static_cast<TransComponent*>(bullet_trs)->SetPos(bullet_pos);
 
 

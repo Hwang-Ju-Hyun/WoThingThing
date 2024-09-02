@@ -211,9 +211,6 @@ void Level::Stage01_Lvl::Update()
 
                         testEnemy->SetActive(false);
                         testEnemy = nullptr;
-
-                        //obj->SetActive(false); //Set false means DELETE AND REMOVE GO.
-                        //obj = nullptr; //I dont have enemy anymore
                     }
                 }
             }
