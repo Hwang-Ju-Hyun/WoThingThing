@@ -23,7 +23,7 @@ void GoManager::RemoveDeathObj()
     {
         if (m_vecObj[i]->GetActive() == false)
         {
-            //delete m_vecObj[i];
+            delete m_vecObj[i];
             m_vecObj.erase(std::find(m_vecObj.begin(), m_vecObj.end(), m_vecObj[i]));
             i--;
         }
@@ -61,6 +61,19 @@ void GoManager::RemoveObj(const std::string& _name)
             break;
         }
     }
+}
+
+GameObject* GoManager::FindObj(std::string& _name)
+{
+    for (int i = 0; i < m_vecObj.size(); i++)
+    {
+        if (m_vecObj[i]->GetName() == _name)
+        {
+            return m_vecObj[i];
+        }
+    }
+
+    return nullptr;
 }
 
 GameObject* GoManager::GetLastObj()

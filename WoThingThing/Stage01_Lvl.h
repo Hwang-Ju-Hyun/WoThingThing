@@ -14,6 +14,7 @@ namespace Level
         GameObject* mouseAim;
         GameObject* aimTrace;
 
+        GameObject* testEnemy;
 
     public:
         Stage01_Lvl();

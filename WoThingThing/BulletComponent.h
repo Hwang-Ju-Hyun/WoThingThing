@@ -1,14 +1,22 @@
 #pragma once
 #include "BaseComponent.h"
-#include "PlayerComponent.h"
+#include "AEVec2.h"
+
 
 class BulletComponent : public BaseComponent
 {
 	GameObject* bullet;
-	PlayerComponent* player;
+
+	AEVec2 bullet_Vec;
+	AEVec2 bullet_const;
 public:
 	BulletComponent(GameObject* _owner);
-	~BulletComponent();
+	~BulletComponent() {};
+
+	void SetBulletVec(AEVec2 dVec);
+
+
+	void DestroyBullet();
 
 	virtual void Update() override;
 };

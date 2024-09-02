@@ -22,24 +22,6 @@ class PlayerComponent : public BaseComponent
     GameObject* aim_line;
 
     GameObject* melee;
-    GameObject* bullet;
-
-    GameObject* test;
-
-
-    //Test///
-    GameObject* magazine[10];
-    //struct magazine
-    //{
-    //    GameObject* bullet;
-    //    TransComponent* bullet_trs;
-    //    SpriteComponent* bullet_spr;
-    //};
-    ///////
-
-
-    AEVec2 bullet_Vec;
-    AEVec2 bullet_const;
 
     static int jumpCnt;
     static bool meleeActive, shotActive;
@@ -62,10 +44,6 @@ public:
     //About Player's attack
     bool GetWeaponType(int n);
     void Attack();
-
-    GameObject* GetBullet();
-    void DestroyBullet();
-
 
     //test
     GameObject* GetMelee();

@@ -17,18 +17,18 @@ private:
 	std::vector<BaseComponent*> m_vecCompMgr;
 public:
 	void AddComponent(std::string _name,BaseComponent* _comp);
-	void RemoveComponent();
+	//void RemoveComponent();
+	void RemoveComponent(BaseComponent* _comp);
 	BaseComponent* FindComponent(std::string name);
 	const std::vector<BaseComponent*>& AllComp()
 	{
 		m_vecCompMgr;
 		return m_vecCompMgr; 
 	}
-public:
+
+
 	void Init();
 	void Update();
 	void Exit();
-public:
-	void RemoveComponent(const std::string& _objname);
 };
 

@@ -14,6 +14,7 @@
 #include "SpriteComponent.h"
 #include "RigidBodyComponent.h"
 #include "PlayerComponent.h"
+#include "BulletComponent.h"
 #include "CompManager.h"
 
 #include "EventManager.h"
@@ -40,7 +41,6 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 {
 }
 
-
 void Level::Stage01_Lvl::Init()
 {    
     //Object and Component Init
@@ -50,6 +50,7 @@ void Level::Stage01_Lvl::Init()
     player->AddComponent("Transform", new TransComponent(player));
     player->AddComponent("Sprite", new SpriteComponent(player));    
     player->AddComponent("PlayerComp", new PlayerComponent(player));
+    
 
     aimTrace = new GameObject("aimTrace");
     GoManager::GetInst()->AddObject(aimTrace);
@@ -94,8 +95,11 @@ void Level::Stage01_Lvl::Init()
     CameraManager::GetInst()->SetMouse(mouseAim);
     CameraManager::GetInst()->SetPlayer(player);
     CameraManager::GetInst()->SetAim(aimTrace);
+
+    testEnemy = nullptr;
 }
 
+AEVec2 enemyDvec{ 1, 0 };
 void Level::Stage01_Lvl::Update()
 {
     //Component 
@@ -119,6 +123,37 @@ void Level::Stage01_Lvl::Update()
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
     }
+
+
+
+    //Spawn Test Enemy
+    if(testEnemy == nullptr || !testEnemy->GetActive())
+    {
+        if (AEInputCheckTriggered(AEVK_3) /* && testEnemy == nullptr*/) //collision이 일어나고 testEnemy를 nullptr로 만들어 주는데 왜 안되는거징
+        {
+            testEnemy = new GameObject("Test");
+            GoManager::GetInst()->AddObject(testEnemy);
+            testEnemy->AddComponent("Transform", new TransComponent(testEnemy));
+            testEnemy->AddComponent("Sprite", new SpriteComponent(testEnemy));
+
+            TransComponent* test_trs = static_cast<TransComponent*>(testEnemy->FindComponent("Transform"));
+            test_trs->SetPos(0, -300);
+            test_trs->SetScale({ 50, 50 });
+        }
+    }
+    else if (testEnemy != nullptr || testEnemy->GetActive())
+    {
+        TransComponent* enemy_trs = (TransComponent*)testEnemy->FindComponent("Transform");
+        AEVec2 bullet_pos = static_cast<TransComponent*>(enemy_trs)->GetPos();
+
+        bullet_pos.x += -2.f * enemyDvec.x;
+        static_cast<TransComponent*>(enemy_trs)->SetPos(bullet_pos);
+    }
+
+
+
+
+
     int cnt = 0;
     for (auto obj : GoManager::GetInst()->Allobj())
     {        
@@ -132,64 +167,58 @@ void Level::Stage01_Lvl::Update()
             {
                 HandleCollision(Enemy, obj);
             }
-            //check nullptr
-            //if(player_comp->GetBullet() != nullptr)
-            //{
-            if (ColliderManager::GetInst()->IsCollision(player_comp->GetBullet(), obj) && player_comp->GetBullet()->GetActive())
+            for(auto findObj : GoManager::GetInst()->Allobj())
             {
-                //player_comp->GetBullet()->SetActive(false);
-                //int a= GoManager::GetInst()->Allobj().size();
-                //a;
-                //int c = CompManager::GetInst()->AllComp().size();
-                //c;
-                //player_comp->GetBullet()->SetActive(false);
-                //player_comp->DestroyBullet();
-                //int d = CompManager::GetInst()->AllComp().size();
-                //int b = 0;
-                //player_comp->GetBullet()->SetActive(false);
-                 
-                //Change This to Delete : NOT SET SCALE!!!
-                TransComponent* bullet_trs = (TransComponent*)player_comp->GetBullet()->FindComponent("Transform");
-                bullet_trs->SetScale({ 0,0 });
-
+                if(findObj ->GetName() == "Bullet")
+                {
+                    if (ColliderManager::GetInst()->IsCollision(findObj, obj))
+                    {
+                        BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
+                        bullet_comp->DestroyBullet();
+                    }
+                }
             }
-            //}
-        }
-        if (obj->GetName() == "Enemy")
-        {
-            if (ColliderManager::GetInst()->IsCollision(player_comp->GetBullet(), obj))
-            {
-                //player_comp->DestroyBullet();
 
-                //Change This to Delete : NOT SET SCALE!!!
-                TransComponent* bullet_trs = (TransComponent*)player_comp->GetBullet()->FindComponent("Transform");
-                bullet_trs->SetScale({ 0,0 });
-            }
         }
         if (obj->GetName() == "Test")
         {
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {
-                //player_comp->DestroyBullet();
-                
-                //Change This to Delete : NOT SET SCALE!!!
-                TransComponent* obj_trs = (TransComponent*)obj->FindComponent("Transform");
-                obj_trs->SetScale({ 0,0 });
-
                 //Error!!
                 //Where: in CompManager.cpp
                 //What: Exception thrown: read access violation. && iter->was 0xFFFFFFFFFFFFFFD7.
                 //Why: I think -> obj라는 게임오브젝트를 delete했는데 그 안에 있는 컴포넌트들도 삭제를 안해줘서 CompManager에서 업데이트를 할 때,
                 //객체를 잃어버린 둥둥 떠다니는 컴포넌트들을 업데이트 하려 하니 생긴 오류같다.
-                
-                delete obj;
+                //24.09.02 --> RemoveComponent()에서 오류가 나는것을 발견 --> 어떤 Component를 지울지를 몰랐기 때문에 엉뚱한 Component를 지우고 있었어서 memory leak가 났음
+                // RemoveComponent(BaseComponent * _comp) 로 수정하여 삭제할 Component의 주소값을 던져주어 그 Component들만 삭제하게 만듦
+
+                enemyDvec.x = -1;
+
+                //DESTROY ENEMY
+                //obj->SetActive(false); //Set false means DELETE AND REMOVE GO.
+                //obj = nullptr; //I dont have enemy anymore
+            }
+
+            //Test: Collision Enemy with Player's Bullet
+            for (auto findObj : GoManager::GetInst()->Allobj())
+            {
+                if (findObj->GetName() == "Bullet")
+                {
+                    if (ColliderManager::GetInst()->IsCollision(findObj, obj))
+                    {
+                        BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
+                        bullet_comp->DestroyBullet();
+
+                        obj->SetActive(false); //Set false means DELETE AND REMOVE GO.
+                        obj = nullptr; //I dont have enemy anymore
+                    }
+                }
             }
         }
-
     }              
     CameraManager::GetInst()->Update();
-
     GoManager::GetInst()->RemoveDeathObj();
+
     if (AEInputCheckPrev(AEVK_0))
     {
         GSM::GameStateManager::GetInst()->Exit();

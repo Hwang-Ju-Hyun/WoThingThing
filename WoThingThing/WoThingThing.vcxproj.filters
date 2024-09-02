@@ -126,6 +126,9 @@
     <Filter Include="Main\Sprite">
       <UniqueIdentifier>{7c3a7664-1c34-48b4-8a6f-ca0aa5f872b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Component\Bullet">
+      <UniqueIdentifier>{9617f689-3f9c-4f5a-958b-2b7aebadc83b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -253,6 +256,12 @@
     </ClCompile>
     <ClCompile Include="PlayerComponent.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletComponent.cpp">
+      <Filter>Component\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -384,6 +393,12 @@
     </ClInclude>
     <ClInclude Include="PlayerComponent.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletComponent.h">
+      <Filter>Component\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

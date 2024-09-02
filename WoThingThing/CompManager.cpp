@@ -25,22 +25,42 @@ void CompManager::AddComponent(std::string _name, BaseComponent* _comp)
 	//vectorø° ¿˙¿Â
 }
 
-void CompManager::RemoveComponent()
+//void CompManager::RemoveComponent()
+//
+//{	
+//	bool IsCompExist = false;
+//	for (auto iter = m_vecCompMgr.begin(); iter != m_vecCompMgr.end(); iter++)
+//	{						
+//		m_vecCompMgr.erase(iter);						
+//		IsCompExist = true;						
+//		break;
+//	}	
+//	if (!IsCompExist)
+//	{
+//		//std::cout << "Can't find Component(RemoveComponent)" << std::endl;
+//		return;
+//	}
+//		
+//}
 
-{	
+void CompManager::RemoveComponent(BaseComponent* _comp)
+{
 	bool IsCompExist = false;
 	for (auto iter = m_vecCompMgr.begin(); iter != m_vecCompMgr.end(); iter++)
-	{						
-		m_vecCompMgr.erase(iter);						
-		IsCompExist = true;						
-		break;
-	}	
+	{
+		if (*iter == _comp)
+		{
+			m_vecCompMgr.erase(iter);
+			IsCompExist = true;
+			break;
+		}
+
+	}
 	if (!IsCompExist)
 	{
-		//std::cout << "Can't find Component(RemoveComponent)" << std::endl;
+		std::cout << "Can't find Component(RemoveComponent)" << std::endl;
 		return;
 	}
-		
 }
 
 BaseComponent* CompManager::FindComponent(std::string name)
@@ -78,22 +98,3 @@ void CompManager::Exit()
 	m_vecCompMgr.clear();
 }
 
-void CompManager::RemoveComponent(const std::string& _objname)
-{
-	bool IsCompExist = false;
-	for (auto iter = m_vecCompMgr.begin(); iter != m_vecCompMgr.end(); iter++)
-	{
-		if ((*iter)->m_pOwner->GetName() == _objname)
-		{
-			m_vecCompMgr.erase(iter);
-			IsCompExist = true;
-			break;
-		}
-		
-	}
-	if (!IsCompExist)
-	{
-		//std::cout << "Can't find Component(RemoveComponent)" << std::endl;
-		return;
-	}
-}

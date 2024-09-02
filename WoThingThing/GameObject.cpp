@@ -24,10 +24,8 @@ GameObject::~GameObject()
             iter++;
         }
     }
-    m_mapComp.clear();    
+    m_mapComp.clear();
     
-    //delete All Object
-    GoManager::GetInst()->RemoveDeathObj(); 
 }
 
 BaseComponent* GameObject::AddComponent(const std::string& _name, BaseComponent* _comp)
@@ -71,7 +69,7 @@ void GameObject::DeleteComponent(const std::string& _name)
         //std::cout << "DeleteComponent Error(GameObject) : Can't Find BaseComponent in m_mapComp" << std::endl;
         return;
     }
-    CompManager::GetInst()->RemoveComponent();
+    CompManager::GetInst()->RemoveComponent(iter->second);
     
     delete iter->second;
     m_mapComp.erase(iter);
