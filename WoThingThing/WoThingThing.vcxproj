@@ -11,49 +11,86 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AiComponent.h" />
     <ClInclude Include="AudioResource.h" />
     <ClInclude Include="BaseComponent.h" />
+    <ClInclude Include="BaseEnemyState.h" />
     <ClInclude Include="BaseLevel.h" />
+    <ClInclude Include="BaseRTTI.h" />
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="BulletComponent.h" />
+    <ClInclude Include="CameraManager.h" />
+    <ClInclude Include="Chase.h" />
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="CompManager.h" />
+    <ClInclude Include="EnemyAttack.h" />
+    <ClInclude Include="EnemyStateManager.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="GoManager.h" />
     <ClInclude Include="header.h" />
+    <ClInclude Include="IDLE.h" />
+    <ClInclude Include="IDLE_Sniper.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainMenu_Lvl.h" />
+    <ClInclude Include="Patrol.h" />
+    <ClInclude Include="PlayerComponent.h" />
+    <ClInclude Include="Registry.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceManager.h" />
     <ClInclude Include="RigidBodyComponent.h" />
+    <ClInclude Include="Serializer.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Stage01_Lvl.h" />
+    <ClInclude Include="TargetAim_Sniper.h" />
+    <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TextResource.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="TransComponent.h" />
     <ClInclude Include="Utility.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AiComponent.cpp" />
     <ClCompile Include="AudioResource.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
+    <ClCompile Include="BaseEnemyState.cpp" />
     <ClCompile Include="BaseLevel.cpp" />
+    <ClCompile Include="BaseRTTI.cpp" />
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="BulletComponent.cpp" />
+    <ClCompile Include="CameraManager.cpp" />
+    <ClCompile Include="Chase.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="CompManager.cpp" />
+    <ClCompile Include="EnemyAttack.cpp" />
+    <ClCompile Include="EnemyStateManager.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="GoManager.cpp" />
+    <ClCompile Include="IDLE.cpp" />
+    <ClCompile Include="IDLE_Sniper.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu_Lvl.cpp" />
+    <ClCompile Include="Patrol.cpp" />
+    <ClCompile Include="PlayerComponent.cpp" />
+    <ClCompile Include="Registry.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceManager.cpp" />
     <ClCompile Include="RigidBodyComponent.cpp" />
+    <ClCompile Include="Serializer.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Stage01_Lvl.cpp" />
+    <ClCompile Include="TargetAim_Sniper.cpp" />
+    <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TextResource.cpp" />
     <ClCompile Include="TimeManager.cpp" />
     <ClCompile Include="TransComponent.cpp" />
     <ClCompile Include="Utility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="temp.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
@@ -113,7 +150,7 @@
       <AdditionalDependencies>Alpha_EngineD.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q
+      <Command>xcopy "$(SolutionDir)Extern\Assets\*" "$(OutDir)Assets\" /s /r /y /q
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\freetype.dll" "$(OutDir)" /s /r /y /q
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\Alpha_EngineD.dll" "$(OutDir)" /s /r /y /q
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmodL.dll" "$(OutDir)" /s /r /y /q</Command>
@@ -136,7 +173,7 @@ xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmodL.dll" "$(OutDir)" /s /r /y /q</
       <AdditionalDependencies>Alpha_Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy "$(SolutionDir)Assets\*" "$(OutDir)Assets\" /s /r /y /q
+      <Command>xcopy "$(SolutionDir)Extern\Assets\*" "$(OutDir)Assets\" /s /r /y /q
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\freetype.dll" "$(OutDir)" /s /r /y /q
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\Alpha_Engine.dll" "$(OutDir)" /s /r /y /q
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q

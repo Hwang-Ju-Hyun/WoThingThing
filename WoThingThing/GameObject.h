@@ -5,12 +5,14 @@ class BaseComponent;
 
 class GameObject
 {
+	bool active{ true };
+
 public:
 	GameObject() = delete;
 	GameObject(std::string _name);
 	~GameObject();
 private:
-	std::string m_sName;		
+	std::string m_sName;	
 public:
 	void SetName(const std::string& _name) { m_sName = _name; }
 	const std::string& GetName()const { return m_sName; }
@@ -20,6 +22,22 @@ public:
 	BaseComponent* AddComponent(const std::string& _name, BaseComponent* _comp);
 	BaseComponent* FindComponent(const std::string& _name);	
 	void DeleteComponent(const std::string& _name);
+
+	void SetActive(bool sw);
+	bool GetActive();
+
+public:
+	std::map<std::string, BaseComponent*> GetAllComp()
+	{
+		return m_mapComp;
+	}
+
+//Node Info
+private:
+	int m_nodeCost;
+public:
+	void SetNodeCost(int _cost) { m_nodeCost = _cost; }
+	int GetNodeCost()const		{ return m_nodeCost; }
 public:
 	friend class BaseComponent;
 };

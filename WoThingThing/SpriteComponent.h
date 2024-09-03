@@ -3,8 +3,7 @@
 
 class GameObject;
 
-class SpriteComponent :
-    public BaseComponent
+class SpriteComponent : public BaseComponent
 {
 public:
     SpriteComponent(GameObject* _owner);
@@ -22,4 +21,10 @@ public:
     AEGfxVertexList* mesh;
 public:
     Color& GetColor(){ return m_color; }    
+public:
+    static BaseRTTI* CreateSpriteComponent();
+    static constexpr const char* SpriteTypeName = "Sprite";
+public:
+    virtual void LoadFromJson(const json& str)override;
+    virtual json SaveToJson()override;
 };

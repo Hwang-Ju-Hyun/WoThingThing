@@ -1,23 +1,42 @@
-#include "Stage01_Lvl.h"
+#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#include <iostream>
 #include "header.h"
-#include "MainMenu_Lvl.h"
+
 #include "GameStateManager.h"
+#include "MainMenu_Lvl.h"
+#include "Stage01_Lvl.h"
+
 #include "GameObject.h"
 #include "GoManager.h"
+
 #include "BaseComponent.h"
 #include "TransComponent.h"
 #include "SpriteComponent.h"
-#include "CompManager.h"
-#include "ColliderManager.h"
 #include "RigidBodyComponent.h"
+#include "PlayerComponent.h"
+#include "BulletComponent.h"
+#include "CompManager.h"
+
+#include "EventManager.h"
+#include "ColliderManager.h"
 #include "ResourceManager.h"
+#include "TimeManager.h"
 #include "AudioResource.h"
 #include "TextResource.h"
-#include "Utility.h"
-#include "TimeManager.h"
-#include "EventManager.h"
-#include "AEInput.h"
 
+#include "Serializer.h"
+
+#include "Utility.h"
+#include "AiComponent.h"
+#include "CameraManager.h"
+#include "AEInput.h"
+#include "AEUtil.h"
+#include "AEMath.h"
+
+#include "Bullet.h"
+#include"TargetAim_Sniper.h"
+
+AEVec2 enemyDvec{ 1, 0 };
 
 Level::Stage01_Lvl::Stage01_Lvl()
 {
@@ -28,337 +47,327 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 }
 
 void Level::Stage01_Lvl::Init()
-{
+{    
     //Object and Component Init
-	player1 = new GameObject("Player1");
-	player2 = new GameObject("Player2");
-	ball    = new GameObject("Ball");
-    goalPost1 = new GameObject("GoalPost1");
-    goalPost2 = new GameObject("GoalPost2");
-    UpperPost = new GameObject("UpperPost");
-    DownPost = new GameObject("DownPost");
+    Serializer::GetInst()->LoadLevel("temp.json");
 
-	GoManager::GetInst()->AddObject(player1);
-	GoManager::GetInst()->AddObject(player2);
-	GoManager::GetInst()->AddObject(ball);
-    GoManager::GetInst()->AddObject(goalPost1);
-    GoManager::GetInst()->AddObject(goalPost2);
-    GoManager::GetInst()->AddObject(UpperPost);
-    GoManager::GetInst()->AddObject(DownPost);
-
-	player1->AddComponent("Transform", new TransComponent(player1));
-	player1->AddComponent("Sprite", new SpriteComponent(player1));
-
-	player2->AddComponent("Transform", new TransComponent(player2));
-	player2->AddComponent("Sprite", new SpriteComponent(player2));
-
-	ball->AddComponent("Transform", new TransComponent(ball));
-	ball->AddComponent("Sprite", new SpriteComponent(ball));  
-    ball->AddComponent("RigidBody", new RigidBodyComponent(ball));
-
-    goalPost1->AddComponent("Transform", new TransComponent(goalPost1));
-    goalPost1->AddComponent("Sprite", new SpriteComponent(goalPost1));
-
-    goalPost2->AddComponent("Transform", new TransComponent(goalPost2));
-    goalPost2->AddComponent("Sprite", new SpriteComponent(goalPost2));
-
-    UpperPost->AddComponent("Transform", new TransComponent(UpperPost));
-    UpperPost->AddComponent("Sprite", new SpriteComponent(UpperPost));
-
-    DownPost->AddComponent("Transform", new TransComponent(DownPost));
-    DownPost->AddComponent("Sprite", new SpriteComponent(DownPost));
+    player = new GameObject("Player");
+    GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
+    player->AddComponent("Transform", new TransComponent(player));
+    player->AddComponent("Sprite", new SpriteComponent(player));    
+    player->AddComponent("PlayerComp", new PlayerComponent(player));
     
 
-    //Audio Init
-    auto res = ResourceManager::GetInst()->Get("bgm", "Assets/bouken.mp3");
-    AudioResource* bgm_res = static_cast<AudioResource*>(res);
-    bgm_res->SetSFXorMusic(Sound::MUSIC);
-    auto bgm_audio = bgm_res->GetAudio();
-    auto bgm_audioGroup = bgm_res->GetAudioGroup();
-    AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);        
+    aimTrace = new GameObject("aimTrace");
+    GoManager::GetInst()->AddObject(aimTrace);
+    aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
+    aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));   
+
+
+    //EventManager에서 요거 지우쇼 
+    RePosition* Platform_Player = new RePosition;
+    EventManager::GetInst()->AddEntity("Collision",Platform_Player);
+
+    //Enemy
+    Enemy = new GameObject("Enemy");
+    GoManager::GetInst()->AddObject(Enemy);
+
+    Enemy->AddComponent("Transform", new TransComponent(Enemy));
+    Enemy->AddComponent("Sprite", new SpriteComponent(Enemy));
+    Enemy->AddComponent("RigidBody", new RigidBodyComponent(Enemy));
+    Enemy->AddComponent("Ai", new AiComponent(Enemy));
+    AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
+    Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+    //Enemy_state->SetSniper_bullet(Enemy_bullet);
+    Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+    Enemy_state->Setdir_time(2.0f);
+    Enemy_state->SetState("IDLE","Melee");
+    //Enemy_state->SetState("IDLE_Sniper", "Sniper");
+
+
+
+    EnemySniper = new GameObject("EnemySniper");
+    GoManager::GetInst()->AddObject(EnemySniper);
+    
+    EnemySniper->AddComponent("Transform", new TransComponent(EnemySniper));
+    EnemySniper->AddComponent("Sprite", new SpriteComponent(EnemySniper));
+    EnemySniper->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper));
+    EnemySniper->AddComponent("Ai", new AiComponent(EnemySniper));
+    AiComponent* EnemySniper_state = (AiComponent*)EnemySniper->FindComponent("Ai");
+    EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+    EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+    EnemySniper_state->Setdir_time(1.0f);
+    //EnemySniper_state->SetState("IDLE", "Melee");
+    EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
+
+
+    auto vecObj = GoManager::GetInst()->Allobj();
+    for (int i = 0; i < vecObj.size(); i++)
+    {
+        if (vecObj[i]->GetName() == "Node")
+        {
+            vecObj[i]->AddComponent("Sprite", new SpriteComponent(vecObj[i]));
+            SpriteComponent* node_spr = static_cast<SpriteComponent*>(vecObj[i]->FindComponent("Sprite"));
+            node_spr->m_color.red = 155;
+            node_spr->m_color.green = 250;
+            node_spr->m_color.blue = 255;
+        }
+    }
+
+    CameraManager::GetInst()->SetMouse(mouseAim);
+    CameraManager::GetInst()->SetPlayer(player);
+    CameraManager::GetInst()->SetAim(aimTrace);
+
 }
 
 void Level::Stage01_Lvl::Update()
-{    
+{
+    //Component Pointer
+    AiComponent* Enemy_meleeAi = (AiComponent*)Enemy->FindComponent("Ai");
+
     //Component 
-	TransComponent* player1_trs = (TransComponent*)player1->FindComponent("Transform");    
-	SpriteComponent* player1_spr = (SpriteComponent*)player1->FindComponent("Sprite");   
-
-    TransComponent* player2_trs = (TransComponent*)player2->FindComponent("Transform");    
-    SpriteComponent* player2_spr = (SpriteComponent*)player2->FindComponent("Sprite");
-
-    TransComponent* ball_trs = (TransComponent*)ball->FindComponent("Transform");
-    SpriteComponent* ball_spr = (SpriteComponent*)ball->FindComponent("Sprite");        
-    RigidBodyComponent* ball_rb = (RigidBodyComponent*)ball->FindComponent("RigidBody");
-
-    TransComponent* goalPost1_trs = (TransComponent*)goalPost1->FindComponent("Transform");
-    SpriteComponent* goalPost1_spr = (SpriteComponent*)goalPost1->FindComponent("Sprite");
-
-    TransComponent* goalPost2_trs = (TransComponent*)goalPost2->FindComponent("Transform");
-    SpriteComponent* goalPost2_spr = (SpriteComponent*)goalPost2->FindComponent("Sprite");          
-
-    TransComponent*  UpperPost_trs = (TransComponent*) UpperPost->FindComponent("Transform");
-    SpriteComponent* UpperPost_spr = (SpriteComponent*)UpperPost->FindComponent("Sprite");
-
-    TransComponent*  DownPost_trs = (TransComponent*) DownPost->FindComponent("Transform");
-    SpriteComponent* DownPost_spr = (SpriteComponent*)DownPost->FindComponent("Sprite");
-
-
-    //Score Text
-    auto text_res = ResourceManager::GetInst()->Get("text", "Assets/liberation-mono.ttf");
-    TextResource* ScoreText_res = static_cast<TextResource*>(text_res);
-    ScoreText_res->SetText("Score");
+    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
+    SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
+    RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
     
-    auto font = ScoreText_res->GetFont();
-    auto text = ScoreText_res->GetText();
-    auto height = ScoreText_res->GetHeight();
-            
 
-    //PlayerMovement
-    for (auto player : GoManager::GetInst()->Allobj())
-    {        
-        if (player->GetName() == "Player1")
-        {
-            if (AEInputCheckCurr(AEVK_W))
-            {                
-                if(player1_trs->GetPos().y< 380)
-                    player1_trs->AddPos(0.f, 10.f);                
-            }
-            if (AEInputCheckCurr(AEVK_S))
-            {   
-                if (player1_trs->GetPos().y >-380)
-                    player1_trs->AddPos(0.f, -10.f);                
-            }                     
-        }
-        int x, y;
-        AEInputGetCursorPosition(&x, &y);        
-        if (player->GetName() == "Player2")
-        {            
-            if (-y + 350 < 380 &&-y+350>-380)
-            {
-                player2_trs->SetPos(750.f, -y + 350);                
-            }                                  
-        }       
-    }
-
-
-    //Check Collider and Add Collider Event
-    if (ColliderManager::GetInst()->IsCollision(ball, player1))
-    {        
-        Collision* colEvent = new Collision(ball, player1);
-        colEvent->SetEventName("Collision");
-        RePosition* ballAndPlayer1 = new RePosition;                
-        EventManager::GetInst()->AddEvent(colEvent);
-        EventManager::GetInst()->AddEntity(ballAndPlayer1);        
-        EventManager::GetInst()->AddEntityList("Collision", EventManager::GetInst()->GetEntityList());
-                
-        //audio
-        auto res = ResourceManager::GetInst()->Get("sfx", "Assets/ore.mp3");
-        AudioResource* sfx_res = static_cast<AudioResource*>(res);
-        sfx_res->SetSFXorMusic(Sound::MUSIC);
-        auto sfx_audio = sfx_res->GetAudio();
-        auto sfx_audioGroup = sfx_res->GetAudioGroup();
-        AEAudioPlay(sfx_audio, sfx_audioGroup, 1.f, 1.f, 0);
-    }
-    if (ColliderManager::GetInst()->IsCollision(ball, player2))
-    {           
-        Collision* colEvent = new Collision(ball, player2);
-        colEvent->SetEventName("Collision");
-        RePosition* ballAndPlayer2 = new RePosition;
-        EventManager::GetInst()->AddEvent(colEvent);
-        EventManager::GetInst()->AddEntity(ballAndPlayer2);
-        EventManager::GetInst()->AddEntityList("Collision", EventManager::GetInst()->GetEntityList());
-
-        //audio
-        auto res = ResourceManager::GetInst()->Get("sfx", "Assets/ore.mp3");
-        AudioResource* sfx_res = static_cast<AudioResource*>(res);
-        sfx_res->SetSFXorMusic(Sound::MUSIC);
-        auto sfx_audio = sfx_res->GetAudio();
-        auto sfx_audioGroup = sfx_res->GetAudioGroup();
-        AEAudioPlay(sfx_audio, sfx_audioGroup, 1.f, 1.f, 0);
-    }    
-        
-    if (ColliderManager::GetInst()->IsCollision(ball, DownPost))
-    {        
-        Collision* colEvent = new Collision(ball, DownPost);
-        colEvent->SetEventName("Collision");
-        RePosition* ballAndDownPost = new RePosition;
-        EventManager::GetInst()->AddEvent(colEvent);
-        EventManager::GetInst()->AddEntity(ballAndDownPost);
-        EventManager::GetInst()->AddEntityList("Collision", EventManager::GetInst()->GetEntityList());
-    }    
-    if (ColliderManager::GetInst()->IsCollision(ball, UpperPost))
+    if(EnemySniper!= nullptr)
     {
-        Collision* colEvent = new Collision(ball, UpperPost);
-        colEvent->SetEventName("Collision");
-        RePosition* ballAndUpperPost = new RePosition;
-        EventManager::GetInst()->AddEvent(colEvent);
-        EventManager::GetInst()->AddEntity(ballAndUpperPost);
-        EventManager::GetInst()->AddEntityList("Collision", EventManager::GetInst()->GetEntityList());
-        
+        AiComponent* Enemy_meleeAi = (AiComponent*)Enemy->FindComponent("Ai");
+        AiComponent* Enemy_SniperAi = (AiComponent*)EnemySniper->FindComponent("Ai");
     }
-        
-    //When player getScore     
-    if (ColliderManager::GetInst()->IsCollision(ball, goalPost1))
+
+
+    if (AEInputCheckCurr(AEVK_R) == true)
     {
-        Collision* colEvent = new Collision(ball, goalPost1);
-        colEvent->SetEventName("Collision");
-        RePosition* ballAndgoalPost1 = new RePosition;
-        EventManager::GetInst()->AddEvent(colEvent);
-        EventManager::GetInst()->AddEntity(ballAndgoalPost1);
-        EventManager::GetInst()->AddEntityList("Collision", EventManager::GetInst()->GetEntityList());
-        score[1]++;
-    }        
-    if (ColliderManager::GetInst()->IsCollision(ball, goalPost2))
-    {   
-        Collision* colEvent = new Collision(ball, goalPost2);
-        colEvent->SetEventName("Collision");
-        RePosition* ballAndgoalPost2 = new RePosition;
-        EventManager::GetInst()->AddEvent(colEvent);
-        EventManager::GetInst()->AddEntity(ballAndgoalPost2);
-        EventManager::GetInst()->AddEntityList("Collision", EventManager::GetInst()->GetEntityList());
-        
-        score[0]++;
+        //GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
     }
-
-
-    //Win Condition
-    if (score[0] >= 11)
-    {                
-        ball_rb->SetVelocityZero();   
-        m_bWin = true;
-    }
-    else if (score[1] >= 11)
-    {                
-        ball_rb->SetVelocityZero();        
-        m_bWin = true;
-    }    
-
-    //Sprite
-    for (auto comp : CompManager::GetInst()->AllComp())
-    {                
-        if (comp->GetName()=="Sprite")
-        {
-            if (comp->m_pOwner->GetName() == "GoalPost1"|| comp->m_pOwner->GetName() == "GoalPost2")
-            {
-                SpriteComponent::Color& goalPostColor = static_cast<SpriteComponent*>(comp)->GetColor();
-                goalPostColor.red = 255;
-                goalPostColor.green = 0;
-                goalPostColor.blue = 0;
-            }
-            else if (comp->m_pOwner->GetName() == "Player1" || comp->m_pOwner->GetName() == "Player2")
-            {
-                SpriteComponent::Color& playerColor = static_cast<SpriteComponent*>(comp)->GetColor();
-                playerColor.red = 255;
-                playerColor.green = 255;
-                playerColor.blue = 255;
-            }
-            else if (comp->m_pOwner->GetName() == "UpperPost" || comp->m_pOwner->GetName() == "DownPost")
-            {
-                SpriteComponent::Color& PostColor = static_cast<SpriteComponent*>(comp)->GetColor();
-                PostColor.red = 255;
-                PostColor.green = 255;
-                PostColor.blue = 255;
-            }
-            else
-            {                
-                SpriteComponent::Color& Color = static_cast<SpriteComponent*>(comp)->GetColor();
-                float time = TimeManager::GetInst()->GetAccTime();
-                if (time / 4 < 0.5)
-                {
-                    if (score[0] >2|| score[1] > 2)
-                    {
-                        Color.red = Utility::GetInst()->lerp(0.f, 1.0f, time / 2) * 255;                        
-                        Color.blue = 0.f;
-                        Color.green = 0.f;
-                    }
-                    else
-                    {
-                        Color.red = 255.f;
-                        Color.blue = 0.f;
-                        Color.green = 0.f;
-                    }                    
-                }
-                else if (time / 4 >= 0.5 && time / 4 < 1)
-                {
-                    if (score[0] > 2 || score[1] > 2)
-                    {
-                        Color.red = Utility::GetInst()->lerp(1.f, 0.0f, time / 2 - 1) * 255;
-                        Color.blue = 0.f;
-                        Color.green = 0.f;
-                    }
-                    else
-                    {
-                        Color.red = 255.f;
-                        Color.blue = 0.f;
-                        Color.green = 0.f;
-                    }                    
-                }
-                else
-                {
-                    TimeManager::GetInst()->SetAccTime(0.f);
-                }
-            }
-            
-        }              
-    }    
-
-
-    if (m_bWin == false)
-    {        
-        AEGfxPrint(font, text, -0.1f, 1.f - (height + 0.057), 1, 1, 1, 1, 1);
-
-        ScoreText_res->SetText(std::to_string(score[0]));
-        AEGfxPrint(font, text, -0.1f, 1.f - (height + 0.3), 1, 1, 1, 1, 1);
-
-
-        ScoreText_res->SetText(std::to_string(score[1]));
-        AEGfxPrint(font, text, 0.1f, 1.f - (height + 0.3), 1, 1, 1, 1, 1);
-    }
-    else
+    else if (AEInputCheckCurr(AEVK_E) == true)
     {
-        if (score[1] > score[0])
-        {
-            ScoreText_res->SetText("Player2 WIN ! !");
-            AEGfxPrint(font, text, -0.35f, 1.f - (height + 0.15), 1, 1, 1, 1, 1);
-        }
-        else
-        {
-            ScoreText_res->SetText("Player1 WIN ! !");
-            AEGfxPrint(font, text, -0.35f, 1.f - (height + 0.15), 1, 1, 1, 1, 1);
-        }
-        ScoreText_res->SetText("Retry : R");
-        AEGfxPrint(font, text, -0.35f, 1.f - (height + 0.35), 0.5, 1, 1, 1, 1);
-        ScoreText_res->SetText("Go Title : T");
-        AEGfxPrint(font, text, -0.35f, 1.f - (height + 0.55), 0.5, 1, 1, 1, 1);
-        ScoreText_res->SetText("Exit : E");
-        AEGfxPrint(font, text, -0.35f, 1.f - (height + 0.75), 0.5, 1, 1, 1, 1);
-
-        if (AEInputCheckCurr(AEVK_R) == true)
-        {
-            GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
-        }
-        else if (AEInputCheckCurr(AEVK_E) == true)
-        {
-            GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
-        }
-        else if (AEInputCheckCurr(AEVK_T) == true)
-        {            
-            GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
-        }
+        GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
     }
+    else if (AEInputCheckCurr(AEVK_T) == true)
+    {
+        GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
+    }
+
+    Collision();
+
+    CameraManager::GetInst()->Update();
+    GoManager::GetInst()->RemoveDeathObj();
+
+    if (AEInputCheckPrev(AEVK_0))
+    {
+        GSM::GameStateManager::GetInst()->Exit();
+    }
+
+    //Test line
+    if (AEInputCheckTriggered(AEVK_4))
+        CreateSupplement({ 0, -300 });
     
+
 }
 
 void Level::Stage01_Lvl::Exit()
 {
-    //std::cout << "Stage01 : Exit" << std::endl;  
-    //delete All Object 컴포넌트와 컴포넌트 매니저는 game오브젝트 소멸되면서 자동으로 됨
-    //이게 최선일까....
-    //MemoryLeak Problem solved ↓    
-    auto res = ResourceManager::GetInst()->GetReource();      
-    //밑에 있는거 이렇게 지우면 안됨 수정하셈    
-    //res.FindRes("bgm")->second->UnLoad(); <- 수정중
+
+    auto res = ResourceManager::GetInst()->GetReource();
     ResourceManager::GetInst()->RemoveAllRes();
-    GoManager::GetInst()->RemoveAllObj();    
+    GoManager::GetInst()->RemoveAllObj();
 }
+
+void Level::Stage01_Lvl::Collision()
+{
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    //Collision
+    int cnt = 0;
+    for (auto obj : GoManager::GetInst()->Allobj())
+    {
+        //Platform
+        if (obj->GetName() == "Platform")
+        {
+            if (ColliderManager::GetInst()->IsCollision(player, obj))
+            {
+                HandleCollision(player, obj);
+            }
+            if (ColliderManager::GetInst()->IsCollision(Enemy, obj))
+            {
+                HandleCollision(Enemy, obj);
+                //AI COMP세팅을 해주고
+                Enemy_Platform_Collision_Event* e_p_c_e = new Enemy_Platform_Collision_Event(obj, Enemy);
+                EventManager::GetInst()->AddEvent(e_p_c_e);
+            }
+            if (ColliderManager::GetInst()->IsCollision(EnemySniper, obj))
+            {
+                HandleCollision(EnemySniper, obj);
+            }
+            int a = 0;
+            for (auto findObj : GoManager::GetInst()->Allobj())
+            {
+                if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
+                {
+                    if (ColliderManager::GetInst()->IsCollision(findObj, obj))
+                    {
+                        
+                        std::cout <<"cnt : "<< ++a << std::endl;
+                        BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
+                        bullet_comp->DestroyBullet();
+                    }
+                }
+            }
+        }
+        if (obj->GetName() == "EnemyBullet")
+        {
+           if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
+           {
+               BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+               AEVec2 returnbullet = bullet_comp->GetBulletVec();
+               float dt = AEFrameRateControllerGetFrameTime();
+               if (AEInputCheckCurr(AEVK_LSHIFT)) 
+               {
+                   bullet_comp->SetBulletVec({ -1 * returnbullet.x * dt,-1 * returnbullet.y * dt });
+               }
+               else 
+               {
+                   bullet_comp->SetBulletVec({ -1 * returnbullet.x,-1 * returnbullet.y });
+               }
+           }
+        }
+        if (obj->GetName() == "EnemySniper")
+        {
+            //Test: Collision Enemy with Player's Bullet
+            for (auto findObj : GoManager::GetInst()->Allobj())
+            {
+                if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
+                {
+                    if (ColliderManager::GetInst()->IsCollision(findObj, obj))
+                    {
+                        std::cout << "c" << std::endl;
+                        BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
+                        bullet_comp->DestroyBullet();
+
+                        EnemySniper->SetActive(false);
+                        EnemySniper = nullptr;
+                    }
+                }
+            }
+
+        }
+
+        if (obj->GetName() == "BulletSupplement")
+        {
+            if (ColliderManager::GetInst()->IsCollision(player, obj))
+            {
+                AddBullet();
+                std::cout << "Add Bullet!" << std::endl;
+
+                obj->SetActive(false);
+            }
+
+        }
+    }
+}
+
+//바닥이랑 obj Collision이면서 위치보정
+void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
+{
+    // Transform 및 RigidBody 컴포넌트 가져오기
+    TransComponent* obj_trs1 = static_cast<TransComponent*>(obj1->FindComponent("Transform"));
+    TransComponent* obj_trs2 = static_cast<TransComponent*>(obj2->FindComponent("Transform"));
+
+
+    AEVec2 obj1_Pos = obj_trs1->GetPos();
+    AEVec2 obj2_Pos = obj_trs2->GetPos();
+
+    AEVec2 obj1_Scale = obj_trs1->GetScale();
+    AEVec2 obj2_Scale = obj_trs2->GetScale();
+
+    //RigidBodyComponent* obj_rb1 = static_cast<RigidBodyComponent*>(obj1->FindComponent("RigidBody"));
+    if (obj1->GetName() == "Enemy" || obj1->GetName() == "EnemySniper")
+    {
+        RigidBodyComponent* obj_rb1 = static_cast<RigidBodyComponent*>(obj1->FindComponent("RigidBody"));
+        //check 4 distance
+        float distanceUpper = std::fabs(obj2_Pos.y + (obj2_Scale.y / 2.f) - (obj1_Pos.y - obj1_Scale.y / 2.f));
+        float distanceDown = std::fabs(obj2_Pos.y - (obj2_Scale.y / 2.f) - (obj1_Pos.y + obj1_Scale.y / 2.f));
+        float distanceRight = std::fabs(obj2_Pos.x + (obj2_Scale.x / 2.f) - (obj1_Pos.x - obj1_Scale.x / 2.f));
+        float distanceLeft = std::fabs(obj2_Pos.x - (obj2_Scale.x / 2.f) - (obj1_Pos.x + obj1_Scale.x / 2.f));
+
+
+        float distArr[4] = { distanceUpper,distanceRight,distanceLeft,distanceDown };
+        float minDistance = distArr[0];
+        int direct = 0;
+        for (int i = 1; i < 4; i++)
+        {
+            if (minDistance > distArr[i])
+            {
+                minDistance = distArr[i];
+                direct = i;
+            }
+        }
+    
+
+        switch (direct)
+        {
+        case 0://Upper
+            obj_trs1->AddPos({ 0,minDistance });
+            obj_rb1->SetJumpVelocityZero();
+            //obj_rb1->SetJumpCntZero();
+            break;
+        case 1://Right
+            obj_trs1->AddPos({ minDistance , 0 });
+            break;
+        case 2://Left		
+            obj_trs1->AddPos({ -minDistance, 0 });
+            break;
+        case 3://Down
+            obj_trs1->AddPos({ 0,-minDistance });
+            obj_rb1->SetJumpVelocityZero();
+            break;
+        }
+    }
+    else if(obj1->GetName() == "Player")
+    {
+        PlayerComponent* obj_player = static_cast<PlayerComponent*>(obj1->FindComponent("PlayerComp"));
+
+        //check 4 distance
+        float distanceUpper = std::fabs(obj2_Pos.y + (obj2_Scale.y / 2.f) - (obj1_Pos.y - obj1_Scale.y / 2.f));
+        float distanceDown = std::fabs(obj2_Pos.y - (obj2_Scale.y / 2.f) - (obj1_Pos.y + obj1_Scale.y / 2.f));
+        float distanceRight = std::fabs(obj2_Pos.x + (obj2_Scale.x / 2.f) - (obj1_Pos.x - obj1_Scale.x / 2.f));
+        float distanceLeft = std::fabs(obj2_Pos.x - (obj2_Scale.x / 2.f) - (obj1_Pos.x + obj1_Scale.x / 2.f));
+
+
+        float distArr[4] = { distanceUpper,distanceRight,distanceLeft,distanceDown };
+        float minDistance = distArr[0];
+        int direct = 0;
+        for (int i = 1; i < 4; i++)
+        {
+            if (minDistance > distArr[i])
+            {
+                minDistance = distArr[i];
+                direct = i;
+            }
+        }     
+
+        switch (direct)
+        {
+        case 0://Upper
+            obj_trs1->AddPos({ 0,minDistance });
+            obj_player->SetJumpVelocityZero();
+            obj_player->SetJumpCntZero();
+            break;
+        case 1://Right
+            obj_trs1->AddPos({ minDistance , 0 });
+            break;
+        case 2://Left		
+            obj_trs1->AddPos({ -minDistance, 0 });
+            break;
+        case 3://Down
+            obj_trs1->AddPos({ 0,-minDistance });
+            obj_player->SetJumpVelocityZero();
+            break;
+        }
+    }
+   
+}
+

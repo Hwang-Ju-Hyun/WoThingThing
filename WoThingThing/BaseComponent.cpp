@@ -13,3 +13,12 @@ GameObject* BaseComponent::GetOwner()
 {
 	return m_pOwner;
 }
+
+void BaseComponent::LoadFromJson(const json& str)
+{
+}
+
+json BaseComponent::SaveToJson()
+{
+	return json();
+}

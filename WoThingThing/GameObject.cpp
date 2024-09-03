@@ -1,7 +1,9 @@
 #include "GameObject.h"
 #include "BaseComponent.h"
+#include "MainMenu_Lvl.h"
 #include "CompManager.h"
 #include "GoManager.h"
+#include "GameStateManager.h"
 
 GameObject::GameObject(std::string _name)
     :m_sName(_name)
@@ -23,8 +25,7 @@ GameObject::~GameObject()
         }
     }
     m_mapComp.clear();
-    //delete All Object
-
+    
 }
 
 BaseComponent* GameObject::AddComponent(const std::string& _name, BaseComponent* _comp)
@@ -35,11 +36,15 @@ BaseComponent* GameObject::AddComponent(const std::string& _name, BaseComponent*
         return nullptr;
     }
     _comp->m_pOwner = this;
+    //들어온 BaseComponent* [Component]의 매개변수는 BaseComponent가 가지고 있는 m_pOwner에 들어온 매개변수를 대입한다.
     
     m_mapComp.insert({ _name, _comp });
-    
+    //맵에 저장한다 이름, 컴포넌트의 종류(해당하는 게임 오브젝트)
+    //GameObject에 있는 map에도 저장해준다.
+
     
     CompManager::GetInst()->AddComponent(_name,_comp);
+    //컴포넌트 매니저에도 저장해준다
     return _comp;
 }
 
@@ -64,7 +69,18 @@ void GameObject::DeleteComponent(const std::string& _name)
         //std::cout << "DeleteComponent Error(GameObject) : Can't Find BaseComponent in m_mapComp" << std::endl;
         return;
     }
-    CompManager::GetInst()->RemoveComponent();
+    CompManager::GetInst()->RemoveComponent(iter->second);
+    
     delete iter->second;
     m_mapComp.erase(iter);
+}
+
+void GameObject::SetActive(bool sw)
+{
+    active = sw;
+}
+
+bool GameObject::GetActive()
+{
+    return active;
 }
