@@ -74,7 +74,7 @@ void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname)
 		bullet_trs->SetScale({ 10, 10 });
 	}
 }
-
+ 
 void CreateSupplement(AEVec2 initPos)
 {
 	//i) 고정된 위치값으로 생성하기

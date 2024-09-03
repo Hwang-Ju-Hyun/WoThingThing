@@ -15,7 +15,7 @@ public:
 	void RemoveAllObj();
 	void RemoveObj(const std::string& _name);
 
-	GameObject* FindObj(std::string& _name);
+	GameObject* FindObj(std::string _name);
 
 	GameObject* GetLastObj();	
 	std::vector<GameObject*> Allobj() 

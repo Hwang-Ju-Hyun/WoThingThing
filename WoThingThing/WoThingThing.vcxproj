@@ -27,6 +27,7 @@
     <ClInclude Include="EnemyStateManager.h" />
     <ClInclude Include="EventManager.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameOver_Lvl.h" />
     <ClInclude Include="GameStateManager.h" />
     <ClInclude Include="GoManager.h" />
     <ClInclude Include="header.h" />
@@ -67,6 +68,7 @@
     <ClCompile Include="EnemyStateManager.cpp" />
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameOver_Lvl.cpp" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="GoManager.cpp" />
     <ClCompile Include="IDLE.cpp" />
@@ -153,7 +155,8 @@
       <Command>xcopy "$(SolutionDir)Extern\Assets\*" "$(OutDir)Assets\" /s /r /y /q
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\freetype.dll" "$(OutDir)" /s /r /y /q
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\Alpha_EngineD.dll" "$(OutDir)" /s /r /y /q
-xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmodL.dll" "$(OutDir)" /s /r /y /q</Command>
+xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmodL.dll" "$(OutDir)" /s /r /y /q
+xcopy "$(ProjectDir)*.json" "$(OutDir)" /s /r /y /q</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

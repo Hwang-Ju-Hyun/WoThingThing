@@ -14,7 +14,7 @@ namespace Level
         GameObject* mouseAim;
         GameObject* aimTrace;
 
-
+        bool gameOver;
     public:
         Stage01_Lvl();
         ~Stage01_Lvl();

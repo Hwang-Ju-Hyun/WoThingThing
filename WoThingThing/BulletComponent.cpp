@@ -36,8 +36,12 @@ void BulletComponent::Update()
 	TransComponent* bullet_trs = (TransComponent*)m_pOwner->FindComponent("Transform");
 	AEVec2 bullet_pos = static_cast<TransComponent*>(bullet_trs)->GetPos();
 
+	GameObject* tempPlayer = GoManager::GetInst()->FindObj("Player");
+	PlayerComponent* temp_comp = (PlayerComponent*)tempPlayer->FindComponent("PlayerComp");
+	bool manipulActive = temp_comp->GetManiActive();
+
 	float dt = AEFrameRateControllerGetFrameTime();
-	if (AEInputCheckCurr(AEVK_LSHIFT))
+	if (AEInputCheckCurr(AEVK_LSHIFT) && manipulActive)
 	{
 		bullet_pos.x += bullet_Vec.x * dt;
 		bullet_pos.y += bullet_Vec.y * dt;

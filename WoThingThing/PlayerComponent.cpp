@@ -33,7 +33,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 
 	melee = nullptr;
 
-	timeManipul = 3.f;
+	timeManipul = 7.f;
 	manipulActive = false;
 }
 
@@ -79,7 +79,7 @@ void PlayerComponent::MoveMent()
 	if (!AEInputCheckCurr(AEVK_LSHIFT))
 	{
 		manipulActive = false;
-		if (timeManipul < 3.f)
+		if (timeManipul < 7.f)
 			timeManipul += dt;
 		std::cout << timeManipul << std::endl;
 	}
@@ -145,7 +145,7 @@ void PlayerComponent::MoveMent()
 
 bool PlayerComponent::GetManiActive()
 {
-	return timeManipul;
+	return manipulActive;
 }
 
 //About mouse

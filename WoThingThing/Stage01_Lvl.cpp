@@ -5,6 +5,7 @@
 #include "GameStateManager.h"
 #include "MainMenu_Lvl.h"
 #include "Stage01_Lvl.h"
+#include "GameOver_Lvl.h"
 
 #include "GameObject.h"
 #include "GoManager.h"
@@ -118,6 +119,7 @@ void Level::Stage01_Lvl::Init()
     CameraManager::GetInst()->SetPlayer(player);
     CameraManager::GetInst()->SetAim(aimTrace);
 
+    gameOver = false;
 }
 
 void Level::Stage01_Lvl::Update()
@@ -166,12 +168,17 @@ void Level::Stage01_Lvl::Update()
     if (AEInputCheckTriggered(AEVK_4))
         CreateSupplement({ 0, -300 });
     
+    if (gameOver)
+    {
+        GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
+        gsm->ChangeLevel(new Level::GameOver_Lvl);
 
+        return;
+    }
 }
 
 void Level::Stage01_Lvl::Exit()
 {
-
     auto res = ResourceManager::GetInst()->GetReource();
     ResourceManager::GetInst()->RemoveAllRes();
     GoManager::GetInst()->RemoveAllObj();
@@ -232,6 +239,12 @@ void Level::Stage01_Lvl::Collision()
                {
                    bullet_comp->SetBulletVec({ -1 * returnbullet.x,-1 * returnbullet.y });
                }
+           }
+
+           //Player Death
+           if (ColliderManager::GetInst()->IsCollision(player, obj))
+           {
+               gameOver = true;
            }
         }
         if (obj->GetName() == "EnemySniper")
@@ -370,4 +383,3 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
     }
    
 }
-
