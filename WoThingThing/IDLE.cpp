@@ -4,8 +4,7 @@
 #include"EnemyStateManager.h"
 #include"ColliderManager.h"
 #include"TimeManager.h"
-#include"TestLevel.h"//보는 방향 업데이트를 위해서(나중에는 사용될 스테이지에서 사용할 예정)
-//나중에 보는값을 고정시키지말고 내가 직접 입력하여 방향 정하기
+#include"AiComponent.h"
 #include"Chase.h"
 #include "EnemyAttack.h"
 
@@ -14,23 +13,26 @@
 
 void ESM::IDLE::Init()
 {
-	accumulatedTime = 0;
-	TimeManager::GetInst()->SetAccTime(0.0f);
+	//accumulatedTime = 0;
+	idle_time = 0.f;
 }
 
 void ESM::IDLE::Update()
 {
-	accumulatedTime = TimeManager::GetInst()->GetAccTime();
-
+	//accumulatedTime = TimeManager::GetInst()->GetAccTime();
+	m_fDt = (f32)AEFrameRateControllerGetFrameTime();
+	idle_time += m_fDt;
 	if (dir_Time != 0) 
 	{
 		//방향만 달라지게
-		if (accumulatedTime >= dir_Time)//5.0f느낌
+		if (idle_time >= dir_Time)//5.0f느낌
 		{
 			// 시간 초기화
-			TimeManager::GetInst()->SetAccTime(0.0f);
+			//TimeManager::GetInst()->SetAccTime(0.0f);
+			idle_time = 0.f;
+			m_fDt = 0.f;
 			// 추가로 필요한 로직을 여기에 작성
-			std::cout << dir_Time << " Turn Dir" << std::endl;
+			//std::cout << dir_Time << " Turn Dir" << std::endl;
 			dir = !(dir);
 		}
 	}
@@ -40,8 +42,11 @@ void ESM::IDLE::Update()
 	if (ColliderManager::GetInst()->PlayerSearch(enemy, player, dir, 16.f, 8.f, 1.f))
 	{
 		//std::cout << "ChaseMode" << std::endl;
-		ESM::Chase* p = new ESM::Chase(enemy, player, dir, dir_Time);
-		ESM::EnemyStateManager::GetInst()->ChangeState(p);
+		AiComponent* enemy_ai = (AiComponent*)enemy->FindComponent("Ai");
+
+		ESM::Chase* p = new ESM::Chase(enemy, player, dir, dir_Time, platform, e_state_name);
+		//ESM::EnemyStateManager::GetInst()->ChangeState(p);
+		enemy_ai->Change_State(p);
 	}
 
 }
@@ -52,10 +57,13 @@ void ESM::IDLE::Exit()
 	//obj를 다 날리면 남아있는지 죽어있는지?
 }
 
-ESM::IDLE::IDLE(GameObject* _enemy, GameObject* _player, bool dir_num, float Time)
+ESM::IDLE::IDLE(GameObject* _enemy, GameObject* _player, bool dir_num, float Time, GameObject* _platform, std::string state_name)
 {
 	enemy = _enemy;//enemyobject
 	player = _player;//Playerobject
 	dir = dir_num;
 	dir_Time = Time;
+	platform = _platform;
+	e_state_name = state_name;
+
 }

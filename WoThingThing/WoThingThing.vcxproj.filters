@@ -93,18 +93,6 @@
     <Filter Include="Component\AI">
       <UniqueIdentifier>{1b416597-eecd-469f-91f8-4529be2ec0c5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="EnemyState">
-      <UniqueIdentifier>{c1a54eb2-2260-41eb-a702-498d1876595d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="EnemyState\Chase">
-      <UniqueIdentifier>{f1a39447-5941-4555-9126-442eac3380ca}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="EnemyState\Attack">
-      <UniqueIdentifier>{a665e672-98de-49c1-ac62-dd634274aa93}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="EnemyState\Idle">
-      <UniqueIdentifier>{bd34e0ce-cff0-48f1-b532-509bd8c9aea7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Ai">
       <UniqueIdentifier>{138cfd1b-1c2c-43ee-9e33-53d19d26e96c}</UniqueIdentifier>
     </Filter>
@@ -125,6 +113,18 @@
     </Filter>
     <Filter Include="Main\Sprite">
       <UniqueIdentifier>{7c3a7664-1c34-48b4-8a6f-ca0aa5f872b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Melee\EnemyState">
+      <UniqueIdentifier>{c1a54eb2-2260-41eb-a702-498d1876595d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Melee\EnemyState\Chase">
+      <UniqueIdentifier>{f1a39447-5941-4555-9126-442eac3380ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Melee\EnemyState\Attack">
+      <UniqueIdentifier>{a665e672-98de-49c1-ac62-dd634274aa93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Melee\EnemyState\Idle">
+      <UniqueIdentifier>{bd34e0ce-cff0-48f1-b532-509bd8c9aea7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -213,16 +213,16 @@
       <Filter>Component\AI</Filter>
     </ClCompile>
     <ClCompile Include="BaseEnemyState.cpp">
-      <Filter>EnemyState</Filter>
+      <Filter>Ai\Ai_State\Melee\EnemyState</Filter>
     </ClCompile>
     <ClCompile Include="Chase.cpp">
-      <Filter>EnemyState\Chase</Filter>
+      <Filter>Ai\Ai_State\Melee\EnemyState\Chase</Filter>
     </ClCompile>
     <ClCompile Include="EnemyAttack.cpp">
-      <Filter>EnemyState\Attack</Filter>
+      <Filter>Ai\Ai_State\Melee\EnemyState\Attack</Filter>
     </ClCompile>
     <ClCompile Include="IDLE.cpp">
-      <Filter>EnemyState\Idle</Filter>
+      <Filter>Ai\Ai_State\Melee\EnemyState\Idle</Filter>
     </ClCompile>
     <ClCompile Include="TestLevel.cpp">
       <Filter>Ai</Filter>
@@ -253,6 +253,9 @@
     </ClCompile>
     <ClCompile Include="PlayerComponent.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Patrol.cpp">
+      <Filter>Ai\Ai_State\Melee</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -344,16 +347,16 @@
       <Filter>Component\AI</Filter>
     </ClInclude>
     <ClInclude Include="BaseEnemyState.h">
-      <Filter>EnemyState</Filter>
+      <Filter>Ai\Ai_State\Melee\EnemyState</Filter>
     </ClInclude>
     <ClInclude Include="Chase.h">
-      <Filter>EnemyState\Chase</Filter>
+      <Filter>Ai\Ai_State\Melee\EnemyState\Chase</Filter>
     </ClInclude>
     <ClInclude Include="EnemyAttack.h">
-      <Filter>EnemyState\Attack</Filter>
+      <Filter>Ai\Ai_State\Melee\EnemyState\Attack</Filter>
     </ClInclude>
     <ClInclude Include="IDLE.h">
-      <Filter>EnemyState\Idle</Filter>
+      <Filter>Ai\Ai_State\Melee\EnemyState\Idle</Filter>
     </ClInclude>
     <ClInclude Include="TestLevel.h">
       <Filter>Ai</Filter>
@@ -384,6 +387,9 @@
     </ClInclude>
     <ClInclude Include="PlayerComponent.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="Patrol.h">
+      <Filter>Ai\Ai_State\Melee\EnemyState</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

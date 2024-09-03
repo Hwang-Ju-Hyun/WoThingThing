@@ -8,14 +8,15 @@ class GameObject;
 class AiComponent : public BaseComponent
 {
 public:
-    AiComponent(GameObject* _owner) : BaseComponent(_owner), e_state_name("E"), Bullet(nullptr) {}
+    AiComponent(GameObject* _owner);
     ~AiComponent();
 private:
     std::string e_state_name;
     std::string e_Categories;
-    ESM::EnemyStateManager* esm = ESM::EnemyStateManager::GetInst();
+    ESM::EnemyStateManager* esm;
     GameObject* Player;
     GameObject* Bullet;
+    GameObject* PlatForm;
     float Time_dir = 0;//고개돌리는 시간
     bool set_dir;
 public:
@@ -27,6 +28,8 @@ public:
     //넘겨주고 세팅해주게 처음에 setdir로 보는 방향을 정할 수 있게 만든다.
     void Setdir_time(float Time);
     void SetSniper_bullet(GameObject* _bullet);
+    void Change_State(ESM::BaseEnemyState* newstate);
+    void SetPlatform(GameObject* platform);
 
 public:
     virtual void LoadFromJson(const json& str)override;

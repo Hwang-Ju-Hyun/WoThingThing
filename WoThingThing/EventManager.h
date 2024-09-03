@@ -2,6 +2,10 @@
 
 #include "header.h"
 class GameObject;
+namespace ESM 
+{
+	class Chase;
+}
 
 struct Event
 {
@@ -18,7 +22,13 @@ public:
 	void SetEventName(const std::string& str) { name = str; }
 	std::string GetEventName()const { return name; }
 };
-
+struct Enemy_Platform_Collision_Event:public Event
+{
+public:
+	Enemy_Platform_Collision_Event(GameObject* _platform, GameObject* _enemy);
+	GameObject* platform;
+	GameObject* enemy;
+};
 struct Collision : public Event
 {
 public:
@@ -54,6 +64,13 @@ class RePosition :public Entity
 	virtual void OnEvent(Event* ev)override;
 };
 
+class ChasePlatFormSettor :public Entity 
+{
+public:
+	ESM::Chase* Enemy_Chase;
+	virtual void OnEvent(Event* ev)override;
+};
+
 
 #include <list>
 #include <map>
@@ -76,6 +93,7 @@ public:
 	//		Unregister entities to certain event Type
 public:
 	void AddEntity(const std::string& evt_name, Entity* et);
+	void RemoveEntity(const std::string& evt_name, Entity* et);
 public:	
 	std::list<Entity*>* FindEntityList(std::string ev_Key);
 	// Dispatch All Events		

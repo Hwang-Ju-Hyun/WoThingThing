@@ -5,8 +5,14 @@
 #include"IDLE.h"
 #include"ColliderManager.h"
 #include"IDLE_Sniper.h"
+//
+AiComponent::AiComponent(GameObject* _owner) :BaseComponent(_owner), e_state_name("E"), Bullet(nullptr) 
+{
+	esm = new ESM::EnemyStateManager();
+}
 AiComponent::~AiComponent()
 {
+	delete esm;
 }
 void AiComponent::Update()
 {
@@ -14,7 +20,6 @@ void AiComponent::Update()
 	//EnemyStateManager에서 ChangeState를 해주는데 State자체는 IDle과 Patrol
 	//IDLE과 Patrol은 직접 헤더를 include해서 접근하게 시킨다.
 	esm->Update();
-
 
 }
 
@@ -27,7 +32,7 @@ void AiComponent::SetState(const std::string& state_name, const std::string& ene
 		if (e_state_name == "IDLE")
 		{
 			std::cout << "Aicomp" << std::endl;
-			ESM::IDLE* p = new ESM::IDLE(m_pOwner, Player, set_dir, Time_dir);
+			ESM::IDLE* p = new ESM::IDLE(m_pOwner, Player, set_dir, Time_dir, PlatForm, e_state_name);
 			esm->ChangeState(p);//p를 넘겨주면 자기자신을 m_pOwner를 넘겨주는거니 참조 한다는거다
 		}
 		else if (e_state_name == "Patrol")
@@ -46,11 +51,9 @@ void AiComponent::SetState(const std::string& state_name, const std::string& ene
 		}
 	
 	}
-
+	//여기 언제든 주석가능 BossPattern부분과
 	if (e_Categories == "Boss") 
-	{
-
-	}
+	{	}
 
 }
 
@@ -73,6 +76,16 @@ void AiComponent::Setdir_time(float Time)//고개돌리는 시간 정해주기
 void AiComponent::SetSniper_bullet(GameObject* _bullet)
 {
 	Bullet = _bullet;
+}
+
+void AiComponent::Change_State(ESM::BaseEnemyState* newstate)
+{
+	esm->ChangeState(newstate);
+}
+
+void AiComponent::SetPlatform(GameObject* platform)
+{
+	PlatForm = platform;
 }
 
 

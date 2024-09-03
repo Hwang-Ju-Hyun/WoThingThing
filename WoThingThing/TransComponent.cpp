@@ -62,7 +62,26 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 		m_vScale = { 50,100 };
 		m_fRot = 0.f;
 	}
-
+	//enemy bullet¿ë
+	if (_owner->GetName() == "e_bullet") 
+	{
+		m_vPos = { 0,0 };
+		m_vScale = { 0,0 };
+		m_fRot = 0.f;
+	}
+	//Boss¿ë
+	if (_owner->GetName() == "Boss")
+	{
+		m_vPos = { 600,600 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "BulletHellProjectile") 
+	{
+		m_vPos = { 0,0 };
+		m_vScale = { 10,10 };
+		m_fRot = 0.f;
+	}
 }
 
 TransComponent::~TransComponent()

@@ -6,26 +6,30 @@
 #include"TimeManager.h"
 #include "TargetAim_Sniper.h"
 #include"SpriteComponent.h"
+#include"AiComponent.h"
 
 void ESM::IDLE_Sniper::Init()
 {
 	accumulatedTime = 0;
-	TimeManager::GetInst()->SetAccTime(0.0f);
+	//TimeManager::GetInst()->SetAccTime(0.0f);
+	m_fDt = 0;
 }
 
 void ESM::IDLE_Sniper::Update()
 {
-	accumulatedTime = TimeManager::GetInst()->GetAccTime();
-
+	//accumulatedTime = TimeManager::GetInst()->GetAccTime();
+	m_fDt = (f32)AEFrameRateControllerGetFrameTime();
+	accumulatedTime += m_fDt;
 	if (dir_Time != 0)
 	{
 		//방향만 달라지게
 		if (accumulatedTime >= dir_Time)//5.0f느낌
 		{
 			// 시간 초기화
-			TimeManager::GetInst()->SetAccTime(0.0f);
+			m_fDt = 0.f;
+			accumulatedTime = 0.f;
 			// 추가로 필요한 로직을 여기에 작성
-			std::cout << dir_Time << " Turn Dir" << std::endl;
+			//std::cout << dir_Time << " Turn Dir" << std::endl;
 			dir = !(dir);
 		}
 	}
@@ -34,8 +38,10 @@ void ESM::IDLE_Sniper::Update()
 	if (ColliderManager::GetInst()->PlayerSearch(enemy, player, dir, 20.f, 10.f,10.f))//여기에 감지범위 조정
 	{
 		//스나이퍼는 바로 공격모드로 들어가게한다.
+		AiComponent* enemy_ai = (AiComponent*)enemy->FindComponent("Ai");
 		ESM::TargetAim_Sniper* p = new ESM::TargetAim_Sniper(enemy, player, dir, dir_Time, bullet);
-		ESM::EnemyStateManager::GetInst()->ChangeState(p);
+		//ESM::EnemyStateManager::GetInst()->ChangeState(p);
+		enemy_ai->Change_State(p);
 	}
 
 }
