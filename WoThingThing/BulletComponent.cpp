@@ -10,6 +10,8 @@ BulletComponent::BulletComponent(GameObject* _owner) : BaseComponent(_owner)
 {
 	bullet_Vec = { 0.f,0.f };
 	bullet_const = { 35.f, 35.f };
+	Bullet_manipulActive = false;
+
 }
 
 void BulletComponent::SetBulletVec(AEVec2 dVec)
@@ -34,6 +36,7 @@ void BulletComponent::DestroyBullet()
 void BulletComponent::Update()
 {
 	TransComponent* bullet_trs = (TransComponent*)m_pOwner->FindComponent("Transform");
+
 	AEVec2 bullet_pos = static_cast<TransComponent*>(bullet_trs)->GetPos();
 
 	float dt = AEFrameRateControllerGetFrameTime();

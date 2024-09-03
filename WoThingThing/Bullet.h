@@ -4,7 +4,7 @@
 
 static int remainBullet = 5;
 
-void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname);
+void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool _enemyShoot);
 
 void CreateSupplement(AEVec2 initPos);
 void AddBullet();

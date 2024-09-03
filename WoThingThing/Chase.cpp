@@ -20,6 +20,9 @@ void ESM::Chase::Init()
 	Chase_outTime = 0.f;
 	Subscriber.Enemy_Chase = this;
 	EventManager::GetInst()->AddEntity("EnemyPlatformCollisionEvent", &Subscriber);
+
+	timeManipul = 3.f;
+	mainpulActice = false;
 }
 
 void ESM::Chase::Update()
@@ -47,6 +50,25 @@ void ESM::Chase::Update()
 	bool isEnemyNotOnPlatformEdge = ColliderManager::GetInst()->PlayerSearch(Chase_enemy, PlatForm, dir_state, 3.f, -1.f, 2.f);
 	bool isPlayerInsideTheRadar = ColliderManager::GetInst()->PlayerSearch(Chase_enemy, Player, dir_state, 16.f, 8.f, 1.f);
 	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
+
+	//3초 쿨타임 적용파트
+	float ct = AEFrameRateControllerGetFrameTime();
+	if (ShouldSlowTime)
+	{
+		mainpulActice = true;
+		timeManipul -= ct;
+		if (timeManipul <= 0.f)
+		{
+			mainpulActice = false; //게이지가 0이면 누르는 동안에도 Manipulate가 안되게
+			timeManipul = 0.f;
+		}
+	}
+	if (!ShouldSlowTime) {
+		mainpulActice = false;
+		if (timeManipul < 3.f)
+			timeManipul += ct;
+	}
+
 	
 	if (isPlayerInsideTheRadar)
 	{
@@ -62,9 +84,9 @@ void ESM::Chase::Update()
 		AEVec2Normalize(&unitChaseVec, &chaseVec);
 
 		//PLATFORM 양끝을 벗어나지 않게 하는곳을 체크 
-
-		if (ShouldSlowTime)
+		if (ShouldSlowTime && mainpulActice)
 		{
+
 			// 속도를 줄이기 위해 0.5배로 느리게 이동하도록 설정
 			if (isEnemyNotOnPlatformEdge)
 			{
@@ -96,20 +118,6 @@ void ESM::Chase::Update()
 				enemy_trs->AddPos(StopVec);
 			}
 		}
-		//if (AEInputCheckCurr(AEVK_LSHIFT))
-		//{
-		//	// 속도를 줄이기 위해 0.5배로 느리게 이동하도록 설정
-		//	slowChase.x = unitChaseVec.x * 0.98f * dt * 5.f;
-		//	slowChase.y = unitChaseVec.y * 0.98f * dt * 5.f;
-		//	enemy_trs->AddPos(slowChase);
-		//
-		//}
-		//else 
-		//{
-		//	//이 부분 다시 물어보기
-		//	enemy_trs->AddPos(unitChaseVec);
-		//}
-
 		if (ColliderManager::GetInst()->MeleeEnemyAttack(Chase_enemy, Player, dir_state))
 		{
 			AiComponent* enemy_ai = (AiComponent*)Chase_enemy->FindComponent("Ai");
@@ -130,7 +138,7 @@ void ESM::Chase::Update()
 			chaseVec.x = playerPos.x - enemyPos.x;
 			chaseVec.y = playerPos.y - enemyPos.y;
 			AEVec2Normalize(&unitChaseVec, &chaseVec);
-			if (ShouldSlowTime)
+			if (ShouldSlowTime && mainpulActice)
 			{
 				// 속도를 줄이기 위해 0.5배로 느리게 이동하도록 설정
 				if (isEnemyNotOnPlatformEdge)
@@ -161,9 +169,7 @@ void ESM::Chase::Update()
 					enemy_trs->AddPos(StopVec);
 				}
 			}
-			//std::cout << "Chase" << std::endl;
-			//AEVec2Normalize(&unitChaseVec, &chaseVec);
-			//enemy_trs->AddPos(unitChaseVec.x * dt, unitChaseVec.y);
+
 		}
 		else
 		{

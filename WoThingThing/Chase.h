@@ -38,6 +38,10 @@ namespace ESM
         AEVec2 StopVec;
         ChasePlatFormSettor Subscriber;
 
+
+        bool mainpulActice;
+        f32 timeManipul;
+
     public:
         Chase(GameObject* _enemy, GameObject* _player, bool dir, float Time, GameObject* _platform, std::string state_name);
     };
