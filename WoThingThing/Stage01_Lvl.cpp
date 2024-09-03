@@ -33,6 +33,9 @@
 #include "AEUtil.h"
 #include "AEMath.h"
 
+#include "Bullet.h"
+AEVec2 enemyDvec{ 1, 0 };
+
 Level::Stage01_Lvl::Stage01_Lvl()
 {
 }
@@ -140,18 +143,10 @@ void Level::Stage01_Lvl::Init()
     testEnemy = nullptr;
 }
 
-AEVec2 enemyDvec{ 1, 0 };
 void Level::Stage01_Lvl::Update()
 {
-    //Component 
-    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
-    SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
-    RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
-    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    //Component Pointer
     AiComponent* Enemy_meleeAi = (AiComponent*)Enemy->FindComponent("Ai");
-
-
-    //Right Click : Right attack
 
     if (AEInputCheckCurr(AEVK_R) == true)
     {
@@ -166,8 +161,6 @@ void Level::Stage01_Lvl::Update()
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
     }
 
-
-
     //Spawn Test Enemy
     if (testEnemy == nullptr || !testEnemy->GetActive())
     {
@@ -181,7 +174,9 @@ void Level::Stage01_Lvl::Update()
             TransComponent* test_trs = static_cast<TransComponent*>(testEnemy->FindComponent("Transform"));
             test_trs->SetPos(0, -300);
             test_trs->SetScale({ 50, 50 });
+
         }
+
     }
     else if (testEnemy != nullptr || testEnemy->GetActive())
     {
@@ -192,13 +187,39 @@ void Level::Stage01_Lvl::Update()
         static_cast<TransComponent*>(enemy_trs)->SetPos(bullet_pos);
     }
 
+    Collision();
 
+    CameraManager::GetInst()->Update();
+    GoManager::GetInst()->RemoveDeathObj();
 
+    if (AEInputCheckPrev(AEVK_0))
+    {
+        GSM::GameStateManager::GetInst()->Exit();
+    }
 
+    //Test line
+    if (AEInputCheckTriggered(AEVK_4))
+        CreateSupplement({ 0, -300 });
+    
 
+}
+
+void Level::Stage01_Lvl::Exit()
+{
+
+    auto res = ResourceManager::GetInst()->GetReource();
+    ResourceManager::GetInst()->RemoveAllRes();
+    GoManager::GetInst()->RemoveAllObj();
+}
+
+void Level::Stage01_Lvl::Collision()
+{
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    //Collision
     int cnt = 0;
     for (auto obj : GoManager::GetInst()->Allobj())
     {
+        //Platform
         if (obj->GetName() == "Platform")
         {
             if (ColliderManager::GetInst()->IsCollision(player, obj))
@@ -211,9 +232,7 @@ void Level::Stage01_Lvl::Update()
                 //AI COMP세팅을 해주고
                 Enemy_Platform_Collision_Event* e_p_c_e = new Enemy_Platform_Collision_Event(obj, Enemy);
                 EventManager::GetInst()->AddEvent(e_p_c_e);
-
             }
-
             if (ColliderManager::GetInst()->IsCollision(EnemySniper, obj))
             {
                 HandleCollision(EnemySniper, obj);
@@ -230,8 +249,9 @@ void Level::Stage01_Lvl::Update()
                     }
                 }
             }
-
         }
+
+        //Enemy
         if (obj->GetName() == "Test")
         {
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
@@ -240,10 +260,10 @@ void Level::Stage01_Lvl::Update()
                 //Where: in CompManager.cpp
                 //What: Exception thrown: read access violation. && iter->was 0xFFFFFFFFFFFFFFD7.
                 //Why: I think -> obj라는 게임오브젝트를 delete했는데 그 안에 있는 컴포넌트들도 삭제를 안해줘서 CompManager에서 업데이트를 할 때,
-                //객체를 잃어버린 둥둥 떠다니는 컴포넌트들을 업데이트 하려 하니 생긴 오류같다.
                 //24.09.02 --> RemoveComponent()에서 오류가 나는것을 발견 --> 어떤 Component를 지울지를 몰랐기 때문에 엉뚱한 Component를 지우고 있었어서 memory leak가 났음
                 // RemoveComponent(BaseComponent * _comp) 로 수정하여 삭제할 Component의 주소값을 던져주어 그 Component들만 삭제하게 만듦
 
+                //Parrying Test
                 enemyDvec.x = -1;
 
                 //DESTROY ENEMY
@@ -261,29 +281,26 @@ void Level::Stage01_Lvl::Update()
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         bullet_comp->DestroyBullet();
 
+                        
                         testEnemy->SetActive(false);
-                        testEnemy = nullptr;
+                        testEnemy = nullptr; //Stage_1.cpp에서 생성된 객체이기 때문에 nullptr해줘야한다.
                     }
                 }
             }
+
+        }
+
+        if (obj->GetName() == "BulletSupplement")
+        {
+            if (ColliderManager::GetInst()->IsCollision(player, obj))
+            {
+                AddBullet();
+                std::cout << "Add Bullet!" << std::endl;
+
+                obj->SetActive(false);
+            }
         }
     }
-
-    CameraManager::GetInst()->Update();
-    GoManager::GetInst()->RemoveDeathObj();
-
-    if (AEInputCheckPrev(AEVK_0))
-    {
-        GSM::GameStateManager::GetInst()->Exit();
-    }
-}
-
-void Level::Stage01_Lvl::Exit()
-{
-
-    auto res = ResourceManager::GetInst()->GetReource();
-    ResourceManager::GetInst()->RemoveAllRes();
-    GoManager::GetInst()->RemoveAllObj();
 }
 
 //바닥이랑 obj Collision이면서 위치보정
@@ -387,3 +404,4 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
     }
    
 }
+

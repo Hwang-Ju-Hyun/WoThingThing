@@ -33,7 +33,8 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 
 	melee = nullptr;
 
-
+	timeManipul = 3.f;
+	manipulActive = false;
 }
 
 //About Player's movement
@@ -55,10 +56,34 @@ void PlayerComponent::Dash(AEVec2 directVec)
 
 	dashVelocity.x = directVec.x * dash_const.x;
 	dashVelocity.y = directVec.y * dash_const.y;
+
+
 }
 void PlayerComponent::MoveMent()
 {
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
+	float dt = AEFrameRateControllerGetFrameTime();
+	//D 와 SHIFT를 눌렀을때만 적용 됨 --> 그냥 SHIFT를 누르고 있으면 전체적으로 적용되게 변경
+	if (AEInputCheckCurr(AEVK_LSHIFT))
+	{
+		manipulActive = true;
+		timeManipul -= dt;
+		std::cout << timeManipul << std::endl;
+
+		if (timeManipul <= 0.f)
+		{
+			manipulActive = false; //게이지가 0이면 누르는 동안에도 Manipulate가 안되게
+			timeManipul = 0.f;
+		}
+	}
+	if (!AEInputCheckCurr(AEVK_LSHIFT))
+	{
+		manipulActive = false;
+		if (timeManipul < 3.f)
+			timeManipul += dt;
+		std::cout << timeManipul << std::endl;
+	}
+
 	//Jump
 	if (AEInputCheckTriggered(AEVK_W))
 	{
@@ -73,7 +98,8 @@ void PlayerComponent::MoveMent()
 	//Left
 	if (AEInputCheckCurr(AEVK_A))
 	{
-		player_trs->AddPos(-5.f, 0.f);
+		//player_trs->AddPos(-5.f, 0.f);
+		player_trs->MovePos(-5.f, 0.f, manipulActive, dt);
 		//Dash
 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
 			Dash({ -1, 1 });
@@ -83,7 +109,8 @@ void PlayerComponent::MoveMent()
 	//Right
 	if (AEInputCheckCurr(AEVK_D))
 	{
-		player_trs->AddPos(5.f, 0.f);
+		//player_trs->AddPos(5.f, 0.f);
+		player_trs->MovePos(5.f, 0.f, manipulActive, dt);
 		//Dash
 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
 			Dash({ 1, 1 });
@@ -93,10 +120,10 @@ void PlayerComponent::MoveMent()
 
 	AEVec2 pos = static_cast<TransComponent*>(player_trs)->GetPos();
 
-	float dt = AEFrameRateControllerGetFrameTime();
 	//left shift : time manipulation
-	if (AEInputCheckCurr(AEVK_LSHIFT))
-		dt *= 0.1f;
+	if (AEInputCheckCurr(AEVK_LSHIFT)&& manipulActive)
+		//if (manipulActive)
+			dt *= 0.1f;
 
 	//if dash velocity is too low. set to 0 (dash ended)
 	if (AEVec2Length(&dashVelocity) <= 300.f)
@@ -107,14 +134,18 @@ void PlayerComponent::MoveMent()
 	//dash
 	dashVelocity.x = dashVelocity.x * (1 - dt);
 	dashVelocity.y = dashVelocity.y * (1 - dt);
-
 	pos.x += (dashVelocity.x) * (2 * dt);
 	pos.y += (dashVelocity.y) * (1.f * dt);
 
-
+	//Gravity
 	jumpVelocity.y -= m_vGravity.y * dt;	
 	pos.y = pos.y + jumpVelocity.y * dt;
 	static_cast<TransComponent*>(player_trs)->SetPos(pos);
+}
+
+bool PlayerComponent::GetManiActive()
+{
+	return timeManipul;
 }
 
 //About mouse
@@ -168,13 +199,6 @@ AEVec2 PlayerComponent::GetMousePos()
 }
 
 //About Player's attack
-bool PlayerComponent::GetWeaponType(int n)
-{
-	if (n == 1)
-		return meleeActive;
-	else if (n == 2)
-		return shotActive;
-}
 void PlayerComponent::Attack()
 {
 	//melee attack

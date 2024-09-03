@@ -127,6 +127,22 @@ void TransComponent::AddPos(float _posX, float _posY)
 	}
 }
 
+void TransComponent::MovePos(float _posX, float _posY, bool active, f32 m_fDt)
+{
+	if (active)
+	{
+		_posX *= 50.f;
+		m_fDt *= 0.1f;
+		m_vPos.x += _posX * (m_fDt * 4.f);
+		m_vPos.y += _posY * (m_fDt * 4.f);
+	}
+	else
+	{
+		m_vPos.x += _posX;
+		m_vPos.y += _posY;
+	}
+}
+
 void TransComponent::SetPos(const AEVec2& _pos)
 {
 	m_vPos = _pos;

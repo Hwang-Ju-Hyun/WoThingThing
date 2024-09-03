@@ -14,8 +14,6 @@ public:
 	~BulletComponent() {};
 
 	void SetBulletVec(AEVec2 dVec);
-
-
 	void DestroyBullet();
 
 	virtual void Update() override;

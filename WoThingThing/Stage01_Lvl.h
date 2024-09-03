@@ -35,7 +35,7 @@ namespace Level
         int counter = 0;
     public:
         void HandleCollision(GameObject* obj1, GameObject* obj2);
-
+        void Collision();
     };
 }
 

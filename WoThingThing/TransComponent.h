@@ -24,6 +24,9 @@ public:
     const AEMtx33& GetMatrix()    { return m_matMatrix; }
     void AddPos(const AEVec2& _pos);
     void AddPos(float _posX, float _posY);
+
+    void MovePos(float _posX, float _posY, bool active, f32 m_fDt);
+
     void SetPos(const AEVec2& _pos);
     void SetPos(float _posX, float _posY);
 
