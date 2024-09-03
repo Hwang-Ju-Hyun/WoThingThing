@@ -29,7 +29,6 @@ namespace Level
         GameObject* Platform;
         GameObject* Enemy;
         GameObject* EnemySniper;
-        GameObject* Enemy_bullet;
         GameObject* Boss1;
     public:       
         int counter = 0;

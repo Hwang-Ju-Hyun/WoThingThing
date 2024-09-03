@@ -39,7 +39,7 @@ void ESM::IDLE_Sniper::Update()
 	{
 		//스나이퍼는 바로 공격모드로 들어가게한다.
 		AiComponent* enemy_ai = (AiComponent*)enemy->FindComponent("Ai");
-		ESM::TargetAim_Sniper* p = new ESM::TargetAim_Sniper(enemy, player, dir, dir_Time, bullet);
+		ESM::TargetAim_Sniper* p = new ESM::TargetAim_Sniper(enemy, player, dir, dir_Time);
 		//ESM::EnemyStateManager::GetInst()->ChangeState(p);
 		enemy_ai->Change_State(p);
 	}
@@ -50,11 +50,10 @@ void ESM::IDLE_Sniper::Exit()
 {
 }
 
-ESM::IDLE_Sniper::IDLE_Sniper(GameObject* _enemy, GameObject* _player, bool dir_num, float Time, GameObject* _bullet)
+ESM::IDLE_Sniper::IDLE_Sniper(GameObject* _enemy, GameObject* _player, bool dir_num, float Time)
 {
 	enemy = _enemy;//enemyobject
 	player = _player;//Playerobject
 	dir = dir_num;
 	dir_Time = Time;
-	bullet = _bullet;
 }

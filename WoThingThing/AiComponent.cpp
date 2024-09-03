@@ -6,7 +6,7 @@
 #include"ColliderManager.h"
 #include"IDLE_Sniper.h"
 //
-AiComponent::AiComponent(GameObject* _owner) :BaseComponent(_owner), e_state_name("E"), Bullet(nullptr) 
+AiComponent::AiComponent(GameObject* _owner) :BaseComponent(_owner), e_state_name("E") 
 {
 	esm = new ESM::EnemyStateManager();
 }
@@ -46,7 +46,7 @@ void AiComponent::SetState(const std::string& state_name, const std::string& ene
 		if (e_state_name == "IDLE_Sniper")
 		{
 			std::cout << "Aicomp" << std::endl;
-			ESM::IDLE_Sniper* p = new ESM::IDLE_Sniper(m_pOwner, Player, set_dir, Time_dir, Bullet);//여기서 총알오브젝트 추가
+			ESM::IDLE_Sniper* p = new ESM::IDLE_Sniper(m_pOwner, Player, set_dir, Time_dir);//여기서 총알오브젝트 추가
 			esm->ChangeState(p);//p를 넘겨주면 자기자신을 m_pOwner를 넘겨주는거니 참조 한다는거다
 		}
 	
@@ -71,11 +71,6 @@ void AiComponent::Setdir(bool dir)//true가 왼쪽, false가 오른쪽
 void AiComponent::Setdir_time(float Time)//고개돌리는 시간 정해주기
 {
 	Time_dir = Time;
-}
-
-void AiComponent::SetSniper_bullet(GameObject* _bullet)
-{
-	Bullet = _bullet;
 }
 
 void AiComponent::Change_State(ESM::BaseEnemyState* newstate)

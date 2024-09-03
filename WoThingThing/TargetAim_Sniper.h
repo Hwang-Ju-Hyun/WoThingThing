@@ -18,7 +18,6 @@ namespace ESM
         GameObject* Player;
         bool dir_state;
         float dir_Time;
-        GameObject* bullet;
 
         //Attack¿ë µû·Î
         float AttackDelay;
@@ -33,7 +32,7 @@ namespace ESM
         AEVec2 enemyPos;
         AEVec2 chaseVec;
         AEVec2 unitChaseVec;
-
+        AEVec2 nor_dVec;
 
         AEVec2 nor_dVec_bullet{ 0,0 };
         AEVec2 bulletPos;
@@ -43,6 +42,7 @@ namespace ESM
 
 
     public:
-        TargetAim_Sniper(GameObject* _enemy, GameObject* _player, bool dir, float Time, GameObject* _bullet);
+        TargetAim_Sniper(GameObject* _enemy, GameObject* _player, bool dir, float Time);
+        AEVec2 GetEnemyDvec();
     };
 }

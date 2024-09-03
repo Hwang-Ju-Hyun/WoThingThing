@@ -264,7 +264,7 @@
       <Filter>GameObject</Filter>
     </ClCompile>
     <ClCompile Include="Patrol.cpp">
-      <Filter>Ai\Ai_State\Melee</Filter>
+      <Filter>Ai\Ai_State\Melee\EnemyState</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

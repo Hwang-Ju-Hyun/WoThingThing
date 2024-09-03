@@ -181,6 +181,7 @@ void ESM::Chase::Update()
 
 void ESM::Chase::Exit()
 {
+	EventManager::GetInst()->RemoveEntity("EnemyPlatformCollisionEvent", &Subscriber);
 }
 
 ESM::Chase::Chase(GameObject* _enemy, GameObject* _player, bool dir, float Time, GameObject* _platform, std::string state_name)

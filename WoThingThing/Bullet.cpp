@@ -8,9 +8,9 @@
 #include "BulletComponent.h"
 
 
-void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec)
+void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname)
 {
-	GameObject* bullet = new GameObject("Bullet");
+	GameObject* bullet = new GameObject(_bulletname);
 	GoManager::GetInst()->AddObject(bullet);
 	bullet->AddComponent("Transform", new TransComponent(bullet));
 	bullet->AddComponent("Sprite", new SpriteComponent(bullet));
@@ -22,6 +22,8 @@ void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec)
 	bullet_comp->SetBulletVec(nor_dVec);
 
 	SpriteComponent* bullet_spr = (SpriteComponent*)bullet->FindComponent("Sprite");
-	bullet_trs->SetPos(initPos);
+	//player_trs->GetPos().x + (nor_dVec.x * 50.f), player_trs->GetPos().y + (nor_dVec.y * 50.f)
+
+	bullet_trs->SetPos(initPos.x + (nor_dVec.x * 50.f), initPos.y + (nor_dVec.y * 50.f));
 	bullet_trs->SetScale({ 10, 10 });
 }
