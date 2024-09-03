@@ -23,6 +23,7 @@ void GoManager::RemoveDeathObj()
     {
         if (m_vecObj[i]->GetActive() == false)
         {
+            std::cout << "Delete GO " << m_vecObj[i] << std::endl;
             delete m_vecObj[i];
             m_vecObj.erase(std::find(m_vecObj.begin(), m_vecObj.end(), m_vecObj[i]));
             i--;

@@ -9,7 +9,7 @@
 BulletComponent::BulletComponent(GameObject* _owner) : BaseComponent(_owner)
 {
 	bullet_Vec = { 0.f,0.f };
-	bullet_const = { 50.f, 50.f };
+	bullet_const = { 35.f, 35.f };
 }
 
 void BulletComponent::SetBulletVec(AEVec2 dVec)
@@ -18,11 +18,17 @@ void BulletComponent::SetBulletVec(AEVec2 dVec)
 	bullet_Vec.y = dVec.y * bullet_const.y;
 }
 
+AEVec2 BulletComponent::GetBulletVec()
+{
+	return bullet_Vec;
+}
+
 void BulletComponent::DestroyBullet()
 {
+	std::cout << m_pOwner << "Destroy Bullet!!" << std::endl;
 	m_pOwner->SetActive(false);
-	m_pOwner = nullptr;
-	std::cout << "Destroy Bullet!!" << std::endl;
+	// 주석 풀 시 진짜 사형
+	//m_pOwner = nullptr;
 }
 
 void BulletComponent::Update()
@@ -54,6 +60,10 @@ void BulletComponent::Update()
 	if (bullet_pos.y > pos_outrange_screen.y || bullet_pos.y < neg_outrange_screen.y
 		|| bullet_pos.x > pos_outrange_screen.x || bullet_pos.x < neg_outrange_screen.x)
 	{
+		std::cout << "c" << std::endl;
 		DestroyBullet();
 	}
+
+
+
 }

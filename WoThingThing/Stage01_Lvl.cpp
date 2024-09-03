@@ -34,6 +34,8 @@
 #include "AEMath.h"
 
 #include "Bullet.h"
+#include"TargetAim_Sniper.h"
+
 AEVec2 enemyDvec{ 1, 0 };
 
 Level::Stage01_Lvl::Stage01_Lvl()
@@ -66,13 +68,6 @@ void Level::Stage01_Lvl::Init()
     RePosition* Platform_Player = new RePosition;
     EventManager::GetInst()->AddEntity("Collision",Platform_Player);
 
-    //적 총알 부분
-    Enemy_bullet = new GameObject("e_bullet");
-    GoManager::GetInst()->AddObject(Enemy_bullet);
-    Enemy_bullet->AddComponent("Transform", new TransComponent(Enemy_bullet));
-    Enemy_bullet->AddComponent("Sprite", new SpriteComponent(Enemy_bullet));
-
-        
     //Enemy
     Enemy = new GameObject("Enemy");
     GoManager::GetInst()->AddObject(Enemy);
@@ -100,28 +95,11 @@ void Level::Stage01_Lvl::Init()
     EnemySniper->AddComponent("Ai", new AiComponent(EnemySniper));
     AiComponent* EnemySniper_state = (AiComponent*)EnemySniper->FindComponent("Ai");
     EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-    EnemySniper_state->SetSniper_bullet(Enemy_bullet);
     EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
     EnemySniper_state->Setdir_time(1.0f);
     //EnemySniper_state->SetState("IDLE", "Melee");
     EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
 
-
-    //EnemySniper
-    //EnemySniper = new GameObject("EnemySniper");
-    //GoManager::GetInst()->AddObject(EnemySniper);
-    //
-    //EnemySniper->AddComponent("Transform", new TransComponent(EnemySniper));
-    //EnemySniper->AddComponent("Sprite", new SpriteComponent(EnemySniper));
-    //EnemySniper->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper));
-    //EnemySniper->AddComponent("Ai", new AiComponent(EnemySniper));
-    //
-    //AiComponent* EnemySniper_state = (AiComponent*)EnemySniper->FindComponent("Ai");
-    //EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-    //EnemySniper_state->SetSniper_bullet(Enemy_bullet);
-    //EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
-    //EnemySniper_state->Setdir_time(1.0f);
-    //EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
 
     auto vecObj = GoManager::GetInst()->Allobj();
     for (int i = 0; i < vecObj.size(); i++)
@@ -140,13 +118,26 @@ void Level::Stage01_Lvl::Init()
     CameraManager::GetInst()->SetPlayer(player);
     CameraManager::GetInst()->SetAim(aimTrace);
 
-    testEnemy = nullptr;
 }
 
 void Level::Stage01_Lvl::Update()
 {
     //Component Pointer
     AiComponent* Enemy_meleeAi = (AiComponent*)Enemy->FindComponent("Ai");
+
+    //Component 
+    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
+    SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
+    RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    
+
+    if(EnemySniper!= nullptr)
+    {
+        AiComponent* Enemy_meleeAi = (AiComponent*)Enemy->FindComponent("Ai");
+        AiComponent* Enemy_SniperAi = (AiComponent*)EnemySniper->FindComponent("Ai");
+    }
+
 
     if (AEInputCheckCurr(AEVK_R) == true)
     {
@@ -159,32 +150,6 @@ void Level::Stage01_Lvl::Update()
     else if (AEInputCheckCurr(AEVK_T) == true)
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
-    }
-
-    //Spawn Test Enemy
-    if (testEnemy == nullptr || !testEnemy->GetActive())
-    {
-        if (AEInputCheckTriggered(AEVK_3) /* && testEnemy == nullptr*/) //collision이 일어나고 testEnemy를 nullptr로 만들어 주는데 왜 안되는거징
-        {
-            testEnemy = new GameObject("Test");
-            GoManager::GetInst()->AddObject(testEnemy);
-            testEnemy->AddComponent("Transform", new TransComponent(testEnemy));
-            testEnemy->AddComponent("Sprite", new SpriteComponent(testEnemy));
-
-            TransComponent* test_trs = static_cast<TransComponent*>(testEnemy->FindComponent("Transform"));
-            test_trs->SetPos(0, -300);
-            test_trs->SetScale({ 50, 50 });
-
-        }
-
-    }
-    else if (testEnemy != nullptr || testEnemy->GetActive())
-    {
-        TransComponent* enemy_trs = (TransComponent*)testEnemy->FindComponent("Transform");
-        AEVec2 bullet_pos = static_cast<TransComponent*>(enemy_trs)->GetPos();
-
-        bullet_pos.x += -2.f * enemyDvec.x;
-        static_cast<TransComponent*>(enemy_trs)->SetPos(bullet_pos);
     }
 
     Collision();
@@ -237,53 +202,53 @@ void Level::Stage01_Lvl::Collision()
             {
                 HandleCollision(EnemySniper, obj);
             }
-
+            int a = 0;
             for (auto findObj : GoManager::GetInst()->Allobj())
             {
-                if (findObj->GetName() == "Bullet")
+                if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
                 {
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
+                        
+                        std::cout <<"cnt : "<< ++a << std::endl;
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         bullet_comp->DestroyBullet();
                     }
                 }
             }
         }
-
-        //Enemy
-        if (obj->GetName() == "Test")
+        if (obj->GetName() == "EnemyBullet")
         {
-            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
-            {
-                //Error!!
-                //Where: in CompManager.cpp
-                //What: Exception thrown: read access violation. && iter->was 0xFFFFFFFFFFFFFFD7.
-                //Why: I think -> obj라는 게임오브젝트를 delete했는데 그 안에 있는 컴포넌트들도 삭제를 안해줘서 CompManager에서 업데이트를 할 때,
-                //24.09.02 --> RemoveComponent()에서 오류가 나는것을 발견 --> 어떤 Component를 지울지를 몰랐기 때문에 엉뚱한 Component를 지우고 있었어서 memory leak가 났음
-                // RemoveComponent(BaseComponent * _comp) 로 수정하여 삭제할 Component의 주소값을 던져주어 그 Component들만 삭제하게 만듦
-
-                //Parrying Test
-                enemyDvec.x = -1;
-
-                //DESTROY ENEMY
-                //obj->SetActive(false); //Set false means DELETE AND REMOVE GO.
-                //obj = nullptr; //I dont have enemy anymore
-            }
-
+           if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
+           {
+               BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+               AEVec2 returnbullet = bullet_comp->GetBulletVec();
+               float dt = AEFrameRateControllerGetFrameTime();
+               if (AEInputCheckCurr(AEVK_LSHIFT)) 
+               {
+                   bullet_comp->SetBulletVec({ -1 * returnbullet.x * dt,-1 * returnbullet.y * dt });
+               }
+               else 
+               {
+                   bullet_comp->SetBulletVec({ -1 * returnbullet.x,-1 * returnbullet.y });
+               }
+           }
+        }
+        if (obj->GetName() == "EnemySniper")
+        {
             //Test: Collision Enemy with Player's Bullet
             for (auto findObj : GoManager::GetInst()->Allobj())
             {
-                if (findObj->GetName() == "Bullet")
+                if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
                 {
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
+                        std::cout << "c" << std::endl;
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         bullet_comp->DestroyBullet();
 
-                        
-                        testEnemy->SetActive(false);
-                        testEnemy = nullptr; //Stage_1.cpp에서 생성된 객체이기 때문에 nullptr해줘야한다.
+                        EnemySniper->SetActive(false);
+                        EnemySniper = nullptr;
                     }
                 }
             }
@@ -299,6 +264,7 @@ void Level::Stage01_Lvl::Collision()
 
                 obj->SetActive(false);
             }
+
         }
     }
 }

@@ -15,7 +15,6 @@ private:
     std::string e_Categories;
     ESM::EnemyStateManager* esm;
     GameObject* Player;
-    GameObject* Bullet;
     GameObject* PlatForm;
     float Time_dir = 0;//고개돌리는 시간
     bool set_dir;
@@ -27,7 +26,6 @@ public:
     void Setdir(bool dir);//dir위치값을 이걸 Player 오브젝트를 넘겨주는것 처럼 dir값도 포인터값으로
     //넘겨주고 세팅해주게 처음에 setdir로 보는 방향을 정할 수 있게 만든다.
     void Setdir_time(float Time);
-    void SetSniper_bullet(GameObject* _bullet);
     void Change_State(ESM::BaseEnemyState* newstate);
     void SetPlatform(GameObject* platform);
 

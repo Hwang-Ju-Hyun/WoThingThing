@@ -14,7 +14,6 @@ namespace Level
         GameObject* mouseAim;
         GameObject* aimTrace;
 
-        GameObject* testEnemy;
 
     public:
         Stage01_Lvl();
@@ -29,7 +28,6 @@ namespace Level
         GameObject* Platform;
         GameObject* Enemy;
         GameObject* EnemySniper;
-        GameObject* Enemy_bullet;
         GameObject* Boss1;
     public:       
         int counter = 0;

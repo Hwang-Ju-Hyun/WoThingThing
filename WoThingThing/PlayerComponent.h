@@ -54,6 +54,8 @@ public:
     //황주현 코드추가
     void SetJumpCntZero();    
     void SetJumpVelocityZero();
+    
+    
 
     virtual void Update() override;
     virtual void LoadFromJson(const json& str)override;

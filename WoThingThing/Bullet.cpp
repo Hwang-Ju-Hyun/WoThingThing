@@ -55,25 +55,22 @@ void DrawRect(float bottomleft_x, float bottomleft_y, float topRight_x, float to
 	AEGfxMeshDraw(mesh, AE_GFX_MDM_LINES_STRIP);
 }
 
-void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec)
+void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname)
 {
-	if(remainBullet > 0)
+	if (remainBullet > 0)
 	{
 		remainBullet--;
 
-		GameObject* bullet = new GameObject("Bullet");
+		GameObject* bullet = new GameObject(_bulletname);
 		GoManager::GetInst()->AddObject(bullet);
 		bullet->AddComponent("Transform", new TransComponent(bullet));
 		bullet->AddComponent("Sprite", new SpriteComponent(bullet));
 		bullet->AddComponent("Bullet", new BulletComponent(bullet));
-
-		SpriteComponent* bullet_spr = (SpriteComponent*)bullet->FindComponent("Sprite");
-
 		BulletComponent* bullet_comp = (BulletComponent*)bullet->FindComponent("Bullet");
 		bullet_comp->SetBulletVec(nor_dVec);
 
 		TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
-		bullet_trs->SetPos(initPos);
+		bullet_trs->SetPos(initPos.x + (nor_dVec.x * 50.f), initPos.y + (nor_dVec.y * 50.f));
 		bullet_trs->SetScale({ 10, 10 });
 	}
 }
