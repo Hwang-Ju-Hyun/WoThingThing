@@ -15,6 +15,7 @@ void ESM::IDLE::Init()
 {
 	//accumulatedTime = 0;
 	idle_time = 0.f;
+
 }
 
 void ESM::IDLE::Update()

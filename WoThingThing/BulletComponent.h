@@ -16,6 +16,7 @@ public:
 	void SetBulletVec(AEVec2 dVec);
 	AEVec2 GetBulletVec();
 	void DestroyBullet();
-
+	bool EnemyShoot;//true면 enemy가 shoot 했다는거임
 	virtual void Update() override;
+	bool Bullet_manipulActive;
 };

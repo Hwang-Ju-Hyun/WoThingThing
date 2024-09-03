@@ -229,6 +229,7 @@ void Level::Stage01_Lvl::Collision()
            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
            {
                BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+               bullet_comp->EnemyShoot = false;
                AEVec2 returnbullet = bullet_comp->GetBulletVec();
                float dt = AEFrameRateControllerGetFrameTime();
                if (AEInputCheckCurr(AEVK_LSHIFT)) 
@@ -258,10 +259,12 @@ void Level::Stage01_Lvl::Collision()
                     {
                         std::cout << "c" << std::endl;
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
+                        if(!bullet_comp->EnemyShoot)
+                        {
+                            EnemySniper->SetActive(false);
+                            EnemySniper = nullptr;
+                        }
                         bullet_comp->DestroyBullet();
-
-                        EnemySniper->SetActive(false);
-                        EnemySniper = nullptr;
                     }
                 }
             }

@@ -156,7 +156,8 @@
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\freetype.dll" "$(OutDir)" /s /r /y /q
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\Alpha_EngineD.dll" "$(OutDir)" /s /r /y /q
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmodL.dll" "$(OutDir)" /s /r /y /q
-xcopy "$(ProjectDir)*.json" "$(OutDir)" /s /r /y /q</Command>
+xcopy "$(ProjectDir)*.json" "$(OutDir)" /s /r /y /q
+</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -177,10 +178,14 @@ xcopy "$(ProjectDir)*.json" "$(OutDir)" /s /r /y /q</Command>
     </Link>
     <PreBuildEvent>
       <Command>xcopy "$(SolutionDir)Extern\Assets\*" "$(OutDir)Assets\" /s /r /y /q
+
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\freetype.dll" "$(OutDir)" /s /r /y /q
+
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\Alpha_Engine.dll" "$(OutDir)" /s /r /y /q
+
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
-</Command>
+
+xcopy "$(ProjectDir)*.json" "$(OutDir)" /s /r /y /q</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -27,7 +27,6 @@ void ESM::TargetAim_Sniper::Init()
 	//TargetOn_Time = 0;
 	m_fDt_Target = 0;
 	nor_dVec = { 0,0 };
-
 }
 
 void ESM::TargetAim_Sniper::Update()
@@ -62,7 +61,7 @@ void ESM::TargetAim_Sniper::Update()
 		if (AttackDelay >= 3.0f)//공격 딜레이
 		{
 			//bulletComp
-			CreateBullet(enemy_trs->GetPos(), nor_dVec, "EnemyBullet");
+			CreateBullet(enemy_trs->GetPos(), nor_dVec, "EnemyBullet", true);
 			AttackDelay = 0.f;
 		}
 
@@ -86,7 +85,7 @@ void ESM::TargetAim_Sniper::Update()
 			AttackDelay += m_fDt;
 			if (AttackDelay >= 3.0f) // 3초마다 총알 발사
 			{
-				CreateBullet(enemy_trs->GetPos(), nor_dVec, "EnemyBullet");
+				CreateBullet(enemy_trs->GetPos(), nor_dVec, "EnemyBullet", true);
 				AttackDelay = 0.f;
 			}
 		}

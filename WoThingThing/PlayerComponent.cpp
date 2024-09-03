@@ -258,7 +258,7 @@ void PlayerComponent::Attack()
 		MouseTraceLine();
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
 		{
-			CreateBullet(player_trs->GetPos(), nor_dVec, "PlayerBullet");
+			CreateBullet(player_trs->GetPos(), nor_dVec, "PlayerBullet", false);
 
 		}
 	}

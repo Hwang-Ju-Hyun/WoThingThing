@@ -55,12 +55,30 @@ void DrawRect(float bottomleft_x, float bottomleft_y, float topRight_x, float to
 	AEGfxMeshDraw(mesh, AE_GFX_MDM_LINES_STRIP);
 }
 
-void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname)
+void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool _enemyShoot)
 {
-	if (remainBullet > 0)
+	if(!_enemyShoot)
 	{
-		remainBullet--;
+		if (remainBullet > 0)
+		{
+			remainBullet--;
 
+			GameObject* bullet = new GameObject(_bulletname);
+			GoManager::GetInst()->AddObject(bullet);
+			bullet->AddComponent("Transform", new TransComponent(bullet));
+			bullet->AddComponent("Sprite", new SpriteComponent(bullet));
+			bullet->AddComponent("Bullet", new BulletComponent(bullet));
+			BulletComponent* bullet_comp = (BulletComponent*)bullet->FindComponent("Bullet");
+			bullet_comp->SetBulletVec(nor_dVec);
+			bullet_comp->EnemyShoot = _enemyShoot;
+
+			TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
+			bullet_trs->SetPos(initPos.x + (nor_dVec.x * 50.f), initPos.y + (nor_dVec.y * 50.f));
+			bullet_trs->SetScale({ 10, 10 });
+		}
+	}
+	else
+	{
 		GameObject* bullet = new GameObject(_bulletname);
 		GoManager::GetInst()->AddObject(bullet);
 		bullet->AddComponent("Transform", new TransComponent(bullet));
@@ -68,6 +86,7 @@ void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname)
 		bullet->AddComponent("Bullet", new BulletComponent(bullet));
 		BulletComponent* bullet_comp = (BulletComponent*)bullet->FindComponent("Bullet");
 		bullet_comp->SetBulletVec(nor_dVec);
+		bullet_comp->EnemyShoot = _enemyShoot;
 
 		TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
 		bullet_trs->SetPos(initPos.x + (nor_dVec.x * 50.f), initPos.y + (nor_dVec.y * 50.f));
