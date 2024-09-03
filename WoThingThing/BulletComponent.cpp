@@ -29,6 +29,7 @@ void BulletComponent::Update()
 {
 	TransComponent* bullet_trs = (TransComponent*)m_pOwner->FindComponent("Transform");
 	AEVec2 bullet_pos = static_cast<TransComponent*>(bullet_trs)->GetPos();
+
 	float dt = AEFrameRateControllerGetFrameTime();
 	if (AEInputCheckCurr(AEVK_LSHIFT))
 	{
