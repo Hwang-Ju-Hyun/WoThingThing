@@ -5,6 +5,7 @@
 #include "TransComponent.h"
 #include "RigidBodyComponent.h"
 #include "PlayerComponent.h"
+#include"Chase.h"
 
 #pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 EventManager::EventManager()
@@ -35,6 +36,20 @@ void EventManager::AddEntity(const std::string& evt_name, Entity* et)
 		std::list<Entity*> newPerson;
 		newPerson.push_back(et);
 		registeredEntities.insert({ evt_name,newPerson });
+	}
+}
+
+void EventManager::RemoveEntity(const std::string& evt_name, Entity* et)
+{
+	std::list<Entity*>* list_name = FindEntityList(evt_name);
+	if (list_name) 
+	{
+		//구독자들 중에 et를 찾아서 삭제
+		auto it = std::find(list_name->begin(), list_name->end(), et);
+		if (it != list_name->end()) {
+			// 요소 삭제
+			list_name->erase(it);
+		}
 	}
 }
 
@@ -175,4 +190,19 @@ void RePosition::OnEvent(Event* ev)
 	}
 
 	
+}
+
+void ChasePlatFormSettor::OnEvent(Event* ev)
+{
+	Enemy_Platform_Collision_Event* e_p_c_e = static_cast<Enemy_Platform_Collision_Event*>(ev);
+	Enemy_Chase->PlatForm = e_p_c_e->platform;
+	EventManager::GetInst()->RemoveEntity("EnemyPlatformCollisionEvent", this);
+	std::cout << __FUNCTION__ << std::endl;
+}
+
+Enemy_Platform_Collision_Event::Enemy_Platform_Collision_Event(GameObject* _platform, GameObject* _enemy)
+{
+	platform = _platform;
+	enemy = _enemy;
+	SetEventName("EnemyPlatformCollisionEvent");
 }

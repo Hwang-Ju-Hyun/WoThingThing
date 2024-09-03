@@ -101,7 +101,7 @@ void Level::MainMenu_Lvl::Update()
 	}
 
 
-	auto text_res = ResourceManager::GetInst()->Get("text", "../Extern/Assets/liberation-mono.ttf");
+	auto text_res = ResourceManager::GetInst()->Get("text", "Assets/liberation-mono.ttf");
 	TextResource* MenuText_res = static_cast<TextResource*>(text_res);
 	MenuText_res->SetText("START");
 

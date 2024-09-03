@@ -14,6 +14,23 @@ ColliderManager::~ColliderManager()
 {
 
 }
+
+bool TestCollisionRectRect(float obj1Right, float obj1Left, float obj1Top, float obj1Bot,
+	float obj2Right, float obj2Left, float obj2TopY, float obj2BotY)
+{
+	if (obj1Right<obj2Left || obj1Left>obj2Right || obj1Bot<obj2TopY || obj1Top>obj2BotY)
+		return false;
+	return true;
+}
+
+bool TestCollisionRectRectInclusive(float obj1Right, float obj1Left, float obj1Top, float obj1Bot,
+	float obj2Right, float obj2Left, float obj2TopY, float obj2BotY)
+{
+	if (obj1Right > obj2Left && obj1Left < obj2Right && obj1Bot<obj2TopY && obj1Top>obj2BotY)
+		return true;
+	return false;
+}
+
 //나중에 여기 부분 건들기
 bool ColliderManager::IsCollision(GameObject* _obj1, GameObject* _obj2)
 {
@@ -41,9 +58,8 @@ bool ColliderManager::IsCollision(GameObject* _obj1, GameObject* _obj2)
 	float obj2TopY     = obj2_Pos.y - obj2_Scale.y / 2.f;
 	float obj2BotY     = obj2_Pos.y + obj2_Scale.y / 2.f;
 
-	if (obj1Right<obj2Left || obj1Left>obj2Right || obj1Bot<obj2TopY || obj1Top>obj2BotY)
-		return false;
-	return true;
+	return TestCollisionRectRect(obj1Right, obj1Left, obj1Top, obj1Bot, 
+		obj2Right, obj2Left, obj2TopY, obj2BotY);
 }
 
 //근접 캐릭터용, range부분 더 늘리기?
@@ -57,8 +73,8 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 	AEVec2 enemy_Scale = static_cast<TransComponent*>(enemy_trs)->GetScale();
 	AEVec2 obj2_Scale = static_cast<TransComponent*>(obj_trs2)->GetScale();
 
-	float obj2RightX = obj2_Pos.x + obj2_Scale.x / 2.f;
-	float obj2LeftX = obj2_Pos.x - obj2_Scale.x / 2.f;
+	float obj2Right = obj2_Pos.x + obj2_Scale.x / 2.f;
+	float obj2Left = obj2_Pos.x - obj2_Scale.x / 2.f;
 	float obj2TopY = obj2_Pos.y + obj2_Scale.y / 2.f;
 	float obj2BotY = obj2_Pos.y - obj2_Scale.y / 2.f;
 
@@ -77,16 +93,12 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 		//그리기영역
 		DrawRect(L_SearchPlayer_LeftX, L_SearchPlayer_BotY, L_SearchPlayer_RightX, L_SearchPlayer_TopY, 1, 0, 0);
 		//--------------
-
-		if (L_SearchPlayer_LeftX < obj2_Pos.x &&
-			L_SearchPlayer_RightX > obj2_Pos.x &&
-			L_SearchPlayer_BotY < obj2_Pos.y &&
-			L_SearchPlayer_TopY > obj2_Pos.y)
+		if (TestCollisionRectRectInclusive(L_SearchPlayer_RightX, L_SearchPlayer_LeftX, L_SearchPlayer_TopY, L_SearchPlayer_BotY,
+			obj2Right, obj2Left, obj2TopY, obj2BotY))
 		{
 			//std::cout << "SearchPlayerLeft" << std::endl;
 			return true;
 		}
-
 	}
 	else if (enemy_dir == false)
 	{
@@ -97,12 +109,10 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 		float R_SearchPlayer_BotY = enemy_Pos.y - bottom_y_range * (enemy_Scale.y / 2.f);
 
 		DrawRect(R_SearchPlayer_LeftX, R_SearchPlayer_BotY, R_SearchPlayer_RightX, R_SearchPlayer_TopY, 1, 0, 0);
-		if (R_SearchPlayer_LeftX < obj2_Pos.x &&
-			R_SearchPlayer_RightX > obj2_Pos.x &&
-			R_SearchPlayer_BotY < obj2_Pos.y &&
-			R_SearchPlayer_TopY > obj2_Pos.y)
+		if (TestCollisionRectRectInclusive(R_SearchPlayer_RightX, R_SearchPlayer_LeftX, R_SearchPlayer_TopY, R_SearchPlayer_BotY,
+			obj2Right, obj2Left, obj2TopY, obj2BotY))
 		{
-			//std::cout << "SearchPlayerRight" << std::endl;
+			//std::cout << "SearchPlayerLeft" << std::endl;
 			return true;
 		}
 	}
@@ -261,4 +271,3 @@ void ColliderManager::DrawRect(float bottomleft_x, float bottomleft_y, float top
 
 	return;
 }
-

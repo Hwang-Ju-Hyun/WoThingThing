@@ -43,19 +43,19 @@ void RigidBodyComponent::Update()
 	//	obj->AddPos(5.f, 0.f);
 	//	//if (player_trs->GetPos().x < 770)
 	//}
-
 	AEVec2 pos = static_cast<TransComponent*>(obj)->GetPos();
-
 	float dt = AEFrameRateControllerGetFrameTime();
 	//left shift : time manipulation
-	if (AEInputCheckCurr(AEVK_LSHIFT))
-	{
-		dt *= 0.1f;
-	}			
+	
+	//if (AEInputCheckCurr(AEVK_LSHIFT))
+	//{
+	//	dt *= 0.1f;
+	//}			
+	
 	//auto trans= CompManager::GetInst()->FindComponent("Transform");
 
 
-	jumpVelocity.y -= m_vGravity.y * dt;
+	jumpVelocity.y -= m_vGravity.y * dt;//ม฿ทย
 	/*if (pos.y <= -380)
 	{
 		jumpVelocity.y = 0;
@@ -65,8 +65,10 @@ void RigidBodyComponent::Update()
 	{
 		jumpVelocity.y -= m_vGravity.y * dt;
 	}*/
+
 	pos.y = pos.y + jumpVelocity.y * dt;
 	static_cast<TransComponent*>(obj)->SetPos(pos);
+
 }
 
 void RigidBodyComponent::LoadFromJson(const json& str)

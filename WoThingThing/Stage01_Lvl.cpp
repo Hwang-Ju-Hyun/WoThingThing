@@ -45,6 +45,7 @@ void Level::Stage01_Lvl::Init()
 {    
     //Object and Component Init
     Serializer::GetInst()->LoadLevel("temp.json");
+
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
@@ -62,6 +63,12 @@ void Level::Stage01_Lvl::Init()
     RePosition* Platform_Player = new RePosition;
     EventManager::GetInst()->AddEntity("Collision",Platform_Player);
 
+    //적 총알 부분
+    Enemy_bullet = new GameObject("e_bullet");
+    GoManager::GetInst()->AddObject(Enemy_bullet);
+    Enemy_bullet->AddComponent("Transform", new TransComponent(Enemy_bullet));
+    Enemy_bullet->AddComponent("Sprite", new SpriteComponent(Enemy_bullet));
+
         
     //Enemy
     Enemy = new GameObject("Enemy");
@@ -73,11 +80,45 @@ void Level::Stage01_Lvl::Init()
     Enemy->AddComponent("Ai", new AiComponent(Enemy));
     AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
     Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+    //Enemy_state->SetSniper_bullet(Enemy_bullet);
     Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
-    Enemy_state->Setdir_time(1.0f);
+    Enemy_state->Setdir_time(2.0f);
     Enemy_state->SetState("IDLE","Melee");
+    //Enemy_state->SetState("IDLE_Sniper", "Sniper");
 
 
+
+    EnemySniper = new GameObject("EnemySniper");
+    GoManager::GetInst()->AddObject(EnemySniper);
+    
+    EnemySniper->AddComponent("Transform", new TransComponent(EnemySniper));
+    EnemySniper->AddComponent("Sprite", new SpriteComponent(EnemySniper));
+    EnemySniper->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper));
+    EnemySniper->AddComponent("Ai", new AiComponent(EnemySniper));
+    AiComponent* EnemySniper_state = (AiComponent*)EnemySniper->FindComponent("Ai");
+    EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+    EnemySniper_state->SetSniper_bullet(Enemy_bullet);
+    EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+    EnemySniper_state->Setdir_time(1.0f);
+    //EnemySniper_state->SetState("IDLE", "Melee");
+    EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
+
+
+    //EnemySniper
+    //EnemySniper = new GameObject("EnemySniper");
+    //GoManager::GetInst()->AddObject(EnemySniper);
+    //
+    //EnemySniper->AddComponent("Transform", new TransComponent(EnemySniper));
+    //EnemySniper->AddComponent("Sprite", new SpriteComponent(EnemySniper));
+    //EnemySniper->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper));
+    //EnemySniper->AddComponent("Ai", new AiComponent(EnemySniper));
+    //
+    //AiComponent* EnemySniper_state = (AiComponent*)EnemySniper->FindComponent("Ai");
+    //EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+    //EnemySniper_state->SetSniper_bullet(Enemy_bullet);
+    //EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+    //EnemySniper_state->Setdir_time(1.0f);
+    //EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
 
     auto vecObj = GoManager::GetInst()->Allobj();
     for (int i = 0; i < vecObj.size(); i++)
@@ -107,8 +148,9 @@ void Level::Stage01_Lvl::Update()
     SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    AiComponent* Enemy_meleeAi = (AiComponent*)Enemy->FindComponent("Ai");
 
-    
+
     //Right Click : Right attack
 
     if (AEInputCheckCurr(AEVK_R) == true)
@@ -127,7 +169,7 @@ void Level::Stage01_Lvl::Update()
 
 
     //Spawn Test Enemy
-    if(testEnemy == nullptr || !testEnemy->GetActive())
+    if (testEnemy == nullptr || !testEnemy->GetActive())
     {
         if (AEInputCheckTriggered(AEVK_3) /* && testEnemy == nullptr*/) //collision이 일어나고 testEnemy를 nullptr로 만들어 주는데 왜 안되는거징
         {
@@ -156,7 +198,7 @@ void Level::Stage01_Lvl::Update()
 
     int cnt = 0;
     for (auto obj : GoManager::GetInst()->Allobj())
-    {        
+    {
         if (obj->GetName() == "Platform")
         {
             if (ColliderManager::GetInst()->IsCollision(player, obj))
@@ -166,10 +208,20 @@ void Level::Stage01_Lvl::Update()
             if (ColliderManager::GetInst()->IsCollision(Enemy, obj))
             {
                 HandleCollision(Enemy, obj);
+                //AI COMP세팅을 해주고
+                Enemy_Platform_Collision_Event* e_p_c_e = new Enemy_Platform_Collision_Event(obj, Enemy);
+                EventManager::GetInst()->AddEvent(e_p_c_e);
+
             }
-            for(auto findObj : GoManager::GetInst()->Allobj())
+
+            if (ColliderManager::GetInst()->IsCollision(EnemySniper, obj))
             {
-                if(findObj ->GetName() == "Bullet")
+                HandleCollision(EnemySniper, obj);
+            }
+
+            for (auto findObj : GoManager::GetInst()->Allobj())
+            {
+                if (findObj->GetName() == "Bullet")
                 {
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
@@ -215,7 +267,8 @@ void Level::Stage01_Lvl::Update()
                 }
             }
         }
-    }              
+    }
+
     CameraManager::GetInst()->Update();
     GoManager::GetInst()->RemoveDeathObj();
 
@@ -233,6 +286,7 @@ void Level::Stage01_Lvl::Exit()
     GoManager::GetInst()->RemoveAllObj();
 }
 
+//바닥이랑 obj Collision이면서 위치보정
 void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
 {
     // Transform 및 RigidBody 컴포넌트 가져오기
@@ -247,7 +301,7 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
     AEVec2 obj2_Scale = obj_trs2->GetScale();
 
     //RigidBodyComponent* obj_rb1 = static_cast<RigidBodyComponent*>(obj1->FindComponent("RigidBody"));
-    if (obj1->GetName() == "Enemy")
+    if (obj1->GetName() == "Enemy" || obj1->GetName() == "EnemySniper")
     {
         RigidBodyComponent* obj_rb1 = static_cast<RigidBodyComponent*>(obj1->FindComponent("RigidBody"));
         //check 4 distance
@@ -289,7 +343,7 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
             break;
         }
     }
-    else
+    else if(obj1->GetName() == "Player")
     {
         PlayerComponent* obj_player = static_cast<PlayerComponent*>(obj1->FindComponent("PlayerComp"));
 
@@ -330,7 +384,6 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
             obj_player->SetJumpVelocityZero();
             break;
         }
-
     }
-    
+   
 }

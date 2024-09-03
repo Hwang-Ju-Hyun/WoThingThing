@@ -1,7 +1,7 @@
 #pragma once
 #pragma once
 #include"BaseEnemyState.h"
-
+#include <iostream>
 class GameObject;
 
 namespace ESM
@@ -18,11 +18,14 @@ namespace ESM
         GameObject* Player;
         bool dir_state;
         float dir_Time;
+        GameObject* PlatForm;
+        std::string e_state_name;
 
         //공격 딜레이 주기
+        float m_fDt;
         float melee_DelayAtk;
 
     public:
-        EnemyAttack(GameObject* _enemy, GameObject* _player, bool dir, float Time);
+        EnemyAttack(GameObject* _enemy, GameObject* _player, bool dir, float Time, GameObject* _platform, std::string _state_name);
     };
 }

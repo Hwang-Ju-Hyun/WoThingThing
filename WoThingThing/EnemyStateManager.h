@@ -7,7 +7,9 @@ namespace ESM
 	class EnemyStateManager 
 	{
 	public:
-		SINGLE(EnemyStateManager);
+		//SINGLE(EnemyStateManager);
+		EnemyStateManager();
+		~EnemyStateManager();
 
 	private:
 		BaseEnemyState* e_CurrentState;
