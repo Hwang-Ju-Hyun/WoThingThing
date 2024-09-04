@@ -11,7 +11,9 @@ namespace Level
     private:
         GameObject* player;
         GameObject* mouseAim;
-        GameObject* aimTrace;
+        GameObject* aimTrace; 
+        
+        bool gameOver;
     public:
         StageBoss_Lvl();
         ~StageBoss_Lvl();
@@ -25,10 +27,13 @@ namespace Level
         GameObject* Platform;
         GameObject* Enemy;
         GameObject* Enemy_TEST;
+
+        GameObject* EnemySniper;
+        GameObject* Boss1;
     public:
         int counter = 0;
     public:
         void HandleCollision(GameObject* obj1, GameObject* obj2);
-
+        void Collision();
     };
 }
