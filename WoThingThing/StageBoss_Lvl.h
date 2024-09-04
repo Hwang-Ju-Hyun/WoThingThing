@@ -29,6 +29,8 @@ namespace Level
         GameObject* Boss1;
     public:
         int counter = 0;
+    private:
+        double AccTime=0.;        
     public:
         void HandleCollision(GameObject* obj1, GameObject* obj2);
         void Collision();

@@ -438,7 +438,7 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 	AEVec2 objPos = obj_trs->GetPos();
 	AEVec2 objScale = obj_trs->GetScale();
 	AEVec2 nodePos = _nodeInfo.node_pos;	
-	AEVec2 nodeScale = { 70.f,70.f };
+	AEVec2 nodeScale = { 50.f,70.f };
 	if (ColliderManager::GetInst()->IsCollision(_obj, _nodeInfo)&&IsJumpDone==false)
 	{
 		if (_nodeInfo.node_id == 1 || _nodeInfo.node_id == 2|| _nodeInfo.node_id == 9

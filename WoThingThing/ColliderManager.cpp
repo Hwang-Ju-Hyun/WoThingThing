@@ -70,7 +70,7 @@ bool ColliderManager::IsCollision(GameObject* _obj1, TransComponent::Node _node)
 	AEVec2 obj2_Pos = _node.node_pos;
 
 	AEVec2 obj1_Scale = static_cast<TransComponent*>(obj_trs1)->GetScale();
-	AEVec2 obj2_Scale = { 70.f,70.f };
+	AEVec2 obj2_Scale = { 50.f,70.f };
 
 	float obj1Right = obj1_Pos.x + obj1_Scale.x / 2.f;
 	float obj1Left = obj1_Pos.x - obj1_Scale.x / 2.f;
@@ -95,7 +95,7 @@ bool ColliderManager::IsCollision(GameObject* _obj1, AEVec2 _vec)
 	AEVec2 obj2_Pos = _vec;
 
 	AEVec2 obj1_Scale = static_cast<TransComponent*>(obj_trs1)->GetScale();
-	AEVec2 obj2_Scale = { 70.f,70.f };
+	AEVec2 obj2_Scale = { 50.f,70.f };
 
 	float obj1Right = obj1_Pos.x + obj1_Scale.x / 2.f;
 	float obj1Left = obj1_Pos.x - obj1_Scale.x / 2.f;

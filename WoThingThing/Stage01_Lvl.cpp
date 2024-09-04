@@ -232,81 +232,8 @@ void Level::Stage01_Lvl::Update()
     for (auto it : NaveMeshManager::GetInst()->GetallNode())
         NaveMeshManager::GetInst()->DrawNode(it.node_pos.x - 35, it.node_pos.y - 35, it.node_pos.x + 35, it.node_pos.y + 35, 1.0f, 1.0f, 0);
 
-
     //Camera Update
-    CameraManager::GetInst()->Update();
-
-    //======================WARNING=============================
-    //=======NEVER TOUCH DOWN CODE EXCEPT HWNAG JUHYUN==========    
-    TransComponent* EnemyTEST_tsr = static_cast<TransComponent*>(Enemy_TEST->FindComponent("Transform"));
-    RigidBodyComponent* EnemyTEST_rg = static_cast<RigidBodyComponent*>(Enemy_TEST->FindComponent("RigidBody"));
-    PathFindMoveComponent* EnemyTEST_pf = static_cast<PathFindMoveComponent*>(Enemy_TEST->FindComponent("PathFindMove"));
-    //플레이어한테서 가장 가까운 노드를 찾는다
-    NaveMeshManager::GetInst()->SetMinCost(10000.f);
-    int player_node = NaveMeshManager::GetInst()->FindObjectNode(player);
-
-    //보스의 현재위치의 가장 가까운 노드를 찾는다
-    int EnemyTest_node = NaveMeshManager::GetInst()->FindObjectNode(Enemy_TEST);
-    auto node_link = NaveMeshManager::GetInst()->GetvecLink();
-    auto node = NaveMeshManager::GetInst()->GetallNode();
-    if (ColliderManager::GetInst()->IsCollision(Enemy_TEST, node[EnemyTest_node]))
-    {
-        NaveMeshManager::GetInst()->FindShortestPath(EnemyTest_node, player_node, 0);
-    }
-
-    auto minCost = NaveMeshManager::GetInst()->GetMinCost();
-    auto FoundedPath = NaveMeshManager::GetInst()->GetPath();
-
-    int PathIndex = EnemyTEST_pf->GetPathToPathIndex();
-
-    std::cout << "Player Located Node : " << player_node << std::endl;
-    std::cout << "Enemy Located Node : " << EnemyTest_node << std::endl;
-    std::cout << "Minimum cost: " << minCost << std::endl;
-    std::cout << "Founded Path: ";
-    for (auto node : FoundedPath)
-        std::cout << node << " ";
-    std::cout << std::endl;
-
-
-    if (FoundedPath.size() > 1)
-    {
-        //costLink는 점프가 될수도 있고  walk가 될 수도 있음                                          
-        int nodeID1 = FoundedPath[PathIndex];
-        int nodeID2;
-        if (FoundedPath.size() <= PathIndex + 1)
-            nodeID2 = nodeID1;
-        else
-            nodeID2 = FoundedPath[PathIndex + 1];
-        int idx = 0;
-        while (nodeID2 != node_link[nodeID1][idx].first)
-        {
-            idx++;
-        }
-        auto costLink = node_link[FoundedPath[PathIndex]][idx].second;
-
-        //해당 보스위치가 다음 서브노드의 도착지점에 도착하였다면!
-        //밑에 주석 막 지우지마 쓰일 수도 있음
-        /*if (EnemyTEST_pf->IsArrivedTargetNode(Enemy_TEST, node[PathIndex + 1].node_pos))
-        {
-            EnemyTEST_pf->PlusPathToPathIndex();
-      ddd  }*/
-      /*if (EnemyTEST_pf->IsArrivedTargetNode(Enemy_TEST, node[idx].node_pos))
-      {
-          EnemyTEST_pf->PlusPathToPathIndex();
-      }*/
-        if (EnemyTEST_pf->IsArrivedTargetNode(Enemy_TEST, node[nodeID2]))
-        {
-            EnemyTEST_pf->PlusPathToPathIndex();
-
-        }
-        else
-        {
-            costLink->Move(Enemy_TEST, node[nodeID1], FoundedPath[PathIndex], 1, node[nodeID2]);
-        }
-
-    }
-    //=======NEVER TOUCH UPPER CODE EXCEPT HWNAG JUHYUN==========
-    //======================WARNING=============================
+    CameraManager::GetInst()->Update();    
 
     std::cout << std::endl;
     if (AEInputCheckTriggered(AEVK_ESCAPE))

@@ -87,8 +87,8 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	//test È²ÁÖÇö
 	if (_owner->GetName() == "Enemy_TEST")
 	{
-		m_vPos = { -750,600 };
-		m_vScale = { 35,35 };
+		m_vPos = { 1920,90 };
+		m_vScale = { 30,30 };
 		m_fRot = 0.f;
 	}
 

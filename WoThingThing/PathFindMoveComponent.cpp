@@ -46,7 +46,7 @@ bool PathFindMoveComponent::IsArrivedTargetNode(GameObject* _objPos, TransCompon
 	TransComponent* obj_trs = static_cast<TransComponent*>(_objPos->FindComponent("Transform"));
 	AEVec2 objPos = obj_trs->GetPos();
 	AEVec2 objScale = obj_trs->GetScale();
-	AEVec2 nodeScale = { 70.f,70.f };
+	AEVec2 nodeScale = { 50.f,70.f };
 	float epsilon = std::numeric_limits<float>::epsilon();
 	/*if (CalculateDistance(objPos, objScale, _nodePos, nodeScale) <= epsilon)
 	{

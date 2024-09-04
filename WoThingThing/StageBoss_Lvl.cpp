@@ -12,6 +12,7 @@
 #include "BaseComponent.h"
 #include "TransComponent.h"
 #include "SpriteComponent.h"
+#include "TimeManager.h"
 #include "RigidBodyComponent.h"
 #include "PlayerComponent.h"
 #include "CompManager.h"
@@ -111,9 +112,9 @@ void Level::StageBoss_Lvl::Update()
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
 
-    TransComponent*     EnemyTest_trs = (TransComponent*)    Enemy_TEST->FindComponent("Transform");
-    SpriteComponent*    EnemyTest_spr = (SpriteComponent*)   Enemy_TEST->FindComponent("Sprite");
-    RigidBodyComponent* EnemyTest_rig = (RigidBodyComponent*)Enemy_TEST->FindComponent("RigidBody");    
+    TransComponent* EnemyTest_trs = (TransComponent*)Enemy_TEST->FindComponent("Transform");
+    SpriteComponent* EnemyTest_spr = (SpriteComponent*)Enemy_TEST->FindComponent("Sprite");
+    RigidBodyComponent* EnemyTest_rig = (RigidBodyComponent*)Enemy_TEST->FindComponent("RigidBody");
 
 
     //std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
@@ -131,8 +132,8 @@ void Level::StageBoss_Lvl::Update()
     else if (AEInputCheckCurr(AEVK_T) == true)
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
-    }    
-    
+    }
+
     Collision();
 
     CameraManager::GetInst()->Update();
@@ -167,9 +168,14 @@ void Level::StageBoss_Lvl::Update()
     //NDC -> Camera
     mouseX += camera.x;
     mouseY += camera.y;
-    float nodeBotX = (float)mouseX - 35.f;
+    //float nodeBotX = (float)mouseX - 35.f;
+    //float nodeBotY = (float)mouseY - 35.f;
+    //float nodeTopX = (float)mouseX + 35.f;
+    //float nodeTopY = (float)mouseY + 35.f;
+
+    float nodeBotX = (float)mouseX - 25.f;
     float nodeBotY = (float)mouseY - 35.f;
-    float nodeTopX = (float)mouseX + 35.f;
+    float nodeTopX = (float)mouseX + 25.f;
     float nodeTopY = (float)mouseY + 35.f;
 
     static int nodeId = 0;
@@ -189,7 +195,7 @@ void Level::StageBoss_Lvl::Update()
     auto a = NaveMeshManager::GetInst()->GetallNode();
     a.size();
     for (auto it : NaveMeshManager::GetInst()->GetallNode())
-        NaveMeshManager::GetInst()->DrawNode(it.node_pos.x - 35, it.node_pos.y - 35, it.node_pos.x + 35, it.node_pos.y + 35, 1.0f, 1.0f, 0);
+        NaveMeshManager::GetInst()->DrawNode(it.node_pos.x - 25, it.node_pos.y - 35, it.node_pos.x + 25, it.node_pos.y + 35, 1.0f, 1.0f, 0);
 
 
     //Camera Update
@@ -200,22 +206,34 @@ void Level::StageBoss_Lvl::Update()
     TransComponent* EnemyTEST_tsr = static_cast<TransComponent*>(Enemy_TEST->FindComponent("Transform"));
     RigidBodyComponent* EnemyTEST_rg = static_cast<RigidBodyComponent*>(Enemy_TEST->FindComponent("RigidBody"));
     PathFindMoveComponent* EnemyTEST_pf = static_cast<PathFindMoveComponent*>(Enemy_TEST->FindComponent("PathFindMove"));
-    
+
     NaveMeshManager::GetInst()->SetMinCost(10000.f);
     //플레이어한테서 가장 가까운 노드를 찾는다
     int player_node = NaveMeshManager::GetInst()->FindObjectNode(player);
 
     //보스의 현재위치의 가장 가까운 노드를 찾는다
     int EnemyTest_node = NaveMeshManager::GetInst()->FindObjectNode(Enemy_TEST);
+
     auto node_link = NaveMeshManager::GetInst()->GetvecLink();
     auto node = NaveMeshManager::GetInst()->GetallNode();
+
     if (ColliderManager::GetInst()->IsCollision(Enemy_TEST, node[EnemyTest_node]))
     {
         NaveMeshManager::GetInst()->FindShortestPath(EnemyTest_node, player_node, 0);
     }
+    else
+    {
+        double deltatime = AEFrameRateControllerGetFrameTime();
+        AccTime += deltatime;
+        if (AccTime > 1.)
+        {           
+            NaveMeshManager::GetInst()->FindShortestPath(EnemyTest_node, player_node, 0);
+            AccTime = 0.;
+        }
+    }
 
     auto minCost = NaveMeshManager::GetInst()->GetMinCost();
-    auto FoundedPath = NaveMeshManager::GetInst()->GetPath();
+    auto FoundedPath = NaveMeshManager::GetInst()->GetPath();    
 
     std::cout << "Player Node : " << player_node << std::endl;
     std::cout << "Enemy Node : " << EnemyTest_node << std::endl;
@@ -227,7 +245,7 @@ void Level::StageBoss_Lvl::Update()
 
     int PathIndex = EnemyTEST_pf->GetPathToPathIndex();
    
-
+    std::cout << player_trs->GetPos().x << "," << player_trs->GetPos().y << std::endl;
 
     if (FoundedPath.size() > 1)
     {
