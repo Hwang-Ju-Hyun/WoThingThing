@@ -80,3 +80,13 @@ json RigidBodyComponent::SaveToJson()
 {
 	return json();
 }
+
+void RigidBodyComponent::jump(float jumpVal)
+{
+	TransComponent* EnemyTEST_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
+	AEVec2 pos = static_cast<TransComponent*>(EnemyTEST_trs)->GetPos();
+	float dt = AEFrameRateControllerGetFrameTime();
+	jumpVelocity.y = jumpVal;
+	pos.y += jumpVelocity.y * dt;
+	static_cast<TransComponent*>(EnemyTEST_trs)->SetPos(pos);
+}

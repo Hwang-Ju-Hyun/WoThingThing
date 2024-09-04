@@ -4,6 +4,7 @@
 
 class GameObject;
 
+#include <list>
 class TransComponent :
     public BaseComponent
 {
@@ -11,10 +12,17 @@ public:
     TransComponent(GameObject* _owner);
     ~TransComponent();
 private:
-    AEVec2 m_vPos;
-    AEVec2 m_vScale;
-    float  m_fRot;
+    AEVec2 m_vPos = { 0.f,0.f };
+    AEVec2 m_vScale = { 0.f,0.f };
+    float  m_fRot=0.f;
     AEMtx33 m_matMatrix; 
+public:       
+    struct Node
+    {
+        int node_id=0;
+        AEVec2 node_pos = {};         
+    };    
+
 private:
     void CalculateMatrix();
 public:
@@ -37,6 +45,7 @@ public:
     virtual void Update() override;
 public:
     static BaseRTTI* CreateTransformComp();
+    void CalculateNodes();
     static constexpr const char* TransformTypeName = "Transform";
 public:
     virtual void LoadFromJson(const json& str)override;

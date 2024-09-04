@@ -20,6 +20,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	//	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	//#endif	
 
+	/*
+		*/
 	// Initialize the system
 	AESysInit(instanceH, show, 1600, 900, 0, 60, true, NULL);
 

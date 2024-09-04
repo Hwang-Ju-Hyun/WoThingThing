@@ -36,6 +36,9 @@
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainMenu_Lvl.h" />
     <ClInclude Include="Patrol.h" />
+    <ClInclude Include="MapEditor.h" />
+    <ClInclude Include="NaveMeshManager.h" />
+    <ClInclude Include="PathFindMoveComponent.h" />
     <ClInclude Include="PlayerComponent.h" />
     <ClInclude Include="Registry.h" />
     <ClInclude Include="Resource.h" />
@@ -44,6 +47,7 @@
     <ClInclude Include="Serializer.h" />
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Stage01_Lvl.h" />
+    <ClInclude Include="StageBoss_Lvl.h" />
     <ClInclude Include="TargetAim_Sniper.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TextResource.h" />
@@ -76,6 +80,9 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu_Lvl.cpp" />
     <ClCompile Include="Patrol.cpp" />
+    <ClCompile Include="MapEditor.cpp" />
+    <ClCompile Include="NaveMeshManager.cpp" />
+    <ClCompile Include="PathFindMoveComponent.cpp" />
     <ClCompile Include="PlayerComponent.cpp" />
     <ClCompile Include="Registry.cpp" />
     <ClCompile Include="Resource.cpp" />
@@ -84,6 +91,7 @@
     <ClCompile Include="Serializer.cpp" />
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Stage01_Lvl.cpp" />
+    <ClCompile Include="StageBoss_Lvl.cpp" />
     <ClCompile Include="TargetAim_Sniper.cpp" />
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TextResource.cpp" />
@@ -92,7 +100,8 @@
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="temp.json" />
+    <None Include="stage01.json" />
+    <None Include="stageBoss.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
