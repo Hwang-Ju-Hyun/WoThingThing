@@ -56,7 +56,7 @@ void Level::Stage01_Lvl::Init()
     //인제 temp는 보스 맵이 된거여    
 
     //stage01맵을 불러오자
-    Serializer::GetInst()->LoadLevel("stage01.json");
+    Serializer::GetInst()->LoadLevel("Assets/stage01.json");
 
 
     player = new GameObject("Player");

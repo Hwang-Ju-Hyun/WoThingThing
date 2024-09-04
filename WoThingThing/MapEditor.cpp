@@ -27,13 +27,13 @@ Level::MapEditor::~MapEditor()
 
 void Level::MapEditor::Init()
 {
-	file.open("stageBoss.json", std::fstream::in);
+	file.open("Assets/stageBoss.json", std::fstream::in);
 	
 	if (!file.is_open())
 	{
 		return;
 	}
-	Serializer::GetInst()->LoadLevel("stageBoss.json");
+	Serializer::GetInst()->LoadLevel("Assets/stageBoss.json");
 
 
 	player = new GameObject("Player");
@@ -139,7 +139,7 @@ void Level::MapEditor::Update()
 	CameraManager::GetInst()->Update();
 	if (AEInputCheckCurr(AEVK_B))
 	{		
-		Serializer::GetInst()->SaveLevel("stageBoss2.json");
+		//Serializer::GetInst()->SaveLevel("stageBoss2.json");
 		GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
 	}
 

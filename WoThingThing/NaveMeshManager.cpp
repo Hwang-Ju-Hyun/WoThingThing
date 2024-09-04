@@ -130,7 +130,7 @@ void NaveMeshManager::CreateLinkTable()
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link9;
 	link9.push_back({ 4, walk });
 	link9.push_back({ 8, walk });	
-	//link9.push_back({ 10, jump });	
+	link9.push_back({ 10, jump });	
 
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link10;
@@ -190,6 +190,9 @@ void NaveMeshManager::CreateLinkTable()
 	link20.push_back({ 14, walk });
 	link20.push_back({ 0, walk });
 
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link21;
+	link21.push_back({ 4, walk });
+	link21.push_back({ 3, walk });
 
 	m_vecLink.push_back(link0);
 	m_vecLink.push_back(link1);
@@ -212,6 +215,7 @@ void NaveMeshManager::CreateLinkTable()
 	m_vecLink.push_back(link18);
 	m_vecLink.push_back(link19);
 	m_vecLink.push_back(link20);
+	m_vecLink.push_back(link21);
 
 	//std::vector<std::pair<int/*nodeID*/, CostLink*>> link0;	
 	//link0.push_back({ 0,walk });
@@ -437,13 +441,22 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 	AEVec2 nodeScale = { 70.f,70.f };
 	if (ColliderManager::GetInst()->IsCollision(_obj, _nodeInfo)&&IsJumpDone==false)
 	{
-		if (_nodeInfo.node_id == 0 || _nodeInfo.node_id == 2)
+		if (_nodeInfo.node_id == 1 || _nodeInfo.node_id == 2|| _nodeInfo.node_id == 9
+			|| _nodeInfo.node_id == 8)
 		{
-			Height = 900;
+			Height = 570;
 		}
-		else
+		else if(_nodeInfo.node_id==12)
 		{
-			Height = 300;
+			Height = 600;
+		}
+		else if (_nodeInfo.node_id == 4 || _nodeInfo.node_id == 5)
+		{
+			Height = 550;
+		}
+		else if (_nodeInfo.node_id == 11 || _nodeInfo.node_id == 10)
+		{
+			Height = 480;
 		}
 		obj_rb->jump(Height);
 		Height = 100;

@@ -50,7 +50,7 @@ void Level::StageBoss_Lvl::Init()
     //Object and Component Init
     //      
     //stageBoss맵을 불러오자
-    Serializer::GetInst()->LoadLevel("stageBoss.json");
+    Serializer::GetInst()->LoadLevel("Assets/stageBoss.json");
 
 
     player = new GameObject("Player");
@@ -274,7 +274,7 @@ void Level::StageBoss_Lvl::Update()
     std::cout << std::endl;
     if (AEInputCheckTriggered(AEVK_Q))
     {
-        Serializer::GetInst()->SaveLevel("stageBoss.json");
+        Serializer::GetInst()->SaveLevel("Assets/stageBoss.json");
     }
     if (AEInputCheckTriggered(AEVK_F2))
         GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
@@ -448,5 +448,5 @@ void Level::StageBoss_Lvl::Exit()
     auto res = ResourceManager::GetInst()->GetReource();
     ResourceManager::GetInst()->RemoveAllRes();
     GoManager::GetInst()->RemoveAllObj();
-    Serializer::GetInst()->SaveLevel("stageBoss.json");
+    //Serializer::GetInst()->SaveLevel("Assets/stageBoss.json");
 }
