@@ -1,23 +1,20 @@
 #pragma once
 #include "BaseLevel.h"
-#include <vector>
+#include "header.h"
 
 class GameObject;
-class MainMenu_Lvl;
-
 
 namespace Level
 {
-    class Stage01_Lvl : public GSM::BaseLevel
+    class StageBoss_Lvl :public GSM::BaseLevel
     {
+    private:
         GameObject* player;
         GameObject* mouseAim;
         GameObject* aimTrace;
-
-        bool gameOver;
     public:
-        Stage01_Lvl();
-        ~Stage01_Lvl();
+        StageBoss_Lvl();
+        ~StageBoss_Lvl();
 
         virtual void Init() override;
         virtual void Update() override;
@@ -27,18 +24,11 @@ namespace Level
         std::vector<GameObject*> m_vecPlatforms;
         GameObject* Platform;
         GameObject* Enemy;
-
-        GameObject* EnemySniper;
-        GameObject* Boss1;
-
         GameObject* Enemy_TEST;
-
-    public:       
+    public:
         int counter = 0;
     public:
         void HandleCollision(GameObject* obj1, GameObject* obj2);
-        void Collision();
+
     };
 }
-
-

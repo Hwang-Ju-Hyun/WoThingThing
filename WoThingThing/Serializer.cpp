@@ -4,6 +4,7 @@
 #include "BaseComponent.h"
 #include "GoManager.h"
 #include "GameObject.h"
+#include "NaveMeshManager.h"
 #include "BaseRTTI.h"
 #include "Registry.h"
 
@@ -20,6 +21,7 @@ Serializer::~Serializer()
 
 }
 
+static int nodeID = 0;
 
 //털끝 하나 건들지 말것 ↓
 void Serializer::LoadLevel(const std::string& s)
@@ -69,6 +71,22 @@ void Serializer::LoadLevel(const std::string& s)
 					p->LoadFromJson(a);
 				}
 				//Add the comp to the GO
+				auto nodes = a.find("Nodes");
+				static bool IsNodeCheck = false;
+				if (nodes != a.end())
+				{					
+					if (IsNodeCheck == false)
+					{
+						for (const auto& node : *nodes)
+						{
+							auto x = node.begin().value();
+							auto y = (node.begin() + 1).value();
+							NaveMeshManager::GetInst()->AddNode({ nodeID++, {x,y} });
+							IsNodeCheck = true;
+						}
+					}					
+					// You might need to set these nodes data to your component here
+				}							
 			}
 		}
 	}
@@ -82,17 +100,21 @@ void Serializer::SaveLevel(const std::string& s)
 	//iterate on each GameObject
 	for (GameObject* go : GoManager::GetInst()->Allobj())
 	{
-		json obj;
-		obj["Platform"] = i++;
-
+		auto aa = GoManager::GetInst()->Allobj();
+		aa.size();
 		json components;
-		for (auto c : go->GetAllComp())//map
+		if (go->GetName() == "Platform")
 		{
-			BaseComponent* comp = c.second;
-			components.push_back(comp->SaveToJson());//Check in a moment
-		}		
-		obj["Components"] = components;
-		AllData.push_back(obj);
+			json obj;
+			obj["Platform"] = i++;
+			for (auto c : go->GetAllComp())//map
+			{
+				BaseComponent* comp = c.second;
+				components.push_back(comp->SaveToJson());//Check in a moment			
+			}
+			obj["Components"] = components;
+			AllData.push_back(obj);
+		}				
 	}
 
 	//Open file

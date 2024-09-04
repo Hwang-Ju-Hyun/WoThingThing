@@ -12,7 +12,7 @@ class PlayerComponent : public BaseComponent
 
     AEVec2  dashVelocity;
     AEVec2  dash_const;
-    
+
     AEVec2  jumpVelocity;
     AEVec2  m_vGravity;
 
@@ -50,6 +50,7 @@ public:
     void Attack();
     GameObject* GetMelee();
     ////////////////////////
+
 
     //황주현 코드추가
     void SetJumpCntZero();    

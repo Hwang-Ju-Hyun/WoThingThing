@@ -81,9 +81,6 @@
     <Filter Include="Manager\CameraMgr">
       <UniqueIdentifier>{4906040b-1b86-402e-a028-99cb8da10bc3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Player">
-      <UniqueIdentifier>{4220cec6-3c8d-418c-9eb4-4581f485ada7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager\ESMgr">
       <UniqueIdentifier>{bcd1f22c-2bd6-479f-aa1a-b65a672eb2e3}</UniqueIdentifier>
     </Filter>
@@ -111,7 +108,7 @@
     <Filter Include="Ai\Aimanager">
       <UniqueIdentifier>{0062f34b-4be9-484b-8cc2-bc78fdf7d197}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Main\Sprite">
+    <Filter Include="Component\Sprite">
       <UniqueIdentifier>{7c3a7664-1c34-48b4-8a6f-ca0aa5f872b2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Component\Bullet">
@@ -128,6 +125,24 @@
     </Filter>
     <Filter Include="Ai\Ai_State\Melee\EnemyState\Idle">
       <UniqueIdentifier>{bd34e0ce-cff0-48f1-b532-509bd8c9aea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\NaveMeshMgr">
+      <UniqueIdentifier>{a54f1c60-e204-445d-941c-38ed72b4a06d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\PathFindMove">
+      <UniqueIdentifier>{5ea3f037-1ba6-436e-8aa0-1e7533befba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Player">
+      <UniqueIdentifier>{4220cec6-3c8d-418c-9eb4-4581f485ada7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\StageBoss">
+      <UniqueIdentifier>{aca8ca4a-e857-453d-a092-e5f15406e485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\MapEditorMgr">
+      <UniqueIdentifier>{fc593156-fe82-4531-8e72-3508c8e3967d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\MapEdit">
+      <UniqueIdentifier>{f3ffc5b3-8fc4-41e2-96c7-58ae625cf980}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -159,7 +174,7 @@
       <Filter>Component\Transform</Filter>
     </ClCompile>
     <ClCompile Include="SpriteComponent.cpp">
-      <Filter>Main\Sprite</Filter>
+      <Filter>Component\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="ColliderManager.cpp">
       <Filter>Manager\CollisionMgr</Filter>
@@ -266,6 +281,18 @@
     <ClCompile Include="Patrol.cpp">
       <Filter>Ai\Ai_State\Melee\EnemyState</Filter>
     </ClCompile>
+    <ClCompile Include="NaveMeshManager.cpp">
+      <Filter>Manager\NaveMeshMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFindMoveComponent.cpp">
+      <Filter>Component\PathFindMove</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBoss_Lvl.cpp">
+      <Filter>Level\StageBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditor.cpp">
+      <Filter>Manager\MapEditorMgr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -302,7 +329,7 @@
       <Filter>Component\Transform</Filter>
     </ClInclude>
     <ClInclude Include="SpriteComponent.h">
-      <Filter>Main\Sprite</Filter>
+      <Filter>Component\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="ColliderManager.h">
       <Filter>Manager\CollisionMgr</Filter>
@@ -406,9 +433,24 @@
     <ClInclude Include="Patrol.h">
       <Filter>Ai\Ai_State\Melee\EnemyState</Filter>
     </ClInclude>
+    <ClInclude Include="NaveMeshManager.h">
+      <Filter>Manager\NaveMeshMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFindMoveComponent.h">
+      <Filter>Component\PathFindMove</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBoss_Lvl.h">
+      <Filter>Level\StageBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditor.h">
+      <Filter>Manager\MapEditorMgr</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="temp.json">
+    <None Include="stage01.json">
+      <Filter>Json</Filter>
+    </None>
+    <None Include="stageBoss.json">
       <Filter>Json</Filter>
     </None>
   </ItemGroup>

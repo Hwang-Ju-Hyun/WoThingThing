@@ -4,7 +4,7 @@
 #include "AEGraphics.h"
 #include "GoManager.h"
 #include "RigidBodyComponent.h"
-
+#include "NaveMeshManager.h"
 
 TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_matMatrix{}
 {
@@ -12,7 +12,7 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	//이 코드들도 나중에 stage01 _init으로 옮겨야함
 	if (_owner->GetName() == "Player")
 	{
-		m_vPos = { -750,550 };
+		m_vPos = {200,0 };
 		m_vScale = { 35,35 };
 		m_fRot = 0.f;
 	}
@@ -82,6 +82,17 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 		m_vScale = { 10,10 };
 		m_fRot = 0.f;
 	}
+	
+
+	//test 황주현
+	if (_owner->GetName() == "Enemy_TEST")
+	{
+		m_vPos = { -750,600 };
+		m_vScale = { 35,35 };
+		m_fRot = 0.f;
+	}
+
+
 }
 
 TransComponent::~TransComponent()
@@ -103,6 +114,7 @@ void TransComponent::CalculateMatrix()
 	//Concat
 	AEMtx33Concat(&m_matMatrix, &rotationMtx, &scaleMtx);
 	AEMtx33Concat(&m_matMatrix, &translateMtx, &m_matMatrix);
+	
 }
 
 void TransComponent::AddPos(const AEVec2& _pos)
@@ -110,6 +122,7 @@ void TransComponent::AddPos(const AEVec2& _pos)
 	m_vPos.x += _pos.x;
 	m_vPos.y += _pos.y;
 }
+
 void TransComponent::AddPos(float _posX, float _posY)
 {
 	float dt = AEFrameRateControllerGetFrameTime();
@@ -170,6 +183,11 @@ void TransComponent::SetRot(const float& _rot)
 void TransComponent::Update()
 {
 	CalculateMatrix();
+
+	if (AEInputCheckReleased(AEVK_P))
+		CalculateNodes();
+
+	
 }
 
 BaseRTTI* TransComponent::CreateTransformComp()
@@ -179,6 +197,12 @@ BaseRTTI* TransComponent::CreateTransformComp()
 	//GameObjectManager::GetInst()->GetLastObj()->AddComponent("Transform", TransformComponent();
 	//GetLast()->AddComp<TransformComp>();
 	return p;
+}
+
+void TransComponent::CalculateNodes()
+{
+	NaveMeshManager::GetInst()->ClearNode();	
+	
 }
 
 void TransComponent::LoadFromJson(const json& str)
@@ -197,94 +221,16 @@ void TransComponent::LoadFromJson(const json& str)
 		m_vScale.y = (s->begin() + 1).value();
 
 		auto r = compData->find("Rot");
-		m_fRot = r.value();
-	}
-	float plat_right = m_vPos.x + m_vScale.x / 2.f;
-	float plat_left = m_vPos.x - m_vScale.x / 2.f;
-	float plat_top = m_vPos.y + m_vScale.y / 2.f;
-	float plat_bot = m_vPos.y - m_vScale.y / 2.f;
+		m_fRot = r.value();		
+	}	
 
-	float scale_x = m_vScale.x;
-	float scale_y = m_vScale.y;	
-
-	
-	/*std::string node_nameLeft = "Node";
-	GameObject* node_left = new GameObject(node_nameLeft);
-	GoManager::GetInst()->AddObject(node_left);
-	node_left->AddComponent("Transform", new TransComponent(node_left));
-	TransComponent* node_trsLeft = static_cast<TransComponent*>(node_left->FindComponent("Transform"));
-	node_trsLeft->SetPos({ plat_left - 10.f,plat_bot + 10.f });
-	node_trsLeft->SetScale({ 15.f,15.f });
-	node_trsLeft->SetRot(0.f);
-
-	std::string node_nameRight = "Node";
-	GameObject* node_right = new GameObject(node_nameRight);
-	GoManager::GetInst()->AddObject(node_right);
-	node_right->AddComponent("Transform", new TransComponent(node_right));
-	TransComponent* node_trsRight = static_cast<TransComponent*>(node_right->FindComponent("Transform"));
-	node_trsRight->SetPos({ plat_right + 10.f,plat_bot + 10.f });
-	node_trsRight->SetScale({ 15.f,15.f });
-	node_trsRight->SetRot(0.f);
-
-	std::string node_nameTop = "Node";
-	GameObject* Node_top = new GameObject(node_nameTop);
-	GoManager::GetInst()->AddObject(Node_top);
-	Node_top->AddComponent("Transform", new TransComponent(Node_top));
-	TransComponent* node_trsTop = static_cast<TransComponent*>(Node_top->FindComponent("Transform"));
-	node_trsTop->SetPos({ m_vPos.x,plat_top + 10.f});
-	node_trsTop->SetScale({ 15.f,15.f });
-	node_trsTop->SetRot(0.f);*/
-
-
-
-	//노드 생성
-	int node_Wcnt = m_vScale.x / 20; //20(너비) 단위로 노드를 생성하겠음
-	int node_Hcnt = m_vScale.y / 20; //20(높이) 단위로 노드를 생성하겠음
-
-
-
-	//Create Upper Node	
-	for (int i = 0; i < node_Wcnt+2; i++) //+2한 이유 좌우측 모서리도 노드를 표현하기위해서
-	{
-		std::string node_name = "Node";
-		GameObject* Node = new GameObject(node_name);
-		GoManager::GetInst()->AddObject(Node);
-		Node->AddComponent("Transform", new TransComponent(Node));
-		TransComponent* node_trs = static_cast<TransComponent*>(Node->FindComponent("Transform"));
-		node_trs->SetPos({ plat_left + (i * 20.f),plat_top + 20.f });
-		node_trs->SetScale({ 10.f,10.f });
-		node_trs->SetRot(0.f);
-	}
-	/*Create Left Node
-	for (int i = 0; i < node_Hcnt+1; i++)
-	{
-		std::string node_name = "Node";
-		GameObject* Node = new GameObject(node_name);
-		GoManager::GetInst()->AddObject(Node);
-		Node->AddComponent("Transform", new TransComponent(Node));
-		TransComponent* node_trs = static_cast<TransComponent*>(Node->FindComponent("Transform"));
-		node_trs->SetPos({ plat_left-10.f,plat_top-(i*20.f)});
-		node_trs->SetScale({ 10.f,10.f });
-		node_trs->SetRot(0.f);
-	}
-	Create Right Node
-	for (int i = 0; i < node_Hcnt+1; i++)
-	{
-		std::string node_name = "Node";
-		GameObject* Node = new GameObject(node_name);
-		GoManager::GetInst()->AddObject(Node);
-		Node->AddComponent("Transform", new TransComponent(Node));
-		TransComponent* node_trs = static_cast<TransComponent*>(Node->FindComponent("Transform"));
-		node_trs->SetPos({ plat_right + 10.f,plat_top - (i * 20.f) });
-		node_trs->SetScale({ 10.f,10.f });
-		node_trs->SetRot(0.f);
-	}*/
 
 	
 	//Utilize the data
 	CalculateMatrix();
+	
 }
-
+static int nodeID = 0;
 json TransComponent::SaveToJson()
 {
 	json data;
@@ -301,6 +247,17 @@ json TransComponent::SaveToJson()
 	compData["Rot"] = m_fRot;
 
 	data["CompData"] = compData;
+
+	//A section for the nodes
+	json nodejson;	
+	auto listNode=NaveMeshManager::GetInst()->GetallNode();
+	for (auto it : listNode)
+	{
+		//Save its position
+		nodejson[it.node_id] = { it.node_pos.x,it.node_pos.y };		
+	}
+
+	data["Nodes"] = nodejson;
 
 	return data;
 }

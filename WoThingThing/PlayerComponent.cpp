@@ -170,6 +170,7 @@ void PlayerComponent::MouseAim()
 	mousePos.x += player_Cam.x;
 	mousePos.y += player_Cam.y;
 }
+
 void PlayerComponent::MouseTraceLine()
 {
 	TransComponent* aimTrace_trs = (TransComponent*)aim_line->FindComponent("Transform");
