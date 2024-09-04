@@ -441,14 +441,18 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 	AEVec2 nodeScale = { 50.f,70.f };
 	if (ColliderManager::GetInst()->IsCollision(_obj, _nodeInfo)&&IsJumpDone==false)
 	{
-		if (_nodeInfo.node_id == 1 || _nodeInfo.node_id == 2|| _nodeInfo.node_id == 9
+		if (_nodeInfo.node_id == 1 || _nodeInfo.node_id == 9
 			|| _nodeInfo.node_id == 8)
 		{
 			Height = 570;
 		}
+		else if(_nodeInfo.node_id == 2)
+		{
+			Height = 670;
+		}
 		else if(_nodeInfo.node_id==12)
 		{
-			Height = 600;
+			Height =600;
 		}
 		else if (_nodeInfo.node_id == 4 || _nodeInfo.node_id == 5)
 		{
