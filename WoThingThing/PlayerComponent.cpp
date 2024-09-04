@@ -9,8 +9,9 @@
 #include "GameObject.h"
 #include "GoManager.h"
 int PlayerComponent::jumpCnt = 0;
-bool PlayerComponent::meleeActive = true;
-bool PlayerComponent::shotActive = false;
+bool PlayerComponent::meleeAction = true;
+bool PlayerComponent::shotAction = false;
+bool PlayerComponent::obtainGun = false;
 
 PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 {
@@ -31,10 +32,17 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	aim_line->AddComponent("Transform", new TransComponent(aim_line));
 	aim_line->AddComponent("Sprite", new SpriteComponent(aim_line));
 
+	gauge = new GameObject("Gauge");
+	GoManager::GetInst()->AddObject(gauge);
+	gauge->AddComponent("Transform", new TransComponent(gauge));
+	gauge->AddComponent("Sprite", new SpriteComponent(gauge));
+	
 	melee = nullptr;
 
-	timeManipul = 7.f;
+	maniCapacity = 7.f;
+	timeManipul = maniCapacity;
 	manipulActive = false;
+
 }
 
 //About Player's movement
@@ -68,7 +76,7 @@ void PlayerComponent::MoveMent()
 	{
 		manipulActive = true;
 		timeManipul -= dt;
-		std::cout << timeManipul << std::endl;
+		//std::cout << timeManipul << std::endl;
 
 		if (timeManipul <= 0.f)
 		{
@@ -79,9 +87,9 @@ void PlayerComponent::MoveMent()
 	if (!AEInputCheckCurr(AEVK_LSHIFT))
 	{
 		manipulActive = false;
-		if (timeManipul < 7.f)
+		if (timeManipul < maniCapacity)
 			timeManipul += dt;
-		std::cout << timeManipul << std::endl;
+		//std::cout << timeManipul << std::endl;
 	}
 
 	//Jump
@@ -204,10 +212,10 @@ void PlayerComponent::Attack()
 {
 	//melee attack
 	if (AEInputCheckTriggered(AEVK_1))
-		meleeActive = true, shotActive = false;
+		meleeAction = true, shotAction = false;
 	//shot attack
-	else if (AEInputCheckTriggered(AEVK_2))
-		meleeActive = false, shotActive = true;
+	else if (AEInputCheckTriggered(AEVK_2) && obtainGun)
+		meleeAction = false, shotAction = true;
 
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 
@@ -218,7 +226,7 @@ void PlayerComponent::Attack()
 	AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
 	AEVec2Normalize(&nor_dVec, &dVec);
 
-	if (meleeActive)
+	if (meleeAction)
 	{
 		//Remove about shotAttack
 		TransComponent* aimTrace_spr = (TransComponent*)aim_line->FindComponent("Transform");
@@ -252,7 +260,7 @@ void PlayerComponent::Attack()
 			}
 		}
 	}
-	else if (shotActive)
+	else if (shotAction)
 	{
 		MouseTraceLine();
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
@@ -267,6 +275,15 @@ GameObject* PlayerComponent::GetMelee()
 	return melee;
 }
 
+bool PlayerComponent::GetObtain()
+{
+	return obtainGun;
+}
+void PlayerComponent::SetObtain()
+{
+	obtainGun = true;
+}
+
 
 // 황주현 코드 추가
 void PlayerComponent::SetJumpCntZero()
@@ -278,11 +295,24 @@ void PlayerComponent::SetJumpVelocityZero()
 	jumpVelocity.y = 0.f;
 }
 
+void PlayerComponent::Gauge()
+{
+	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
+	TransComponent* gauge_trs = (TransComponent*)gauge->FindComponent("Transform");
+	AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
+	gauge_trs->SetScale({ timeManipul * 20.f, 15 });
+	float len = maniCapacity * 20.f;
+	float curLen = timeManipul * 20.f;
+	gauge_trs->SetPos(player_trs->GetPos().x - 700 - ((len - curLen)/2.f), player_trs->GetPos().y + 400);
+
+}
+
 void PlayerComponent::Update()
 {
 	MoveMent();
 	MouseAim();
 	Attack();
+	Gauge();
 }
 
 void PlayerComponent::LoadFromJson(const json& str)

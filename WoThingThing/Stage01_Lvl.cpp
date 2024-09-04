@@ -16,14 +16,18 @@
 #include "RigidBodyComponent.h"
 #include "PlayerComponent.h"
 #include "BulletComponent.h"
+#include "AnimationComponent.h"
 #include "CompManager.h"
 
 #include "EventManager.h"
 #include "ColliderManager.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
+
 #include "AudioResource.h"
 #include "TextResource.h"
+#include "ImageResource.h"
+
 
 #include "Serializer.h"
 #include "NaveMeshManager.h"
@@ -63,9 +67,15 @@ void Level::Stage01_Lvl::Init()
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
-    player->AddComponent("Sprite", new SpriteComponent(player));    
+    //player->AddComponent("Sprite", new SpriteComponent(player));    
+    player->AddComponent("Animation", new AnimationComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
-    
+    //Add Image Resource??
+    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
+    player_trs->SetScale({ 100,100 });
+
+
+
 
     aimTrace = new GameObject("aimTrace");
     GoManager::GetInst()->AddObject(aimTrace);
@@ -153,11 +163,9 @@ void Level::Stage01_Lvl::Update()
 
     //Component 
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
-    SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
+    //SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
-
-
 
     if (EnemySniper != nullptr)
     {
@@ -165,36 +173,30 @@ void Level::Stage01_Lvl::Update()
         AiComponent* Enemy_SniperAi = (AiComponent*)EnemySniper->FindComponent("Ai");
     }
 
-    std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
-    //Right Click : Right attack
+    //std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
 
-
-    if (AEInputCheckCurr(AEVK_R) == true)
-    {
-        //GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
-    }
-    else if (AEInputCheckCurr(AEVK_E) == true)
-    {
-        GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
-    }
-    else if (AEInputCheckCurr(AEVK_T) == true)
-    {
-        GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
-    }
+    //if (AEInputCheckCurr(AEVK_R) == true)
+    //{
+    //    //GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
+    //}
+    //else if (AEInputCheckCurr(AEVK_E) == true)
+    //{
+    //    GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
+    //}
+    //else if (AEInputCheckCurr(AEVK_T) == true)
+    //{
+    //    GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
+    //}
+    //if (AEInputCheckPrev(AEVK_0))
+    //{
+    //    GSM::GameStateManager::GetInst()->Exit();
+    //}
 
     Collision();
 
     CameraManager::GetInst()->Update();
     GoManager::GetInst()->RemoveDeathObj();
 
-    if (AEInputCheckPrev(AEVK_0))
-    {
-        GSM::GameStateManager::GetInst()->Exit();
-    }
-
-    //Test line
-    if (AEInputCheckTriggered(AEVK_4))
-        CreateSupplement({ 0, -300 });
 
     if (gameOver)
     {
@@ -222,18 +224,19 @@ void Level::Stage01_Lvl::Update()
     float nodeTopY = (float)mouseY + 35.f;
 
     static int nodeId = 0;
+    //밑에 주석 지우지마용~
     //NodeEditor	
-    if (AEInputCheckTriggered(AEVK_RBUTTON))
-    {
-        ////Ask manager for the node. It will handle the unique IDs	
-        // 		
-        TransComponent::Node node_left;
+    //if (AEInputCheckTriggered(AEVK_RBUTTON))
+    //{
+    //    ////Ask manager for the node. It will handle the unique IDs	
+    //    // 		
+    //    TransComponent::Node node_left;
 
-        node_left.node_id = nodeId++;
-        node_left.node_pos = { (float)mouseX,(float)mouseY };
+    //    node_left.node_id = nodeId++;
+    //    node_left.node_pos = { (float)mouseX,(float)mouseY };
 
-        NaveMeshManager::GetInst()->AddNode(node_left);
-    }
+    //    NaveMeshManager::GetInst()->AddNode(node_left);
+    //}
 
 
     for (auto it : NaveMeshManager::GetInst()->GetallNode())
@@ -266,14 +269,13 @@ void Level::Stage01_Lvl::Update()
 
     int PathIndex = EnemyTEST_pf->GetPathToPathIndex();
 
-    std::cout << "Player Located Node : " << player_node << std::endl;
-    std::cout << "Enemy Located Node : " << EnemyTest_node << std::endl;
-    std::cout << "Minimum cost: " << minCost << std::endl;
-    std::cout << "Founded Path: ";
-    for (auto node : FoundedPath)
-        std::cout << node << " ";
-    std::cout << std::endl;
-
+    //std::cout << "Player Located Node : " << player_node << std::endl;
+    //std::cout << "Enemy Located Node : " << EnemyTest_node << std::endl;
+    //std::cout << "Minimum cost: " << minCost << std::endl;
+    //std::cout << "Founded Path: ";
+    //for (auto node : FoundedPath)
+    //    std::cout << node << " ";
+    //std::cout << std::endl;
 
     if (FoundedPath.size() > 1)
     {
@@ -315,11 +317,13 @@ void Level::Stage01_Lvl::Update()
     //=======NEVER TOUCH UPPER CODE EXCEPT HWNAG JUHYUN==========
     //======================WARNING=============================
 
-    std::cout << std::endl;
+    //std::cout << std::endl;
     if (AEInputCheckTriggered(AEVK_ESCAPE))
         GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
     if (AEInputCheckTriggered(AEVK_F1))
         GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
+
+
 }
 
 
@@ -340,10 +344,12 @@ void Level::Stage01_Lvl::Collision()
         //Platform
         if (obj->GetName() == "Platform")
         {
+            //with Player
             if (ColliderManager::GetInst()->IsCollision(player, obj))
             {
                 HandleCollision(player, obj);
             }
+            //with Enemy
             if (ColliderManager::GetInst()->IsCollision(Enemy, obj))
             {
                 HandleCollision(Enemy, obj);
@@ -351,11 +357,13 @@ void Level::Stage01_Lvl::Collision()
                 Enemy_Platform_Collision_Event* e_p_c_e = new Enemy_Platform_Collision_Event(obj, Enemy);
                 EventManager::GetInst()->AddEvent(e_p_c_e);
             }
+            //with Sniper Enemy
             if (ColliderManager::GetInst()->IsCollision(EnemySniper, obj))
             {
                 HandleCollision(EnemySniper, obj);
             }
             int a = 0;
+            //with All Bullet
             for (auto findObj : GoManager::GetInst()->Allobj())
             {
                 if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
@@ -363,47 +371,65 @@ void Level::Stage01_Lvl::Collision()
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
 
-                        std::cout << "cnt : " << ++a << std::endl;
+                        //std::cout << "cnt : " << ++a << std::endl;
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         bullet_comp->DestroyBullet();
                     }
                 }
             }
         }
+        //Enemy Bullet
         if (obj->GetName() == "EnemyBullet")
         {
+            //with Player's Melee ==> Parrying
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {
                 BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
-                bullet_comp->EnemyShoot = false;
-                AEVec2 returnbullet = bullet_comp->GetBulletVec();
-                float dt = AEFrameRateControllerGetFrameTime();
-                if (AEInputCheckCurr(AEVK_LSHIFT))
+                if(!bullet_comp->GetState())
                 {
-                    bullet_comp->SetBulletVec({ -1 * returnbullet.x * dt,-1 * returnbullet.y * dt });
-                }
-                else
-                {
-                    bullet_comp->SetBulletVec({ -1 * returnbullet.x,-1 * returnbullet.y });
+                    bullet_comp->SetState();
+                    bullet_comp->EnemyShoot = false;
+                    AEVec2 bulletVec = bullet_comp->GetBulletVec();
+                    AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+                    AEVec2Normalize(&nor_dVec, &bulletVec);
+                    AEVec2Scale(&nor_dVec, &nor_dVec, -1);
+
+                    bullet_comp->SetBulletVec(nor_dVec);
                 }
             }
 
-            //Player Death
+            //with Player ==> player is die
             if (ColliderManager::GetInst()->IsCollision(player, obj))
             {
                 gameOver = true;
             }
         }
+        //Sniper Enemy
         if (obj->GetName() == "EnemySniper")
         {
-            //Test: Collision Enemy with Player's Bullet
+            //with Player's melee ==> enemy is die
+            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
+            {
+                std::srand(static_cast<unsigned>(std::time(0)));
+                int probability = std::rand() % 100;
+
+                TransComponent* enemy_trs = (TransComponent*)obj->FindComponent("Transform");
+                if (!player_comp->GetObtain() && probability < 45)
+                    CreateGun(enemy_trs->GetPos());
+
+                if (player_comp->GetObtain() && probability < 40)
+                    CreateSupplement(enemy_trs->GetPos());
+
+                EnemySniper->SetActive(false);
+                EnemySniper = nullptr;
+            }
+            //with Player's Bullet ==> enemy is die
             for (auto findObj : GoManager::GetInst()->Allobj())
             {
                 if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
                 {
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
-                        std::cout << "c" << std::endl;
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         if (!bullet_comp->EnemyShoot)
                         {
@@ -411,22 +437,32 @@ void Level::Stage01_Lvl::Collision()
                             EnemySniper = nullptr;
                         }
                         bullet_comp->DestroyBullet();
+
                     }
                 }
             }
 
         }
 
+        //supply bullet
         if (obj->GetName() == "BulletSupplement")
         {
             if (ColliderManager::GetInst()->IsCollision(player, obj))
             {
                 AddBullet();
-                std::cout << "Add Bullet!" << std::endl;
 
                 obj->SetActive(false);
             }
+        }
+        //obtain gun
+        if (obj->GetName() == "Gun")
+        {
+            if (ColliderManager::GetInst()->IsCollision(player, obj))
+            {
+                player_comp->SetObtain();
 
+                obj->SetActive(false);
+            }
         }
     }
 }

@@ -60,10 +60,14 @@ void DrawRect(float bottomleft_x, float bottomleft_y, float topRight_x, float to
 
 void CreateGun(AEVec2 initPos)
 {
-	GameObject* tempPlayer = GoManager::GetInst()->FindObj("Player");
-	PlayerComponent* temp_comp = (PlayerComponent*)tempPlayer->FindComponent("PlayerComp");
-	bool manipulActive = temp_comp->GetManiActive();
+	GameObject* gun = new GameObject("Gun");
+	GoManager::GetInst()->AddObject(gun);
+	gun->AddComponent("Transform", new TransComponent(gun));
+	gun->AddComponent("Sprite", new SpriteComponent(gun));
 
+	TransComponent* gun_trs = (TransComponent*)gun->FindComponent("Transform");
+	gun_trs->SetPos(initPos.x, initPos.y);
+	gun_trs->SetScale({ 80,80 });
 }
 
 void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool _enemyShoot)
@@ -118,7 +122,6 @@ void CreateSupplement(AEVec2 initPos)
 	//initPos 값을 적의 위치로 주면 끝
 	supple_trs->SetPos(initPos.x, initPos.y);
 	supple_trs->SetScale({ 30,30 });
-
 
 	DrawRect(supple_trs->GetPos().x - 15, supple_trs->GetPos().y - 15, 
 		supple_trs->GetPos().x + 15, supple_trs->GetPos().y + 15, 1, 1, 0);

@@ -1,10 +1,9 @@
 #pragma once
 #include "Resource.h"
-class TextResource :
-    public Resource
+class TextResource : public Resource
 {
 public:
-    TextResource(std::string _name);
+    TextResource(const std::string& _name);
     ~TextResource();
 private:
     std::string m_name;

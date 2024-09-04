@@ -197,7 +197,7 @@ void ChasePlatFormSettor::OnEvent(Event* ev)
 	Enemy_Platform_Collision_Event* e_p_c_e = static_cast<Enemy_Platform_Collision_Event*>(ev);
 	Enemy_Chase->PlatForm = e_p_c_e->platform;
 	//EventManager::GetInst()->RemoveEntity("EnemyPlatformCollisionEvent", this);
-	std::cout << __FUNCTION__ << std::endl;
+	//std::cout << __FUNCTION__ << std::endl;
 }
 
 Enemy_Platform_Collision_Event::Enemy_Platform_Collision_Event(GameObject* _platform, GameObject* _enemy)

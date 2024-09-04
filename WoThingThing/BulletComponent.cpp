@@ -9,9 +9,8 @@
 BulletComponent::BulletComponent(GameObject* _owner) : BaseComponent(_owner)
 {
 	bullet_Vec = { 0.f,0.f };
-	bullet_const = { 35.f, 35.f };
-	Bullet_manipulActive = false;
-
+	bullet_const = { 20.f, 20.f };
+	isParrying = false;
 }
 
 void BulletComponent::SetBulletVec(AEVec2 dVec)
@@ -27,10 +26,19 @@ AEVec2 BulletComponent::GetBulletVec()
 
 void BulletComponent::DestroyBullet()
 {
-	std::cout << m_pOwner << "Destroy Bullet!!" << std::endl;
 	m_pOwner->SetActive(false);
 	// 주석 풀 시 진짜 사형
 	//m_pOwner = nullptr;
+}
+
+void BulletComponent::SetState()
+{
+	isParrying = true;
+}
+
+bool BulletComponent::GetState()
+{
+	return isParrying;
 }
 
 void BulletComponent::Update()

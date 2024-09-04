@@ -37,7 +37,8 @@ void CompManager::AddComponent(std::string _name, BaseComponent* _comp)
 //	}	
 //	if (!IsCompExist)
 //	{
-//		//std::cout << "Can't find Component(RemoveComponent)" << std::endl;
+//		//std::
+// << "Can't find Component(RemoveComponent)" << std::endl;
 //		return;
 //	}
 //		
