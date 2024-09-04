@@ -5,8 +5,6 @@
 
 class BulletComponent : public BaseComponent
 {
-	GameObject* bullet;
-
 	AEVec2 bullet_Vec;
 	AEVec2 bullet_const;
 public:

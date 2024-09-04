@@ -67,10 +67,6 @@ void BulletComponent::Update()
 	if (bullet_pos.y > pos_outrange_screen.y || bullet_pos.y < neg_outrange_screen.y
 		|| bullet_pos.x > pos_outrange_screen.x || bullet_pos.x < neg_outrange_screen.x)
 	{
-		std::cout << "c" << std::endl;
 		DestroyBullet();
 	}
-
-
-
 }
