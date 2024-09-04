@@ -434,6 +434,7 @@ void Level::Stage01_Lvl::Collision()
                         {
                             Enemy->SetActive(false);
                             Enemy = nullptr;
+                            bullet_comp->DestroyBullet();
                         }
                         //bullet_comp->DestroyBullet();
                     }
