@@ -27,9 +27,9 @@ namespace Level
     private:
         std::vector<GameObject*> m_vecPlatforms;
         GameObject* Platform;
-        std::array<GameObject*,30> Enemy;
+        GameObject* Enemy;
 
-        std::array<GameObject*,15> EnemySniper;
+        GameObject* EnemySniper;
         GameObject* Boss1;
 
         GameObject* Enemy_TEST;

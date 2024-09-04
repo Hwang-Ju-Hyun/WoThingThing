@@ -12,7 +12,7 @@ public:
     TransComponent(GameObject* _owner);
     ~TransComponent();
 private:
-    AEVec2 m_vPos = { -10000.f,-10000.f };
+    AEVec2 m_vPos = { 0.f,0.f };
     AEVec2 m_vScale = { 0.f,0.f };
     float  m_fRot=0.f;
     AEMtx33 m_matMatrix; 
