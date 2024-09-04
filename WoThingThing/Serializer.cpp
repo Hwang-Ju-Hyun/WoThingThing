@@ -26,6 +26,7 @@ static int nodeID = 0;
 //털끝 하나 건들지 말것 ↓
 void Serializer::LoadLevel(const std::string& s)
 {
+	static bool IsNodeCheck = false;
 	//open file
 	std::fstream file;
 	file.open(s, std::fstream::in);
@@ -70,26 +71,31 @@ void Serializer::LoadLevel(const std::string& s)
 				{
 					p->LoadFromJson(a);
 				}
-				//Add the comp to the GO
-				auto nodes = a.find("Nodes");
-				static bool IsNodeCheck = false;
-				if (nodes != a.end())
-				{					
-					if (IsNodeCheck == false)
+
+				if (*t == "Transform")
+				{
+					//Add the comp to the GO
+					auto nodes = a.find("Nodes");
+					
+					if (nodes != a.end())
 					{
-						for (const auto& node : *nodes)
+						if (IsNodeCheck == false)
 						{
-							auto x = node.begin().value();
-							auto y = (node.begin() + 1).value();
-							NaveMeshManager::GetInst()->AddNode({ nodeID++, {x,y} });
-							IsNodeCheck = true;
+							for (const auto& node : *nodes)
+							{
+								auto x = node.begin().value();
+								auto y = (node.begin() + 1).value();
+								NaveMeshManager::GetInst()->AddNode({ nodeID++, {x,y} });
+								IsNodeCheck = true;
+							}
 						}
-					}					
-					// You might need to set these nodes data to your component here
-				}							
+						// You might need to set these nodes data to your component here
+					}
+				}								
 			}
 		}
 	}
+	IsNodeCheck = false;
 }
 
 void Serializer::SaveLevel(const std::string& s)

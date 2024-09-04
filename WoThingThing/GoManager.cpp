@@ -64,7 +64,7 @@ void GoManager::RemoveObj(const std::string& _name)
     }
 }
 
-GameObject* GoManager::FindObj(std::string _name)
+GameObject* GoManager::FindObj(const std::string& _name) const 
 {
     for (int i = 0; i < m_vecObj.size(); i++)
     {

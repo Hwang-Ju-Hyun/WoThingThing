@@ -58,7 +58,7 @@ void CompManager::RemoveComponent(BaseComponent* _comp)
 	}
 	if (!IsCompExist)
 	{
-		std::cout << "Can't find Component(RemoveComponent)" << std::endl;
+		//std::cout << "Can't find Component(RemoveComponent)" << std::endl;
 		return;
 	}
 }

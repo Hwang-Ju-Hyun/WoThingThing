@@ -143,12 +143,12 @@ void RePosition::HandleCollision(GameObject* obj1, GameObject* obj2)
 			direct = i;
 		}			
 	}
-	std::cout << "FrameCnt: " << AEFrameRateControllerGetFrameCount() << std::endl;
-	std::cout << "Player : " <<obj_trs1->GetPos().x << "\t" << obj_trs1->GetPos().y << std::endl;
-	std::cout << "Plat   : " << obj_trs2->GetPos().x << "\t" << obj_trs2->GetPos().y << std::endl;
-	std::cout << "Dis    : " << minDistance<<"  "<<distArr[0]<< "  " << distArr[1] << std::endl;
-	std::cout << "Direct : " << direct << std::endl;
-	std::cout << std::endl;
+	//std::cout << "FrameCnt: " << AEFrameRateControllerGetFrameCount() << std::endl;
+	//std::cout << "Player : " <<obj_trs1->GetPos().x << "\t" << obj_trs1->GetPos().y << std::endl;
+	//std::cout << "Plat   : " << obj_trs2->GetPos().x << "\t" << obj_trs2->GetPos().y << std::endl;
+	//std::cout << "Dis    : " << minDistance<<"  "<<distArr[0]<< "  " << distArr[1] << std::endl;
+	//std::cout << "Direct : " << direct << std::endl;
+	//std::cout << std::endl;
 
 	switch (direct)
 	{
@@ -216,7 +216,7 @@ void ChasePlatFormSettor::OnEvent(Event* ev)
 	Enemy_Platform_Collision_Event* e_p_c_e = static_cast<Enemy_Platform_Collision_Event*>(ev);
 	Enemy_Chase->PlatForm = e_p_c_e->platform;
 	//EventManager::GetInst()->RemoveEntity("EnemyPlatformCollisionEvent", this);
-	//std::cout << __FUNCTION__ << std::endl;
+	
 }
 
 Enemy_Platform_Collision_Event::Enemy_Platform_Collision_Event(GameObject* _platform, GameObject* _enemy)

@@ -28,7 +28,7 @@ public:
 		{
 			NONE = 0,
 			WALK = 1,
-			JUMP = 4
+			JUMP = 4,			
 		};		
 	public:
 		virtual void Move(GameObject* _obj, TransComponent::Node _nodeInfo,int startNode,int endNode, TransComponent::Node _nextNode);
@@ -49,7 +49,7 @@ public:
 		bool IsJumpDone = false;
 		//Extra Params
 		float Height=100.f;
-	};
+	};	
 
 
 public:

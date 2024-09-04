@@ -263,7 +263,7 @@ float ColliderManager::Dot(const AEVec2& vec1, const AEVec2& vec2)
 //}
 
 void ColliderManager::DrawRect(float bottomleft_x, float bottomleft_y, float topRight_x, float topRight_y, float r, float g, float b)
-{
+{	
 	AEGfxMeshStart();
 
 	//AEGfxTriAdd(

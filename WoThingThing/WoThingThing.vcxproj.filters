@@ -144,6 +144,9 @@
     <Filter Include="Level\MapEdit">
       <UniqueIdentifier>{f3ffc5b3-8fc4-41e2-96c7-58ae625cf980}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Level\GameOver">
+      <UniqueIdentifier>{e5f148e4-4d81-45b1-9e14-43bd0685fae7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -292,6 +295,9 @@
     </ClCompile>
     <ClCompile Include="MapEditor.cpp">
       <Filter>Manager\MapEditorMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOver_Lvl.cpp">
+      <Filter>Level\GameOver</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -444,6 +450,9 @@
     </ClInclude>
     <ClInclude Include="MapEditor.h">
       <Filter>Manager\MapEditorMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver_Lvl.h">
+      <Filter>Level\GameOver</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

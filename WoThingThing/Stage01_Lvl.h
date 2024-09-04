@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseLevel.h"
 #include <vector>
+#include <array>
 
 class GameObject;
 class MainMenu_Lvl;
@@ -26,9 +27,9 @@ namespace Level
     private:
         std::vector<GameObject*> m_vecPlatforms;
         GameObject* Platform;
-        GameObject* Enemy;
+        std::array<GameObject*,30> Enemy;
 
-        GameObject* EnemySniper;
+        std::array<GameObject*,15> EnemySniper;
         GameObject* Boss1;
 
         GameObject* Enemy_TEST;

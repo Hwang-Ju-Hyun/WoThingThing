@@ -49,16 +49,16 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 		m_fRot = 0.f;
 	}
 
-	if (_owner->GetName() == "Enemy")
+	if (_owner->GetName() == "Enemy0")
 	{
 		m_vPos = { 600,-1250 };
 		m_vScale = { 50,100 };
 		m_fRot = 0.f;
 	}
 
-	if (_owner->GetName() == "EnemySniper")
+	if (_owner->GetName() == "EnemySniper0")
 	{
-		m_vPos = { 900,300 };
+		m_vPos = { 1000,300 };
 		m_vScale = { 50,100 };
 		m_fRot = 0.f;
 	}
@@ -87,7 +87,7 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	//test È²ÁÖÇö
 	if (_owner->GetName() == "Enemy_TEST")
 	{
-		m_vPos = { -750,600 };
+		m_vPos = { 1484.0,89.0 };
 		m_vScale = { 35,35 };
 		m_fRot = 0.f;
 	}

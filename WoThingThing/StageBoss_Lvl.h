@@ -11,7 +11,9 @@ namespace Level
     private:
         GameObject* player;
         GameObject* mouseAim;
-        GameObject* aimTrace;
+        GameObject* aimTrace; 
+        
+        bool gameOver;
     public:
         StageBoss_Lvl();
         ~StageBoss_Lvl();
@@ -20,15 +22,15 @@ namespace Level
         virtual void Update() override;
         virtual void Exit() override;
 
-    private:
-        std::vector<GameObject*> m_vecPlatforms;
-        GameObject* Platform;
-        GameObject* Enemy;
+    private:        
+        GameObject* Platform;        
         GameObject* Enemy_TEST;
+        
+        GameObject* Boss1;
     public:
         int counter = 0;
     public:
         void HandleCollision(GameObject* obj1, GameObject* obj2);
-
+        void Collision();
     };
 }

@@ -27,6 +27,14 @@ Level::MapEditor::~MapEditor()
 
 void Level::MapEditor::Init()
 {
+	file.open("stageBoss.json", std::fstream::in);
+	
+	if (!file.is_open())
+	{
+		return;
+	}
+	Serializer::GetInst()->LoadLevel("stageBoss.json");
+
 
 	player = new GameObject("Player");
 	GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
@@ -39,12 +47,7 @@ void Level::MapEditor::Init()
 	CameraManager::GetInst()->SetPlayer(player);
 	CameraManager::GetInst()->SetAim(aimTrace);
 
-	file.open("stage01.json", std::fstream::in);
-	if (!file.is_open())
-	{
-		return;
-	}
-	Serializer::GetInst()->LoadLevel("stage01.json");	
+	
 
 		
 	player->AddComponent("Transform", new TransComponent(player));
@@ -55,6 +58,7 @@ void Level::MapEditor::Init()
 
 void Level::MapEditor::Update()
 {
+	
 	AEInputGetCursorPosition(&mouseX, &mouseY);			
 
 	TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
@@ -62,7 +66,7 @@ void Level::MapEditor::Update()
 	RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
 	PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
 
-
+	std::cout << player_trs->GetPos().x << "," << player_trs->GetPos().y << std::endl;
 	const int NumberofTile = 20;
 
 	goTileW = 1600 / 20;
@@ -90,47 +94,10 @@ void Level::MapEditor::Update()
 		}
 	}
 		
-	/*if (AEInputCheckCurr(AEVK_RBUTTON))
-	{
-		auto vecObj = GoManager::GetInst()->Allobj();
-		bool createObj = false;		
-		go = new GameObject("Platform");
-		GoManager::GetInst()->AddObject(go);
-		go->AddComponent("Transform", new TransComponent(go));
-		go->AddComponent("Sprite", new SpriteComponent(go));
-		TransComponent* go_trs = static_cast<TransComponent*>(go->FindComponent("Transform"));
-		SpriteComponent* go_spr = static_cast<SpriteComponent*>(go->FindComponent("Sprite"));		
-		go_trs->SetPos({ float(goPosX + player_Cam.x),float(goPosY + player_Cam.y) });
-		go_trs->SetScale({ float(goScaleX),float(goScaleY) });
-		grid[grid_X][grid_Y] = true;
-
-		std::cout << goPosX << "," << goPosY << std::endl;
-
-		go_spr->m_color.red = 255;
-		go_spr->m_color.blue = 0;
-		go_spr->m_color.green = 0;
-		else if (AEInputCheckCurr(AEVK_RBUTTON) && AEInputCheckCurr(AEVK_1))
-		{			
-		}
-		else
-		{
-			std::cout << "ÀÌ¹Ì µ×À½" << std::endl;
-		}
-	}*/
-	/*auto b = GoManager::GetInst()->Allobj();
-	b.size();
-	for (auto obj : GoManager::GetInst()->Allobj())
-	{
-		if (obj->GetName() == "Platform")
-		{
-			if (ColliderManager::GetInst()->IsCollision(player, obj))
-			{
-				HandleCollision(player, obj);
-			}
-		}
-	}*/
 	
 	
+	int a = 0;
+
 	if (AEInputCheckCurr(AEVK_RETURN))
 	{
 		json AllData;
@@ -155,7 +122,7 @@ void Level::MapEditor::Update()
 			}
 		}
 		std::fstream file;
-		file.open("stage01.json", std::fstream::out);//Open as write mode. Create it if it does not exist!
+		file.open("stageBoss1.json", std::fstream::out);//Open as write mode. Create it if it does not exist!
 
 		if (!file.is_open())
 		{
@@ -172,8 +139,8 @@ void Level::MapEditor::Update()
 	CameraManager::GetInst()->Update();
 	if (AEInputCheckCurr(AEVK_B))
 	{		
-		Serializer::GetInst()->SaveLevel("stage01.json");
-		GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
+		Serializer::GetInst()->SaveLevel("stageBoss2.json");
+		GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
 	}
 
 	
