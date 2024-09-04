@@ -6,6 +6,7 @@
 #include "TransComponent.h"
 #include "SpriteComponent.h"
 #include "BulletComponent.h"
+#include "PlayerComponent.h"
 
 //use for drawrect
 #include "ColliderManager.h"
@@ -53,6 +54,16 @@ void DrawRect(float bottomleft_x, float bottomleft_y, float topRight_x, float to
 	AEGfxSetTransform(m_matMatrix.m);
 
 	AEGfxMeshDraw(mesh, AE_GFX_MDM_LINES_STRIP);
+}
+
+
+
+void CreateGun(AEVec2 initPos)
+{
+	GameObject* tempPlayer = GoManager::GetInst()->FindObj("Player");
+	PlayerComponent* temp_comp = (PlayerComponent*)tempPlayer->FindComponent("PlayerComp");
+	bool manipulActive = temp_comp->GetManiActive();
+
 }
 
 void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool _enemyShoot)

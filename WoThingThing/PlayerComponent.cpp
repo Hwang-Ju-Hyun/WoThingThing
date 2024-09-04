@@ -221,9 +221,7 @@ void PlayerComponent::Attack()
 	{
 		//Remove about shotAttack
 		TransComponent* aimTrace_spr = (TransComponent*)aim_line->FindComponent("Transform");
-		//TransComponent* bullet_spr = (TransComponent*)bullet->FindComponent("Transform");
 		aimTrace_spr->SetScale({ 0,0 });
-		//bullet_spr->SetScale({ 0,0 });
 		/////////////////////////
 
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
