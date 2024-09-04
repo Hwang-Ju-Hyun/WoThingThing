@@ -53,7 +53,8 @@ BaseComponent* GameObject::FindComponent(const std::string& _name)
     const auto iter = m_mapComp.find(_name);
     if (iter == m_mapComp.end())
     {
-        //std::cout << "Can't find Component : GameObject" << std::endl;
+        //
+        // << "Can't find Component : GameObject" << std::endl;
         return nullptr;
     }
     return iter->second;

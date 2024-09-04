@@ -21,7 +21,7 @@ void ESM::Chase::Init()
 
 	timeManipul = 7.f;
 	mainpulActice = false;
-	const_chaseVec = { 5,0 };
+	const_chaseVec = { 6,0 };
 
 }
 
