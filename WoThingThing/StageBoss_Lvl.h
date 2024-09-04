@@ -22,13 +22,10 @@ namespace Level
         virtual void Update() override;
         virtual void Exit() override;
 
-    private:
-        std::vector<GameObject*> m_vecPlatforms;
-        GameObject* Platform;
-        GameObject* Enemy;
+    private:        
+        GameObject* Platform;        
         GameObject* Enemy_TEST;
-
-        GameObject* EnemySniper;
+        
         GameObject* Boss1;
     public:
         int counter = 0;

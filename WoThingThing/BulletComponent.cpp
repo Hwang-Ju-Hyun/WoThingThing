@@ -27,7 +27,7 @@ AEVec2 BulletComponent::GetBulletVec()
 
 void BulletComponent::DestroyBullet()
 {
-	std::cout << m_pOwner << "Destroy Bullet!!" << std::endl;
+	//std::cout << m_pOwner << "Destroy Bullet!!" << std::endl;
 	m_pOwner->SetActive(false);
 	// 주석 풀 시 진짜 사형
 	//m_pOwner = nullptr;
@@ -67,7 +67,7 @@ void BulletComponent::Update()
 	if (bullet_pos.y > pos_outrange_screen.y || bullet_pos.y < neg_outrange_screen.y
 		|| bullet_pos.x > pos_outrange_screen.x || bullet_pos.x < neg_outrange_screen.x)
 	{
-		std::cout << "c" << std::endl;
+		//std::cout << "c" << std::endl;
 		DestroyBullet();
 	}
 

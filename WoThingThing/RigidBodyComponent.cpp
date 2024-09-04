@@ -22,7 +22,7 @@ void RigidBodyComponent::Update()
 	TransComponent* obj = dynamic_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));	
 	if (obj == nullptr)
 	{
-		std::cout << "RigidBodyComponent Update Error! : can't find TransformComponent" << std::endl;
+		//std::cout << "RigidBodyComponent Update Error! : can't find TransformComponent" << std::endl;
 		return;
 	}
 	//Landing	

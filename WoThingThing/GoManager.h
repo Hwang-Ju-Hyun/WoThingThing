@@ -15,10 +15,10 @@ public:
 	void RemoveAllObj();
 	void RemoveObj(const std::string& _name);
 
-	GameObject* FindObj(std::string _name);
+	GameObject* FindObj(const std::string& _name)const;
 
 	GameObject* GetLastObj();	
-	std::vector<GameObject*> Allobj() 
+	const std::vector<GameObject*>& Allobj() const
 	{
 		m_vecObj;
 

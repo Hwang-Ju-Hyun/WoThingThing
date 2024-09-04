@@ -48,11 +48,8 @@ Level::StageBoss_Lvl::~StageBoss_Lvl()
 void Level::StageBoss_Lvl::Init()
 {
     //Object and Component Init
-
-    //인제 temp는 보스 맵이 된거여
-    //Serializer::GetInst()->LoadLevel("temp.json");
-
-    //stage01맵을 불러오자
+    //      
+    //stageBoss맵을 불러오자
     Serializer::GetInst()->LoadLevel("stageBoss.json");
 
 
@@ -68,43 +65,6 @@ void Level::StageBoss_Lvl::Init()
     aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
     aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));
 
-
-    //EventManager에서 요거 지우쇼 
-    RePosition* Platform_Player = new RePosition;
-
-    EventManager::GetInst()->AddEntity("Collision", Platform_Player);
-
-    //Enemy
-    Enemy = new GameObject("Enemy");
-    GoManager::GetInst()->AddObject(Enemy);
-
-    Enemy->AddComponent("Transform", new TransComponent(Enemy));
-    Enemy->AddComponent("Sprite", new SpriteComponent(Enemy));
-    Enemy->AddComponent("RigidBody", new RigidBodyComponent(Enemy));
-    Enemy->AddComponent("Ai", new AiComponent(Enemy));
-    AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
-    Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-    //Enemy_state->SetSniper_bullet(Enemy_bullet);
-    Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
-    Enemy_state->Setdir_time(2.0f);
-    Enemy_state->SetState("IDLE", "Melee");
-    //Enemy_state->SetState("IDLE_Sniper", "Sniper");
-
-
-
-    EnemySniper = new GameObject("EnemySniper");
-    GoManager::GetInst()->AddObject(EnemySniper);
-
-    EnemySniper->AddComponent("Transform", new TransComponent(EnemySniper));
-    EnemySniper->AddComponent("Sprite", new SpriteComponent(EnemySniper));
-    EnemySniper->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper));
-    EnemySniper->AddComponent("Ai", new AiComponent(EnemySniper));
-    AiComponent* EnemySniper_state = (AiComponent*)EnemySniper->FindComponent("Ai");
-    EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-    EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
-    EnemySniper_state->Setdir_time(1.0f);
-    //EnemySniper_state->SetState("IDLE", "Melee");
-    EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
 
 
     auto vecObj = GoManager::GetInst()->Allobj();
@@ -143,8 +103,7 @@ void Level::StageBoss_Lvl::Init()
 
 void Level::StageBoss_Lvl::Update()
 {
-    //Component Pointer
-    AiComponent* Enemy_meleeAi = (AiComponent*)Enemy->FindComponent("Ai");
+    //Component Pointer    
 
     //Component 
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
@@ -152,15 +111,12 @@ void Level::StageBoss_Lvl::Update()
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
 
+    TransComponent*     EnemyTest_trs = (TransComponent*)    Enemy_TEST->FindComponent("Transform");
+    SpriteComponent*    EnemyTest_spr = (SpriteComponent*)   Enemy_TEST->FindComponent("Sprite");
+    RigidBodyComponent* EnemyTest_rig = (RigidBodyComponent*)Enemy_TEST->FindComponent("RigidBody");    
 
 
-    if (EnemySniper != nullptr)
-    {
-        AiComponent* Enemy_meleeAi = (AiComponent*)Enemy->FindComponent("Ai");
-        AiComponent* Enemy_SniperAi = (AiComponent*)EnemySniper->FindComponent("Ai");
-    }
-
-    std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
+    //std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
     //Right Click : Right attack
 
 
@@ -175,8 +131,8 @@ void Level::StageBoss_Lvl::Update()
     else if (AEInputCheckCurr(AEVK_T) == true)
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
-    }
-
+    }    
+    
     Collision();
 
     CameraManager::GetInst()->Update();
@@ -230,7 +186,8 @@ void Level::StageBoss_Lvl::Update()
     //    NaveMeshManager::GetInst()->AddNode(node_left);
     //}
 
-
+    auto a = NaveMeshManager::GetInst()->GetallNode();
+    a.size();
     for (auto it : NaveMeshManager::GetInst()->GetallNode())
         NaveMeshManager::GetInst()->DrawNode(it.node_pos.x - 35, it.node_pos.y - 35, it.node_pos.x + 35, it.node_pos.y + 35, 1.0f, 1.0f, 0);
 
@@ -243,8 +200,9 @@ void Level::StageBoss_Lvl::Update()
     TransComponent* EnemyTEST_tsr = static_cast<TransComponent*>(Enemy_TEST->FindComponent("Transform"));
     RigidBodyComponent* EnemyTEST_rg = static_cast<RigidBodyComponent*>(Enemy_TEST->FindComponent("RigidBody"));
     PathFindMoveComponent* EnemyTEST_pf = static_cast<PathFindMoveComponent*>(Enemy_TEST->FindComponent("PathFindMove"));
-    //플레이어한테서 가장 가까운 노드를 찾는다
+    
     NaveMeshManager::GetInst()->SetMinCost(10000.f);
+    //플레이어한테서 가장 가까운 노드를 찾는다
     int player_node = NaveMeshManager::GetInst()->FindObjectNode(player);
 
     //보스의 현재위치의 가장 가까운 노드를 찾는다
@@ -259,15 +217,16 @@ void Level::StageBoss_Lvl::Update()
     auto minCost = NaveMeshManager::GetInst()->GetMinCost();
     auto FoundedPath = NaveMeshManager::GetInst()->GetPath();
 
-    int PathIndex = EnemyTEST_pf->GetPathToPathIndex();
+    std::cout << "Player Node : " << player_node << std::endl;
+    std::cout << "Enemy Node : " << EnemyTest_node << std::endl;
+    for (auto a : FoundedPath)
+    {
+        std::cout << a << ", ";
+    }
+    std::cout<<std::endl;
 
-    std::cout << "Player Located Node : " << player_node << std::endl;
-    std::cout << "Enemy Located Node : " << EnemyTest_node << std::endl;
-    std::cout << "Minimum cost: " << minCost << std::endl;
-    std::cout << "Founded Path: ";
-    for (auto node : FoundedPath)
-        std::cout << node << " ";
-    std::cout << std::endl;
+    int PathIndex = EnemyTEST_pf->GetPathToPathIndex();
+   
 
 
     if (FoundedPath.size() > 1)
@@ -306,27 +265,120 @@ void Level::StageBoss_Lvl::Update()
             costLink->Move(Enemy_TEST, node[nodeID1], FoundedPath[PathIndex], 1, node[nodeID2]);
         }
 
-    }
+    }   
     //=======NEVER TOUCH UPPER CODE EXCEPT HWNAG JUHYUN==========
     //======================WARNING=============================
 
+
+
     std::cout << std::endl;
-    if (AEInputCheckTriggered(AEVK_ESCAPE))
+    if (AEInputCheckTriggered(AEVK_Q))
+    {
+        Serializer::GetInst()->SaveLevel("stageBoss.json");
+    }
+    if (AEInputCheckTriggered(AEVK_F2))
         GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
     if (AEInputCheckTriggered(AEVK_F1))
         GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
 }
 
-void Level::StageBoss_Lvl::Exit()
-{
-    auto res = ResourceManager::GetInst()->GetReource();
-    ResourceManager::GetInst()->RemoveAllRes();
-    GoManager::GetInst()->RemoveAllObj();
-	Serializer::GetInst()->SaveLevel("stageBoss.json");
-}
-
 void Level::StageBoss_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
 {
+    // Transform 및 RigidBody 컴포넌트 가져오기
+    TransComponent* obj_trs1 = static_cast<TransComponent*>(obj1->FindComponent("Transform"));
+    TransComponent* obj_trs2 = static_cast<TransComponent*>(obj2->FindComponent("Transform"));
+
+
+    AEVec2 obj1_Pos = obj_trs1->GetPos();
+    AEVec2 obj2_Pos = obj_trs2->GetPos();
+
+    AEVec2 obj1_Scale = obj_trs1->GetScale();
+    AEVec2 obj2_Scale = obj_trs2->GetScale();
+
+    if (obj1->GetName() == "Player" )
+    {       
+        PlayerComponent* obj_player = static_cast<PlayerComponent*>(obj1->FindComponent("PlayerComp"));
+
+        //check 4 distance
+        float distanceUpper = std::fabs(obj2_Pos.y + (obj2_Scale.y / 2.f) - (obj1_Pos.y - obj1_Scale.y / 2.f));
+        float distanceDown = std::fabs(obj2_Pos.y - (obj2_Scale.y / 2.f) - (obj1_Pos.y + obj1_Scale.y / 2.f));
+        float distanceRight = std::fabs(obj2_Pos.x + (obj2_Scale.x / 2.f) - (obj1_Pos.x - obj1_Scale.x / 2.f));
+        float distanceLeft = std::fabs(obj2_Pos.x - (obj2_Scale.x / 2.f) - (obj1_Pos.x + obj1_Scale.x / 2.f));
+
+
+        float distArr[4] = { distanceUpper,distanceRight,distanceLeft,distanceDown };
+        float minDistance = distArr[0];
+        int direct = 0;
+        for (int i = 1; i < 4; i++)
+        {
+            if (minDistance > distArr[i])
+            {
+                minDistance = distArr[i];
+                direct = i;
+            }
+        }
+
+        switch (direct)
+        {
+        case 0://Upper
+            obj_trs1->AddPos({ 0,minDistance });
+            obj_player->SetJumpVelocityZero();
+            obj_player->SetJumpCntZero();
+            break;
+        case 1://Right
+            obj_trs1->AddPos({ minDistance , 0 });
+            break;
+        case 2://Left		
+            obj_trs1->AddPos({ -minDistance, 0 });
+            break;
+        case 3://Down
+            obj_trs1->AddPos({ 0,-minDistance });
+            obj_player->SetJumpVelocityZero();
+            break;
+        }
+    }    
+    else if (obj1->GetName() == "Enemy_TEST")
+    {
+        RigidBodyComponent* obj_enemy = static_cast<RigidBodyComponent*>(obj1->FindComponent("RigidBody"));
+
+        //check 4 distance
+        float distanceUpper = std::fabs(obj2_Pos.y + (obj2_Scale.y / 2.f) - (obj1_Pos.y - obj1_Scale.y / 2.f));
+        float distanceDown = std::fabs(obj2_Pos.y - (obj2_Scale.y / 2.f) - (obj1_Pos.y + obj1_Scale.y / 2.f));
+        float distanceRight = std::fabs(obj2_Pos.x + (obj2_Scale.x / 2.f) - (obj1_Pos.x - obj1_Scale.x / 2.f));
+        float distanceLeft = std::fabs(obj2_Pos.x - (obj2_Scale.x / 2.f) - (obj1_Pos.x + obj1_Scale.x / 2.f));
+
+
+        float distArr[4] = { distanceUpper,distanceRight,distanceLeft,distanceDown };
+        float minDistance = distArr[0];
+        int direct = 0;
+        for (int i = 1; i < 4; i++)
+        {
+            if (minDistance > distArr[i])
+            {
+                minDistance = distArr[i];
+                direct = i;
+            }
+        }
+
+        switch (direct)
+        {
+        case 0://Upper
+            obj_trs1->AddPos({ 0,minDistance });
+            obj_enemy->SetJumpVelocityZero();            
+            break;
+        case 1://Right
+            obj_trs1->AddPos({ minDistance , 0 });
+            break;
+        case 2://Left		
+            obj_trs1->AddPos({ -minDistance, 0 });
+            break;
+        case 3://Down
+            obj_trs1->AddPos({ 0,-minDistance });
+            obj_enemy->SetJumpVelocityZero();
+            break;
+        }
+    }
+
 }
 
 void Level::StageBoss_Lvl::Collision()
@@ -343,31 +395,13 @@ void Level::StageBoss_Lvl::Collision()
             {
                 HandleCollision(player, obj);
             }
-            if (ColliderManager::GetInst()->IsCollision(Enemy, obj))
+            if (ColliderManager::GetInst()->IsCollision(Enemy_TEST, obj))
             {
-                HandleCollision(Enemy, obj);
+                HandleCollision(Enemy_TEST, obj);
                 //AI COMP세팅을 해주고
-                Enemy_Platform_Collision_Event* e_p_c_e = new Enemy_Platform_Collision_Event(obj, Enemy);
-                EventManager::GetInst()->AddEvent(e_p_c_e);
-            }
-            if (ColliderManager::GetInst()->IsCollision(EnemySniper, obj))
-            {
-                HandleCollision(EnemySniper, obj);
-            }
-            int a = 0;
-            for (auto findObj : GoManager::GetInst()->Allobj())
-            {
-                if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
-                {
-                    if (ColliderManager::GetInst()->IsCollision(findObj, obj))
-                    {
-
-                        std::cout << "cnt : " << ++a << std::endl;
-                        BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
-                        bullet_comp->DestroyBullet();
-                    }
-                }
-            }
+               //Enemy_Platform_Collision_Event* e_p_c_e = new Enemy_Platform_Collision_Event(obj, Enemy);
+               //EventManager::GetInst()->AddEvent(e_p_c_e);
+            }          
         }
         if (obj->GetName() == "EnemyBullet")
         {
@@ -392,40 +426,27 @@ void Level::StageBoss_Lvl::Collision()
             {
                 gameOver = true;
             }
-        }
-        if (obj->GetName() == "EnemySniper")
-        {
-            //Test: Collision Enemy with Player's Bullet
-            for (auto findObj : GoManager::GetInst()->Allobj())
-            {
-                if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
-                {
-                    if (ColliderManager::GetInst()->IsCollision(findObj, obj))
-                    {
-                        std::cout << "c" << std::endl;
-                        BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
-                        if (!bullet_comp->EnemyShoot)
-                        {
-                            EnemySniper->SetActive(false);
-                            EnemySniper = nullptr;
-                        }
-                        bullet_comp->DestroyBullet();
-                    }
-                }
-            }
-
-        }
-
+        }        
         if (obj->GetName() == "BulletSupplement")
         {
             if (ColliderManager::GetInst()->IsCollision(player, obj))
             {
                 AddBullet();
-                std::cout << "Add Bullet!" << std::endl;
+                //std::cout << "Add Bullet!" << std::endl;
 
                 obj->SetActive(false);
             }
 
         }
     }
+}
+
+
+
+void Level::StageBoss_Lvl::Exit()
+{
+    auto res = ResourceManager::GetInst()->GetReource();
+    ResourceManager::GetInst()->RemoveAllRes();
+    GoManager::GetInst()->RemoveAllObj();
+    Serializer::GetInst()->SaveLevel("stageBoss.json");
 }

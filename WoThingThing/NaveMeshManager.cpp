@@ -84,37 +84,112 @@ void NaveMeshManager::CreateLinkTable()
 	Walk* walk = new Walk;
 	Jump* jump = new Jump;
 
-	std::vector<std::pair<int/*nodeID*/, CostLink*>> link0;	
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link0;
 	link0.push_back({ 0,walk });
-	link0.push_back({ 1,jump });
-	
+	link0.push_back({ 1,walk });
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link1;
-	link1.push_back({ 0,walk });
+	link1.push_back({ 0, walk });
+	link1.push_back({ 12,jump });
 	link1.push_back({ 2,walk });
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link2;
-	link2.push_back({ 1,jump });
-	link2.push_back({ 3,walk });
+	link2.push_back({ 3, walk });
+	link2.push_back({ 12,jump });
+	link2.push_back({ 1,walk });
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link3;
-	link3.push_back({ 2,walk });
-	link3.push_back({ 4,walk });
+	link3.push_back({ 2, walk });
+	link3.push_back({ 4, walk });
+
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link4;
-	link4.push_back({ 3,walk });
-	link4.push_back({ 5,jump });
+	link4.push_back({ 3, walk });
+	link4.push_back({ 9, jump });
+	link4.push_back({ 5, walk });
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link5;
-	link5.push_back({ 4,walk });
-	link5.push_back({ 6,walk });
+	link5.push_back({ 6, walk });
+	link5.push_back({ 4, walk });
+	link5.push_back({ 8, jump });
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link6;
-	link6.push_back({ 5,jump });
-	link6.push_back({ 7,walk });
+	link6.push_back({ 5, walk });
+	link6.push_back({ 7, walk });
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link7;
-	link7.push_back({ 6,walk });	
+	link7.push_back({ 6, walk });
+	
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link8;
+	link8.push_back({ 5, walk });
+	link8.push_back({ 9, walk });
+	link8.push_back({ 17, jump });
+
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link9;
+	link9.push_back({ 4, walk });
+	link9.push_back({ 8, walk });	
+	//link9.push_back({ 10, jump });	
+
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link10;
+	link10.push_back({ 4, walk });
+	link10.push_back({ 11, walk });
+	link10.push_back({ 15, jump });
+	
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link11;
+	link11.push_back({ 12, jump });
+	link11.push_back({ 2,  walk});
+	link11.push_back({ 10,  walk });
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link12;
+	link12.push_back({ 2, walk });
+	link12.push_back({ 1, walk });
+	link12.push_back({ 11, jump });
+	link12.push_back({ 13, jump });
+
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link13;
+	link13.push_back({ 14, walk });
+	link13.push_back({ 12, walk });
+	link13.push_back({ 1, walk });
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link14;
+	link14.push_back({ 20, jump });
+	link14.push_back({ 13, walk });
+	link14.push_back({ 0, walk });
+
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link15;
+	link15.push_back({ 10, walk });
+	link15.push_back({ 16, walk });
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link16;
+	link16.push_back({ 9, walk });
+	link16.push_back({ 4, walk });
+
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link17;
+	link17.push_back({ 8, walk });
+	link17.push_back({ 18, walk });
+	link17.push_back({ 5, walk });
+
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link18;
+	link18.push_back({ 17, walk });
+	link18.push_back({ 19, jump });
+	link18.push_back({ 7, walk });
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link19;
+	link19.push_back({ 18, walk });
+	link19.push_back({ 7, walk });
+
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link20;
+	link20.push_back({ 20, walk });
+	link20.push_back({ 14, walk });
+	link20.push_back({ 0, walk });
+
 
 	m_vecLink.push_back(link0);
 	m_vecLink.push_back(link1);
@@ -124,13 +199,67 @@ void NaveMeshManager::CreateLinkTable()
 	m_vecLink.push_back(link5);
 	m_vecLink.push_back(link6);
 	m_vecLink.push_back(link7);
-	std::cout << typeid(jump).name() << std::endl;
-	std::cout<<typeid(m_vecLink[0][0].second).name()<<std::endl;
-	if (dynamic_cast<Jump*>(m_vecLink[0][0].second))
-	{
-		int a = 0;
-	}
-	int a = 0;
+	m_vecLink.push_back(link8);
+	m_vecLink.push_back(link9);
+	m_vecLink.push_back(link10);
+	m_vecLink.push_back(link11);
+	m_vecLink.push_back(link12);
+	m_vecLink.push_back(link13);
+	m_vecLink.push_back(link14);
+	m_vecLink.push_back(link15);
+	m_vecLink.push_back(link16);
+	m_vecLink.push_back(link17);
+	m_vecLink.push_back(link18);
+	m_vecLink.push_back(link19);
+	m_vecLink.push_back(link20);
+
+	//std::vector<std::pair<int/*nodeID*/, CostLink*>> link0;	
+	//link0.push_back({ 0,walk });
+	//link0.push_back({ 1,jump });
+	//
+
+	//std::vector<std::pair<int/*nodeID*/, CostLink*>> link1;
+	//link1.push_back({ 0,walk });
+	//link1.push_back({ 2,walk });
+
+	//std::vector<std::pair<int/*nodeID*/, CostLink*>> link2;
+	//link2.push_back({ 1,jump });
+	//link2.push_back({ 3,walk });
+
+	//std::vector<std::pair<int/*nodeID*/, CostLink*>> link3;
+	//link3.push_back({ 2,walk });
+	//link3.push_back({ 4,walk });
+
+	//std::vector<std::pair<int/*nodeID*/, CostLink*>> link4;
+	//link4.push_back({ 3,walk });
+	//link4.push_back({ 5,jump });
+
+	//std::vector<std::pair<int/*nodeID*/, CostLink*>> link5;
+	//link5.push_back({ 4,walk });
+	//link5.push_back({ 6,walk });
+
+	//std::vector<std::pair<int/*nodeID*/, CostLink*>> link6;
+	//link6.push_back({ 5,jump });
+	//link6.push_back({ 7,walk });
+
+	//std::vector<std::pair<int/*nodeID*/, CostLink*>> link7;
+	//link7.push_back({ 6,walk });	
+
+	//m_vecLink.push_back(link0);
+	//m_vecLink.push_back(link1);
+	//m_vecLink.push_back(link2);
+	//m_vecLink.push_back(link3);
+	//m_vecLink.push_back(link4);
+	//m_vecLink.push_back(link5);
+	//m_vecLink.push_back(link6);
+	//m_vecLink.push_back(link7);
+	////std::cout << typeid(jump).name() << std::endl;
+	////std::cout<<typeid(m_vecLink[0][0].second).name()<<std::endl;
+	//if (dynamic_cast<Jump*>(m_vecLink[0][0].second))
+	//{
+	//	int a = 0;
+	//}
+	//int a = 0;
 
 
 
