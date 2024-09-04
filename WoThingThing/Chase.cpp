@@ -13,7 +13,7 @@
 
 void ESM::Chase::Init()
 {
-	std::cout << "Chase Init" << std::endl;
+	//std::cout << "Chase Init" << std::endl;
 	//TimeManager::GetInst()->SetAccTime(0.0f);
 	//Chase_time = 0.f;
 	m_fDt = 0.f;
@@ -21,7 +21,7 @@ void ESM::Chase::Init()
 
 	timeManipul = 7.f;
 	mainpulActice = false;
-	const_chaseVec = { 5,0 };
+	const_chaseVec = { 6,0 };
 
 }
 

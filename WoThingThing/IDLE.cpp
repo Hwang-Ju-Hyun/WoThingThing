@@ -15,7 +15,7 @@ void ESM::IDLE::Init()
 {
 	//accumulatedTime = 0;
 	idle_time = 0.f;
-
+	const_chaseVec = { 4,0 };
 }
 
 bool isOnFirstPlace(AEVec2 nowPos, AEVec2 FirstPos) 
@@ -38,6 +38,25 @@ void ESM::IDLE::Update()
 	//accumulatedTime = TimeManager::GetInst()->GetAccTime();
 
 	TransComponent* enemy_trs = (TransComponent*)enemy->FindComponent("Transform");
+	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
+
+	float dt = AEFrameRateControllerGetFrameTime();
+	float ct = AEFrameRateControllerGetFrameTime();
+	if (ShouldSlowTime)
+	{
+		mainpulActice = true;
+		timeManipul -= ct;
+		if (timeManipul <= 0.f)
+		{
+			mainpulActice = false; //게이지가 0이면 누르는 동안에도 Manipulate가 안되게
+			timeManipul = 0.f;
+		}
+	}
+	if (!ShouldSlowTime) {
+		mainpulActice = false;
+		if (timeManipul < 7.f)
+			timeManipul += ct;
+	}
 
 	if (!(isOnFirstPlace(enemy_trs->GetPos(), FirstPlacePos))) 
 	{
@@ -48,11 +67,24 @@ void ESM::IDLE::Update()
 		AEVec2Normalize(&unitReturnVec, &returnVec);
 		if (!(ColliderManager::GetInst()->isFacingtheSameDirection(returnVec, dir)))
 		{
-			//Chase_outTime = 0.0f;
 			dir = !(dir);
 		}
-		enemy_trs->AddPos(unitReturnVec);
-		//std::cout << enemy_trs->GetPos().x << std::endl;
+
+
+		if (ShouldSlowTime && mainpulActice) 
+		{
+			slow_Vec.x = unitReturnVec.x * 0.98f * dt * 30.f;
+			slow_Vec.y = unitReturnVec.y * 0.98f * dt * 30.f;
+			enemy_trs->AddPos(slow_Vec);
+		}
+		else 
+		{
+			Return_Vec.x = unitReturnVec.x * const_chaseVec.x;
+			Return_Vec.y = unitReturnVec.y * const_chaseVec.y;
+			enemy_trs->AddPos(Return_Vec);
+
+		}
+
 	}
 	else 
 	{

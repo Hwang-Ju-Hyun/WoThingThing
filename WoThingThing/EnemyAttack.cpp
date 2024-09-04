@@ -31,7 +31,7 @@ void ESM::EnemyAttack::Update()
 		if (melee_DelayAtk > 0.3f)
 		{
 			player_comp->TakeDamge();
-			std::cout << "Attack Player" << std::endl;
+			//std::cout << "Attack Player" << std::endl;
 			m_fDt = 0.0f;
 			melee_DelayAtk = 0.f;
 		}

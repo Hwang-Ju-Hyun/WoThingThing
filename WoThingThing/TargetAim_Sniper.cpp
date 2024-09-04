@@ -21,7 +21,6 @@ void ESM::TargetAim_Sniper::Init()
 
 	m_fDt = 0;
 	AttackDelay = 0;
-	std::cout << "Chase Init" << std::endl;
 	TimeManager::GetInst()->SetAccTime(0.0f);
 
 	//TargetOn_Time = 0;
@@ -80,7 +79,6 @@ void ESM::TargetAim_Sniper::Update()
 		{
 
 			//여기 부분에 위에랑 똑같이 타켓하고 공격하는 기능 넣기
-			std::cout << "TargetOn" << std::endl;
 			m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 			AttackDelay += m_fDt;
 			if (AttackDelay >= 3.0f) // 3초마다 총알 발사
@@ -93,7 +91,6 @@ void ESM::TargetAim_Sniper::Update()
 		{
 			Search_outTime = 0.0f;
 			m_fDt_Target = 0.0f;
-			std::cout << "Target on Fail" << std::endl;
 			AiComponent* enemy_ai = (AiComponent*)TargetAim_enemy->FindComponent("Ai");
 			ESM::IDLE_Sniper* p = new ESM::IDLE_Sniper(TargetAim_enemy, Player, dir_state, dir_Time);
 			//ESM::EnemyStateManager::GetInst()->ChangeState(p);

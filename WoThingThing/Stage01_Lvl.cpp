@@ -155,7 +155,7 @@ void Level::Stage01_Lvl::Update()
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
 
-    std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
+    //std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
     //Right Click : Right attack
 
 
@@ -400,7 +400,7 @@ void Level::Stage01_Lvl::Collision()
                 {
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
-                        std::cout << "c" << std::endl;
+                        //std::cout << "c" << std::endl;
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         if (!bullet_comp->EnemyShoot)
                         {
@@ -428,7 +428,7 @@ void Level::Stage01_Lvl::Collision()
                 {
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj)) 
                     {
-                        std::cout << "c" << std::endl;
+                        //std::cout << "c" << std::endl;
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         if (!bullet_comp->EnemyShoot)
                         {
@@ -453,7 +453,7 @@ void Level::Stage01_Lvl::Collision()
             if (ColliderManager::GetInst()->IsCollision(player, obj))
             {
                 AddBullet();
-                std::cout << "Add Bullet!" << std::endl;
+                //std::cout << "Add Bullet!" << std::endl;
 
                 obj->SetActive(false);
             }
