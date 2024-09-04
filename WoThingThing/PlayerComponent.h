@@ -28,6 +28,7 @@ class PlayerComponent : public BaseComponent
 
     bool manipulActive;
     f32 timeManipul;
+    u32 playerhealth;
 
 public:
     PlayerComponent(GameObject* _owner);
@@ -55,7 +56,8 @@ public:
     void SetJumpCntZero();    
     void SetJumpVelocityZero();
     
-    
+    void TakeDamge();
+    bool IsAlive();
 
     virtual void Update() override;
     virtual void LoadFromJson(const json& str)override;

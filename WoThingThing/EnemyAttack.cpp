@@ -8,6 +8,7 @@
 #include"TimeManager.h"
 #include"TestLevel.h"
 #include"AiComponent.h"
+#include"PlayerComponent.h"
 
 void ESM::EnemyAttack::Init()
 {
@@ -22,10 +23,14 @@ void ESM::EnemyAttack::Update()
 	m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 	melee_DelayAtk += m_fDt;
 	//TransComponent* player_trs = (TransComponent*)Player->FindComponent("Transform");
+
+	PlayerComponent* player_comp = (PlayerComponent*)Player->FindComponent("PlayerComp");
+
 	if (ColliderManager::GetInst()->MeleeEnemyAttack(Attack_enemy, Player, dir_state))
 	{
 		if (melee_DelayAtk > 0.3f)
 		{
+			player_comp->TakeDamge();
 			std::cout << "Attack Player" << std::endl;
 			m_fDt = 0.0f;
 			melee_DelayAtk = 0.f;
@@ -34,7 +39,7 @@ void ESM::EnemyAttack::Update()
 	else 
 	{
 		AiComponent* enemy_ai = (AiComponent*)Attack_enemy->FindComponent("Ai");
-		ESM::Chase* p = new ESM::Chase(Attack_enemy, Player, dir_state, dir_Time, PlatForm, e_state_name);
+		ESM::Chase* p = new ESM::Chase(Attack_enemy, Player, dir_state, dir_Time, PlatForm, e_state_name, FirstPlacePos);
 		//ESM::EnemyStateManager::GetInst()->ChangeState(p);
 		enemy_ai->Change_State(p);
 	}
@@ -44,7 +49,7 @@ void ESM::EnemyAttack::Exit()
 {
 }
 
-ESM::EnemyAttack::EnemyAttack(GameObject* _enemy, GameObject* _player, bool dir, float Time, GameObject* _platform, std::string _state_name)
+ESM::EnemyAttack::EnemyAttack(GameObject* _enemy, GameObject* _player, bool dir, float Time, GameObject* _platform, std::string _state_name, AEVec2 _FirstPlacePos)
 {
 	Attack_enemy = _enemy;
 	Player = _player;
@@ -52,4 +57,5 @@ ESM::EnemyAttack::EnemyAttack(GameObject* _enemy, GameObject* _player, bool dir,
 	dir_Time = Time;
 	PlatForm = _platform;
 	e_state_name = _state_name;
+	FirstPlacePos = _FirstPlacePos;
 }

@@ -2,7 +2,7 @@
 #include "GameStateManager.h"
 #include "MainMenu_Lvl.h"
 #include "Stage01_Lvl.h"
-
+#include"EventManager.h"
 s8 gameoverFont;
 
 Level::GameOver_Lvl::GameOver_Lvl()
@@ -34,5 +34,5 @@ void Level::GameOver_Lvl::Update()
 
 void Level::GameOver_Lvl::Exit()
 {
-
+	EventManager::GetInst()->RemoveAllEvent();
 }

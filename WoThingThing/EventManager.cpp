@@ -53,6 +53,18 @@ void EventManager::RemoveEntity(const std::string& evt_name, Entity* et)
 	}
 }
 
+
+void EventManager::RemoveAllEvent()
+{	
+	auto iter = allEvents.begin();
+	for (iter; iter != allEvents.end(); iter++)
+	{		
+		delete *iter;
+		*iter = nullptr;
+	}	
+	allEvents.clear();
+}
+
 std::list<Entity*>* EventManager::FindEntityList(std::string ev_Key)
 {
 	auto listEntity = registeredEntities.find(ev_Key);
@@ -70,10 +82,17 @@ void EventManager::DispatchEvent(Event* ev)
 
 	if (listEt == nullptr)
 		return;
-
-	for (auto iter = listEt->begin(); iter != listEt->end(); iter++)
+	if (allEvents.size()<=0)
+	{		
+		return;
+	}
+	else
 	{
-		(*iter)->OnEvent(ev);
+		for (auto iter = listEt->begin(); iter != listEt->end(); iter++)
+		{
+			(*iter)->OnEvent(ev);
+		
+		}
 	}
 }
 

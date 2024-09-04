@@ -1,5 +1,6 @@
 #pragma once
 #include"BaseEnemyState.h"
+#include "AEVec2.h"
 #include <iostream>
 
 class GameObject;
@@ -20,6 +21,7 @@ namespace ESM
         float dir_Time;
         GameObject* platform;
         std::string e_state_name;
+        AEVec2 FirstPlacePos;
 
         //Attack용 따로
         float idle_time;
@@ -27,8 +29,12 @@ namespace ESM
 
         float accumulatedTime;//시간 기록에 필요함
 
+        AEVec2 enemyPos;
+        AEVec2 returnVec;
+        AEVec2 unitReturnVec;
     public:
-        IDLE(GameObject* _enemy, GameObject* _player, bool dir_num, float Time, GameObject* _platform, std::string state_name);
+        IDLE(GameObject* _enemy, GameObject* _player, 
+            bool dir_num, float Time, GameObject* _platform, std::string state_name, AEVec2 _FirstPlacePos);
         //오브젝트 2개와 dir_num은 방향 Time은 방향바꾸는데 걸리는 시간
     };
 }

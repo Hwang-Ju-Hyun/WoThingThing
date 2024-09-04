@@ -94,6 +94,8 @@ public:
 public:
 	void AddEntity(const std::string& evt_name, Entity* et);
 	void RemoveEntity(const std::string& evt_name, Entity* et);
+public:
+	void RemoveAllEvent();
 public:	
 	std::list<Entity*>* FindEntityList(std::string ev_Key);
 	// Dispatch All Events		
