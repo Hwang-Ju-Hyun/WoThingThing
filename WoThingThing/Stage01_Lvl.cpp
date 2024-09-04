@@ -86,13 +86,13 @@ void Level::Stage01_Lvl::Init()
     Enemy->AddComponent("Sprite", new SpriteComponent(Enemy));
     Enemy->AddComponent("RigidBody", new RigidBodyComponent(Enemy));
     Enemy->AddComponent("Ai", new AiComponent(Enemy));
+    TransComponent* Enemy_trs = (TransComponent*)Enemy->FindComponent("Transform");
     AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
     Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-    //Enemy_state->SetSniper_bullet(Enemy_bullet);
     Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
     Enemy_state->Setdir_time(2.0f);
-    Enemy_state->SetState("IDLE","Melee");
-    //Enemy_state->SetState("IDLE_Sniper", "Sniper");
+    Enemy_state->SetFirstPlace(Enemy_trs->GetPos());
+    Enemy_state->SetState("IDLE", "Melee");
 
 
 
@@ -107,7 +107,6 @@ void Level::Stage01_Lvl::Init()
     EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
     EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
     EnemySniper_state->Setdir_time(1.0f);
-    //EnemySniper_state->SetState("IDLE", "Melee");
     EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
 
 
@@ -149,21 +148,12 @@ void Level::Stage01_Lvl::Init()
 void Level::Stage01_Lvl::Update()
 {
     //Component Pointer
-    AiComponent* Enemy_meleeAi = (AiComponent*)Enemy->FindComponent("Ai");
 
     //Component 
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
-
-
-
-    if (EnemySniper != nullptr)
-    {
-        AiComponent* Enemy_meleeAi = (AiComponent*)Enemy->FindComponent("Ai");
-        AiComponent* Enemy_SniperAi = (AiComponent*)EnemySniper->FindComponent("Ai");
-    }
 
     std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
     //Right Click : Right attack
@@ -195,8 +185,11 @@ void Level::Stage01_Lvl::Update()
     //Test line
     if (AEInputCheckTriggered(AEVK_4))
         CreateSupplement({ 0, -300 });
+    
+    //Player->GetHeath() == 0
+    //    gameOver = true
 
-    if (gameOver)
+    if (!(player_comp->IsAlive()))
     {
         GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
         gsm->ChangeLevel(new Level::GameOver_Lvl);
@@ -326,7 +319,8 @@ void Level::Stage01_Lvl::Update()
 void Level::Stage01_Lvl::Exit()
 {
     auto res = ResourceManager::GetInst()->GetReource();
-    ResourceManager::GetInst()->RemoveAllRes();
+    ResourceManager::GetInst()->RemoveAllRes();    
+    EventManager::GetInst()->RemoveAllEvent();
     GoManager::GetInst()->RemoveAllObj();
 }
 
@@ -363,7 +357,6 @@ void Level::Stage01_Lvl::Collision()
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
 
-                        std::cout << "cnt : " << ++a << std::endl;
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         bullet_comp->DestroyBullet();
                     }
@@ -388,12 +381,16 @@ void Level::Stage01_Lvl::Collision()
                 }
             }
 
-            //Player Death
-            if (ColliderManager::GetInst()->IsCollision(player, obj))
-            {
-                gameOver = true;
-            }
+
+           //Player Death
+           
+           if (ColliderManager::GetInst()->IsCollision(player, obj))
+           {               
+               //gameOver = true;
+               player_comp->TakeDamge();
+           }
         }
+        //Sniper죽는판정
         if (obj->GetName() == "EnemySniper")
         {
             //Test: Collision Enemy with Player's Bullet
@@ -414,8 +411,42 @@ void Level::Stage01_Lvl::Collision()
                     }
                 }
             }
+            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
+            {
+                EnemySniper->SetActive(false);
+                EnemySniper = nullptr;
+            }
 
         }
+
+        if (obj->GetName() == "Enemy") 
+        {
+            //총알부분
+            for (auto findObj : GoManager::GetInst()->Allobj())
+            {
+                if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet") 
+                {
+                    if (ColliderManager::GetInst()->IsCollision(findObj, obj)) 
+                    {
+                        std::cout << "c" << std::endl;
+                        BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
+                        if (!bullet_comp->EnemyShoot)
+                        {
+                            Enemy->SetActive(false);
+                            Enemy = nullptr;
+                        }
+                        //bullet_comp->DestroyBullet();
+                    }
+                }
+            }
+            //근접
+            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj)) 
+            {
+                Enemy->SetActive(false);
+                Enemy = nullptr;
+            }
+        }
+
 
         if (obj->GetName() == "BulletSupplement")
         {

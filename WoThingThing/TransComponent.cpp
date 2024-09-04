@@ -51,14 +51,14 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 
 	if (_owner->GetName() == "Enemy")
 	{
-		m_vPos = { 300,300 };
+		m_vPos = { 600,-1250 };
 		m_vScale = { 50,100 };
 		m_fRot = 0.f;
 	}
 
 	if (_owner->GetName() == "EnemySniper")
 	{
-		m_vPos = { 100,300 };
+		m_vPos = { 900,300 };
 		m_vScale = { 50,100 };
 		m_fRot = 0.f;
 	}

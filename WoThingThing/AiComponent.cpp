@@ -32,7 +32,7 @@ void AiComponent::SetState(const std::string& state_name, const std::string& ene
 		if (e_state_name == "IDLE")
 		{
 			std::cout << "Aicomp" << std::endl;
-			ESM::IDLE* p = new ESM::IDLE(m_pOwner, Player, set_dir, Time_dir, PlatForm, e_state_name);
+			ESM::IDLE* p = new ESM::IDLE(m_pOwner, Player, set_dir, Time_dir, PlatForm, e_state_name, FirstPlacePos);
 			esm->ChangeState(p);//p를 넘겨주면 자기자신을 m_pOwner를 넘겨주는거니 참조 한다는거다
 		}
 		else if (e_state_name == "Patrol")
@@ -81,6 +81,11 @@ void AiComponent::Change_State(ESM::BaseEnemyState* newstate)
 void AiComponent::SetPlatform(GameObject* platform)
 {
 	PlatForm = platform;
+}
+
+void AiComponent::SetFirstPlace(AEVec2 _FirstPlacePos)
+{
+	FirstPlacePos = _FirstPlacePos;
 }
 
 

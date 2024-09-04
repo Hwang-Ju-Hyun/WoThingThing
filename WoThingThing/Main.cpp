@@ -37,7 +37,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	Level::MainMenu_Lvl MainMenu_lvl;
 	Level::Stage01_Lvl Stage01_lvl;
 	Level::TestLevel Test;
-	gsm->ChangeLevel(new Level::Stage01_Lvl);
+	gsm->ChangeLevel(new Level::MainMenu_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
 		AESysFrameStart();
@@ -123,7 +123,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
     f32 animation_duration_per_frame = 0.1f;
     u32 current_sprite_index = 0; // 시작되는 스프라이트 위치(왼쪽위가 0임)
     f32 current_sprite_uv_offset_x = 0.f;//시작하는 스프라이트 좌표값x
-    f32 current_sprite_uv_offset_y = 0.f;//시작하는 스프라이트 좌표값yx
+    f32 current_sprite_uv_offset_y = 0.f;//시작하는 스프라이트 좌표값y
 
 
     // Pointer to Mesh

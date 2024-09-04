@@ -16,6 +16,7 @@ private:
     ESM::EnemyStateManager* esm;
     GameObject* Player;
     GameObject* PlatForm;
+    AEVec2 FirstPlacePos;
     float Time_dir = 0;//고개돌리는 시간
     bool set_dir;
 public:
@@ -28,6 +29,7 @@ public:
     void Setdir_time(float Time);
     void Change_State(ESM::BaseEnemyState* newstate);
     void SetPlatform(GameObject* platform);
+    void SetFirstPlace(AEVec2 _FirstPlacePos);
 
 public:
     virtual void LoadFromJson(const json& str)override;

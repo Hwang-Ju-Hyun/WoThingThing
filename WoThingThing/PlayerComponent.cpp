@@ -35,6 +35,8 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 
 	timeManipul = 7.f;
 	manipulActive = false;
+
+	playerhealth = 1;
 }
 
 //About Player's movement
@@ -68,7 +70,7 @@ void PlayerComponent::MoveMent()
 	{
 		manipulActive = true;
 		timeManipul -= dt;
-		std::cout << timeManipul << std::endl;
+		//std::cout << timeManipul << std::endl;
 
 		if (timeManipul <= 0.f)
 		{
@@ -81,7 +83,7 @@ void PlayerComponent::MoveMent()
 		manipulActive = false;
 		if (timeManipul < 7.f)
 			timeManipul += dt;
-		std::cout << timeManipul << std::endl;
+		//std::cout << timeManipul << std::endl;
 	}
 
 	//Jump
@@ -278,6 +280,23 @@ void PlayerComponent::SetJumpCntZero()
 void PlayerComponent::SetJumpVelocityZero()
 {
 	jumpVelocity.y = 0.f;
+}
+
+void PlayerComponent::TakeDamge()
+{
+	playerhealth -= 1;
+}
+
+bool PlayerComponent::IsAlive()
+{
+	if (playerhealth > 0) 
+	{
+		return true;
+	}
+	else 
+	{
+		return false;
+	}
 }
 
 void PlayerComponent::Update()

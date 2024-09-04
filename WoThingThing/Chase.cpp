@@ -18,11 +18,11 @@ void ESM::Chase::Init()
 	//Chase_time = 0.f;
 	m_fDt = 0.f;
 	Chase_outTime = 0.f;
-	Subscriber.Enemy_Chase = this;
-	EventManager::GetInst()->AddEntity("EnemyPlatformCollisionEvent", &Subscriber);
 
 	timeManipul = 7.f;
 	mainpulActice = false;
+	const_chaseVec = { 5,0 };
+
 }
 
 void ESM::Chase::Update()
@@ -90,8 +90,8 @@ void ESM::Chase::Update()
 			// 속도를 줄이기 위해 0.5배로 느리게 이동하도록 설정
 			if (isEnemyNotOnPlatformEdge)
 			{
-				slowChase.x = unitChaseVec.x * 0.98f * dt * 5.f;
-				slowChase.y = unitChaseVec.y * 0.98f * dt * 5.f;
+				slowChase.x = unitChaseVec.x * 0.98f * dt * 30.f;
+				slowChase.y = unitChaseVec.y * 0.98f * dt * 30.f;
 				enemy_trs->AddPos(slowChase);
 			}
 			else
@@ -107,7 +107,9 @@ void ESM::Chase::Update()
 			//이 부분 다시 물어보기
 			if (isEnemyNotOnPlatformEdge)
 			{
-				enemy_trs->AddPos(unitChaseVec);
+				ChaseVecAdd.x = unitChaseVec.x * const_chaseVec.x;
+				ChaseVecAdd.y = unitChaseVec.y * const_chaseVec.y;
+				enemy_trs->AddPos(ChaseVecAdd);
 				
 			}
 			else 
@@ -121,7 +123,7 @@ void ESM::Chase::Update()
 		if (ColliderManager::GetInst()->MeleeEnemyAttack(Chase_enemy, Player, dir_state))
 		{
 			AiComponent* enemy_ai = (AiComponent*)Chase_enemy->FindComponent("Ai");
-			ESM::EnemyAttack* p = new ESM::EnemyAttack(Chase_enemy, Player, dir_state, dir_Time, PlatForm, e_state_name);
+			ESM::EnemyAttack* p = new ESM::EnemyAttack(Chase_enemy, Player, dir_state, dir_Time, PlatForm, e_state_name, FirstPlacePos);
 			//ESM::EnemyStateManager::GetInst()->ChangeState(p);
 			enemy_ai->Change_State(p);
 		}
@@ -143,8 +145,8 @@ void ESM::Chase::Update()
 				// 속도를 줄이기 위해 0.5배로 느리게 이동하도록 설정
 				if (isEnemyNotOnPlatformEdge)
 				{
-					slowChase.x = unitChaseVec.x * 0.98f * dt * 5.f;
-					slowChase.y = unitChaseVec.y * 0.98f * dt * 5.f;
+					slowChase.x = unitChaseVec.x * 0.98f * dt * 30.f;
+					slowChase.y = unitChaseVec.y * 0.98f * dt * 30.f;
 					enemy_trs->AddPos(slowChase);
 				}
 				else
@@ -159,7 +161,9 @@ void ESM::Chase::Update()
 			{
 				if (isEnemyNotOnPlatformEdge)
 				{
-					enemy_trs->AddPos(unitChaseVec);
+					ChaseVecAdd.x = unitChaseVec.x * const_chaseVec.x;
+					ChaseVecAdd.y = unitChaseVec.y * const_chaseVec.y;
+					enemy_trs->AddPos(ChaseVecAdd);
 				}
 				else
 				{
@@ -177,7 +181,7 @@ void ESM::Chase::Update()
 			Chase_outTime = 0.0f;
 			std::cout << "Chase Fail" << std::endl;
 			AiComponent* enemy_ai = (AiComponent*)Chase_enemy->FindComponent("Ai");
-			ESM::IDLE* p = new ESM::IDLE(Chase_enemy, Player, dir_state, dir_Time, PlatForm, e_state_name);
+			ESM::IDLE* p = new ESM::IDLE(Chase_enemy, Player, dir_state, dir_Time, PlatForm, e_state_name, FirstPlacePos);
 			enemy_ai->Change_State(p);
 			//ESM::EnemyStateManager::GetInst()->ChangeState(p);
 		}
@@ -187,16 +191,25 @@ void ESM::Chase::Update()
 
 void ESM::Chase::Exit()
 {
-	EventManager::GetInst()->RemoveEntity("EnemyPlatformCollisionEvent", &Subscriber);
 }
 
-ESM::Chase::Chase(GameObject* _enemy, GameObject* _player, bool dir, float Time, GameObject* _platform, std::string state_name)
+ESM::Chase::Chase(GameObject* _enemy, GameObject* _player, bool dir,
+	float Time, GameObject* _platform, std::string state_name, AEVec2 _FirstPlacePos)
 {
+	
 	Chase_enemy = _enemy;
 	Player = _player;
 	dir_state = dir;
 	dir_Time = Time;
 	PlatForm = _platform;
 	e_state_name = state_name;
+	FirstPlacePos = _FirstPlacePos;
+	Subscriber.Enemy_Chase = this;
+	EventManager::GetInst()->AddEntity("EnemyPlatformCollisionEvent", &Subscriber);
+}
+
+ESM::Chase::~Chase()
+{
+	EventManager::GetInst()->RemoveEntity("EnemyPlatformCollisionEvent", &Subscriber);
 }
 
