@@ -223,17 +223,17 @@ void Level::Stage01_Lvl::Update()
 
     static int nodeId = 0;
     //NodeEditor	
-    if (AEInputCheckTriggered(AEVK_RBUTTON))
-    {
-        ////Ask manager for the node. It will handle the unique IDs	
-        // 		
-        TransComponent::Node node_left;
+    //if (AEInputCheckTriggered(AEVK_RBUTTON))
+    //{
+    //    ////Ask manager for the node. It will handle the unique IDs	
+    //    // 		
+    //    TransComponent::Node node_left;
 
-        node_left.node_id = nodeId++;
-        node_left.node_pos = { (float)mouseX,(float)mouseY };
+    //    node_left.node_id = nodeId++;
+    //    node_left.node_pos = { (float)mouseX,(float)mouseY };
 
-        NaveMeshManager::GetInst()->AddNode(node_left);
-    }
+    //    NaveMeshManager::GetInst()->AddNode(node_left);
+    //}
 
 
     for (auto it : NaveMeshManager::GetInst()->GetallNode())

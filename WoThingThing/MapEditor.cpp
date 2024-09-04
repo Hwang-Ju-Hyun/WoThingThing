@@ -44,7 +44,7 @@ void Level::MapEditor::Init()
 	{
 		return;
 	}
-	Serializer::GetInst()->LoadLevel("stage01.json");	
+	Serializer::GetInst()->LoadLevel("stageBoss.json");	
 
 		
 	player->AddComponent("Transform", new TransComponent(player));
@@ -172,7 +172,7 @@ void Level::MapEditor::Update()
 	CameraManager::GetInst()->Update();
 	if (AEInputCheckCurr(AEVK_B))
 	{		
-		Serializer::GetInst()->SaveLevel("stage01.json");
+		Serializer::GetInst()->SaveLevel("stageBoss.json");
 		GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
 	}
 
