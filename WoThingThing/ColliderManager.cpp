@@ -40,6 +40,56 @@ bool ColliderManager::IsCollision(GameObject* _obj1, GameObject* _obj2)
 	return true;
 }
 
+bool ColliderManager::IsCollision(GameObject* _obj1, TransComponent::Node _node)
+{
+	BaseComponent* obj_trs1 = _obj1->FindComponent("Transform");
+	
+	AEVec2 obj1_Pos = static_cast<TransComponent*>(obj_trs1)->GetPos();
+	AEVec2 obj2_Pos = _node.node_pos;
+
+	AEVec2 obj1_Scale = static_cast<TransComponent*>(obj_trs1)->GetScale();
+	AEVec2 obj2_Scale = { 70.f,70.f };
+
+	float obj1Right = obj1_Pos.x + obj1_Scale.x / 2.f;
+	float obj1Left = obj1_Pos.x - obj1_Scale.x / 2.f;
+	float obj1Top = obj1_Pos.y - obj1_Scale.y / 2.f;
+	float obj1Bot = obj1_Pos.y + obj1_Scale.y / 2.f;
+
+	float obj2Right = obj2_Pos.x + obj2_Scale.x / 2.f;
+	float obj2Left = obj2_Pos.x - obj2_Scale.x / 2.f;
+	float obj2TopY = obj2_Pos.y - obj2_Scale.y / 2.f;
+	float obj2BotY = obj2_Pos.y + obj2_Scale.y / 2.f;
+
+	if (obj1Right<obj2Left || obj1Left>obj2Right || obj1Bot<obj2TopY || obj1Top>obj2BotY)
+		return false;
+	return true;
+}
+
+bool ColliderManager::IsCollision(GameObject* _obj1, AEVec2 _vec)
+{
+	BaseComponent* obj_trs1 = _obj1->FindComponent("Transform");
+
+	AEVec2 obj1_Pos = static_cast<TransComponent*>(obj_trs1)->GetPos();
+	AEVec2 obj2_Pos = _vec;
+
+	AEVec2 obj1_Scale = static_cast<TransComponent*>(obj_trs1)->GetScale();
+	AEVec2 obj2_Scale = { 70.f,70.f };
+
+	float obj1Right = obj1_Pos.x + obj1_Scale.x / 2.f;
+	float obj1Left = obj1_Pos.x - obj1_Scale.x / 2.f;
+	float obj1Top = obj1_Pos.y - obj1_Scale.y / 2.f;
+	float obj1Bot = obj1_Pos.y + obj1_Scale.y / 2.f;
+
+	float obj2Right = obj2_Pos.x + obj2_Scale.x / 2.f;
+	float obj2Left = obj2_Pos.x - obj2_Scale.x / 2.f;
+	float obj2TopY = obj2_Pos.y - obj2_Scale.y / 2.f;
+	float obj2BotY = obj2_Pos.y + obj2_Scale.y / 2.f;
+
+	if (obj1Right<obj2Left || obj1Left>obj2Right || obj1Bot<obj2TopY || obj1Top>obj2BotY)
+		return false;
+	return true;
+}
+
 //근접 캐릭터용, range부분 더 늘리기?
 bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool enemy_dir, float x_range, float y_range,float bottom_y_range)
 {
@@ -253,6 +303,7 @@ void ColliderManager::DrawRect(float bottomleft_x, float bottomleft_y, float top
 
 	AEGfxMeshDraw(mesh, AE_GFX_MDM_LINES_STRIP);
 
+	
 	return;
 }
 

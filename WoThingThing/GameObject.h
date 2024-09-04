@@ -29,6 +29,7 @@ public:
 //Node Info
 private:
 	int m_nodeCost;
+	int m_nodeID;
 public:
 	void SetNodeCost(int _cost) { m_nodeCost = _cost; }
 	int GetNodeCost()const		{ return m_nodeCost; }

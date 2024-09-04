@@ -37,6 +37,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	aim_line->AddComponent("Transform", new TransComponent(aim_line));
 	aim_line->AddComponent("Sprite", new SpriteComponent(aim_line));
 
+	
 	bullet = new GameObject("Bullet");
 	GoManager::GetInst()->AddObject(bullet);
 	bullet->AddComponent("Transform", new TransComponent(bullet));
@@ -155,6 +156,7 @@ void PlayerComponent::MouseAim()
 	mousePos.x += player_Cam.x;
 	mousePos.y += player_Cam.y;
 }
+
 void PlayerComponent::MouseTraceLine()
 {
 	TransComponent* aimTrace_trs = (TransComponent*)aim_line->FindComponent("Transform");

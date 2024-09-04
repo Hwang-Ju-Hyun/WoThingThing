@@ -24,10 +24,12 @@
 #include "TextResource.h"
 
 #include "Serializer.h"
-
+#include "NaveMeshManager.h"
 #include "Utility.h"
 #include "AiComponent.h"
 #include "CameraManager.h"
+#include "PathFindMoveComponent.h"
+#include "StageBoss_Lvl.h"
 #include "AEInput.h"
 #include "AEUtil.h"
 #include "AEMath.h"
@@ -44,7 +46,14 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 void Level::Stage01_Lvl::Init()
 {    
     //Object and Component Init
-    Serializer::GetInst()->LoadLevel("temp.json");
+    
+    //인제 temp는 보스 맵이 된거여
+    //Serializer::GetInst()->LoadLevel("temp.json");
+
+    //stage01맵을 불러오자
+    Serializer::GetInst()->LoadLevel("stage01.json");
+
+
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
@@ -58,7 +67,7 @@ void Level::Stage01_Lvl::Init()
     
     //EventManager에서 요거 지우쇼 
     RePosition* Platform_Player = new RePosition;
-    EventManager::GetInst()->AddEntity("Collision",Platform_Player);
+    //EventManager::GetInst()->AddEntity("Collision",Platform_Player);
         
     //Enemy
     Enemy = new GameObject("Enemy");
@@ -89,9 +98,24 @@ void Level::Stage01_Lvl::Init()
         }
     }
 
+    //TEST==========
+    Enemy_TEST = new GameObject("Enemy_TEST");
+    GoManager::GetInst()->AddObject(Enemy_TEST);
+
+    Enemy_TEST->AddComponent("Transform", new TransComponent(Enemy_TEST));
+    Enemy_TEST->AddComponent("Sprite", new SpriteComponent(Enemy_TEST));
+    Enemy_TEST->AddComponent("RigidBody", new RigidBodyComponent(Enemy_TEST));
+    Enemy_TEST->AddComponent("PathFindMove", new PathFindMoveComponent(Enemy_TEST));
+    //TEST===========
+
+    
     CameraManager::GetInst()->SetMouse(mouseAim);
     CameraManager::GetInst()->SetPlayer(player);
     CameraManager::GetInst()->SetAim(aimTrace);
+    NaveMeshManager::GetInst()->SetPlayer(player);
+    NaveMeshManager::GetInst()->CreateLinkTable();
+    auto a = NaveMeshManager::GetInst()->GetvecLink_temp();
+    int b = a.size();
 }
 
 void Level::Stage01_Lvl::Update()
@@ -101,8 +125,9 @@ void Level::Stage01_Lvl::Update()
     SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
-
+    std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
     //Right Click : Right attack
+
 
     if (AEInputCheckCurr(AEVK_R) == true)
     {
@@ -132,14 +157,142 @@ void Level::Stage01_Lvl::Update()
             {
                 HandleCollision(Enemy, obj);
             }
-        }            
-    }                   
-    CameraManager::GetInst()->Update();
+            if (ColliderManager::GetInst()->IsCollision(player_comp->GetBullet(), obj))
+            {
+                TransComponent* bullet_trs = (TransComponent*)player_comp->GetBullet()->FindComponent("Transform");
+                bullet_trs->SetScale({ 0,0 });
+            }
+        }
+        //test
+        if (obj->GetName() == "Platform")
+        {
+            if (ColliderManager::GetInst()->IsCollision(Enemy_TEST, obj))
+            {
+                HandleCollision(Enemy_TEST, obj);
+            }
+        }        
+    }          
+
+    s32 mouseX, mouseY;
+    AEInputGetCursorPosition(&mouseX, &mouseY);
+
+    //convert to world
+    //Screen -> NDC
+    mouseX -= 800;
+    mouseY -= 450;
+    mouseY *= -1;
+    AEVec2 camera=CameraManager::GetInst()->GetLookAt();
+    //NDC -> Camera
+    mouseX += camera.x;
+    mouseY += camera.y;
+    float nodeBotX = (float)mouseX - 35.f;
+    float nodeBotY = (float)mouseY - 35.f;
+    float nodeTopX = (float)mouseX + 35.f;
+    float nodeTopY = (float)mouseY + 35.f;
+
+    static int nodeId = 0;
+    //NodeEditor	
+    if (AEInputCheckTriggered(AEVK_RBUTTON))
+    {        
+        ////Ask manager for the node. It will handle the unique IDs	
+        // 		
+        TransComponent::Node node_left;
+
+        node_left.node_id= nodeId++;
+        node_left.node_pos = { (float)mouseX,(float)mouseY };
+
+        NaveMeshManager::GetInst()->AddNode(node_left);
+    }
+
+
+    for(auto it : NaveMeshManager::GetInst()->GetallNode())
+        NaveMeshManager::GetInst()->DrawNode(it.node_pos.x - 35, it.node_pos.y - 35, it.node_pos.x + 35, it.node_pos.y + 35, 1.0f, 1.0f, 0);
+     
+ 
+    //Camera Update
+    CameraManager::GetInst()->Update();        
+
+    //======================WARNING=============================
+    //=======NEVER TOUCH DOWN CODE EXCEPT HWNAG JUHYUN==========    
+    TransComponent* EnemyTEST_tsr = static_cast<TransComponent*>(Enemy_TEST->FindComponent("Transform"));
+    RigidBodyComponent* EnemyTEST_rg= static_cast<RigidBodyComponent*>(Enemy_TEST->FindComponent("RigidBody"));
+    PathFindMoveComponent* EnemyTEST_pf = static_cast<PathFindMoveComponent*>(Enemy_TEST->FindComponent("PathFindMove"));
+    //플레이어한테서 가장 가까운 노드를 찾는다
+    NaveMeshManager::GetInst()->SetMinCost(10000.f);
+    int player_node=NaveMeshManager::GetInst()->FindObjectNode(player);
+
+    //보스의 현재위치의 가장 가까운 노드를 찾는다
+    int EnemyTest_node = NaveMeshManager::GetInst()->FindObjectNode(Enemy_TEST);           
+    auto node_link = NaveMeshManager::GetInst()->GetvecLink();
+    auto node = NaveMeshManager::GetInst()->GetallNode();
+    if (ColliderManager::GetInst()->IsCollision(Enemy_TEST, node[EnemyTest_node]))
+    {
+        NaveMeshManager::GetInst()->FindShortestPath(EnemyTest_node, player_node, 0);
+    }
+
+    auto minCost = NaveMeshManager::GetInst()->GetMinCost();
+    auto FoundedPath = NaveMeshManager::GetInst()->GetPath();
+
+    int PathIndex = EnemyTEST_pf->GetPathToPathIndex();    
+
+    std::cout << "Player Located Node : " << player_node << std::endl;
+    std::cout << "Enemy Located Node : " << EnemyTest_node << std::endl;
+    std::cout << "Minimum cost: " << minCost << std::endl;
+    std::cout << "Founded Path: ";
+    for (auto node : FoundedPath)
+        std::cout << node << " ";
+    std::cout << std::endl;
+
+
+    if (FoundedPath.size()>1)
+    {        
+        //costLink는 점프가 될수도 있고  walk가 될 수도 있음                                          
+        int nodeID1 = FoundedPath[PathIndex];
+        int nodeID2;
+        if (FoundedPath.size() <= PathIndex + 1)
+            nodeID2 = nodeID1;
+        else
+            nodeID2 = FoundedPath[PathIndex + 1];
+        int idx = 0;
+        while (nodeID2 != node_link[nodeID1][idx].first)
+        {
+            idx++;                
+        }
+        auto costLink = node_link[FoundedPath[PathIndex]][idx].second;
+        
+        //해당 보스위치가 다음 서브노드의 도착지점에 도착하였다면!
+        //밑에 주석 막 지우지마 쓰일 수도 있음
+        /*if (EnemyTEST_pf->IsArrivedTargetNode(Enemy_TEST, node[PathIndex + 1].node_pos))
+        {
+            EnemyTEST_pf->PlusPathToPathIndex();
+      ddd  }*/
+        /*if (EnemyTEST_pf->IsArrivedTargetNode(Enemy_TEST, node[idx].node_pos))
+        {
+            EnemyTEST_pf->PlusPathToPathIndex();
+        }*/
+        if (EnemyTEST_pf->IsArrivedTargetNode(Enemy_TEST, node[nodeID2]))
+        {
+            EnemyTEST_pf->PlusPathToPathIndex();
+
+        }
+        else
+        {
+            costLink->Move(Enemy_TEST, node[nodeID1], FoundedPath[PathIndex], 1, node[nodeID2]);
+        }
+        
+    }         
+    //=======NEVER TOUCH UPPER CODE EXCEPT HWNAG JUHYUN==========
+    //======================WARNING=============================
+
+    std::cout << std::endl;
+    if (AEInputCheckTriggered(AEVK_ESCAPE))    
+        GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);        
+    if (AEInputCheckTriggered(AEVK_F1))
+        GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
 }
 
 void Level::Stage01_Lvl::Exit()
-{
-
+{    
     auto res = ResourceManager::GetInst()->GetReource();
     ResourceManager::GetInst()->RemoveAllRes();
     GoManager::GetInst()->RemoveAllObj();
@@ -159,7 +312,7 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
     AEVec2 obj2_Scale = obj_trs2->GetScale();
 
     //RigidBodyComponent* obj_rb1 = static_cast<RigidBodyComponent*>(obj1->FindComponent("RigidBody"));
-    if (obj1->GetName() == "Enemy")
+    if (obj1->GetName() == "Enemy"||obj1->GetName()=="Enemy_TEST")
     {
         RigidBodyComponent* obj_rb1 = static_cast<RigidBodyComponent*>(obj1->FindComponent("RigidBody"));
         //check 4 distance

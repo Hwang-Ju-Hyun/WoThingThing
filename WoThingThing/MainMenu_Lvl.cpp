@@ -13,6 +13,8 @@
 #include "TextResource.h"
 #include "Stage01_Lvl.h"
 #include "CompManager.h"
+#include "MapEditor.h"
+#include "StageBoss_Lvl.h"
 #include "Serializer.h"
 //추가한 부분(백무송)
 //#include "TestLevel.h"
@@ -100,6 +102,11 @@ void Level::MainMenu_Lvl::Update()
 		}
 	}
 
+	if (AEInputCheckTriggered(AEVK_F10))
+	{
+		GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MapEditor);
+	}
+
 
 	auto text_res = ResourceManager::GetInst()->Get("text", "../Extern/Assets/liberation-mono.ttf");
 	TextResource* MenuText_res = static_cast<TextResource*>(text_res);
@@ -118,7 +125,7 @@ void Level::MainMenu_Lvl::Update()
 
 void Level::MainMenu_Lvl::Exit()
 {
-	//Serializer::GetInst()->SaveLevel("temp.json");
+	//Serializer::GetInst()->SaveLevel("main.json");
 #ifndef DEBUG
 	//std::cout << "MainMenu_Lvl Exit" << std::endl;
 #endif	

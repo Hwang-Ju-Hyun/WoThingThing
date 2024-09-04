@@ -12,7 +12,7 @@ class PlayerComponent : public BaseComponent
 
     AEVec2  dashVelocity;
     AEVec2  dash_const;
-    
+
     AEVec2  jumpVelocity;
     AEVec2  m_vGravity;
 
@@ -57,6 +57,11 @@ public:
     bool GetWeaponType(int n);
     void Attack();
 
+    //황주현 코드 지워도 됨
+    GameObject* GetBullet()
+    {
+        return bullet;
+    }
 
     //황주현 코드추가
     void SetJumpCntZero();    
