@@ -147,6 +147,9 @@
     <Filter Include="Level\GameOver">
       <UniqueIdentifier>{e5f148e4-4d81-45b1-9e14-43bd0685fae7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ai\AnimationAi">
+      <UniqueIdentifier>{01806367-0993-4a04-8ef5-b5a7710f7d74}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -305,7 +308,7 @@
     <ClCompile Include="ImageResource.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="MultiAnimationComponent.cpp">
+    <ClCompile Include="EnemyAnimationComponent.cpp">
       <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
@@ -469,8 +472,14 @@
     <ClInclude Include="ImageResource.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="MultiAnimationComponent.h">
-      <Filter>Main</Filter>
+    <ClInclude Include="ImageResource.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageResource.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAnimationComponent.h">
+      <Filter>Ai\AnimationAi</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

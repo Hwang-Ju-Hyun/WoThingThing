@@ -7,6 +7,9 @@
 
 #include"PlayerComponent.h"
 #include"GoManager.h"
+#include"EnemyAnimationComponent.h"
+
+bool NaveMeshManager::isStunned = false;
 
 NaveMeshManager::NaveMeshManager()
 {
@@ -438,6 +441,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 {
 	TransComponent* obj_trs = static_cast<TransComponent*>(_obj->FindComponent("Transform"));
 	RigidBodyComponent* obj_rb = static_cast<RigidBodyComponent*>(_obj->FindComponent("RigidBody"));
+	EnemyAnimationComponent* obj_ani = (EnemyAnimationComponent*)(_obj->FindComponent("EnemyAnimation"));
 	PlayerComponent* player_comp = (PlayerComponent*)_player->FindComponent("PlayerComp");
 	AEVec2 objPos = obj_trs->GetPos();
 	AEVec2 nodePos = _nodeInfo.node_pos;
@@ -452,7 +456,8 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 
 		float m_fDt = AEFrameRateControllerGetFrameTime();
 		//float Chase_outTime = 0.f; // 시간을 저장할 변수
-		static bool isStunned = false; // 스턴 상태를 저장할 변수
+
+		//isStunned = false; // 스턴 상태를 저장할 변수
 
 		for (auto obj : GoManager::GetInst()->Allobj())
 		{
@@ -465,6 +470,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 					obj->AddHP(-1);
 					ColliderManager::GetInst()->SetPlayerSearchOnOff(false);
 					//Chase_outTime = 0.f; // 시간 초기화
+					obj_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);
 				}
 				if (isStunned) // 스턴 상태일 때
 				{					
@@ -477,8 +483,8 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 				    }
 				    else
 				    {
-						obj_trs->AddPos({ 0.f, 0.f }); // 위치를 0으로 설정		
-						std::cout << "스턴 상태" << std::endl;
+						obj_trs->AddPos({ 0.f, 0.f }); // 위치를 0으로 설정						
+						obj_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);
 					}
 				}
 				else // 스턴 상태가 아닐 때
@@ -488,6 +494,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 					AEVec2 normalize_dir;
 					AEVec2Normalize(&normalize_dir, &direction);
 					obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f }); // 이동
+					obj_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
 				}
 			}
 		}

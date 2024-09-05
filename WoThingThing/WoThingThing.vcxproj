@@ -25,6 +25,7 @@
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="CompManager.h" />
     <ClInclude Include="Congratulation.h" />
+    <ClInclude Include="EnemyAnimationComponent.h" />
     <ClInclude Include="EnemyAttack.h" />
     <ClInclude Include="EnemyStateManager.h" />
     <ClInclude Include="EventManager.h" />
@@ -38,7 +39,6 @@
     <ClInclude Include="ImageResource.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainMenu_Lvl.h" />
-    <ClInclude Include="MultiAnimationComponent.h" />
     <ClInclude Include="Patrol.h" />
     <ClInclude Include="MapEditor.h" />
     <ClInclude Include="NaveMeshManager.h" />
@@ -75,6 +75,7 @@
     <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="CompManager.cpp" />
     <ClCompile Include="Congratulation.cpp" />
+    <ClCompile Include="EnemyAnimationComponent.cpp" />
     <ClCompile Include="EnemyAttack.cpp" />
     <ClCompile Include="EnemyStateManager.cpp" />
     <ClCompile Include="EventManager.cpp" />
@@ -87,7 +88,6 @@
     <ClCompile Include="ImageResource.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu_Lvl.cpp" />
-    <ClCompile Include="MultiAnimationComponent.cpp" />
     <ClCompile Include="Patrol.cpp" />
     <ClCompile Include="MapEditor.cpp" />
     <ClCompile Include="NaveMeshManager.cpp" />

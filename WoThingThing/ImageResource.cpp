@@ -9,7 +9,7 @@ ImageResource::ImageResource(const std::string& _name) : Resource(_name)
 
 ImageResource::~ImageResource()
 {
-	UnLoad();
+
 }
 
 AEGfxTexture* ImageResource::GetImage()

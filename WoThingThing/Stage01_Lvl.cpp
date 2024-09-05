@@ -46,6 +46,7 @@
 #include "Bullet.h"
 #include"TargetAim_Sniper.h"
 #include"AnimationComponent.h"
+#include"EnemyAnimationComponent.h"
 
 AEVec2 enemyDvec{ 1, 0 };
 
@@ -60,8 +61,12 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 void Level::Stage01_Lvl::Init()
 {    
     //Object and Component Init
-    
-
+    ResourceManager::GetInst()->Get("MeleeIdle", "Assets/meleeEnemyIdle.png");
+    ResourceManager::GetInst()->Get("MeleeChase", "Assets/meleeEnemyChase.png");
+    ResourceManager::GetInst()->Get("MeleeAttack", "Assets/meleeEnemyAtk.png");//("MeleeAttack", 1, 5, 5, 0.1);
+    ResourceManager::GetInst()->Get("SniperIdle", "Assets/sniperEnemyIdle.png");//12
+    ResourceManager::GetInst()->Get("SniperShootIdle", "Assets/sniperEnemyShootIdle.png");//1
+    ResourceManager::GetInst()->Get("SniperShoot", "Assets/sniperEnemyShoot.png");//5
 
     //인제 temp는 보스 맵이 된거여
     //Serializer::GetInst()->LoadLevel("temp.json");
@@ -92,17 +97,23 @@ void Level::Stage01_Lvl::Init()
           
 
     //Enemy
+  
     for (int i = 0; i < Enemy.size(); i++)
     {
         Enemy[i] = new GameObject("Enemy");       
         Enemy[i]->SetID(i);
         GoManager::GetInst()->AddObject(Enemy[i]);
         Enemy[i]->AddComponent("Transform", new TransComponent(Enemy[i]));
-        Enemy[i]->AddComponent("Sprite", new SpriteComponent(Enemy[i]));
+        //Enemy[i]->AddComponent("Sprite", new SpriteComponent(Enemy[i]));
+        Enemy[i]->AddComponent("EnemyAnimation", new EnemyAnimationComponent(Enemy[i]));
         Enemy[i]->AddComponent("RigidBody", new RigidBodyComponent(Enemy[i]));
         Enemy[i]->AddComponent("Ai", new AiComponent(Enemy[i]));
         TransComponent* Enemy_trs = (TransComponent*)Enemy[i]->FindComponent("Transform");
         AiComponent* Enemy_state = (AiComponent*)Enemy[i]->FindComponent("Ai");
+
+        EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy[i]->FindComponent("EnemyAnimation");
+        Enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+
         Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
         Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
         Enemy_state->Setdir_time(2.0f);
@@ -118,10 +129,13 @@ void Level::Stage01_Lvl::Init()
         EnemySniper[i]->SetID(i);
         GoManager::GetInst()->AddObject(EnemySniper[i]);
         EnemySniper[i]->AddComponent("Transform", new TransComponent(EnemySniper[i]));
-        EnemySniper[i]->AddComponent("Sprite", new SpriteComponent(EnemySniper[i]));
+        //EnemySniper[i]->AddComponent("Sprite", new SpriteComponent(EnemySniper[i]));
+        EnemySniper[i]->AddComponent("EnemyAnimation", new EnemyAnimationComponent(EnemySniper[i]));
         EnemySniper[i]->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper[i]));
         EnemySniper[i]->AddComponent("Ai", new AiComponent(EnemySniper[i]));
         AiComponent* EnemySniper_state = (AiComponent*)EnemySniper[i]->FindComponent("Ai");
+        EnemyAnimationComponent* Enemy_sniperani = (EnemyAnimationComponent*)EnemySniper[i]->FindComponent("EnemyAnimation");
+        //Enemy_sniperani->ChangeAnimation("SniperIdle", 1, 12, 12, 0.1); 
         EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
         EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
         EnemySniper_state->Setdir_time(1.0f);

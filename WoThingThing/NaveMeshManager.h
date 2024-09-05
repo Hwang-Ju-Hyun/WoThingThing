@@ -55,6 +55,7 @@ public:
 
 public:
 	CostLink* costLink;
+	static bool isStunned;
 private:
 	std::vector<TransComponent::Node> m_vecNode;
 	std::vector<std::vector<std::pair<int/*NodeID*/, enum COST/*cost*/>>> m_vecLinktemp;

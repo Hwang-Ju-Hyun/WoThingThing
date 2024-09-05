@@ -11,9 +11,12 @@
 #include"PlayerComponent.h"
 #include "ResourceManager.h"
 #include "AudioResource.h"
+#include"EnemyAnimationComponent.h"
 
 void ESM::EnemyAttack::Init()
 {
+	EnemyAnimationComponent* Enemy_meleeani = (EnemyAnimationComponent*)Attack_enemy->FindComponent("EnemyAnimation");
+	Enemy_meleeani->ChangeAnimation("MeleeAttack", 1, 5, 5, 0.04);
 	melee_DelayAtk = 0.f;
 	m_fDt = 0.f;
 }
@@ -31,7 +34,7 @@ void ESM::EnemyAttack::Update()
 	{
 		m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 		melee_DelayAtk += m_fDt;
-		if (melee_DelayAtk > 0.3f)
+		if (melee_DelayAtk > 0.2f)
 		{
 			auto res_EnemyMeleeAtk = ResourceManager::GetInst()->Get("sfx_EnemyMeleeAtk", "Assets/EnemyMeleeAttack.mp3");
 			AudioResource* bgm_res = static_cast<AudioResource*>(res_EnemyMeleeAtk);
