@@ -28,7 +28,7 @@ class PlayerComponent : public BaseComponent
 
     bool manipulActive;
     f32 timeManipul;
-    u32 playerhealth;
+    int playerhealth;
 
 public:
     PlayerComponent(GameObject* _owner);
@@ -56,7 +56,12 @@ public:
     //황주현 코드추가
     void SetJumpCntZero();    
     void SetJumpVelocityZero();
-    
+    int GetHealth();
+    void SetHealth(float _health)
+    {
+        playerhealth = _health;
+    }
+
     void TakeDamge();
     bool IsAlive();
 

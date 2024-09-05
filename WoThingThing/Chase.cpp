@@ -179,7 +179,7 @@ void ESM::Chase::Update()
 		{
 			m_fDt = 0.f;
 			Chase_outTime = 0.0f;
-			std::cout << "Chase Fail" << std::endl;
+			
 			AiComponent* enemy_ai = (AiComponent*)Chase_enemy->FindComponent("Ai");
 			ESM::IDLE* p = new ESM::IDLE(Chase_enemy, Player, dir_state, dir_Time, PlatForm, e_state_name, FirstPlacePos);
 			enemy_ai->Change_State(p);
@@ -201,7 +201,7 @@ ESM::Chase::Chase(GameObject* _enemy, GameObject* _player, bool dir,
 	Player = _player;
 	dir_state = dir;
 	dir_Time = Time;
-	PlatForm = _platform;
+	//PlatForm = _platform;
 	e_state_name = state_name;
 	FirstPlacePos = _FirstPlacePos;
 	Subscriber.Enemy_Chase = this;

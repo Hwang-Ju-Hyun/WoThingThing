@@ -33,6 +33,7 @@
     <ClInclude Include="header.h" />
     <ClInclude Include="IDLE.h" />
     <ClInclude Include="IDLE_Sniper.h" />
+    <ClInclude Include="ImageResource.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainMenu_Lvl.h" />
     <ClInclude Include="Patrol.h" />
@@ -77,6 +78,7 @@
     <ClCompile Include="GoManager.cpp" />
     <ClCompile Include="IDLE.cpp" />
     <ClCompile Include="IDLE_Sniper.cpp" />
+    <ClCompile Include="ImageResource.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu_Lvl.cpp" />
     <ClCompile Include="Patrol.cpp" />

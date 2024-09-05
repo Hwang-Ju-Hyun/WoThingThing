@@ -13,8 +13,11 @@ namespace Level
     {
         GameObject* player;
         GameObject* mouseAim;
-        GameObject* aimTrace;
-
+        GameObject* aimTrace; 
+        GameObject* background;
+        AEGfxTexture* pTex;
+        AEGfxVertexList* pMesh;
+        int musicPlay=0;
         bool gameOver;
     public:
         Stage01_Lvl();
@@ -27,9 +30,8 @@ namespace Level
     private:
         std::vector<GameObject*> m_vecPlatforms;
         GameObject* Platform;
-        GameObject* Enemy;
-
-        GameObject* EnemySniper;
+        std::array<GameObject*,21> Enemy;
+        std::array<GameObject*, 21> EnemySniper;
         GameObject* Boss1;
 
         GameObject* Enemy_TEST;

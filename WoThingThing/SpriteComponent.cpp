@@ -30,15 +30,20 @@ SpriteComponent::~SpriteComponent()
 
 void SpriteComponent::Update()
 {
-	
+
 	if (mesh == nullptr)
 	{
 		//std::cout << "Failed to create mesh" << std::endl;
 		return;
+	}	
+	if (m_pOwner->GetName() == "BackGround")
+	{
+		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
 	}
-
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	//AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+	else
+	{
+		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
+	}		
 
 
 	//Set color to Multiply	
@@ -51,6 +56,7 @@ void SpriteComponent::Update()
 	//Set Blend Mode
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetTransparency(1);
+	
 
 	TransComponent* trans = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 	if (trans)

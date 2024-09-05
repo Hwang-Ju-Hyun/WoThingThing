@@ -1,4 +1,3 @@
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #include <iostream>
 #include "header.h"
 
@@ -22,7 +21,6 @@
 #include "ColliderManager.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
-#include "AudioResource.h"
 #include "TextResource.h"
 
 #include "Serializer.h"
@@ -32,6 +30,10 @@
 #include "CameraManager.h"
 #include "PathFindMoveComponent.h"
 #include "StageBoss_Lvl.h"
+
+#include "AudioResource.h"
+
+#include "AEAudio.h"
 #include "AEInput.h"
 #include "AEUtil.h"
 #include "AEMath.h"
@@ -73,41 +75,45 @@ void Level::Stage01_Lvl::Init()
     aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));   
 
 
-    //EventManager에서 요거 지우쇼 
-    RePosition* Platform_Player = new RePosition;
-
-    EventManager::GetInst()->AddEntity("Collision",Platform_Player);    
+          
 
     //Enemy
-    Enemy = new GameObject("Enemy");
-    GoManager::GetInst()->AddObject(Enemy);
-
-    Enemy->AddComponent("Transform", new TransComponent(Enemy));
-    Enemy->AddComponent("Sprite", new SpriteComponent(Enemy));
-    Enemy->AddComponent("RigidBody", new RigidBodyComponent(Enemy));
-    Enemy->AddComponent("Ai", new AiComponent(Enemy));
-    TransComponent* Enemy_trs = (TransComponent*)Enemy->FindComponent("Transform");
-    AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
-    Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-    Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
-    Enemy_state->Setdir_time(2.0f);
-    Enemy_state->SetFirstPlace(Enemy_trs->GetPos());
-    Enemy_state->SetState("IDLE", "Melee");
-
-
-
-    EnemySniper = new GameObject("EnemySniper");
-    GoManager::GetInst()->AddObject(EnemySniper);
+    for (int i = 0; i < Enemy.size(); i++)
+    {
+        Enemy[i] = new GameObject("Enemy");       
+        Enemy[i]->SetID(i);
+        GoManager::GetInst()->AddObject(Enemy[i]);
+        Enemy[i]->AddComponent("Transform", new TransComponent(Enemy[i]));
+        Enemy[i]->AddComponent("Sprite", new SpriteComponent(Enemy[i]));
+        Enemy[i]->AddComponent("RigidBody", new RigidBodyComponent(Enemy[i]));
+        Enemy[i]->AddComponent("Ai", new AiComponent(Enemy[i]));
+        TransComponent* Enemy_trs = (TransComponent*)Enemy[i]->FindComponent("Transform");
+        AiComponent* Enemy_state = (AiComponent*)Enemy[i]->FindComponent("Ai");
+        Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+        Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+        Enemy_state->Setdir_time(2.0f);
+        Enemy_state->SetFirstPlace(Enemy_trs->GetPos());
+        Enemy_state->SetState("IDLE", "Melee");
+    }
     
-    EnemySniper->AddComponent("Transform", new TransComponent(EnemySniper));
-    EnemySniper->AddComponent("Sprite", new SpriteComponent(EnemySniper));
-    EnemySniper->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper));
-    EnemySniper->AddComponent("Ai", new AiComponent(EnemySniper));
-    AiComponent* EnemySniper_state = (AiComponent*)EnemySniper->FindComponent("Ai");
-    EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-    EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
-    EnemySniper_state->Setdir_time(1.0f);
-    EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
+
+
+    for (int i = 0; i < EnemySniper.size(); i++)
+    {
+        EnemySniper[i] = new GameObject("EnemySniper");
+        EnemySniper[i]->SetID(i);
+        GoManager::GetInst()->AddObject(EnemySniper[i]);
+        EnemySniper[i]->AddComponent("Transform", new TransComponent(EnemySniper[i]));
+        EnemySniper[i]->AddComponent("Sprite", new SpriteComponent(EnemySniper[i]));
+        EnemySniper[i]->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper[i]));
+        EnemySniper[i]->AddComponent("Ai", new AiComponent(EnemySniper[i]));
+        AiComponent* EnemySniper_state = (AiComponent*)EnemySniper[i]->FindComponent("Ai");
+        EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+        EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+        EnemySniper_state->Setdir_time(1.0f);
+        EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
+    }
+    
 
 
     auto vecObj = GoManager::GetInst()->Allobj();
@@ -138,41 +144,41 @@ void Level::Stage01_Lvl::Init()
     CameraManager::GetInst()->SetPlayer(player);
     CameraManager::GetInst()->SetAim(aimTrace);
 
-    gameOver = false;
+    //gameOver = false;
 
     NaveMeshManager::GetInst()->SetPlayer(player);
     NaveMeshManager::GetInst()->CreateLinkTable();
 
+
+    //Audio Init
+    auto res = ResourceManager::GetInst()->Get("bgm", "Assets/bouken.mp3");
+    AudioResource* bgm_res = static_cast<AudioResource*>(res);
+    bgm_res->SetSFXorMusic(Sound::MUSIC);
+    auto bgm_audio = bgm_res->GetAudio();
+    auto bgm_audioGroup = bgm_res->GetAudioGroup();
+    AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
 }
 
 void Level::Stage01_Lvl::Update()
 {
     //Component Pointer
 
-    //Component 
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+        
 
-    //std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
-    //Right Click : Right attack
+    Collision();    
 
-
-    if (AEInputCheckCurr(AEVK_R) == true)
+    if(player_trs->GetPos().y<-1800)
+        player_comp->SetHealth(-1);
+    else
     {
-        //GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
-    }
-    else if (AEInputCheckCurr(AEVK_E) == true)
-    {
-        GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
-    }
-    else if (AEInputCheckCurr(AEVK_T) == true)
-    {
-        GSM::GameStateManager::GetInst()->ChangeLevel(new Level::MainMenu_Lvl);
-    }
 
-    Collision();
+        //Camera Update
+        CameraManager::GetInst()->Update();
+    }
 
     CameraManager::GetInst()->Update();
     GoManager::GetInst()->RemoveDeathObj();
@@ -196,10 +202,11 @@ void Level::Stage01_Lvl::Update()
 
         return;
     }
+    
 
     s32 mouseX, mouseY;
     AEInputGetCursorPosition(&mouseX, &mouseY);
-
+    
     //convert to world
     //Screen -> NDC
     mouseX -= 800;
@@ -214,38 +221,23 @@ void Level::Stage01_Lvl::Update()
     float nodeTopX = (float)mouseX + 35.f;
     float nodeTopY = (float)mouseY + 35.f;
 
-    static int nodeId = 0;
-    //NodeEditor	
-    if (AEInputCheckTriggered(AEVK_RBUTTON))
-    {
-        ////Ask manager for the node. It will handle the unique IDs	
-        // 		
-        TransComponent::Node node_left;
-
-        node_left.node_id = nodeId++;
-        node_left.node_pos = { (float)mouseX,(float)mouseY };
-
-        NaveMeshManager::GetInst()->AddNode(node_left);
-    }
+    
 
 
-    for (auto it : NaveMeshManager::GetInst()->GetallNode())
-        NaveMeshManager::GetInst()->DrawNode(it.node_pos.x - 35, it.node_pos.y - 35, it.node_pos.x + 35, it.node_pos.y + 35, 1.0f, 1.0f, 0);
 
-    //Camera Update
-    CameraManager::GetInst()->Update();    
-
-    std::cout << std::endl;
+    
     if (AEInputCheckTriggered(AEVK_ESCAPE))
         GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
+
+
+
     if (AEInputCheckTriggered(AEVK_F1))
         GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
 }
 
 
 void Level::Stage01_Lvl::Exit()
-{
-    auto res = ResourceManager::GetInst()->GetReource();
+{    
     ResourceManager::GetInst()->RemoveAllRes();    
     EventManager::GetInst()->RemoveAllEvent();
     GoManager::GetInst()->RemoveAllObj();
@@ -261,35 +253,45 @@ void Level::Stage01_Lvl::Collision()
         //Platform
         if (obj->GetName() == "Platform")
         {
+            //플레이어 플랫폼 충돌처리
             if (ColliderManager::GetInst()->IsCollision(player, obj))
             {
                 HandleCollision(player, obj);
             }
-            if (ColliderManager::GetInst()->IsCollision(Enemy, obj))
+            //Enemy 플랫폼 충돌처리
+            for (int i = 0; i < Enemy.size(); i++)
             {
-                HandleCollision(Enemy, obj);
-                //AI COMP세팅을 해주고
-                Enemy_Platform_Collision_Event* e_p_c_e = new Enemy_Platform_Collision_Event(obj, Enemy);
-                EventManager::GetInst()->AddEvent(e_p_c_e);
+                if (ColliderManager::GetInst()->IsCollision(Enemy[i], obj))
+                {
+                    HandleCollision(Enemy[i], obj);
+                    //AI COMP세팅을 해주고
+                    Enemy_Platform_Collision_Event* e_p_c_e = new Enemy_Platform_Collision_Event(obj, Enemy[i]);
+                    EventManager::GetInst()->AddEvent(e_p_c_e);
+                    
+                }               
             }
-            if (ColliderManager::GetInst()->IsCollision(EnemySniper, obj))
+            //EnemySniper 플랫폼 충돌처리
+            for (int i = 0; i < EnemySniper.size(); i++)
             {
-                HandleCollision(EnemySniper, obj);
-            }
-            int a = 0;
+                if (ColliderManager::GetInst()->IsCollision(EnemySniper[i], obj))
+                {
+                    HandleCollision(EnemySniper[i], obj);
+                }
+            }           
+            //총알 플랫폼 충돌처리
             for (auto findObj : GoManager::GetInst()->Allobj())
             {
                 if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
                 {
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
-
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         bullet_comp->DestroyBullet();
                     }
                 }
             }
         }
+        //패딩 (반사)
         if (obj->GetName() == "EnemyBullet")
         {
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
@@ -307,19 +309,26 @@ void Level::Stage01_Lvl::Collision()
                     bullet_comp->SetBulletVec({ -1 * returnbullet.x,-1 * returnbullet.y });
                 }
             }
-
-
-           //Player Death
-           
+           //Player Death           
            if (ColliderManager::GetInst()->IsCollision(player, obj))
            {               
                //gameOver = true;
                player_comp->TakeDamge();
+                //audio
+                auto res = ResourceManager::GetInst()->Get("sfx", "Assets/ore.mp3");
+                AudioResource* sfx_res = static_cast<AudioResource*>(res);
+                sfx_res->SetSFXorMusic(Sound::MUSIC);
+                auto sfx_audio = sfx_res->GetAudio();
+                auto sfx_audioGroup = sfx_res->GetAudioGroup();
+                AEAudioPlay(sfx_audio, sfx_audioGroup, 1.f, 1.f, 0);
            }
         }
+
+
         //Sniper죽는판정
         if (obj->GetName() == "EnemySniper")
-        {
+        {           
+            int SniperObjID = 0;
             //Test: Collision Enemy with Player's Bullet
             for (auto findObj : GoManager::GetInst()->Allobj())
             {
@@ -327,51 +336,81 @@ void Level::Stage01_Lvl::Collision()
                 {
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
-                        //std::cout << "c" << std::endl;
+                        SniperObjID = obj->GetID();
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         if (!bullet_comp->EnemyShoot)
                         {
-                            EnemySniper->SetActive(false);
-                            EnemySniper = nullptr;
+                            EnemySniper[SniperObjID]->SetActive(false);
+                            EnemySniper[SniperObjID] = nullptr; 
+                            
+                            auto res = ResourceManager::GetInst()->Get("sfx", "Assets/ore.mp3");
+                            AudioResource* bgm_res = static_cast<AudioResource*>(res);
+                            bgm_res->SetSFXorMusic(Sound::MUSIC);
+                            auto bgm_audio = bgm_res->GetAudio();
+                            auto bgm_audioGroup = bgm_res->GetAudioGroup();
+                            AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
                         }
                         bullet_comp->DestroyBullet();
                     }
-                }
+                }             
             }
+            //플레이어의 밀리어택 
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {
-                EnemySniper->SetActive(false);
-                EnemySniper = nullptr;
+                SniperObjID = obj->GetID();
+                EnemySniper[SniperObjID]->SetActive(false);
+                EnemySniper[SniperObjID] = nullptr;
+
+                auto res = ResourceManager::GetInst()->Get("sfx", "Assets/ore.mp3");
+                AudioResource* bgm_res = static_cast<AudioResource*>(res);
+                bgm_res->SetSFXorMusic(Sound::MUSIC);
+                auto bgm_audio = bgm_res->GetAudio();
+                auto bgm_audioGroup = bgm_res->GetAudioGroup();
+                AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
             }
-
-        }
-
+        }        
         if (obj->GetName() == "Enemy") 
-        {
+        {    
             //총알부분
-            for (auto findObj : GoManager::GetInst()->Allobj())
-            {
+            int meeleObjID = 0;
+            for (auto findObj : GoManager::GetInst()->Allobj())            
+            {                       
                 if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet") 
-                {
+                {                    
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj)) 
                     {
-                        //std::cout << "c" << std::endl;
+                        meeleObjID=obj->GetID();
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         if (!bullet_comp->EnemyShoot)
                         {
-                            Enemy->SetActive(false);
-                            Enemy = nullptr;
+                            Enemy[meeleObjID]->SetActive(false);
+                            Enemy[meeleObjID] = nullptr;
                             bullet_comp->DestroyBullet();
+
+                            auto res = ResourceManager::GetInst()->Get("sfx", "Assets/ore.mp3");
+                            AudioResource* bgm_res = static_cast<AudioResource*>(res);
+                            bgm_res->SetSFXorMusic(Sound::MUSIC);
+                            auto bgm_audio = bgm_res->GetAudio();
+                            auto bgm_audioGroup = bgm_res->GetAudioGroup();
+                            AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
                         }
-                        //bullet_comp->DestroyBullet();
                     }
                 }
             }
             //근접
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj)) 
             {
-                Enemy->SetActive(false);
-                Enemy = nullptr;
+                meeleObjID = obj->GetID();
+                Enemy[meeleObjID]->SetActive(false);
+                Enemy[meeleObjID] = nullptr;
+             
+                //audio
+                auto res = ResourceManager::GetInst()->Get("sfx", "Assets/ore.mp3");
+                AudioResource* sfx_res = static_cast<AudioResource*>(res);
+                sfx_res->SetSFXorMusic(Sound::MUSIC);
+                auto sfx_audio = sfx_res->GetAudio();
+                auto sfx_audioGroup = sfx_res->GetAudioGroup();
+                AEAudioPlay(sfx_audio, sfx_audioGroup, 1.f, 1.f, 0);
             }
         }
 
@@ -385,7 +424,6 @@ void Level::Stage01_Lvl::Collision()
 
                 obj->SetActive(false);
             }
-
         }
     }
 }

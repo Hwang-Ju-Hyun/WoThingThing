@@ -7,8 +7,7 @@ TextResource::TextResource(std::string _name)
 }
 
 TextResource::~TextResource()
-{
-	UnLoad();
+{	
 }
 
 void TextResource::Load(const std::string& _path)

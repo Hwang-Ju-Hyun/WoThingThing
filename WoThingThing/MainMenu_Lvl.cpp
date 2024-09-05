@@ -22,10 +22,8 @@
 
 void Level::MainMenu_Lvl::Init()
 {
-#ifndef DEBUG
-	//std::cout << "MainMenu_Lvl Init" << std::endl;
-#endif
 	StartButton = new GameObject("Start");
+	
 	ExitButton = new GameObject("Exit");	
 	GoManager::GetInst()->AddObject(StartButton);	
 	GoManager::GetInst()->AddObject(ExitButton);
@@ -41,9 +39,9 @@ void Level::MainMenu_Lvl::Init()
 void Level::MainMenu_Lvl::Update()
 {
 
-	TransComponent* StartBtn_trs = (TransComponent*)StartButton->FindComponent("Transform");
 	//AddComponent를 사용하여 map에 저장하는 이유는 저장한 컴포넌트에 해당하는 기능을 다른곳에서도 사용가능하게 할려고 만들어준다.
 	SpriteComponent* StartBtn_spr = (SpriteComponent*)StartButton->FindComponent("Sprite");	
+	TransComponent* StartBtn_trs = (TransComponent*)StartButton->FindComponent("Transform");
 
 	TransComponent* ExitBtn_trs = (TransComponent*)ExitButton->FindComponent("Transform");
 	SpriteComponent* ExitBtn_spr = (SpriteComponent*)ExitButton->FindComponent("Sprite");		
@@ -99,6 +97,7 @@ void Level::MainMenu_Lvl::Update()
 			ExitBtn_bottom > mousePosY)
 		{			
 			GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);			
+			return;
 		}
 	}
 
@@ -120,16 +119,13 @@ void Level::MainMenu_Lvl::Update()
 
 
 	MenuText_res->SetText("EXIT");
-	AEGfxPrint(font, text, -0.05f, 1.f - (height + 1.37), 1, 1, 1, 1, 1);
+	AEGfxPrint(font, text, -0.05f, 1.f - (height + 1.37), 1, 1, 1, 1, 1);	
 }
 
 void Level::MainMenu_Lvl::Exit()
 {
-	//Serializer::GetInst()->SaveLevel("main.json");
-#ifndef DEBUG
-	//std::cout << "MainMenu_Lvl Exit" << std::endl;
-#endif	
+
 	ResourceManager::GetInst()->RemoveAllRes();
 	GoManager::GetInst()->RemoveAllObj();
-	GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
+	
 }

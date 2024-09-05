@@ -13,7 +13,8 @@ NaveMeshManager::NaveMeshManager()
 }
 
 NaveMeshManager::~NaveMeshManager()
-{	
+{		
+	ClearNode();
 }
 
 TransComponent::Node NaveMeshManager::AddNode(TransComponent::Node Node)
@@ -80,9 +81,9 @@ void NaveMeshManager::FindShortestPath(int startNode, int endNode,int currentCos
 
 void NaveMeshManager::CreateLinkTable()
 {
-	costLink = new CostLink;
-	Walk* walk = new Walk;
-	Jump* jump = new Jump;
+	
+	Walk* walk = new Walk;	
+	Jump* jump = new Jump;	
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link0;
 	link0.push_back({ 0,walk });
@@ -216,6 +217,8 @@ void NaveMeshManager::CreateLinkTable()
 	m_vecLink.push_back(link19);
 	m_vecLink.push_back(link20);
 	m_vecLink.push_back(link21);
+
+	
 
 	//std::vector<std::pair<int/*nodeID*/, CostLink*>> link0;	
 	//link0.push_back({ 0,walk });
@@ -360,6 +363,20 @@ void NaveMeshManager::CreateLinkTable()
 
 void NaveMeshManager::ClearNode()
 {
+	std::map<CostLink*, bool> m_map;
+	for (int i = 0; i < m_vecLink.size(); i++)
+	{
+		for (int j = 0; j < m_vecLink[i].size(); j++)
+		{
+			auto a = m_map.find(m_vecLink[i][j].second);
+			if (a == m_map.end())
+			{
+				delete m_vecLink[i][j].second;
+				m_map.insert({ m_vecLink[i][j].second,true });
+				m_vecLink[i][j].second = nullptr;
+			}
+		}
+	}
     m_vecNode.clear();
 }
 

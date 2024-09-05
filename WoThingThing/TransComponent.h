@@ -45,7 +45,6 @@ public:
     virtual void Update() override;
 public:
     static BaseRTTI* CreateTransformComp();
-    void CalculateNodes();
     static constexpr const char* TransformTypeName = "Transform";
 public:
     virtual void LoadFromJson(const json& str)override;

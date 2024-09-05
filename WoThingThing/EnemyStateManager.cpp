@@ -8,6 +8,8 @@ ESM::EnemyStateManager::EnemyStateManager() :e_CurrentState(nullptr), e_Previous
 
 ESM::EnemyStateManager::~EnemyStateManager()
 {
+	if (e_PreviousState)
+		delete e_PreviousState;
 	if (e_CurrentState) 
 	{
 		delete(e_CurrentState);
@@ -55,8 +57,10 @@ void ESM::EnemyStateManager::ChangeState(BaseEnemyState* newState)
 	if (newState == nullptr)
 	{
 #ifdef DEBUG
-		std::cerr << "ChangeLevel Error! : new Level is nullptr" << std::endl;
+		//std::cerr << "ChangeLevel Error! : new Level is nullptr" << std::endl;
 #endif 	
+		Exit();
+		delete e_CurrentState;
 		e_CurrentState = nullptr;
 		return;
 	}

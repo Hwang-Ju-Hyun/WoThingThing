@@ -32,8 +32,7 @@ void AudioResource::Load(const std::string& _path)
 	std::ifstream ifs(_path);
 	if (!ifs.is_open())
 	{
-		//std::
-		// << "Can't Audio find Resource : AudioResource(Load)" << std::endl;
+		//std::cout<< "Can't Audio find Resource : AudioResource(Load)" << std::endl;
 		return;
 	}
 	if (m_check == Sound::MUSIC)

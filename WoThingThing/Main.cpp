@@ -15,10 +15,10 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	UNREFERENCED_PARAMETER(prevInstanceH);
 	UNREFERENCED_PARAMETER(command_line);
 
-	//// Enable run-time memory check for debug builds.
-	//#if defined(DEBUG) | defined(_DEBUG)
-	//	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-	//#endif	
+	// Enable run-time memory check for debug builds.
+	#if defined(DEBUG) | defined(_DEBUG)
+		_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	#endif	
 
 	/*
 		*/
@@ -34,9 +34,9 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
 	
 		
-	Level::MainMenu_Lvl MainMenu_lvl;
-	Level::Stage01_Lvl Stage01_lvl;
-	Level::TestLevel Test;
+	//Level::MainMenu_Lvl MainMenu_lvl;
+	//Level::Stage01_Lvl Stage01_lvl;
+	//Level::TestLevel Test;
 	gsm->ChangeLevel(new Level::MainMenu_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
@@ -55,10 +55,10 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		AESysFrameEnd();
 
 		// check if forcing the application to quit
-		if ((AESysDoesWindowExist() == false) || AEInputCheckTriggered(AEVK_ESCAPE))
+		if ((AESysDoesWindowExist() == false) || AEInputCheckTriggered(AEVK_SCROLLLOCK))
 		{			
 			gsm->ChangeLevel(nullptr);
-			gsm->Exit();
+			//gsm->Exit();
 		}							
 	}
 

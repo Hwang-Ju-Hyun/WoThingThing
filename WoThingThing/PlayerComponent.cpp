@@ -36,7 +36,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	timeManipul = 7.f;
 	manipulActive = false;
 
-	playerhealth = 1;
+	playerhealth = 100000;
 }
 
 //About Player's movement
@@ -280,6 +280,11 @@ void PlayerComponent::SetJumpCntZero()
 void PlayerComponent::SetJumpVelocityZero()
 {
 	jumpVelocity.y = 0.f;
+}
+
+int PlayerComponent::GetHealth()
+{
+	return playerhealth;
 }
 
 void PlayerComponent::TakeDamge()
