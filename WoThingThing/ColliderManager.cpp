@@ -250,7 +250,7 @@ bool ColliderManager::isFacingtheSameDirection(AEVec2 chase_pos, bool enemy_dir)
 float ColliderManager::Dot(const AEVec2& vec1, const AEVec2& vec2)
 {
 	return vec1.x * vec2.x + vec1.y * vec2.y;
-}
+}	
 
 
 

@@ -8,7 +8,6 @@ class AnimationComponent : public BaseComponent
 {
     AEGfxVertexList* mesh;
     AEGfxTexture* pTex;
-    char* file;
 
     u32 spritesheet_rows;
     u32 spritesheet_cols;

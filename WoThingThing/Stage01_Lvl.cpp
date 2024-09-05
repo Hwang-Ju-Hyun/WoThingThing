@@ -73,8 +73,8 @@ void Level::Stage01_Lvl::Init()
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
-    player->AddComponent("Sprite", new SpriteComponent(player));    
-    //player->AddComponent("Animation", new AnimationComponent(player));
+    //player->AddComponent("Sprite", new SpriteComponent(player));    
+    player->AddComponent("Animation", new AnimationComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
     //Add Image Resource??
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");

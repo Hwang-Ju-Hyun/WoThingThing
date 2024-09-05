@@ -37,7 +37,6 @@
     <ClInclude Include="ImageResource.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainMenu_Lvl.h" />
-    <ClInclude Include="MultiAnimationComponent.h" />
     <ClInclude Include="Patrol.h" />
     <ClInclude Include="MapEditor.h" />
     <ClInclude Include="NaveMeshManager.h" />
@@ -85,7 +84,6 @@
     <ClCompile Include="ImageResource.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu_Lvl.cpp" />
-    <ClCompile Include="MultiAnimationComponent.cpp" />
     <ClCompile Include="Patrol.cpp" />
     <ClCompile Include="MapEditor.cpp" />
     <ClCompile Include="NaveMeshManager.cpp" />

@@ -305,9 +305,6 @@
     <ClCompile Include="ImageResource.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="MultiAnimationComponent.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -469,8 +466,8 @@
     <ClInclude Include="ImageResource.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="MultiAnimationComponent.h">
-      <Filter>Main</Filter>
+    <ClInclude Include="ImageResource.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

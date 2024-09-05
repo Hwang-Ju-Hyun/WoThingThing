@@ -7,7 +7,6 @@
 #include"AiComponent.h"
 #include"Chase.h"
 #include "EnemyAttack.h"
-
 //위치값과 속도제어 부분
 //게임 오브젝트 자기자신을 받아야함
 
