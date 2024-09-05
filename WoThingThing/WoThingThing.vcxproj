@@ -25,6 +25,8 @@
     <ClInclude Include="Chase.h" />
     <ClInclude Include="ColliderManager.h" />
     <ClInclude Include="CompManager.h" />
+    <ClInclude Include="Congratulation.h" />
+    <ClInclude Include="EnemyAnimationComponent.h" />
     <ClInclude Include="EnemyAttack.h" />
     <ClInclude Include="EnemyStateManager.h" />
     <ClInclude Include="EventManager.h" />
@@ -74,6 +76,8 @@
     <ClCompile Include="Chase.cpp" />
     <ClCompile Include="ColliderManager.cpp" />
     <ClCompile Include="CompManager.cpp" />
+    <ClCompile Include="Congratulation.cpp" />
+    <ClCompile Include="EnemyAnimationComponent.cpp" />
     <ClCompile Include="EnemyAttack.cpp" />
     <ClCompile Include="EnemyStateManager.cpp" />
     <ClCompile Include="EventManager.cpp" />

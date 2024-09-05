@@ -20,6 +20,8 @@ namespace Level
         AEGfxVertexList* pMesh;
         int musicPlay=0;
         bool gameOver;
+                
+        float AccTime = 0;
     public:
         Stage01_Lvl();
         ~Stage01_Lvl();
@@ -27,7 +29,12 @@ namespace Level
         virtual void Init() override;
         virtual void Update() override;
         virtual void Exit() override;
-
+        bool IsVibration = false;
+        float plusX = 0;
+        float minusX = 0;
+        float plusY = 0;
+        float minusY = 0;
+        bool changeCamDir=false;                
     private:
         std::vector<GameObject*> m_vecPlatforms;
         GameObject* Platform;

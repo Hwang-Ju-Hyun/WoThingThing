@@ -21,11 +21,6 @@ void AnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 cols, 
 
 	if (this->current != _name)
 	{
-		//if(pTex != nullptr)
-		//{
-		//	AEGfxTextureUnload(this->pTex); //Unload pTex
-		//}
-		//Load pTex
 		ImageResource* tempResource = (ImageResource*)ResourceManager::GetInst()->FindRes(_name);
 		this->pTex = tempResource->GetImage();
 
@@ -57,6 +52,7 @@ void AnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 cols, 
 		//=======================================================================
 	}
 }
+
 
 AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owner)
 {

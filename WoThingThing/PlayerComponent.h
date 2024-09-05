@@ -33,7 +33,7 @@ class PlayerComponent : public BaseComponent
     f32 timeManipul;
     int playerhealth;
     float maniCapacity;
-
+    float AccTime=0.f;
 public:
     PlayerComponent(GameObject* _owner);
     ~PlayerComponent() {};

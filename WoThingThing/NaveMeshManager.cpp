@@ -7,6 +7,7 @@
 
 #include"PlayerComponent.h"
 #include"GoManager.h"
+#include"EnemyAnimationComponent.h"
 
 bool NaveMeshManager::isStunned = false;
 
@@ -440,6 +441,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 {
 	TransComponent* obj_trs = static_cast<TransComponent*>(_obj->FindComponent("Transform"));
 	RigidBodyComponent* obj_rb = static_cast<RigidBodyComponent*>(_obj->FindComponent("RigidBody"));
+	EnemyAnimationComponent* obj_ani = (EnemyAnimationComponent*)(_obj->FindComponent("EnemyAnimation"));
 	PlayerComponent* player_comp = (PlayerComponent*)_player->FindComponent("PlayerComp");
 	AEVec2 objPos = obj_trs->GetPos();
 	AEVec2 nodePos = _nodeInfo.node_pos;
@@ -465,7 +467,10 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 				{
 					isStunned = true; // 충돌 발생 시 스턴 상태로 변경
 					obj_trs->AddPos({ 0.f, 0.f }); // 위치를 0으로 설정
+					obj->AddHP(-1);
+					ColliderManager::GetInst()->SetPlayerSearchOnOff(false);
 					//Chase_outTime = 0.f; // 시간 초기화
+					obj_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);
 				}
 				if (isStunned) // 스턴 상태일 때
 				{					
@@ -474,10 +479,12 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 				        
 						isStunned = false;
 						AccTime = 0.f;
+						ColliderManager::GetInst()->SetPlayerSearchOnOff(true);
 				    }
 				    else
 				    {
 						obj_trs->AddPos({ 0.f, 0.f }); // 위치를 0으로 설정						
+						obj_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);
 					}
 				}
 				else // 스턴 상태가 아닐 때
@@ -487,6 +494,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 					AEVec2 normalize_dir;
 					AEVec2Normalize(&normalize_dir, &direction);
 					obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f }); // 이동
+					obj_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
 				}
 			}
 		}
@@ -506,10 +514,14 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 	AEVec2 nodeScale = { 50.f,70.f };
 	if (ColliderManager::GetInst()->IsCollision(_obj, _nodeInfo)&&IsJumpDone==false)
 	{
-		if (_nodeInfo.node_id == 1 || _nodeInfo.node_id == 9
+		if ( _nodeInfo.node_id == 9
 			|| _nodeInfo.node_id == 8)
 		{
 			Height = 570;
+		}
+		else if (_nodeInfo.node_id == 1)
+		{
+			Height = 650;
 		}
 		else if(_nodeInfo.node_id == 2)
 		{
@@ -517,7 +529,7 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 		}
 		else if(_nodeInfo.node_id==12)
 		{
-			Height =600;
+			Height =900;
 		}
 		else if (_nodeInfo.node_id == 4 || _nodeInfo.node_id == 5)
 		{
@@ -525,10 +537,10 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 		}
 		else if (_nodeInfo.node_id == 11 || _nodeInfo.node_id == 10)
 		{
-			Height = 480;
+			Height = 540;
 		}
 		obj_rb->jump(Height);
-		Height = 100;
+		Height = 600;
 		IsJumpDone = true;
 	}
 	else

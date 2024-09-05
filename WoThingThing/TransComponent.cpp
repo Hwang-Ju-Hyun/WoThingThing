@@ -61,7 +61,7 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	if (_owner->GetName() == "Enemy" && _owner->GetID() == 1)
 	{
 		//pos 절대 고정해 
-		m_vPos = { 900,300 };
+		m_vPos = { 900,-1250 };
 		m_vScale = { 100,80 };
 		m_fRot = 0.f;
 	}
@@ -192,7 +192,7 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 		m_vScale = { 100,80 };
 		m_fRot = 0.f;
 	}
-
+	
 	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 0)
 	{
 		m_vPos = { -850,-1250 };

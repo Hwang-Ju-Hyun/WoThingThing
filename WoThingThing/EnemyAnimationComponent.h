@@ -4,7 +4,7 @@
 
 class GameObject;
 
-class AnimationComponent : public BaseComponent
+class EnemyAnimationComponent : public BaseComponent
 {
     AEGfxVertexList* mesh;
     AEGfxTexture* pTex;
@@ -21,19 +21,23 @@ class AnimationComponent : public BaseComponent
     f32 current_sprite_uv_offset_x;
     f32 current_sprite_uv_offset_y;
 
-    bool dashState, jumpState, attackState, longattackState;
-    f32 dashTimer, jumpTimer, attackTimer, longattackTimer;
+    bool dashState, jumpState;
+    f32 dashTimer, jumpTimer;
     bool flip;
 
     std::string current;
+
+    bool e_dir;
+    int who_enemy;
 public:
 
     void Initialize();
     void ChangeAnimation(std::string _name, f32 rows, f32 cols, f32 max, f32 duration);
+    void SetEnemyDir(bool dir);
+    void SetEnemy(int num);
 
-
-    AnimationComponent(GameObject* _owner);
-    ~AnimationComponent();
+    EnemyAnimationComponent(GameObject* _owner);
+    ~EnemyAnimationComponent();
 
     virtual void Update() override;
 };
