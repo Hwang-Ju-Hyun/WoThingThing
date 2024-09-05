@@ -13,6 +13,7 @@ namespace Level
     {
         GameObject* background;
         GameObject* player;
+        GameObject* playerAnim;
         GameObject* mouseAim;
         GameObject* aimTrace; 
         AEGfxTexture* pTex;

@@ -1,8 +1,10 @@
 #include "AnimationComponent.h"
 #include "GameObject.h"
+#include "GoManager.h"
 #include "TransComponent.h"
 #include "ImageResource.h"
 #include "ResourceManager.h"
+#include "PlayerComponent.h"
 
 void AnimationComponent::Initialize()
 {
@@ -17,8 +19,6 @@ void AnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 cols, 
 
 	if (this->current != _name)
 	{
-		std::cout << this->current << "        " << _name << std::endl;
-		std::cout << this->current << "        " << _name << std::endl;
 		//if(pTex != nullptr)
 		//{
 		//	AEGfxTextureUnload(this->pTex); //Unload pTex
@@ -54,10 +54,6 @@ void AnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 cols, 
 		mesh = AEGfxMeshEnd();
 		//=======================================================================
 	}
-	else
-	{
-
-	}
 }
 
 AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owner)
@@ -66,14 +62,16 @@ AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owne
 	ResourceManager::GetInst()->Get("Run", "Assets/PlayerRun_SpriteSheet.png");
 	ResourceManager::GetInst()->Get("Dash", "Assets/PlayerDash_SpriteSheet.png");
 	ResourceManager::GetInst()->Get("Jump", "Assets/PlayerJump&Fall_SpriteSheet.png");
+	ResourceManager::GetInst()->Get("Attack", "Assets/PlayerAttack_SpriteSheet.png");
+	ResourceManager::GetInst()->Get("LongAttack", "Assets/PlayerLongAttack_SpriteSheet.png");
 
 
 
 
 	ChangeAnimation("Idle", 1, 8, 8, 0.1);
 
-	dashState = false, jumpState = false;
-	dashTimer = 0.f, jumpTimer = 0.f;
+	dashState = false, jumpState = false, attackState = false, longattackState = false;
+	dashTimer = 0.f, jumpTimer = 0.f, attackTimer = 0.f, longattackTimer = 0.f;
 	flip = false;
 
 
@@ -90,36 +88,46 @@ void AnimationComponent::Update()
 	if (mesh == nullptr)
 		return;
 
+	TransComponent* my_trs = (TransComponent*)this->m_pOwner->FindComponent("Transform");
+	GameObject* playerObj = GoManager::GetInst()->FindObj("Player");
+	PlayerComponent* player_comp = (PlayerComponent*)playerObj->FindComponent("PlayerComp");
 
-	// Reverse based Y-axis
-	//==============Movement condition=====================================//
+	if (playerObj != nullptr)
+	{
+		TransComponent* player_trs = (TransComponent*)playerObj->FindComponent("Transform");
+		my_trs->SetPos(player_trs->GetPos());
+		my_trs->SetScale({ 80,80 });
+	}
+	if (AEInputCheckCurr(AEVK_LSHIFT) && player_comp->GetManiActive())
+		animation_duration_per_frame = 0.7;
+	else
+		animation_duration_per_frame = 0.1f;
 
 
 	//Right
-	if (AEInputCheckCurr(AEVK_D) && !dashState && !jumpState)
+	if (AEInputCheckCurr(AEVK_D) && !dashState && !jumpState && !attackState && !longattackState)
 	{
 		ChangeAnimation("Run", 1, 8, 8, 0.1);
 		flip = false;
 	}
 
 	//Left
-	else if (AEInputCheckCurr(AEVK_A) && !dashState && !jumpState)
+	else if (AEInputCheckCurr(AEVK_A) && !dashState && !jumpState && !attackState && !longattackState)
 	{
 		ChangeAnimation("Run", 1, 8, 8, 0.1);
 		flip = true;
 	}
 
 	//Idle
-	else if (!dashState && !jumpState)
+	else if (!dashState && !jumpState && !attackState && !longattackState)
 	{
 		flip = false;
-
 		ChangeAnimation("Idle", 1, 8, 8, 0.1);
 	}
 	
 
 	//Dash
-	if (AEInputCheckTriggered(AEVK_SPACE) && !jumpState)
+	if (AEInputCheckTriggered(AEVK_SPACE) && !jumpState && !attackState && !longattackState)
 	{
 		dashState = true;
 		dashTimer = 0.f;
@@ -136,7 +144,8 @@ void AnimationComponent::Update()
 		dashState = false;
 
 	//Jump
-	if (AEInputCheckTriggered(AEVK_W) && !dashState)
+	//cf.) air상태일때 fall 애니메이션만 딱 작동이되고 Land 했을때 다시 Idle로 변하게.
+	if (AEInputCheckTriggered(AEVK_W) && !dashState && !attackState && !longattackState)
 	{
 		jumpState = true;
 		jumpTimer = 0.f;
@@ -149,9 +158,75 @@ void AnimationComponent::Update()
 	if (jumpTimer >= animation_duration_per_frame * spritesheet_max_sprites)
 		jumpState = false;
 
+	//Attack
+	if (player_comp->GetMeleeAction() && AEInputCheckTriggered(AEVK_LBUTTON))
+	{
+		attackState = true;
+		attackTimer = 0.f;
+
+		//Flip!!========
+		AEVec2	norD = { 0,0 };
+		if (playerObj != nullptr && player_comp != nullptr)
+		{
+			norD = player_comp->GetNorVec();
+		}
+		if (norD.x < 0)
+			flip = true;
+		else
+			flip = false;
+		//==============
+
+		Initialize();
+		ChangeAnimation("Attack", 1, 8, 8, 0.1);
+	}
+	if (attackState)
+	{
+		my_trs->SetScale({ 256,96 });
+	}
+	attackTimer += (f32)AEFrameRateControllerGetFrameTime();
+	if (attackState && attackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+	{
+		attackState = false;
+		my_trs->SetScale({ 80,80 });
+	}
+
+	//Long Attack
+	if (player_comp->GetShotAction() && AEInputCheckTriggered(AEVK_LBUTTON))
+	{
+		longattackState = true;
+		longattackTimer = 0.f;
+
+		//Flip!!========
+		AEVec2	norD = { 0,0 };
+		if (playerObj != nullptr && player_comp != nullptr)
+		{
+			norD = player_comp->GetNorVec();
+		}
+		if (norD.x < 0)
+			flip = true;
+		else
+			flip = false;
+		//==============
+
+		Initialize();
+		ChangeAnimation("LongAttack", 1, 8, 8, 0.1);
+	}
+	if (longattackState)
+	{
+		my_trs->SetScale({ 110,100 });
+	}
+	longattackTimer += (f32)AEFrameRateControllerGetFrameTime();
+	if (longattackState && longattackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+	{
+		longattackState = false;
+		my_trs->SetScale({ 80,80 });
+	}
+
+
+
+
 
 	animation_timer += (f32)AEFrameRateControllerGetFrameTime() /* * delay*/;
-
 	if (animation_timer >= animation_duration_per_frame)
 	{
 		// Reset the timer.
@@ -163,10 +238,6 @@ void AnimationComponent::Update()
 		u32 current_sprite_col = current_sprite_index % spritesheet_cols;
 		current_sprite_uv_offset_x = sprite_uv_width * current_sprite_col;
 		current_sprite_uv_offset_y = sprite_uv_height * current_sprite_row;
-
-		//pTex = AEGfxTextureLoad("Assets/idle_1.png");
-		//pTex = testArr[i++];
-
 	}
 	//AEGfxSetRenderMode(AE_GFX_RM_COLOR);
 	AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
@@ -179,7 +250,8 @@ void AnimationComponent::Update()
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetTransparency(1.0f);
 
-	AEGfxTextureSet(pTex, current_sprite_uv_offset_x, current_sprite_uv_offset_y);
+	if (pTex != nullptr)
+		AEGfxTextureSet(pTex, current_sprite_uv_offset_x, current_sprite_uv_offset_y);
 	//AEGfxTextureSet(pTex, 0, 0);
 
 	TransComponent* trans = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));

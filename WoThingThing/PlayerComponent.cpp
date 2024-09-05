@@ -226,6 +226,7 @@ void PlayerComponent::Attack()
 	AEVec2 dVec = { (mousePos.x - player_trs->GetPos().x), (mousePos.y - player_trs->GetPos().y) }; //direction Vector
 	AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
 	AEVec2Normalize(&nor_dVec, &dVec);
+	SetNorVec(nor_dVec);
 
 	if (meleeAction)
 	{
@@ -245,8 +246,6 @@ void PlayerComponent::Attack()
 
 				TransComponent* melee_trs = static_cast<TransComponent*>(melee->FindComponent("Transform"));
 				melee_trs->SetPos(player_trs->GetPos().x + (nor_dVec.x * 50.f), player_trs->GetPos().y + (nor_dVec.y * 50.f));
-				//
-				melee_trs->SetScale({ 100, 100 });
 			}
 		}
 		else
@@ -283,6 +282,26 @@ bool PlayerComponent::GetObtain()
 void PlayerComponent::SetObtain()
 {
 	obtainGun = true;
+}
+
+bool PlayerComponent::GetMeleeAction()
+{
+	return meleeAction;
+}
+
+bool PlayerComponent::GetShotAction()
+{
+	return shotAction;
+}
+
+void PlayerComponent::SetNorVec(AEVec2 norV)
+{
+	norVec = norV;
+}
+
+AEVec2 PlayerComponent::GetNorVec()
+{
+	return norVec;
 }
 
 

@@ -7,81 +7,36 @@
 #include "SpriteComponent.h"
 #include "BulletComponent.h"
 #include "PlayerComponent.h"
+#include "BulletAnimationComponent.h"
 
-//use for drawrect
-#include "ColliderManager.h"
-void DrawRect(float bottomleft_x, float bottomleft_y, float topRight_x, float topRight_y, float r, float g, float b)
-{
-	AEGfxMeshStart();
-
-	AEGfxVertexAdd(-0.5f, 0.5f, 0xFF000000, 0.0f, 1.0f);
-	AEGfxVertexAdd(-0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f);
-
-	AEGfxVertexAdd(0.5f, -0.5f, 0xFF000000, 1.0f, 0.0f);
-	AEGfxVertexAdd(0.5f, 0.5f, 0xFF000000, 1.0f, 1.0f);
-
-	AEGfxVertexAdd(-0.5f, 0.5f, 0xFF000000, 0.0f, 1.0f);
-
-	AEGfxVertexList* mesh = AEGfxMeshEnd();
-
-	AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	//AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
-
-
-	//Set color to Multiply	
-	AEGfxSetColorToMultiply(1, 1, 1, 1);
-
-	//Set color to add
-	AEGfxSetColorToAdd(r, g, b, 0);
-
-	//Set Blend Mode
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxSetTransparency(1);
-
-	//이동 행렬 생성
-	AEVec2 Pos = { (bottomleft_x + topRight_x) / 2,(topRight_y + bottomleft_y) / 2 };
-	AEVec2 Scale = { topRight_x - bottomleft_x ,topRight_y - bottomleft_y };
-	AEMtx33 translateMtx;
-	AEMtx33 m_matMatrix;
-	AEMtx33Trans(&translateMtx, Pos.x, Pos.y);
-	//크기 행렬 생성
-	AEMtx33 scaleMtx;
-	AEMtx33Scale(&scaleMtx, Scale.x, Scale.y);
-
-	//Concat
-	AEMtx33Concat(&m_matMatrix, &translateMtx, &scaleMtx);
-
-	AEGfxSetTransform(m_matMatrix.m);
-
-	AEGfxMeshDraw(mesh, AE_GFX_MDM_LINES_STRIP);
-}
-
-
+#include "ResourceManager.h"
 
 void CreateGun(AEVec2 initPos)
 {
 	GameObject* gun = new GameObject("Gun");
 	GoManager::GetInst()->AddObject(gun);
 	gun->AddComponent("Transform", new TransComponent(gun));
-	gun->AddComponent("Sprite", new SpriteComponent(gun));
+	gun->AddComponent("BulletAnim", new BulletAnimationComponent(gun));
+	//gun->AddComponent("Sprite", new SpriteComponent(gun));
 
 	TransComponent* gun_trs = (TransComponent*)gun->FindComponent("Transform");
 	gun_trs->SetPos(initPos.x, initPos.y);
-	gun_trs->SetScale({ 80,80 });
+	gun_trs->SetScale({ 60,80 });
 }
 
 void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool _enemyShoot)
 {
 	if(!_enemyShoot)
 	{
-		if (remainBullet > 0)
+		if (remainBullet > 0) //Player
 		{
 			remainBullet--;
 
 			GameObject* bullet = new GameObject(_bulletname);
 			GoManager::GetInst()->AddObject(bullet);
 			bullet->AddComponent("Transform", new TransComponent(bullet));
-			bullet->AddComponent("Sprite", new SpriteComponent(bullet));
+			//bullet->AddComponent("Sprite", new SpriteComponent(bullet));
+			bullet->AddComponent("BulletAnim", new BulletAnimationComponent(bullet));
 			bullet->AddComponent("Bullet", new BulletComponent(bullet));
 			BulletComponent* bullet_comp = (BulletComponent*)bullet->FindComponent("Bullet");
 			bullet_comp->SetBulletVec(nor_dVec);
@@ -89,7 +44,7 @@ void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool
 
 			TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
 			bullet_trs->SetPos(initPos.x + (nor_dVec.x * 50.f), initPos.y + (nor_dVec.y * 50.f));
-			bullet_trs->SetScale({ 10, 10 });
+			bullet_trs->SetScale({ 30, 40 });
 		}
 	}
 	else
@@ -116,19 +71,23 @@ void CreateSupplement(AEVec2 initPos)
 	GameObject* supplement = new GameObject("BulletSupplement");
 	GoManager::GetInst()->AddObject(supplement);
 	supplement->AddComponent("Transform", new TransComponent(supplement));
-	supplement->AddComponent("Sprite", new SpriteComponent(supplement));
+	supplement->AddComponent("BulletAnim", new BulletAnimationComponent(supplement));
+	//supplement->AddComponent("Sprite", new SpriteComponent(supplement));
 
 	TransComponent* supple_trs = (TransComponent*)supplement->FindComponent("Transform");
 	//initPos 값을 적의 위치로 주면 끝
 	supple_trs->SetPos(initPos.x, initPos.y);
-	supple_trs->SetScale({ 30,30 });
+	supple_trs->SetScale({ 15,20 });
 
-	DrawRect(supple_trs->GetPos().x - 15, supple_trs->GetPos().y - 15, 
-		supple_trs->GetPos().x + 15, supple_trs->GetPos().y + 15, 1, 1, 0);
+}
+
+int GetBullet()
+{
+	return remainBullet;
 }
 
 void AddBullet()
 {
-	if (remainBullet >= 0 && remainBullet < 4)
+	if (remainBullet >= 0 && remainBullet < 5)
 		remainBullet++;
 }
