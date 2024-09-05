@@ -202,7 +202,7 @@ bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, boo
 			L_SearchPlayer_BotY < obj2_Pos.y &&
 			L_SearchPlayer_TopY > obj2_Pos.y)
 		{
-			//std::cout << "SearchPlayerLeft" << std::endl;
+			std::cout << "SearchPlayerLeft" << std::endl;
 			return true;
 		}
 
@@ -222,7 +222,7 @@ bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, boo
 			R_SearchPlayer_BotY < obj2_Pos.y &&
 			R_SearchPlayer_TopY > obj2_Pos.y)
 		{
-			//std::cout << "SearchPlayerRight" << std::endl;
+			std::cout << "SearchPlayerRight" << std::endl;
 			return true;
 		}
 	}

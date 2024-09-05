@@ -6,6 +6,7 @@
 #include "TransComponent.h"
 #include "SpriteComponent.h"
 #include "BulletComponent.h"
+#include "PlayerComponent.h"
 
 //use for drawrect
 #include "ColliderManager.h"
@@ -53,6 +54,20 @@ void DrawRect(float bottomleft_x, float bottomleft_y, float topRight_x, float to
 	AEGfxSetTransform(m_matMatrix.m);
 
 	AEGfxMeshDraw(mesh, AE_GFX_MDM_LINES_STRIP);
+}
+
+
+
+void CreateGun(AEVec2 initPos)
+{
+	GameObject* gun = new GameObject("Gun");
+	GoManager::GetInst()->AddObject(gun);
+	gun->AddComponent("Transform", new TransComponent(gun));
+	gun->AddComponent("Sprite", new SpriteComponent(gun));
+
+	TransComponent* gun_trs = (TransComponent*)gun->FindComponent("Transform");
+	gun_trs->SetPos(initPos.x, initPos.y);
+	gun_trs->SetScale({ 80,80 });
 }
 
 void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool _enemyShoot)
@@ -107,7 +122,6 @@ void CreateSupplement(AEVec2 initPos)
 	//initPos 값을 적의 위치로 주면 끝
 	supple_trs->SetPos(initPos.x, initPos.y);
 	supple_trs->SetScale({ 30,30 });
-
 
 	DrawRect(supple_trs->GetPos().x - 15, supple_trs->GetPos().y - 15, 
 		supple_trs->GetPos().x + 15, supple_trs->GetPos().y + 15, 1, 1, 0);

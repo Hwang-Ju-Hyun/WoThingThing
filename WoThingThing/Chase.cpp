@@ -96,7 +96,7 @@ void ESM::Chase::Update()
 			}
 			else
 			{
-				//std::cout << "Stop" << std::endl;
+				std::cout << "Stop" << std::endl;
 				StopVec.x = 0;
 				StopVec.y = 0;
 				enemy_trs->AddPos(StopVec);
@@ -114,7 +114,7 @@ void ESM::Chase::Update()
 			}
 			else 
 			{
-				//std::cout << "Stop" << std::endl;
+				std::cout << "Stop" << std::endl;
 				StopVec.x = 0;
 				StopVec.y = 0;
 				enemy_trs->AddPos(StopVec);
@@ -179,7 +179,6 @@ void ESM::Chase::Update()
 		{
 			m_fDt = 0.f;
 			Chase_outTime = 0.0f;
-			
 			AiComponent* enemy_ai = (AiComponent*)Chase_enemy->FindComponent("Ai");
 			ESM::IDLE* p = new ESM::IDLE(Chase_enemy, Player, dir_state, dir_Time, PlatForm, e_state_name, FirstPlacePos);
 			enemy_ai->Change_State(p);

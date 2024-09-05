@@ -15,13 +15,18 @@
 #include "RigidBodyComponent.h"
 #include "PlayerComponent.h"
 #include "BulletComponent.h"
+#include "AnimationComponent.h"
 #include "CompManager.h"
 
 #include "EventManager.h"
 #include "ColliderManager.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
+
+#include "AudioResource.h"
 #include "TextResource.h"
+#include "ImageResource.h"
+
 
 #include "Serializer.h"
 #include "NaveMeshManager.h"
@@ -40,6 +45,7 @@
 
 #include "Bullet.h"
 #include"TargetAim_Sniper.h"
+#include"AnimationComponent.h"
 
 AEVec2 enemyDvec{ 1, 0 };
 
@@ -55,6 +61,8 @@ void Level::Stage01_Lvl::Init()
 {    
     //Object and Component Init
     
+
+
     //인제 temp는 보스 맵이 된거여
     //Serializer::GetInst()->LoadLevel("temp.json");
 
@@ -65,9 +73,15 @@ void Level::Stage01_Lvl::Init()
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
-    player->AddComponent("Sprite", new SpriteComponent(player));    
+    //player->AddComponent("Sprite", new SpriteComponent(player));    
+    player->AddComponent("Animation", new AnimationComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
-    
+    //Add Image Resource??
+    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
+    player_trs->SetScale({ 80, 80 });
+
+
+
 
     aimTrace = new GameObject("aimTrace");
     GoManager::GetInst()->AddObject(aimTrace);
@@ -113,7 +127,6 @@ void Level::Stage01_Lvl::Init()
         EnemySniper_state->Setdir_time(1.0f);
         EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
     }
-    
 
 
     auto vecObj = GoManager::GetInst()->Allobj();
@@ -164,7 +177,7 @@ void Level::Stage01_Lvl::Update()
     //Component Pointer
 
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
-    SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
+    //SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
         
@@ -181,8 +194,6 @@ void Level::Stage01_Lvl::Update()
         //Camera Update
         CameraManager::GetInst()->Update();
     }
-
-    CameraManager::GetInst()->Update();
     GoManager::GetInst()->RemoveDeathObj();
 
     if (AEInputCheckPrev(AEVK_0))
@@ -190,10 +201,6 @@ void Level::Stage01_Lvl::Update()
         GSM::GameStateManager::GetInst()->Exit();
     }
 
-    //Test line
-    if (AEInputCheckTriggered(AEVK_4))
-        CreateSupplement({ 0, -300 });
-    
     //Player->GetHeath() == 0
     //    gameOver = true
 
@@ -204,30 +211,8 @@ void Level::Stage01_Lvl::Update()
 
         return;
     }
-    
 
-    s32 mouseX, mouseY;
-    AEInputGetCursorPosition(&mouseX, &mouseY);
-    
-    //convert to world
-    //Screen -> NDC
-    mouseX -= 800;
-    mouseY -= 450;
-    mouseY *= -1;
-    AEVec2 camera = CameraManager::GetInst()->GetLookAt();
-    //NDC -> Camera
-    mouseX += camera.x;
-    mouseY += camera.y;
-    float nodeBotX = (float)mouseX - 35.f;
-    float nodeBotY = (float)mouseY - 35.f;
-    float nodeTopX = (float)mouseX + 35.f;
-    float nodeTopY = (float)mouseY + 35.f;
-
-    
-
-
-
-    
+    //std::cout << std::endl;
     if (AEInputCheckTriggered(AEVK_ESCAPE))
         GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
 
@@ -235,6 +220,8 @@ void Level::Stage01_Lvl::Update()
 
     if (AEInputCheckTriggered(AEVK_F1))
         GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
+
+
 }
 
 
@@ -256,6 +243,7 @@ void Level::Stage01_Lvl::Collision()
         if (obj->GetName() == "Platform")
         {
             //플레이어 플랫폼 충돌처리
+            //with Player
             if (ColliderManager::GetInst()->IsCollision(player, obj))
             {
                 HandleCollision(player, obj);
@@ -294,21 +282,23 @@ void Level::Stage01_Lvl::Collision()
             }
         }
         //패딩 (반사)
+        //Enemy Bullet
         if (obj->GetName() == "EnemyBullet")
         {
+            //with Player's Melee ==> Parrying
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {
                 BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
-                bullet_comp->EnemyShoot = false;
-                AEVec2 returnbullet = bullet_comp->GetBulletVec();
-                float dt = AEFrameRateControllerGetFrameTime();
-                if (AEInputCheckCurr(AEVK_LSHIFT))
+                if(!bullet_comp->GetState())
                 {
-                    bullet_comp->SetBulletVec({ -1 * returnbullet.x * dt,-1 * returnbullet.y * dt });
-                }
-                else
-                {
-                    bullet_comp->SetBulletVec({ -1 * returnbullet.x,-1 * returnbullet.y });
+                    bullet_comp->SetState();
+                    bullet_comp->EnemyShoot = false;
+                    AEVec2 bulletVec = bullet_comp->GetBulletVec();
+                    AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+                    AEVec2Normalize(&nor_dVec, &bulletVec);
+                    AEVec2Scale(&nor_dVec, &nor_dVec, -1);
+
+                    bullet_comp->SetBulletVec(nor_dVec);
                 }
             }
            //Player Death           
@@ -339,6 +329,7 @@ void Level::Stage01_Lvl::Collision()
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
                         SniperObjID = obj->GetID();
+
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         if (!bullet_comp->EnemyShoot)
                         {
@@ -353,6 +344,7 @@ void Level::Stage01_Lvl::Collision()
                             AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
                         }
                         bullet_comp->DestroyBullet();
+
                     }
                 }             
             }
@@ -416,13 +408,21 @@ void Level::Stage01_Lvl::Collision()
             }
         }
 
-
+        //supply bullet
         if (obj->GetName() == "BulletSupplement")
         {
             if (ColliderManager::GetInst()->IsCollision(player, obj))
             {
                 AddBullet();
-                //std::cout << "Add Bullet!" << std::endl;
+                obj->SetActive(false);
+            }
+        }
+        //obtain gun
+        if (obj->GetName() == "Gun")
+        {
+            if (ColliderManager::GetInst()->IsCollision(player, obj))
+            {
+                player_comp->SetObtain();
 
                 obj->SetActive(false);
             }

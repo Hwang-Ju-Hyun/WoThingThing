@@ -11,10 +11,10 @@ namespace Level
 {
     class Stage01_Lvl : public GSM::BaseLevel
     {
+        GameObject* background;
         GameObject* player;
         GameObject* mouseAim;
         GameObject* aimTrace; 
-        GameObject* background;
         AEGfxTexture* pTex;
         AEGfxVertexList* pMesh;
         int musicPlay=0;

@@ -32,5 +32,5 @@ void ImageResource::Load(const std::string& _path)
 void ImageResource::UnLoad()
 {
 	//Destroy Image Asset
-	AEGfxTextureUnload(GetImage());
+	AEGfxTextureUnload((AEGfxTexture*)data);
 }

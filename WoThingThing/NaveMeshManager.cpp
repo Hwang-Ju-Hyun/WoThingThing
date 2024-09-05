@@ -5,6 +5,9 @@
 #include "ColliderManager.h"
 #include "PathFindMoveComponent.h"
 
+#include"PlayerComponent.h"
+#include"GoManager.h"
+
 NaveMeshManager::NaveMeshManager()
 {
 	//m_vecNode	
@@ -424,30 +427,72 @@ double NaveMeshManager::CalculateDistanceNode(AEVec2 _playerPos, AEVec2 _nodePos
 	return distance;
 }
 
-void NaveMeshManager::CostLink::Move(GameObject* _obj, TransComponent::Node _nodeInfo, int startNode, int endNode, TransComponent::Node _nextNode){}
+void NaveMeshManager::CostLink::Move(GameObject* _obj, TransComponent::Node _nodeInfo, int startNode, int endNode, TransComponent::Node _nextNode, GameObject* _player){}
 
 void NaveMeshManager::CostLink::ExtraParam(float _val)
 {
 }
 
 
-void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInfo, int startNode, int endNode, TransComponent::Node _nextNode)
+void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInfo, int startNode, int endNode, TransComponent::Node _nextNode, GameObject* _player)
 {
 	TransComponent* obj_trs = static_cast<TransComponent*>(_obj->FindComponent("Transform"));
 	RigidBodyComponent* obj_rb = static_cast<RigidBodyComponent*>(_obj->FindComponent("RigidBody"));
+	PlayerComponent* player_comp = (PlayerComponent*)_player->FindComponent("PlayerComp");
 	AEVec2 objPos = obj_trs->GetPos();
 	AEVec2 nodePos = _nodeInfo.node_pos;
 	if (endNode)//n+1 is Valid
 	{						
-		//NaveMeshManager::GetInst()->CalculateDistanceNode(objPos, nodePos);		
-		AEVec2 direction = { _nextNode.node_pos.x- _nodeInfo.node_pos.x,0};
-		AEVec2 normalize_dir;
-		AEVec2Normalize(&normalize_dir, &direction);
-		obj_trs->AddPos({ normalize_dir.x*10.f,0.f});				
+		//NaveMeshManager::GetInst()->CalculateDistanceNode(objPos, nodePos);
+		// 이 부분 중요		
+		//AEVec2 direction = { _nextNode.node_pos.x- _nodeInfo.node_pos.x,0};
+		//AEVec2 normalize_dir;
+		//AEVec2Normalize(&normalize_dir, &direction);
+		//obj_trs->AddPos({ normalize_dir.x*10.f,0.f});
+
+		float m_fDt = AEFrameRateControllerGetFrameTime();
+		//float Chase_outTime = 0.f; // 시간을 저장할 변수
+		static bool isStunned = false; // 스턴 상태를 저장할 변수
+
+		for (auto obj : GoManager::GetInst()->Allobj())
+		{
+			if (obj->GetName() == "Enemy_TEST")
+			{
+				if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
+				{
+					isStunned = true; // 충돌 발생 시 스턴 상태로 변경
+					obj_trs->AddPos({ 0.f, 0.f }); // 위치를 0으로 설정
+					//Chase_outTime = 0.f; // 시간 초기화
+				}
+				if (isStunned) // 스턴 상태일 때
+				{					
+					AccTime += m_fDt; // 시간 증가
+				    if (AccTime >= 1) {
+				        
+						isStunned = false;
+						AccTime = 0.f;
+				    }
+				    else
+				    {
+						obj_trs->AddPos({ 0.f, 0.f }); // 위치를 0으로 설정						
+					}
+				}
+				else // 스턴 상태가 아닐 때
+				{
+					// 이동 방향 계산
+					AEVec2 direction = { _nextNode.node_pos.x - _nodeInfo.node_pos.x, 0 };
+					AEVec2 normalize_dir;
+					AEVec2Normalize(&normalize_dir, &direction);
+					obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f }); // 이동
+				}
+			}
+		}
+		
+
 	}
 }
 
-void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInfo, int startNode, int endNode, TransComponent::Node _nextNode)
+void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInfo, int startNode, int endNode, TransComponent::Node _nextNode, GameObject* _player)
 {
 	TransComponent* obj_trs = static_cast<TransComponent*>(_obj->FindComponent("Transform"));
 	RigidBodyComponent* obj_rb = static_cast<RigidBodyComponent*>(_obj->FindComponent("RigidBody"));
@@ -458,14 +503,18 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 	AEVec2 nodeScale = { 50.f,70.f };
 	if (ColliderManager::GetInst()->IsCollision(_obj, _nodeInfo)&&IsJumpDone==false)
 	{
-		if (_nodeInfo.node_id == 1 || _nodeInfo.node_id == 2|| _nodeInfo.node_id == 9
+		if (_nodeInfo.node_id == 1 || _nodeInfo.node_id == 9
 			|| _nodeInfo.node_id == 8)
 		{
 			Height = 570;
 		}
+		else if(_nodeInfo.node_id == 2)
+		{
+			Height = 670;
+		}
 		else if(_nodeInfo.node_id==12)
 		{
-			Height = 600;
+			Height =600;
 		}
 		else if (_nodeInfo.node_id == 4 || _nodeInfo.node_id == 5)
 		{

@@ -19,6 +19,7 @@ SpriteComponent::SpriteComponent(GameObject* _owner)
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
 
 	mesh = AEGfxMeshEnd();
+	//pTex = AEGfxTextureLoad("Assets/idle_1.png");
 
 	m_color = { 255,255,255 };
 }
@@ -48,7 +49,9 @@ void SpriteComponent::Update()
 
 	//Set color to Multiply	
 	//AEGfxSetColorToMultiply(155/255.f, 155/255.f, 255/255.f,1);	
+
 	AEGfxSetColorToMultiply(m_color.red/255.f, m_color.green/255.f, m_color.blue/255.f,1);	
+	//AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
 
 	//Set color to add
 	AEGfxSetColorToAdd(0, 0, 0, 0);
@@ -57,6 +60,8 @@ void SpriteComponent::Update()
 	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
 	AEGfxSetTransparency(1);
 	
+
+	//AEGfxTextureSet(pTex, 0, 0);
 
 	TransComponent* trans = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 	if (trans)
