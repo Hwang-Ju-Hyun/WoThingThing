@@ -673,32 +673,5 @@
         }
       }
     ]
-  },
-  {
-    "Platform": 25,
-    "Components": [
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 255,
-          "BLUE": 0,
-          "GREEN": 0
-        }
-      },
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            11250.0,
-            1200.0
-          ],
-          "sca": [
-            80.0,
-            3000.0
-          ],
-          "Rot": 0.0
-        }
-      }
-    ]
   }
 ]

@@ -143,12 +143,12 @@ void Level::Stage01_Lvl::Init()
 
 
     //Audio Init
-    /*auto res = ResourceManager::GetInst()->Get("bgm", "Assets/bouken.mp3");
+    auto res = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
     AudioResource* bgm_res = static_cast<AudioResource*>(res);
     bgm_res->SetSFXorMusic(Sound::MUSIC);
     auto bgm_audio = bgm_res->GetAudio();
     auto bgm_audioGroup = bgm_res->GetAudioGroup();
-    AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);*/
+    AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, -1);
 }
 
 void Level::Stage01_Lvl::Update()
