@@ -73,8 +73,8 @@ void Level::Stage01_Lvl::Init()
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
-    player->AddComponent("Sprite", new SpriteComponent(player));    
-    //player->AddComponent("Animation", new AnimationComponent(player));
+    //player->AddComponent("Sprite", new SpriteComponent(player));    
+    player->AddComponent("Animation", new AnimationComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
     //Add Image Resource??
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
@@ -100,14 +100,14 @@ void Level::Stage01_Lvl::Init()
         Enemy[i]->AddComponent("Transform", new TransComponent(Enemy[i]));
         Enemy[i]->AddComponent("Sprite", new SpriteComponent(Enemy[i]));
         Enemy[i]->AddComponent("RigidBody", new RigidBodyComponent(Enemy[i]));
-        Enemy[i]->AddComponent("Ai", new AiComponent(Enemy[i]));
-        TransComponent* Enemy_trs = (TransComponent*)Enemy[i]->FindComponent("Transform");
-        AiComponent* Enemy_state = (AiComponent*)Enemy[i]->FindComponent("Ai");
-        Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-        Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
-        Enemy_state->Setdir_time(2.0f);
-        Enemy_state->SetFirstPlace(Enemy_trs->GetPos());
-        Enemy_state->SetState("IDLE", "Melee");
+        //Enemy[i]->AddComponent("Ai", new AiComponent(Enemy[i]));
+        //TransComponent* Enemy_trs = (TransComponent*)Enemy[i]->FindComponent("Transform");
+        //AiComponent* Enemy_state = (AiComponent*)Enemy[i]->FindComponent("Ai");
+        //Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+        //Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+        //Enemy_state->Setdir_time(2.0f);
+        //Enemy_state->SetFirstPlace(Enemy_trs->GetPos());
+        //Enemy_state->SetState("IDLE", "Melee");
     }
     
 
@@ -120,12 +120,12 @@ void Level::Stage01_Lvl::Init()
         EnemySniper[i]->AddComponent("Transform", new TransComponent(EnemySniper[i]));
         EnemySniper[i]->AddComponent("Sprite", new SpriteComponent(EnemySniper[i]));
         EnemySniper[i]->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper[i]));
-        EnemySniper[i]->AddComponent("Ai", new AiComponent(EnemySniper[i]));
-        AiComponent* EnemySniper_state = (AiComponent*)EnemySniper[i]->FindComponent("Ai");
-        EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-        EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
-        EnemySniper_state->Setdir_time(1.0f);
-        EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
+        //EnemySniper[i]->AddComponent("Ai", new AiComponent(EnemySniper[i]));
+        //AiComponent* EnemySniper_state = (AiComponent*)EnemySniper[i]->FindComponent("Ai");
+        //EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+        //EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+        //EnemySniper_state->Setdir_time(1.0f);
+        //EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
     }
 
 

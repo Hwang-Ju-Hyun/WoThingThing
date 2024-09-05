@@ -22,7 +22,16 @@ class AnimationComponent : public BaseComponent
     f32 current_sprite_uv_offset_x;
     f32 current_sprite_uv_offset_y;
 
+    bool dashState, jumpState;
+    f32 dashTimer, jumpTimer;
+    bool flip;
+
+    std::string current;
 public:
+
+    void Initialize();
+    void ChangeAnimation(std::string _name, f32 rows, f32 cols, f32 max, f32 duration);
+
     AnimationComponent(GameObject* _owner);
     ~AnimationComponent();
 
