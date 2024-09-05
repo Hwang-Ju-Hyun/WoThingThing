@@ -1,8 +1,7 @@
 #include "Resource.h"
 #include "TextResource.h"
 #include <fstream>
-TextResource::TextResource(std::string _name)
-	:Resource(_name)
+TextResource::TextResource(const std::string& _name) : Resource(_name)
 {	
 }
 

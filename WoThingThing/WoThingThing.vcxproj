@@ -54,6 +54,7 @@
     <ClInclude Include="TargetAim_Sniper.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TextResource.h" />
+    <ClInclude Include="ImageResource.h" />
     <ClInclude Include="TimeManager.h" />
     <ClInclude Include="TransComponent.h" />
     <ClInclude Include="Utility.h" />

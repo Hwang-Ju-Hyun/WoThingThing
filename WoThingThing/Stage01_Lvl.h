@@ -15,7 +15,6 @@ namespace Level
         GameObject* player;
         GameObject* mouseAim;
         GameObject* aimTrace; 
-        GameObject* background;
         AEGfxTexture* pTex;
         AEGfxVertexList* pMesh;
         int musicPlay=0;

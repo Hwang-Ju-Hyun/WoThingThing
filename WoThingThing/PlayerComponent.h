@@ -22,13 +22,15 @@ class PlayerComponent : public BaseComponent
     GameObject* aim_line;
 
     GameObject* melee;
+    GameObject* gauge;
 
     static int jumpCnt;
-    static bool meleeActive, shotActive;
+    static bool meleeAction, shotAction, obtainGun;
 
     bool manipulActive;
     f32 timeManipul;
     int playerhealth;
+    float maniCapacity;
 
 public:
     PlayerComponent(GameObject* _owner);
@@ -50,6 +52,8 @@ public:
     //About Player's attack
     void Attack();
     GameObject* GetMelee();
+    bool GetObtain();
+    void SetObtain();
     ////////////////////////
 
 
@@ -64,6 +68,7 @@ public:
 
     void TakeDamge();
     bool IsAlive();
+    void Gauge();
 
     virtual void Update() override;
     virtual void LoadFromJson(const json& str)override;
