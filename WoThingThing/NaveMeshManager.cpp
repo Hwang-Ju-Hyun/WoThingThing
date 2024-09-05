@@ -435,7 +435,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 
 		float m_fDt = AEFrameRateControllerGetFrameTime();
 		//float Chase_outTime = 0.f; // 시간을 저장할 변수
-		static bool isStunned = false; // 스턴 상태를 저장할 변수
+		isStunned = false; // 스턴 상태를 저장할 변수
 
 		for (auto obj : GoManager::GetInst()->Allobj())
 		{
