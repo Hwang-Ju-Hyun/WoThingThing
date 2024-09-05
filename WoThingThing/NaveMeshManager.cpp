@@ -462,6 +462,8 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 				{
 					isStunned = true; // 충돌 발생 시 스턴 상태로 변경
 					obj_trs->AddPos({ 0.f, 0.f }); // 위치를 0으로 설정
+					obj->AddHP(-1);
+					ColliderManager::GetInst()->SetPlayerSearchOnOff(false);
 					//Chase_outTime = 0.f; // 시간 초기화
 				}
 				if (isStunned) // 스턴 상태일 때
@@ -471,10 +473,12 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 				        
 						isStunned = false;
 						AccTime = 0.f;
+						ColliderManager::GetInst()->SetPlayerSearchOnOff(true);
 				    }
 				    else
 				    {
-						obj_trs->AddPos({ 0.f, 0.f }); // 위치를 0으로 설정						
+						obj_trs->AddPos({ 0.f, 0.f }); // 위치를 0으로 설정		
+						std::cout << "스턴 상태" << std::endl;
 					}
 				}
 				else // 스턴 상태가 아닐 때
@@ -503,10 +507,14 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 	AEVec2 nodeScale = { 50.f,70.f };
 	if (ColliderManager::GetInst()->IsCollision(_obj, _nodeInfo)&&IsJumpDone==false)
 	{
-		if (_nodeInfo.node_id == 1 || _nodeInfo.node_id == 9
+		if ( _nodeInfo.node_id == 9
 			|| _nodeInfo.node_id == 8)
 		{
 			Height = 570;
+		}
+		else if (_nodeInfo.node_id == 1)
+		{
+			Height = 650;
 		}
 		else if(_nodeInfo.node_id == 2)
 		{
@@ -514,7 +522,7 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 		}
 		else if(_nodeInfo.node_id==12)
 		{
-			Height =600;
+			Height =900;
 		}
 		else if (_nodeInfo.node_id == 4 || _nodeInfo.node_id == 5)
 		{
@@ -522,10 +530,10 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 		}
 		else if (_nodeInfo.node_id == 11 || _nodeInfo.node_id == 10)
 		{
-			Height = 480;
+			Height = 540;
 		}
 		obj_rb->jump(Height);
-		Height = 100;
+		Height = 600;
 		IsJumpDone = true;
 	}
 	else

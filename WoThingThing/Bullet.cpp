@@ -123,8 +123,8 @@ void CreateSupplement(AEVec2 initPos)
 	supple_trs->SetPos(initPos.x, initPos.y);
 	supple_trs->SetScale({ 30,30 });
 
-	DrawRect(supple_trs->GetPos().x - 15, supple_trs->GetPos().y - 15, 
-		supple_trs->GetPos().x + 15, supple_trs->GetPos().y + 15, 1, 1, 0);
+	//DrawRect(supple_trs->GetPos().x - 15, supple_trs->GetPos().y - 15, 
+	//	supple_trs->GetPos().x + 15, supple_trs->GetPos().y + 15, 1, 1, 0);
 }
 
 void AddBullet()

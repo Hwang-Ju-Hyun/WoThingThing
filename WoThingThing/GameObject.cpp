@@ -28,6 +28,21 @@ GameObject::~GameObject()
     
 }
 
+void GameObject::AddHP(int _hp)
+{
+    m_hp += _hp;
+}
+
+void GameObject::SetHP(int hp)
+{
+    m_hp = hp;
+}
+
+int GameObject::GetHP()
+{
+    return m_hp;
+}
+
 BaseComponent* GameObject::AddComponent(const std::string& _name, BaseComponent* _comp)
 {
     if (_comp == nullptr)

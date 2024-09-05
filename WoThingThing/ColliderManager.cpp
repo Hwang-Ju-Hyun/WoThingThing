@@ -322,3 +322,13 @@ void ColliderManager::DrawRect(float bottomleft_x, float bottomleft_y, float top
 	
 	return;
 }
+
+void ColliderManager::SetPlayerSearchOnOff(bool _on)
+{
+	PlayerSearchOnOff = _on;
+}
+
+bool ColliderManager::GetPlayerSearchOnOff()
+{
+	return PlayerSearchOnOff;
+}

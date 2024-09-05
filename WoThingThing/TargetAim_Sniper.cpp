@@ -9,7 +9,8 @@
 #include"AiComponent.h"
 #include"PlayerComponent.h"
 #include"GoManager.h"
-//
+#include "AudioResource.h"
+#include "ResourceManager.h"
 #include "Bullet.h"
 #include "BulletComponent.h"
 
@@ -60,6 +61,12 @@ void ESM::TargetAim_Sniper::Update()
 		if (AttackDelay >= 0.5f)//공격 딜레이
 		{
 			//bulletComp
+			auto res_EnemyGun = ResourceManager::GetInst()->Get("sfx_EnemyGunShot", "Assets/GunShot.mp3");
+			AudioResource* bgm_res = static_cast<AudioResource*>(res_EnemyGun);
+			bgm_res->SetSFXorMusic(Sound::SFX);
+			auto bgm_audio = bgm_res->GetAudio();
+			auto bgm_audioGroup = bgm_res->GetAudioGroup();
+			AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
 			CreateBullet(enemy_trs->GetPos(), nor_dVec, "EnemyBullet", true);
 			AttackDelay = 0.f;
 		}
@@ -83,6 +90,7 @@ void ESM::TargetAim_Sniper::Update()
 			AttackDelay += m_fDt;
 			if (AttackDelay >= 0.5f) // 3초마다 총알 발사
 			{
+
 				CreateBullet(enemy_trs->GetPos(), nor_dVec, "EnemyBullet", true);
 				AttackDelay = 0.f;
 			}
