@@ -9,9 +9,12 @@
 #include"TestLevel.h"
 #include"AiComponent.h"
 #include"PlayerComponent.h"
+#include"EnemyAnimationComponent.h"
 
 void ESM::EnemyAttack::Init()
 {
+	EnemyAnimationComponent* Enemy_meleeani = (EnemyAnimationComponent*)Attack_enemy->FindComponent("EnemyAnimation");
+	Enemy_meleeani->ChangeAnimation("MeleeAttack", 1, 5, 5, 0.04);
 	melee_DelayAtk = 0.f;
 	m_fDt = 0.f;
 }
@@ -29,7 +32,7 @@ void ESM::EnemyAttack::Update()
 	{
 		m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 		melee_DelayAtk += m_fDt;
-		if (melee_DelayAtk > 0.1f)
+		if (melee_DelayAtk > 0.2f)
 		{
 			player_comp->TakeDamge();
 			m_fDt = 0.0f;

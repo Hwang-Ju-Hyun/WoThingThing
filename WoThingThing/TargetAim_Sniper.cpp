@@ -12,10 +12,12 @@
 //
 #include "Bullet.h"
 #include "BulletComponent.h"
-
+#include"EnemyAnimationComponent.h"
 
 void ESM::TargetAim_Sniper::Init()
 {
+	EnemyAnimationComponent* Enemy_sniperani = (EnemyAnimationComponent*)TargetAim_enemy->FindComponent("EnemyAnimation");
+	Enemy_sniperani->ChangeAnimation("SniperShootIdle", 1, 1, 1, 0.1);
 	bullet_Vec = { 0.f, 0.f };
 	bullet_const = { 50.f, 50.f };
 
@@ -34,6 +36,7 @@ void ESM::TargetAim_Sniper::Update()
 	TransComponent* player_trs = (TransComponent*)Player->FindComponent("Transform");
 	TransComponent* enemy_trs = (TransComponent*)TargetAim_enemy->FindComponent("Transform");
 	PlayerComponent* player_comp = (PlayerComponent*)Player->FindComponent("PlayerComp");
+	EnemyAnimationComponent* Enemy_sniperani = (EnemyAnimationComponent*)TargetAim_enemy->FindComponent("EnemyAnimation");
 
 	playerPos = player_trs->GetPos();
 	enemyPos = enemy_trs->GetPos();
@@ -43,14 +46,16 @@ void ESM::TargetAim_Sniper::Update()
 	if (!(ColliderManager::GetInst()->isFacingtheSameDirection(chaseVec, dir_state)))
 	{
 		dir_state = !(dir_state);
+		Enemy_sniperani->SetEnemyDir(dir_state);
 	}
 
 	//총알 Noramlize
 	AEVec2Normalize(&nor_dVec, &chaseVec);
 	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
 	//실질적인 부분
-	if (ColliderManager::GetInst()->PlayerSearch(TargetAim_enemy, Player, dir_state, 30.f, 30.f, 10.f))
+	if (ColliderManager::GetInst()->PlayerSearch(TargetAim_enemy, Player, dir_state, 18.f, 18.f, 10.f))
 	{
+		Enemy_sniperani->ChangeAnimation("SniperShoot", 1, 5, 5, 0.1);
 		m_fDt_Target = 0.0f;
 		Search_outTime = 0.0f;
 
@@ -79,10 +84,12 @@ void ESM::TargetAim_Sniper::Update()
 		if ((ColliderManager::GetInst()->isFacingtheSameDirection(chaseVec, dir_state)))
 		{
 			dir_state = !(dir_state);
+			Enemy_sniperani->SetEnemyDir(dir_state);
 		}
 	}
 	else
 	{
+		Enemy_sniperani->ChangeAnimation("SniperShootIdle", 1, 1, 1, 0.1);
 		m_fDt_Target = (f32)AEFrameRateControllerGetFrameTime();
 		Search_outTime += m_fDt_Target;
 		if (Search_outTime < 2.0f)
@@ -97,7 +104,7 @@ void ESM::TargetAim_Sniper::Update()
 			{
 				AttackDelay += m_fDt;
 			}
-			if (AttackDelay >= 0.1f) // 3초마다 총알 발사
+			if (AttackDelay >= 0.5f) // 3초마다 총알 발사
 			{
 				CreateBullet(enemy_trs->GetPos(), nor_dVec, "EnemyBullet", true);
 				AttackDelay = 0.f;

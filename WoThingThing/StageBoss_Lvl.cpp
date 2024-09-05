@@ -38,7 +38,8 @@
 #include "BulletComponent.h"
 #include "Bullet.h"
 #include "GameOver_Lvl.h"
-
+#include "EnemyAnimationComponent.h"
+#include"AnimationComponent.h"
 
 Level::StageBoss_Lvl::StageBoss_Lvl()
 {
@@ -53,14 +54,20 @@ void Level::StageBoss_Lvl::Init()
     //Object and Component Init
     //      
     //stageBoss맵을 불러오자
+    ResourceManager::GetInst()->Get("BossSturn", "Assets/BossSturn.png");//(1,2,2,0.1)
+    ResourceManager::GetInst()->Get("BossRun", "Assets/BossRun.png");//(1,6,6,0.1)
+    ResourceManager::GetInst()->Get("BossAtk", "Assets/BossAtk.png");//(1, 4, 4, 0.1);
     Serializer::GetInst()->LoadLevel("Assets/stageBoss.json");
 
 
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
-    player->AddComponent("Sprite", new SpriteComponent(player));
+    //player->AddComponent("Sprite", new SpriteComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
+    player->AddComponent("Animation", new AnimationComponent(player));
+    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
+    player_trs->SetScale({ 80, 80 });
 
 
     aimTrace = new GameObject("aimTrace");
@@ -88,9 +95,12 @@ void Level::StageBoss_Lvl::Init()
     GoManager::GetInst()->AddObject(Enemy_TEST);
 
     Enemy_TEST->AddComponent("Transform", new TransComponent(Enemy_TEST));
-    Enemy_TEST->AddComponent("Sprite", new SpriteComponent(Enemy_TEST));
+    //Enemy_TEST->AddComponent("Sprite", new SpriteComponent(Enemy_TEST));
     Enemy_TEST->AddComponent("RigidBody", new RigidBodyComponent(Enemy_TEST));
     Enemy_TEST->AddComponent("PathFindMove", new PathFindMoveComponent(Enemy_TEST));
+    Enemy_TEST->AddComponent("EnemyAnimation", new EnemyAnimationComponent(Enemy_TEST));
+    EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy_TEST->FindComponent("EnemyAnimation");
+    Enemy_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
     //TEST===========
 
 
@@ -119,6 +129,7 @@ void Level::StageBoss_Lvl::Update()
     TransComponent* EnemyTest_trs = (TransComponent*)Enemy_TEST->FindComponent("Transform");
     SpriteComponent* EnemyTest_spr = (SpriteComponent*)Enemy_TEST->FindComponent("Sprite");
     RigidBodyComponent* EnemyTest_rig = (RigidBodyComponent*)Enemy_TEST->FindComponent("RigidBody");
+    EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy_TEST->FindComponent("EnemyAnimation");
 
 
    
@@ -132,6 +143,7 @@ void Level::StageBoss_Lvl::Update()
     {
         //Chase_outTime = 0.0f;
         enemyDir = !(enemyDir);
+        Enemy_ani->SetEnemyDir(!enemyDir);
     }
 
     //std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
@@ -414,6 +426,7 @@ void Level::StageBoss_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
 void Level::StageBoss_Lvl::Collision()
 {
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy_TEST->FindComponent("EnemyAnimation");
     //Collision
     int cnt = 0;
     for (auto obj : GoManager::GetInst()->Allobj())
@@ -473,6 +486,7 @@ void Level::StageBoss_Lvl::Collision()
 
     if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, 0.5, 1, 1))
     {
+        Enemy_ani->ChangeAnimation("BossAtk", 1, 4, 4, 0.1);
         m_fDt = (f32)AEFrameRateControllerGetFrameTime();
         melee_DelayAtk += m_fDt;
         //std::cout << melee_DelayAtk << std::endl;

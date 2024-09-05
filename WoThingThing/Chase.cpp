@@ -10,12 +10,15 @@
 #include"AiComponent.h"
 #include"GoManager.h"
 #include"EventManager.h"
+#include"EnemyAnimationComponent.h"
 
 void ESM::Chase::Init()
 {
 	//std::cout << "Chase Init" << std::endl;
 	//TimeManager::GetInst()->SetAccTime(0.0f);
 	//Chase_time = 0.f;
+	EnemyAnimationComponent* Enemy_meleeani = (EnemyAnimationComponent*)Chase_enemy->FindComponent("EnemyAnimation");
+	Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1);
 	m_fDt = 0.f;
 	Chase_outTime = 0.f;
 
@@ -28,6 +31,7 @@ void ESM::Chase::Init()
 void ESM::Chase::Update()
 {
 	float dt = AEFrameRateControllerGetFrameTime();//시간 느려지게하는 용
+	EnemyAnimationComponent* Enemy_meleeani = (EnemyAnimationComponent*)Chase_enemy->FindComponent("EnemyAnimation");
 
 	//밖에다가 해주기
 	TransComponent* player_trs = (TransComponent*)Player->FindComponent("Transform");
@@ -41,6 +45,7 @@ void ESM::Chase::Update()
 	{
 		//Chase_outTime = 0.0f;
 		dir_state = !(dir_state);
+		Enemy_meleeani->SetEnemyDir(!dir_state);
 	}
 
 
@@ -93,6 +98,7 @@ void ESM::Chase::Update()
 				slowChase.x = unitChaseVec.x * 0.98f * dt * 30.f;
 				slowChase.y = unitChaseVec.y * 0.98f * dt * 30.f;
 				enemy_trs->AddPos(slowChase);
+				Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1);
 			}
 			else
 			{
@@ -100,6 +106,7 @@ void ESM::Chase::Update()
 				StopVec.x = 0;
 				StopVec.y = 0;
 				enemy_trs->AddPos(StopVec);
+				Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
 			}
 		}
 		else
@@ -110,6 +117,7 @@ void ESM::Chase::Update()
 				ChaseVecAdd.x = unitChaseVec.x * const_chaseVec.x;
 				ChaseVecAdd.y = unitChaseVec.y * const_chaseVec.y;
 				enemy_trs->AddPos(ChaseVecAdd);
+				Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1);
 				
 			}
 			else 
@@ -118,6 +126,7 @@ void ESM::Chase::Update()
 				StopVec.x = 0;
 				StopVec.y = 0;
 				enemy_trs->AddPos(StopVec);
+				Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
 			}
 		}
 		if (ColliderManager::GetInst()->MeleeEnemyAttack(Chase_enemy, Player, dir_state))
@@ -148,6 +157,7 @@ void ESM::Chase::Update()
 					slowChase.x = unitChaseVec.x * 0.98f * dt * 30.f;
 					slowChase.y = unitChaseVec.y * 0.98f * dt * 30.f;
 					enemy_trs->AddPos(slowChase);
+					Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1);
 				}
 				else
 				{
@@ -155,6 +165,7 @@ void ESM::Chase::Update()
 					StopVec.x = 0;
 					StopVec.y = 0;
 					enemy_trs->AddPos(StopVec);
+					Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
 				}
 			}
 			else 
@@ -164,6 +175,7 @@ void ESM::Chase::Update()
 					ChaseVecAdd.x = unitChaseVec.x * const_chaseVec.x;
 					ChaseVecAdd.y = unitChaseVec.y * const_chaseVec.y;
 					enemy_trs->AddPos(ChaseVecAdd);
+					Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1);
 				}
 				else
 				{
@@ -171,6 +183,7 @@ void ESM::Chase::Update()
 					StopVec.x = 0;
 					StopVec.y = 0;
 					enemy_trs->AddPos(StopVec);
+					Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
 				}
 			}
 

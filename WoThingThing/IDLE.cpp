@@ -7,11 +7,14 @@
 #include"AiComponent.h"
 #include"Chase.h"
 #include "EnemyAttack.h"
+#include"EnemyAnimationComponent.h"
 //위치값과 속도제어 부분
 //게임 오브젝트 자기자신을 받아야함
 
 void ESM::IDLE::Init()
 {
+	//EnemyAnimationComponent* Enemy_meleeani = (EnemyAnimationComponent*)enemy->FindComponent("EnemyAnimation");
+	//Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
 	//accumulatedTime = 0;
 	idle_time = 0.f;
 	const_chaseVec = { 4,0 };
@@ -34,8 +37,9 @@ bool isOnFirstPlace(AEVec2 nowPos, AEVec2 FirstPos)
 
 void ESM::IDLE::Update()
 {
-	//accumulatedTime = TimeManager::GetInst()->GetAccTime();
 
+	//accumulatedTime = TimeManager::GetInst()->GetAccTime();
+	EnemyAnimationComponent* Enemy_meleeani = (EnemyAnimationComponent*)enemy->FindComponent("EnemyAnimation");
 	TransComponent* enemy_trs = (TransComponent*)enemy->FindComponent("Transform");
 	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
 
@@ -67,6 +71,7 @@ void ESM::IDLE::Update()
 		if (!(ColliderManager::GetInst()->isFacingtheSameDirection(returnVec, dir)))
 		{
 			dir = !(dir);
+			Enemy_meleeani->SetEnemyDir(!dir);
 		}
 
 
@@ -87,6 +92,7 @@ void ESM::IDLE::Update()
 	}
 	else 
 	{
+		Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
 		m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 		idle_time += m_fDt;
 
@@ -102,6 +108,7 @@ void ESM::IDLE::Update()
 				// 추가로 필요한 로직을 여기에 작성
 				//std::cout << dir_Time << " Turn Dir" << std::endl;
 				dir = !(dir);
+				Enemy_meleeani->SetEnemyDir(!dir);
 			}
 		}
 	}
