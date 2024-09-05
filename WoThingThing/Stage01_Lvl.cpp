@@ -171,11 +171,13 @@ void Level::Stage01_Lvl::Update()
 
     Collision();    
 
-    if(player_trs->GetPos().y<-1800)
+    if (player_trs->GetPos().y < -1800)
+    {
         player_comp->SetHealth(-1);
+
+    }        
     else
     {
-
         //Camera Update
         CameraManager::GetInst()->Update();
     }
