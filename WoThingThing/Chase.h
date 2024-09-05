@@ -17,6 +17,8 @@ namespace ESM
         virtual void Update() override;
         virtual void Exit() override;
         GameObject* PlatForm;
+    public:
+        GameObject* GetOwner() { return Chase_enemy; }
     private:
         //가져가야 할 게임오브젝트 2개 보는 방향, 보는 시간
         GameObject* Chase_enemy;

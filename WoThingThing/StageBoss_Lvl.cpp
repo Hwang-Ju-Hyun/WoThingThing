@@ -211,8 +211,9 @@ void Level::StageBoss_Lvl::Update()
 
     auto a = NaveMeshManager::GetInst()->GetallNode();
     a.size();
-    for (auto it : NaveMeshManager::GetInst()->GetallNode())
-        NaveMeshManager::GetInst()->DrawNode(it.node_pos.x - 25, it.node_pos.y - 35, it.node_pos.x + 25, it.node_pos.y + 35, 1.0f, 1.0f, 0);
+
+    //for (auto it : NaveMeshManager::GetInst()->GetallNode())
+    //    NaveMeshManager::GetInst()->DrawNode(it.node_pos.x - 25, it.node_pos.y - 35, it.node_pos.x + 25, it.node_pos.y + 35, 1.0f, 1.0f, 0);
 
 
     //Camera Update
@@ -251,14 +252,7 @@ void Level::StageBoss_Lvl::Update()
 
     auto minCost = NaveMeshManager::GetInst()->GetMinCost();
     auto FoundedPath = NaveMeshManager::GetInst()->GetPath();    
-
-    std::cout << "Player Node : " << player_node << std::endl;
-    std::cout << "Enemy Node : " << EnemyTest_node << std::endl;
-    for (auto a : FoundedPath)
-    {
-        std::cout << a << ", ";
-    }
-    std::cout<<std::endl;
+    
 
     int PathIndex = EnemyTEST_pf->GetPathToPathIndex();
    
@@ -307,15 +301,15 @@ void Level::StageBoss_Lvl::Update()
 
 
 
-    std::cout << std::endl;
-    if (AEInputCheckTriggered(AEVK_Q))
-    {
-        Serializer::GetInst()->SaveLevel("Assets/stageBoss.json");
-    }
-    if (AEInputCheckTriggered(AEVK_F2))
-        GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
-    if (AEInputCheckTriggered(AEVK_F1))
-        GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
+    //std::cout << std::endl;
+    //if (AEInputCheckTriggered(AEVK_Q))
+    //{
+    //    Serializer::GetInst()->SaveLevel("Assets/stageBoss.json");
+    //}
+    //if (AEInputCheckTriggered(AEVK_F2))
+    //    GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
+    //if (AEInputCheckTriggered(AEVK_F1))
+    //    GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
 }
 
 void Level::StageBoss_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)

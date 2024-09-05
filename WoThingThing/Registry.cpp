@@ -22,15 +22,13 @@ BaseRTTI* Registry::FindAndCreate(const std::string& type)
 	if (iter != rttiMap.end())
 	{
 		if (iter->second == nullptr)
-		{
-			std::cout << "Registry Error : MemberFunction can't found!" << std::endl;
+		{	
 			return nullptr;
 		}
 		return iter->second();
 	}
 	if (iter->second == nullptr)
-	{
-		std::cout << "Registry Error : Constructor can't found!" << std::endl;
+	{		
 		return nullptr;
 	}
 }

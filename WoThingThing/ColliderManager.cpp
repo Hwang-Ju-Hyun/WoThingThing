@@ -141,7 +141,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 
 
 		//그리기영역
-		DrawRect(L_SearchPlayer_LeftX, L_SearchPlayer_BotY, L_SearchPlayer_RightX, L_SearchPlayer_TopY, 1, 0, 0);
+		//DrawRect(L_SearchPlayer_LeftX, L_SearchPlayer_BotY, L_SearchPlayer_RightX, L_SearchPlayer_TopY, 1, 0, 0);
 		//--------------
 		if (TestCollisionRectRectInclusive(L_SearchPlayer_RightX, L_SearchPlayer_LeftX, L_SearchPlayer_TopY, L_SearchPlayer_BotY,
 			obj2Right, obj2Left, obj2TopY, obj2BotY))
@@ -158,7 +158,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 		float R_SearchPlayer_TopY = enemy_Pos.y + y_range * (enemy_Scale.y / 2.f);
 		float R_SearchPlayer_BotY = enemy_Pos.y - bottom_y_range * (enemy_Scale.y / 2.f);
 
-		DrawRect(R_SearchPlayer_LeftX, R_SearchPlayer_BotY, R_SearchPlayer_RightX, R_SearchPlayer_TopY, 1, 0, 0);
+		//DrawRect(R_SearchPlayer_LeftX, R_SearchPlayer_BotY, R_SearchPlayer_RightX, R_SearchPlayer_TopY, 1, 0, 0);
 		if (TestCollisionRectRectInclusive(R_SearchPlayer_RightX, R_SearchPlayer_LeftX, R_SearchPlayer_TopY, R_SearchPlayer_BotY,
 			obj2Right, obj2Left, obj2TopY, obj2BotY))
 		{
@@ -195,14 +195,14 @@ bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, boo
 		float L_SearchPlayer_TopY = enemy_Pos.y + 1.f * (enemy_Scale.y / 2.f);//y축 범위
 		float L_SearchPlayer_BotY = enemy_Pos.y - enemy_Scale.y / 2.f;
 
-		DrawRect(L_SearchPlayer_LeftX, L_SearchPlayer_BotY, L_SearchPlayer_RightX, L_SearchPlayer_TopY, 0, 1, 0);
+		//DrawRect(L_SearchPlayer_LeftX, L_SearchPlayer_BotY, L_SearchPlayer_RightX, L_SearchPlayer_TopY, 0, 1, 0);
 
 		if (L_SearchPlayer_LeftX < obj2_Pos.x &&
 			L_SearchPlayer_RightX > obj2_Pos.x &&
 			L_SearchPlayer_BotY < obj2_Pos.y &&
 			L_SearchPlayer_TopY > obj2_Pos.y)
 		{
-			//std::cout << "SearchPlayerLeft" << std::endl;
+			std::cout << "SearchPlayerLeft" << std::endl;
 			return true;
 		}
 
@@ -215,14 +215,14 @@ bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, boo
 		float R_SearchPlayer_TopY = enemy_Pos.y + 1.f * (enemy_Scale.y / 2.f);
 		float R_SearchPlayer_BotY = enemy_Pos.y - enemy_Scale.y / 2.f;
 
-		DrawRect(R_SearchPlayer_LeftX, R_SearchPlayer_BotY, R_SearchPlayer_RightX, R_SearchPlayer_TopY, 0, 1, 0);
+		//DrawRect(R_SearchPlayer_LeftX, R_SearchPlayer_BotY, R_SearchPlayer_RightX, R_SearchPlayer_TopY, 0, 1, 0);
 
 		if (R_SearchPlayer_LeftX < obj2_Pos.x &&
 			R_SearchPlayer_RightX > obj2_Pos.x &&
 			R_SearchPlayer_BotY < obj2_Pos.y &&
 			R_SearchPlayer_TopY > obj2_Pos.y)
 		{
-			//std::cout << "SearchPlayerRight" << std::endl;
+			std::cout << "SearchPlayerRight" << std::endl;
 			return true;
 		}
 	}

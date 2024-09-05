@@ -15,7 +15,7 @@ private:
     std::string e_Categories;
     ESM::EnemyStateManager* esm;
     GameObject* Player;
-    GameObject* PlatForm;
+    GameObject* PlatForm = nullptr;
     AEVec2 FirstPlacePos;
     float Time_dir = 0;//고개돌리는 시간
     bool set_dir;

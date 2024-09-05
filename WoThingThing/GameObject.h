@@ -12,6 +12,11 @@ public:
 	GameObject(std::string _name);
 	~GameObject();
 private:
+	int m_id;
+public:
+	void SetID(int id) { m_id = id; }
+	int GetID() { return m_id; }
+private:
 	std::string m_sName;	
 public:
 	void SetName(const std::string& _name) { m_sName = _name; }

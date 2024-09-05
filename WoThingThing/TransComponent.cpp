@@ -45,12 +45,12 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 
 	if (_owner->GetName() == "Test_player")
 	{
-		m_vPos = {-200,-200 };
+		m_vPos = { -200,-200 };
 		m_vScale = { 50,100 };
 		m_fRot = 0.f;
 	}
 
-	if (_owner->GetName() == "Enemy")
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 0)
 	{
 		////pos 절대 고정해 
 		m_vPos = { 600,-1250 };
@@ -58,13 +58,226 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 		m_fRot = 0.f;
 	}
 
-	if (_owner->GetName() == "EnemySniper")
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 1)
 	{
 		//pos 절대 고정해 
 		m_vPos = { 900,300 };
 		m_vScale = { 60,60 };
 		m_fRot = 0.f;
 	}
+
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 2)
+	{
+		m_vPos = { 850,-1282 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 3)
+	{
+		m_vPos = { 1150,-970 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 4)
+	{
+		m_vPos = { 1920,-970 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 5)
+	{
+		m_vPos = { 2220,-970 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 6)
+	{
+		m_vPos = { 1020,-970 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 7)
+	{
+		m_vPos = { 1743,-707 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 8)
+	{
+		m_vPos = { 2282,-692 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 9)
+	{
+		m_vPos = { 2942,-932 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 10)
+	{
+		m_vPos = { 3297,-662 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 11)
+	{
+		m_vPos = { 3547,-872 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 11)
+	{
+		m_vPos = { 3547,-872 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 11)
+	{
+		m_vPos = { 4455,-167 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 12)
+	{
+		m_vPos = { 4965,-167 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 13)
+	{
+		m_vPos = { 5722,58 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 14)
+	{
+		m_vPos = { 6257,58 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 15)
+	{
+		m_vPos = { 7512,752 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 16)
+	{
+		m_vPos = { 9504,762 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 17)
+	{
+		m_vPos = { 10000,762 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 18)
+	{
+		m_vPos = { 9800,762 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 18)
+	{
+		m_vPos = { 9800,762 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "Enemy" && _owner->GetID() == 19)
+	{
+		m_vPos = { 3607,-872 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 0)
+	{
+		m_vPos = { -850,-1250 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper"&&_owner->GetID()==1)
+	{
+		m_vPos = { 930,-1250 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 2)
+	{
+		m_vPos = { 1387,-970 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 3)
+	{
+		m_vPos = { 2600,-1160 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 4)
+	{
+		m_vPos = { 2092,-472 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 5)
+	{
+		m_vPos = { 1733,-257 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 6)
+	{
+		m_vPos = { 3761,-662 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 7)
+	{
+		m_vPos = { 3796,-407 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 8)
+	{
+		m_vPos = { 3133,-27.5 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 9)
+	{
+		m_vPos = { 6554,57.5 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 10)
+	{
+		m_vPos = { 6063,327 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 11)
+	{
+		m_vPos = { 6806,752 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 12)
+	{
+		m_vPos = { 8060,752 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 13)
+	{
+		m_vPos = { 10775,762 };
+		m_vScale = { 50,100 };
+		m_fRot = 0.f;
+	}
+
 	//enemy bullet용
 	if (_owner->GetName() == "e_bullet") 
 	{
@@ -193,10 +406,6 @@ void TransComponent::SetRot(const float& _rot)
 void TransComponent::Update()
 {
 	CalculateMatrix();
-
-	if (AEInputCheckReleased(AEVK_P))
-		CalculateNodes();
-
 	
 }
 
@@ -209,11 +418,7 @@ BaseRTTI* TransComponent::CreateTransformComp()
 	return p;
 }
 
-void TransComponent::CalculateNodes()
-{
-	NaveMeshManager::GetInst()->ClearNode();	
-	
-}
+
 
 void TransComponent::LoadFromJson(const json& str)
 {

@@ -35,7 +35,7 @@ void ESM::IDLE_Sniper::Update()
 	}
 
 	
-	if (ColliderManager::GetInst()->PlayerSearch(enemy, player, dir, 20.f, 10.f,10.f))//여기에 감지범위 조정
+	if (ColliderManager::GetInst()->PlayerSearch(enemy, player, dir, 30.f, 30.f,10.f))//여기에 감지범위 조정
 	{
 		//스나이퍼는 바로 공격모드로 들어가게한다.
 		AiComponent* enemy_ai = (AiComponent*)enemy->FindComponent("Ai");

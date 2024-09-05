@@ -20,18 +20,18 @@ void ESM::EnemyAttack::Update()
 {
 
 	//melee_DelayAtk = TimeManager::GetInst()->GetAccTime();
-	m_fDt = (f32)AEFrameRateControllerGetFrameTime();
-	melee_DelayAtk += m_fDt;
+
 	//TransComponent* player_trs = (TransComponent*)Player->FindComponent("Transform");
 
 	PlayerComponent* player_comp = (PlayerComponent*)Player->FindComponent("PlayerComp");
 
 	if (ColliderManager::GetInst()->MeleeEnemyAttack(Attack_enemy, Player, dir_state))
 	{
-		if (melee_DelayAtk > 0.3f)
+		m_fDt = (f32)AEFrameRateControllerGetFrameTime();
+		melee_DelayAtk += m_fDt;
+		if (melee_DelayAtk > 0.1f)
 		{
 			player_comp->TakeDamge();
-			//std::cout << "Attack Player" << std::endl;
 			m_fDt = 0.0f;
 			melee_DelayAtk = 0.f;
 		}

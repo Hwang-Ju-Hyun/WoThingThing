@@ -16,7 +16,7 @@ void CompManager::AddComponent(std::string _name, BaseComponent* _comp)
 {
 	if (_comp == nullptr)
 	{
-		std::cerr << "AddComponent Error!(CompManger) : new Component is nullptr" << std::endl;
+		//std::cerr << "AddComponent Error!(CompManger) : new Component is nullptr" << std::endl;
 		return;
 	}
 	//m_mapCompMgr.insert({ _name,_comp });
@@ -37,7 +37,8 @@ void CompManager::AddComponent(std::string _name, BaseComponent* _comp)
 //	}	
 //	if (!IsCompExist)
 //	{
-//		//std::cout << "Can't find Component(RemoveComponent)" << std::endl;
+//		//std::
+// << "Can't find Component(RemoveComponent)" << std::endl;
 //		return;
 //	}
 //		

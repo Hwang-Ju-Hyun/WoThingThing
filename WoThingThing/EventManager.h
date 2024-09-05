@@ -29,28 +29,7 @@ public:
 	GameObject* platform;
 	GameObject* enemy;
 };
-struct Collision : public Event
-{
-public:
-	Collision() = delete;
-	Collision(GameObject* obj1 = nullptr, GameObject* obj2 = nullptr)
-		:m_obj1(obj1)
-		,m_obj2(obj2)
-	{
 
-	}
-	~Collision()
-	{
-
-	}
-public:
-	GameObject* GetObject1() const {return m_obj1;}
-	GameObject* GetObject2() const {return m_obj2;}
-
-private:
-	GameObject* m_obj1;
-	GameObject* m_obj2;
-};
 
 class Entity //handle the events
 {
@@ -58,11 +37,7 @@ public:
 	virtual void OnEvent(Event* ev) = 0;
 };
 
-class RePosition :public Entity
-{
-	void HandleCollision(GameObject* obj1, GameObject* obj2);
-	virtual void OnEvent(Event* ev)override;
-};
+
 
 class ChasePlatFormSettor :public Entity 
 {
