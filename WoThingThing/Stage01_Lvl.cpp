@@ -35,7 +35,7 @@
 #include "CameraManager.h"
 #include "PathFindMoveComponent.h"
 #include "StageBoss_Lvl.h"
-
+#include "Chase.h"
 #include "AudioResource.h"
 
 #include "AEAudio.h"
@@ -67,14 +67,12 @@ void Level::Stage01_Lvl::Init()
     ResourceManager::GetInst()->Get("SniperIdle", "Assets/sniperEnemyIdle.png");//12
     ResourceManager::GetInst()->Get("SniperShootIdle", "Assets/sniperEnemyShootIdle.png");//1
     ResourceManager::GetInst()->Get("SniperShoot", "Assets/sniperEnemyShoot.png");//5
-
-    //인제 temp는 보스 맵이 된거여
-    //Serializer::GetInst()->LoadLevel("temp.json");
-
+    
+    
     //stage01맵을 불러오자
     Serializer::GetInst()->LoadLevel("Assets/stage01.json");
-
-
+    
+    
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
@@ -82,23 +80,24 @@ void Level::Stage01_Lvl::Init()
     //Add Image Resource??
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });
-
-
+    
+    
     playerAnim = new GameObject("PlayerAnim");
+    GoManager::GetInst()->AddObject(playerAnim);
     playerAnim->AddComponent("Transform", new TransComponent(playerAnim));
     playerAnim->AddComponent("Animation", new AnimationComponent(playerAnim));
-
-
+    
+    
     aimTrace = new GameObject("aimTrace");
     GoManager::GetInst()->AddObject(aimTrace);
     aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
     aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));   
-
-
-          
-
-    //Enemy
-  
+    //
+    //
+    //      
+    //
+    ////Enemy
+    //
     for (int i = 0; i < Enemy.size(); i++)
     {
         Enemy[i] = new GameObject("Enemy");       
@@ -111,19 +110,20 @@ void Level::Stage01_Lvl::Init()
         Enemy[i]->AddComponent("Ai", new AiComponent(Enemy[i]));
         TransComponent* Enemy_trs = (TransComponent*)Enemy[i]->FindComponent("Transform");
         AiComponent* Enemy_state = (AiComponent*)Enemy[i]->FindComponent("Ai");
-
+        
         EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy[i]->FindComponent("EnemyAnimation");
+        sizeof(EnemyAnimationComponent);
         Enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
-
+        
         Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
         Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
         Enemy_state->Setdir_time(2.0f);
         Enemy_state->SetFirstPlace(Enemy_trs->GetPos());
-        Enemy_state->SetState("IDLE", "Melee");
+        Enemy_state->SetState("IDLE", "Melee");        
     }
     
-
-
+    
+    
     for (int i = 0; i < EnemySniper.size(); i++)
     {
         EnemySniper[i] = new GameObject("EnemySniper");
@@ -142,21 +142,21 @@ void Level::Stage01_Lvl::Init()
         EnemySniper_state->Setdir_time(1.0f);
         EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
     }
-
-
-
-
     
-
+    
+    
+    
+    
+    
     
     CameraManager::GetInst()->SetMouse(mouseAim);
     CameraManager::GetInst()->SetPlayer(player);
     CameraManager::GetInst()->SetAim(aimTrace);
-
+    
     //gameOver = false;
-  
-
-
+    
+    
+    
     //Audio Init
     /*auto res = ResourceManager::GetInst()->Get("bgm", "Assets/bouken.mp3");
     AudioResource* bgm_res = static_cast<AudioResource*>(res);
@@ -169,14 +169,14 @@ void Level::Stage01_Lvl::Init()
 void Level::Stage01_Lvl::Update()
 {
     //Component Pointer
-
+    
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     //SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp"); 
     
     Collision();
-  
+    
     s8 pFont = AEGfxCreateFont("Assets/esamanru-Bold.ttf", 20);
     std::string str1 = std::to_string(GetBullet());
     std::string str2 = "Bullet: ";
@@ -184,12 +184,12 @@ void Level::Stage01_Lvl::Update()
     const char* cstr2 = str2.c_str();
     AEGfxPrint(pFont, cstr1, -0.85, 0.8, 1, 1, 1, 1, 1);
     AEGfxPrint(pFont, cstr2, -0.95, 0.8, 1, 1, 1, 1, 1);
-
+    
     if(player_trs->GetPos().y<-1800)
         player_comp->SetHealth(-1);
-
-
-
+    
+    
+    
     //패딩시 진동 
     if (IsVibration == false)
     {
@@ -234,7 +234,7 @@ void Level::Stage01_Lvl::Update()
     }
     
     
-
+    
     //낙사판정
     if ((player_trs->GetPos().x>-3000 && player_trs->GetPos().x < 5000 )&&player_trs->GetPos().y < -1800)
     {        
@@ -244,44 +244,44 @@ void Level::Stage01_Lvl::Update()
     {
         player_comp->SetHealth(11);
     }    
-
+    
     //보스 레벨 진입
     if (player_trs->GetPos().x >= 11170)
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::StageBoss_Lvl);
         return;
     }
-
-
+    
+    
     GoManager::GetInst()->RemoveDeathObj();
-
+    
     if (AEInputCheckPrev(AEVK_0))
     {
         GSM::GameStateManager::GetInst()->Exit();
     }
-
+    
     //Player->GetHeath() == 0
     //    gameOver = true
-
+    
     if (!(player_comp->IsAlive()))
     {
         GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
         gsm->ChangeLevel(new Level::GameOver_Lvl);
-
+    
         return;
     }
     
-
+    
     //std::cout << std::endl;
     if (AEInputCheckTriggered(AEVK_ESCAPE))
         GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
-
-
-
+    
+    
+    
     if (AEInputCheckTriggered(AEVK_F1))
         GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
-
-
+    
+    
 }
 
 

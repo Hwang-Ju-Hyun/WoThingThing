@@ -119,15 +119,15 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 	BaseComponent* obj_trs2 = _obj2->FindComponent("Transform");
 	AEVec2 enemy_Pos = static_cast<TransComponent*>(enemy_trs)->GetPos();
 	AEVec2 obj2_Pos = static_cast<TransComponent*>(obj_trs2)->GetPos();
-
+	
 	AEVec2 enemy_Scale = static_cast<TransComponent*>(enemy_trs)->GetScale();
 	AEVec2 obj2_Scale = static_cast<TransComponent*>(obj_trs2)->GetScale();
-
+	
 	float obj2Right = obj2_Pos.x + obj2_Scale.x / 2.f;
 	float obj2Left = obj2_Pos.x - obj2_Scale.x / 2.f;
 	float obj2TopY = obj2_Pos.y + obj2_Scale.y / 2.f;
 	float obj2BotY = obj2_Pos.y - obj2_Scale.y / 2.f;
-
+	
 	//영역의 좌표(정사각형 기준)
 	if (enemy_dir == true) //보는 방향에 따른 영역 변환
 	{
@@ -137,11 +137,11 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 		float L_SearchPlayer_LeftX = Search_LeftArea_X - x_range * (enemy_Scale.x / 2.f);//x축 범위
 		float L_SearchPlayer_TopY = enemy_Pos.y + y_range * (enemy_Scale.y / 2.f);//y축 범위
 		float L_SearchPlayer_BotY = enemy_Pos.y - bottom_y_range * (enemy_Scale.y / 2.f);
-
-
-
+	
+	
+	
 		//그리기영역
-		DrawRect(L_SearchPlayer_LeftX, L_SearchPlayer_BotY, L_SearchPlayer_RightX, L_SearchPlayer_TopY, 1, 0, 0);
+		//DrawRect(L_SearchPlayer_LeftX, L_SearchPlayer_BotY, L_SearchPlayer_RightX, L_SearchPlayer_TopY, 1, 0, 0);
 		//--------------
 		if (TestCollisionRectRectInclusive(L_SearchPlayer_RightX, L_SearchPlayer_LeftX, L_SearchPlayer_TopY, L_SearchPlayer_BotY,
 			obj2Right, obj2Left, obj2TopY, obj2BotY))
@@ -157,7 +157,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 		float R_SearchPlayer_RightX = Search_RightArea_X + x_range * (enemy_Scale.x / 2.f);
 		float R_SearchPlayer_TopY = enemy_Pos.y + y_range * (enemy_Scale.y / 2.f);
 		float R_SearchPlayer_BotY = enemy_Pos.y - bottom_y_range * (enemy_Scale.y / 2.f);
-
+	
 		DrawRect(R_SearchPlayer_LeftX, R_SearchPlayer_BotY, R_SearchPlayer_RightX, R_SearchPlayer_TopY, 1, 0, 0);
 		if (TestCollisionRectRectInclusive(R_SearchPlayer_RightX, R_SearchPlayer_LeftX, R_SearchPlayer_TopY, R_SearchPlayer_BotY,
 			obj2Right, obj2Left, obj2TopY, obj2BotY))

@@ -5,6 +5,8 @@
 #include"IDLE.h"
 #include"ColliderManager.h"
 #include"IDLE_Sniper.h"
+#include "BaseComponent.h"
+
 //
 AiComponent::AiComponent(GameObject* _owner) :BaseComponent(_owner), e_state_name("E")
 {
@@ -14,6 +16,8 @@ AiComponent::AiComponent(GameObject* _owner) :BaseComponent(_owner), e_state_nam
 AiComponent::~AiComponent()
 {
 	delete esm;
+	esm = nullptr;
+	
 }
 void AiComponent::Update()
 {
@@ -32,8 +36,8 @@ void AiComponent::SetState(const std::string& state_name, const std::string& ene
 	{
 		if (e_state_name == "IDLE")
 		{
-			ESM::IDLE* p = new ESM::IDLE(m_pOwner, Player, set_dir, Time_dir, PlatForm, e_state_name, FirstPlacePos);			
-			esm->ChangeState(p);//p를 넘겨주면 자기자신을 m_pOwner를 넘겨주는거니 참조 한다는거다
+			ESM::IDLE* p = new ESM::IDLE(m_pOwner, Player, set_dir, Time_dir, PlatForm, e_state_name, FirstPlacePos);						
+			esm->ChangeState(p);//p를 넘겨주면 자기자신을 m_pOwner를 넘겨주는거니 참조 한다는거다						
 		}
 	}
 
@@ -41,9 +45,9 @@ void AiComponent::SetState(const std::string& state_name, const std::string& ene
 	{
 		if (e_state_name == "IDLE_Sniper")
 		{
-			ESM::IDLE_Sniper* p = new ESM::IDLE_Sniper(m_pOwner, Player, set_dir, Time_dir);//여기서 총알오브젝트 추가
-			
-			esm->ChangeState(p);//p를 넘겨주면 자기자신을 m_pOwner를 넘겨주는거니 참조 한다는거다
+			//ESM::IDLE_Sniper* p = new ESM::IDLE_Sniper(m_pOwner, Player, set_dir, Time_dir);//여기서 총알오브젝트 추가
+			//
+			//esm->ChangeState(p);//p를 넘겨주면 자기자신을 m_pOwner를 넘겨주는거니 참조 한다는거다
 		}
 	
 	}

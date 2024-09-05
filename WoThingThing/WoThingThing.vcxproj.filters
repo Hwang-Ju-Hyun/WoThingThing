@@ -150,6 +150,9 @@
     <Filter Include="Ai\AnimationAi">
       <UniqueIdentifier>{01806367-0993-4a04-8ef5-b5a7710f7d74}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager\EnemyStateMgr">
+      <UniqueIdentifier>{7a4a7220-9308-461c-9d73-140ad5fbe6c2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -309,6 +312,12 @@
       <Filter>Main</Filter>
     </ClCompile>
     <ClCompile Include="EnemyAnimationComponent.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletAnimationComponent.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Congratulation.cpp">
       <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
@@ -480,6 +489,15 @@
     </ClInclude>
     <ClInclude Include="EnemyAnimationComponent.h">
       <Filter>Ai\AnimationAi</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletAnimationComponent.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Congratulation.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageResource.h">
+      <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
