@@ -5,14 +5,6 @@
 
 AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owner)
 {
-	//testArr.push_back(AEGfxTextureLoad("Assets/idle_1.png"));
-	//testArr.push_back(AEGfxTextureLoad("Assets/idle_2.png"));
-	//testArr.push_back(AEGfxTextureLoad("Assets/idle_3.png"));
-	//testArr.push_back(AEGfxTextureLoad("Assets/idle_4.png"));
-	//testArr.push_back(AEGfxTextureLoad("Assets/idle_5.png"));
-
-	//ResourceManager::GetInst()->Get("Player", "Assets/idle_1.png");
-
 	spritesheet_rows = 1;
 	spritesheet_cols = 8;
 	spritesheet_max_sprites = 8;
@@ -28,16 +20,6 @@ AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owne
 	mesh = 0;
 	AEGfxMeshStart();
 
-	//AEGfxTriAdd(
-	//	-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,
-	//	0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
-	//	-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-	//
-	//AEGfxTriAdd(
-	//	0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
-	//	0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
-	//	-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-
 	AEGfxTriAdd(
 		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, sprite_uv_height, // bottom left
 		0.5f, -0.5f, 0xFFFFFFFF, sprite_uv_width, sprite_uv_height, // bottom right 
@@ -52,7 +34,6 @@ AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owne
 
 	mesh = AEGfxMeshEnd();
 
-	pTex = AEGfxTextureLoad("Assets/PlayerIdle_SpriteSheet.png");
 	//pTex = AEGfxTextureLoad("Assets/PlayerIdle_1.png");
 }
 
@@ -67,7 +48,69 @@ void AnimationComponent::Update()
 	if (mesh == nullptr)
 		return;
 
-	animation_timer += (f32)AEFrameRateControllerGetFrameTime();
+
+	// Reverse based Y-axis
+	AEMtx33 isReverseMtx;
+	AEMtx33Scale(&isReverseMtx, 1, 1);
+
+	//==============Movement condition=====================================//
+	//Idle
+	spritesheet_rows = 1;
+	spritesheet_cols = 8;
+	spritesheet_max_sprites = 8;
+	sprite_uv_width = 1.f / spritesheet_cols;
+	sprite_uv_height = 1.f / spritesheet_rows;
+	animation_duration_per_frame = 0.1f;
+	pTex = AEGfxTextureLoad("Assets/PlayerIdle_SpriteSheet.png");
+
+
+	float delay = 1.f;
+	//Right
+	if (AEInputCheckCurr(AEVK_D))
+	{
+		pTex = AEGfxTextureLoad("Assets/PlayerRun_SpriteSheet.png");
+	}
+	//Left
+	if (AEInputCheckCurr(AEVK_A))
+	{
+		AEMtx33Scale(&isReverseMtx, -1, 1);
+		pTex = AEGfxTextureLoad("Assets/PlayerRun_SpriteSheet.png");
+
+	}
+	
+	//Dash
+	if (AEInputCheckCurr(AEVK_SPACE))
+	{
+		spritesheet_cols = 6;
+		spritesheet_max_sprites = 6;
+		sprite_uv_width = 1.f / spritesheet_cols;
+		sprite_uv_height = 1.f / spritesheet_rows;
+
+		//animation_duration_per_frame = 0.2f;
+		//delay = AEFrameRateControllerGetFrameTime();
+
+		pTex = AEGfxTextureLoad("Assets/PlayerDash_SpriteSheet.png");
+	}
+
+	//if (AEInputCheckTriggered(AEVK_SPACE))
+	//{
+	//	pTex = AEGfxTextureLoad("Assets/PlayerDash_SpriteSheet.png");
+	//	AEMtx33Scale(&isReverseMtx, -1, 1);
+	//}
+	//=====================================================================//
+
+	AEGfxTriAdd(
+		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, sprite_uv_height, // bottom left
+		0.5f, -0.5f, 0xFFFFFFFF, sprite_uv_width, sprite_uv_height, // bottom right 
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);  // top left
+
+	AEGfxTriAdd(
+		0.5f, -0.5f, 0xFFFFFFFF, sprite_uv_width, sprite_uv_height, // bottom right 
+		0.5f, 0.5f, 0xFFFFFFFF, sprite_uv_width, 0.0f,   // top right
+		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);  // bottom left
+
+
+	animation_timer += (f32)AEFrameRateControllerGetFrameTime() /* * delay*/;
 
 	if (animation_timer >= animation_duration_per_frame)
 	{
@@ -103,6 +146,7 @@ void AnimationComponent::Update()
 	if (trans)
 	{
 		AEMtx33 transf = trans->GetMatrix();
+		AEMtx33Concat(&transf, &transf, &isReverseMtx);
 		AEGfxSetTransform(transf.m);
 	}
 

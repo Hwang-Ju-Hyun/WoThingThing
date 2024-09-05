@@ -22,7 +22,6 @@ class AnimationComponent : public BaseComponent
     f32 current_sprite_uv_offset_x;
     f32 current_sprite_uv_offset_y;
 
-    std::vector<AEGfxTexture*> testArr;
 public:
     AnimationComponent(GameObject* _owner);
     ~AnimationComponent();

@@ -334,9 +334,15 @@ void TransComponent::CalculateMatrix()
 	AEMtx33 scaleMtx;
 	AEMtx33Scale(&scaleMtx, m_vScale.x, m_vScale.y);
 
+	//반전 행렬
+	AEMtx33 reverseMtx;
+	AEMtx33Scale(&reverseMtx, -1, 1);
+
+
 	//Concat
 	AEMtx33Concat(&m_matMatrix, &rotationMtx, &scaleMtx);
 	AEMtx33Concat(&m_matMatrix, &translateMtx, &m_matMatrix);
+
 	
 }
 
