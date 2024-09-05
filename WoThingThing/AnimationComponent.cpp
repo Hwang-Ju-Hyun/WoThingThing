@@ -1,46 +1,88 @@
 #include "AnimationComponent.h"
 #include "GameObject.h"
 #include "TransComponent.h"
+#include "ImageResource.h"
 #include "ResourceManager.h"
 
-AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owner)
+void AnimationComponent::Initialize()
 {
-	spritesheet_rows = 1;
-	spritesheet_cols = 8;
-	spritesheet_max_sprites = 8;
-	sprite_uv_width = 1.f / spritesheet_cols;
-	sprite_uv_height = 1.f / spritesheet_rows;
-
 	animation_timer = 0.f;
-	animation_duration_per_frame = 0.2f;
 	current_sprite_index = 0; // start from first sprite
 	current_sprite_uv_offset_x = 0.f;
 	current_sprite_uv_offset_y = 0.f;
+}
 
-	mesh = 0;
-	AEGfxMeshStart();
+void AnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 cols, f32 max, f32 duration)
+{
 
-	AEGfxTriAdd(
-		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, sprite_uv_height, // bottom left
-		0.5f, -0.5f, 0xFFFFFFFF, sprite_uv_width, sprite_uv_height, // bottom right 
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);  // top left
-	
-	AEGfxTriAdd(
-		0.5f, -0.5f, 0xFFFFFFFF, sprite_uv_width, sprite_uv_height, // bottom right 
-		0.5f, 0.5f, 0xFFFFFFFF, sprite_uv_width, 0.0f,   // top right
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);  // bottom left
+	if (this->current != _name)
+	{
+		std::cout << this->current << "        " << _name << std::endl;
+		std::cout << this->current << "        " << _name << std::endl;
+		//if(pTex != nullptr)
+		//{
+		//	AEGfxTextureUnload(this->pTex); //Unload pTex
+		//}
+		//Load pTex
+		ImageResource* tempResource = (ImageResource*)ResourceManager::GetInst()->FindRes(_name);
+		this->pTex = tempResource->GetImage();
+
+		this->current = _name; //change current
+
+		Initialize();
+
+		spritesheet_rows = rows;
+		spritesheet_cols = cols;
+		spritesheet_max_sprites = max;
+		sprite_uv_width = 1.f / spritesheet_cols;
+		sprite_uv_height = 1.f / spritesheet_rows;
+		animation_duration_per_frame = duration;
+
+		if (mesh != nullptr)
+			AEGfxMeshFree(mesh);
+		//=====================================================================//
+		AEGfxMeshStart();
+		AEGfxTriAdd(
+			-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, sprite_uv_height, // bottom left
+			0.5f, -0.5f, 0xFFFFFFFF, sprite_uv_width, sprite_uv_height, // bottom right 
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);  // top left
+
+		AEGfxTriAdd(
+			0.5f, -0.5f, 0xFFFFFFFF, sprite_uv_width, sprite_uv_height, // bottom right 
+			0.5f, 0.5f, 0xFFFFFFFF, sprite_uv_width, 0.0f,   // top right
+			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);  // bottom left
+		mesh = AEGfxMeshEnd();
+		//=======================================================================
+	}
+	else
+	{
+
+	}
+}
+
+AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owner)
+{
+	ResourceManager::GetInst()->Get("Idle", "Assets/PlayerIdle_SpriteSheet.png");
+	ResourceManager::GetInst()->Get("Run", "Assets/PlayerRun_SpriteSheet.png");
+	ResourceManager::GetInst()->Get("Dash", "Assets/PlayerDash_SpriteSheet.png");
+	ResourceManager::GetInst()->Get("Jump", "Assets/PlayerJump&Fall_SpriteSheet.png");
 
 
 
-	mesh = AEGfxMeshEnd();
 
-	//pTex = AEGfxTextureLoad("Assets/PlayerIdle_1.png");
+	ChangeAnimation("Idle", 1, 8, 8, 0.1);
+
+	dashState = false, jumpState = false;
+	dashTimer = 0.f, jumpTimer = 0.f;
+	flip = false;
+
+
 }
 
 AnimationComponent::~AnimationComponent()
 {
-	AEGfxMeshFree(mesh);
-	AEGfxTextureUnload(pTex);
+	if (mesh != nullptr)
+		AEGfxMeshFree(mesh);
 }
 
 void AnimationComponent::Update()
@@ -50,64 +92,62 @@ void AnimationComponent::Update()
 
 
 	// Reverse based Y-axis
-	AEMtx33 isReverseMtx;
-	AEMtx33Scale(&isReverseMtx, 1, 1);
-
 	//==============Movement condition=====================================//
-	//Idle
-	spritesheet_rows = 1;
-	spritesheet_cols = 8;
-	spritesheet_max_sprites = 8;
-	sprite_uv_width = 1.f / spritesheet_cols;
-	sprite_uv_height = 1.f / spritesheet_rows;
-	animation_duration_per_frame = 0.1f;
-	pTex = AEGfxTextureLoad("Assets/PlayerIdle_SpriteSheet.png");
 
 
-	float delay = 1.f;
 	//Right
-	if (AEInputCheckCurr(AEVK_D))
+	if (AEInputCheckCurr(AEVK_D) && !dashState && !jumpState)
 	{
-		pTex = AEGfxTextureLoad("Assets/PlayerRun_SpriteSheet.png");
+		ChangeAnimation("Run", 1, 8, 8, 0.1);
+		flip = false;
 	}
-	//Left
-	if (AEInputCheckCurr(AEVK_A))
-	{
-		AEMtx33Scale(&isReverseMtx, -1, 1);
-		pTex = AEGfxTextureLoad("Assets/PlayerRun_SpriteSheet.png");
 
+	//Left
+	else if (AEInputCheckCurr(AEVK_A) && !dashState && !jumpState)
+	{
+		ChangeAnimation("Run", 1, 8, 8, 0.1);
+		flip = true;
+	}
+
+	//Idle
+	else if (!dashState && !jumpState)
+	{
+		flip = false;
+
+		ChangeAnimation("Idle", 1, 8, 8, 0.1);
 	}
 	
+
 	//Dash
-	if (AEInputCheckCurr(AEVK_SPACE))
+	if (AEInputCheckTriggered(AEVK_SPACE) && !jumpState)
 	{
-		spritesheet_cols = 6;
-		spritesheet_max_sprites = 6;
-		sprite_uv_width = 1.f / spritesheet_cols;
-		sprite_uv_height = 1.f / spritesheet_rows;
+		dashState = true;
+		dashTimer = 0.f;
 
-		//animation_duration_per_frame = 0.2f;
-		//delay = AEFrameRateControllerGetFrameTime();
+		if (AEInputCheckCurr(AEVK_A))
+		{
+			flip = true;
+		}
 
-		pTex = AEGfxTextureLoad("Assets/PlayerDash_SpriteSheet.png");
+		ChangeAnimation("Dash", 1, 6, 6, 0.1);
 	}
+	dashTimer += (f32)AEFrameRateControllerGetFrameTime();
+	if (dashTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+		dashState = false;
 
-	//if (AEInputCheckTriggered(AEVK_SPACE))
-	//{
-	//	pTex = AEGfxTextureLoad("Assets/PlayerDash_SpriteSheet.png");
-	//	AEMtx33Scale(&isReverseMtx, -1, 1);
-	//}
-	//=====================================================================//
+	//Jump
+	if (AEInputCheckTriggered(AEVK_W) && !dashState)
+	{
+		jumpState = true;
+		jumpTimer = 0.f;
 
-	AEGfxTriAdd(
-		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, sprite_uv_height, // bottom left
-		0.5f, -0.5f, 0xFFFFFFFF, sprite_uv_width, sprite_uv_height, // bottom right 
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);  // top left
-
-	AEGfxTriAdd(
-		0.5f, -0.5f, 0xFFFFFFFF, sprite_uv_width, sprite_uv_height, // bottom right 
-		0.5f, 0.5f, 0xFFFFFFFF, sprite_uv_width, 0.0f,   // top right
-		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);  // bottom left
+		Initialize();
+		ChangeAnimation("Jump", 1, 6, 6, 0.25);
+		//ChangeAnimation("Assets/PlayerJump&Fall_SpriteSheet.png");
+	}
+	jumpTimer += (f32)AEFrameRateControllerGetFrameTime();
+	if (jumpTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+		jumpState = false;
 
 
 	animation_timer += (f32)AEFrameRateControllerGetFrameTime() /* * delay*/;
@@ -143,6 +183,13 @@ void AnimationComponent::Update()
 	//AEGfxTextureSet(pTex, 0, 0);
 
 	TransComponent* trans = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
+
+	AEMtx33 isReverseMtx;
+	AEMtx33Scale(&isReverseMtx, 1, 1);
+
+	if(flip)
+		AEMtx33Scale(&isReverseMtx, -1, 1);
+
 	if (trans)
 	{
 		AEMtx33 transf = trans->GetMatrix();
