@@ -239,6 +239,10 @@ void Level::Stage01_Lvl::Update()
     //Player->GetHeath() == 0
     //    gameOver = true
 
+
+
+
+
     if (!(player_comp->IsAlive()))
     {
         GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();

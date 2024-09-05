@@ -122,6 +122,7 @@ void ESM::IDLE::Update()
 
 void ESM::IDLE::Exit()
 {
+	int a = 0;
 	//delete enemy;
 	//obj를 다 날리면 남아있는지 죽어있는지?
 }
