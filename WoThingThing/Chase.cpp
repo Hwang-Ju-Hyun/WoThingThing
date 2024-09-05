@@ -96,7 +96,7 @@ void ESM::Chase::Update()
 			}
 			else
 			{
-				std::cout << "Stop" << std::endl;
+				//std::cout << "Stop" << std::endl;
 				StopVec.x = 0;
 				StopVec.y = 0;
 				enemy_trs->AddPos(StopVec);
@@ -114,7 +114,7 @@ void ESM::Chase::Update()
 			}
 			else 
 			{
-				std::cout << "Stop" << std::endl;
+				//std::cout << "Stop" << std::endl;
 				StopVec.x = 0;
 				StopVec.y = 0;
 				enemy_trs->AddPos(StopVec);

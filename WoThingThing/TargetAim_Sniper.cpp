@@ -56,7 +56,17 @@ void ESM::TargetAim_Sniper::Update()
 
 		//공격 딜레이는 따로 시간을 줘야해서 따로 만들어줌
 		m_fDt = (f32)AEFrameRateControllerGetFrameTime();
-		AttackDelay += m_fDt;
+		bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
+
+		if (ShouldSlowTime) 
+		{
+			AttackDelay += m_fDt * 0.1;
+		}
+		else 
+		{
+			AttackDelay += m_fDt;
+		}
+		
 		if (AttackDelay >= 0.5f)//공격 딜레이
 		{
 			//bulletComp
