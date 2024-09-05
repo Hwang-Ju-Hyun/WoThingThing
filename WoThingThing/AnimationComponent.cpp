@@ -6,6 +6,8 @@
 #include "ResourceManager.h"
 #include "PlayerComponent.h"
 
+
+
 void AnimationComponent::Initialize()
 {
 	animation_timer = 0.f;
@@ -221,10 +223,6 @@ void AnimationComponent::Update()
 		longattackState = false;
 		my_trs->SetScale({ 80,80 });
 	}
-
-
-
-
 
 	animation_timer += (f32)AEFrameRateControllerGetFrameTime() /* * delay*/;
 	if (animation_timer >= animation_duration_per_frame)

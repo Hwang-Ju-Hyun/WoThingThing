@@ -10,6 +10,11 @@
 #include <memory>
 #include "TestLevel.h"//추가부분(백무송)
 
+#if _DEBUG
+#define new new(_NORMAL_BLOCK,__FILE__,__LINE__)
+#define malloc(s), _malloc_dbg(s, _NORMAL_BLOCK,__FILE__,__LINE__)
+#endif
+
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_line, int show)
 {
 	UNREFERENCED_PARAMETER(prevInstanceH);

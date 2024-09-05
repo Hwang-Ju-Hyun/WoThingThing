@@ -17,11 +17,6 @@ void BulletAnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 
 {
 	if (this->current != _name)
 	{
-		//if(pTex != nullptr)
-		//{
-		//	AEGfxTextureUnload(this->pTex); //Unload pTex
-		//}
-		//Load pTex
 		ImageResource* tempResource = (ImageResource*)ResourceManager::GetInst()->FindRes(_name);
 		this->pTex = tempResource->GetImage();
 
@@ -93,8 +88,6 @@ void BulletAnimationComponent::Update()
 	//AEGfxTextureSet(pTex, 0, 0);
 
 	TransComponent* trans = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
-
-
 	if (trans)
 	{
 		AEMtx33 transf = trans->GetMatrix();
@@ -113,7 +106,3 @@ BulletAnimationComponent::~BulletAnimationComponent()
 	if (mesh != nullptr)
 		AEGfxMeshFree(mesh);
 }
-
-
-
-

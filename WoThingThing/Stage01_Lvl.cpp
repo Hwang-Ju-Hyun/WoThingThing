@@ -47,6 +47,8 @@
 #include"TargetAim_Sniper.h"
 #include"AnimationComponent.h"
 
+
+
 AEVec2 enemyDvec{ 1, 0 };
 
 Level::Stage01_Lvl::Stage01_Lvl()
@@ -60,16 +62,11 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 void Level::Stage01_Lvl::Init()
 {    
     //Object and Component Init
-    
-
-
-    //인제 temp는 보스 맵이 된거여
-    //Serializer::GetInst()->LoadLevel("temp.json");
-
+     
     //stage01맵을 불러오자
     Serializer::GetInst()->LoadLevel("Assets/stage01.json");
-
-
+    
+    
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
@@ -78,21 +75,24 @@ void Level::Stage01_Lvl::Init()
     //Add Image Resource??
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });
-
-
+    
+    
     playerAnim = new GameObject("PlayerAnim");
+    //꼭 추가할것!
+    GoManager::GetInst()->AddObject(playerAnim); //GetInst() == GetPtr()
+    //꼭 추가할것!
     playerAnim->AddComponent("Transform", new TransComponent(playerAnim));
     playerAnim->AddComponent("Animation", new AnimationComponent(playerAnim));
-
-
+    
+    
     aimTrace = new GameObject("aimTrace");
     GoManager::GetInst()->AddObject(aimTrace);
     aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
     aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));   
-
-
+    
+    
           
-
+    
     //Enemy
     for (int i = 0; i < Enemy.size(); i++)
     {
@@ -112,8 +112,8 @@ void Level::Stage01_Lvl::Init()
         //Enemy_state->SetState("IDLE", "Melee");
     }
     
-
-
+    
+    
     for (int i = 0; i < EnemySniper.size(); i++)
     {
         EnemySniper[i] = new GameObject("EnemySniper");
@@ -129,8 +129,8 @@ void Level::Stage01_Lvl::Init()
         //EnemySniper_state->Setdir_time(1.0f);
         //EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
     }
-
-
+    
+    
     auto vecObj = GoManager::GetInst()->Allobj();
     for (int i = 0; i < vecObj.size(); i++)
     {
@@ -143,28 +143,28 @@ void Level::Stage01_Lvl::Init()
             node_spr->m_color.blue = 255;
         }
     }
-
+    
     //TEST==========
     Enemy_TEST = new GameObject("Enemy_TEST");
     GoManager::GetInst()->AddObject(Enemy_TEST);
-
+    
     Enemy_TEST->AddComponent("Transform", new TransComponent(Enemy_TEST));
     Enemy_TEST->AddComponent("Sprite", new SpriteComponent(Enemy_TEST));
     Enemy_TEST->AddComponent("RigidBody", new RigidBodyComponent(Enemy_TEST));
     Enemy_TEST->AddComponent("PathFindMove", new PathFindMoveComponent(Enemy_TEST));
     //TEST===========
-
+    
     
     CameraManager::GetInst()->SetMouse(mouseAim);
     CameraManager::GetInst()->SetPlayer(player);
     CameraManager::GetInst()->SetAim(aimTrace);
-
+    
     //gameOver = false;
-
+    
     NaveMeshManager::GetInst()->SetPlayer(player);
     NaveMeshManager::GetInst()->CreateLinkTable();
-
-
+    
+    
     //Audio Init
     auto res = ResourceManager::GetInst()->Get("bgm", "Assets/bouken.mp3");
     AudioResource* bgm_res = static_cast<AudioResource*>(res);
@@ -183,9 +183,9 @@ void Level::Stage01_Lvl::Update()
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
     
-
+    
     Collision();    
-
+    
     s8 pFont = AEGfxCreateFont("Assets/esamanru-Bold.ttf", 20);
     std::string str1 = std::to_string(GetBullet());
     std::string str2 = "Bullet: ";
@@ -193,10 +193,10 @@ void Level::Stage01_Lvl::Update()
     const char* cstr2 = str2.c_str();
     AEGfxPrint(pFont, cstr1, -0.85, 0.8, 1, 1, 1, 1, 1);
     AEGfxPrint(pFont, cstr2, -0.95, 0.8, 1, 1, 1, 1, 1);
-
-
-
-
+    
+    
+    
+    
     if(player_trs->GetPos().y<-1800)
         player_comp->SetHealth(-1);
     else
@@ -205,29 +205,29 @@ void Level::Stage01_Lvl::Update()
         CameraManager::GetInst()->Update();
     }
     GoManager::GetInst()->RemoveDeathObj();
-
+    
     if (AEInputCheckPrev(AEVK_0))
     {
         GSM::GameStateManager::GetInst()->Exit();
     }
-
+    
     //Player->GetHeath() == 0
     //    gameOver = true
-
+    
     if (!(player_comp->IsAlive()))
     {
         GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
         gsm->ChangeLevel(new Level::GameOver_Lvl);
-
+    
         return;
     }
-
+    
     //std::cout << std::endl;
     if (AEInputCheckTriggered(AEVK_ESCAPE))
         GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
-
-
-
+    
+    
+    
     if (AEInputCheckTriggered(AEVK_F1))
         GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
 
@@ -366,7 +366,6 @@ void Level::Stage01_Lvl::Collision()
                             AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
                         }
                         bullet_comp->DestroyBullet();
-
                     }
                 }             
             }
