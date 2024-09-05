@@ -324,10 +324,10 @@ void PlayerComponent::Attack()
 				melee = new GameObject("Melee");
 				GoManager::GetInst()->AddObject(melee); //GetInst() == GetPtr()
 				melee->AddComponent("Transform", new TransComponent(melee));
-				melee->AddComponent("Sprite", new SpriteComponent(melee));
 
 				TransComponent* melee_trs = static_cast<TransComponent*>(melee->FindComponent("Transform"));
 				melee_trs->SetPos(player_trs->GetPos().x + (nor_dVec.x * 50.f), player_trs->GetPos().y + (nor_dVec.y * 50.f));
+				melee_trs->SetScale({ 100,100 });
 			}
 		}
 		else

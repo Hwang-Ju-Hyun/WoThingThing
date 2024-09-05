@@ -9,6 +9,7 @@ AudioResource::AudioResource(std::string _name)
 
 AudioResource::~AudioResource()
 {
+	UnLoad();
 }
 
 void AudioResource::SetSFXorMusic(Sound _eType)

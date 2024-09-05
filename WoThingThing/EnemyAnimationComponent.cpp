@@ -19,13 +19,6 @@ void EnemyAnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 c
 {
 	if (this->current != _name)
 	{
-		std::cout << this->current << "        " << _name << std::endl;
-		std::cout << this->current << "        " << _name << std::endl;
-		//if(pTex != nullptr)
-		//{
-		//	AEGfxTextureUnload(this->pTex); //Unload pTex
-		//}
-		//Load pTex
 		ImageResource* tempResource = (ImageResource*)ResourceManager::GetInst()->FindRes(_name);
 		this->pTex = tempResource->GetImage();
 
@@ -101,63 +94,6 @@ void EnemyAnimationComponent::Update()
 {
 	if (mesh == nullptr)
 		return;
-	// Reverse based Y-axis
-//==============Movement condition=====================================//
-//Right
-	//if (AEInputCheckCurr(AEVK_D) && !dashState && !jumpState)
-	//{
-	//	ChangeAnimation("Run", 1, 8, 8, 0.1);
-	//	flip = false;
-	//}
-	//
-	////Left
-	//else if (AEInputCheckCurr(AEVK_A) && !dashState && !jumpState)
-	//{
-	//	ChangeAnimation("Run", 1, 8, 8, 0.1);
-	//	flip = true;
-	//}
-	//
-	////Idle
-	//else if (!dashState && !jumpState)
-	//{
-	//	flip = false;
-	//
-	//	ChangeAnimation("Idle", 1, 8, 8, 0.1);
-	//}
-	//
-	//
-	////Dash
-	//if (AEInputCheckTriggered(AEVK_SPACE) && !jumpState)
-	//{
-	//	dashState = true;
-	//	dashTimer = 0.f;
-	//
-	//	if (AEInputCheckCurr(AEVK_A))
-	//	{
-	//		flip = true;
-	//	}
-	//
-	//	ChangeAnimation("Dash", 1, 6, 6, 0.1);
-	//}
-	//dashTimer += (f32)AEFrameRateControllerGetFrameTime();
-	//if (dashTimer >= animation_duration_per_frame * spritesheet_max_sprites)
-	//	dashState = false;
-	//
-	////Jump
-	//if (AEInputCheckTriggered(AEVK_W) && !dashState)
-	//{
-	//	jumpState = true;
-	//	jumpTimer = 0.f;
-	//
-	//	Initialize();
-	//	ChangeAnimation("Jump", 1, 6, 6, 0.25);
-	//	//ChangeAnimation("Assets/PlayerJump&Fall_SpriteSheet.png");
-	//}
-	//jumpTimer += (f32)AEFrameRateControllerGetFrameTime();
-	//if (jumpTimer >= animation_duration_per_frame * spritesheet_max_sprites)
-	//	jumpState = false;
-
-	//animation_timer += (f32)AEFrameRateControllerGetFrameTime() /* * delay*/;
 
 	GameObject* tempPlayer = GoManager::GetInst()->FindObj("Player");
 	PlayerComponent* temp_comp = (PlayerComponent*)tempPlayer->FindComponent("PlayerComp");
