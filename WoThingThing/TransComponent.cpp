@@ -12,8 +12,9 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	//이 코드들도 나중에 stage01 _init으로 옮겨야함
 	if (_owner->GetName() == "Player")
 	{
-		m_vPos = { 200,0 };
-		m_vScale = { 35,35 };
+		//pos 절대 고정해 
+		m_vPos = {200,0 };
+		m_vScale = { 80,80 };
 		m_fRot = 0.f;
 	}
 	if (_owner->GetName() == "mouseAim")
@@ -51,15 +52,17 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 
 	if (_owner->GetName() == "Enemy" && _owner->GetID() == 0)
 	{
-		m_vPos = { 600,-1282 };
-		m_vScale = { 50,100 };
+		////pos 절대 고정해 
+		m_vPos = { 600,-1250 };
+		m_vScale = { 70,50 };
 		m_fRot = 0.f;
 	}
 
 	if (_owner->GetName() == "Enemy" && _owner->GetID() == 1)
 	{
-		m_vPos = { 400,-1282 };
-		m_vScale = { 50,100 };
+		//pos 절대 고정해 
+		m_vPos = { 900,300 };
+		m_vScale = { 60,60 };
 		m_fRot = 0.f;
 	}
 
@@ -300,11 +303,18 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	//test 황주현
 	if (_owner->GetName() == "Enemy_TEST")
 	{
+
 		m_vPos = { 1920,90 };
-		m_vScale = { 30,30 };
+		m_vScale = { 100,100 };
 		m_fRot = 0.f;
 	}
 
+	if (_owner->GetName() == "BackGround")
+	{
+		m_vPos = { 0,0 };
+		m_vScale = { 30,30 };
+		m_fRot = 0.f;
+	}
 
 }
 

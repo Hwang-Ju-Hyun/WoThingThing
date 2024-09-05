@@ -37,6 +37,8 @@
 #include "AEMath.h"
 #include "BulletComponent.h"
 #include "Bullet.h"
+#include "GameOver_Lvl.h"
+
 
 Level::StageBoss_Lvl::StageBoss_Lvl()
 {
@@ -100,6 +102,8 @@ void Level::StageBoss_Lvl::Init()
 
     NaveMeshManager::GetInst()->SetPlayer(player);
     NaveMeshManager::GetInst()->CreateLinkTable();
+
+    enemyDir = true;
 }
 
 void Level::StageBoss_Lvl::Update()
@@ -116,6 +120,19 @@ void Level::StageBoss_Lvl::Update()
     SpriteComponent* EnemyTest_spr = (SpriteComponent*)Enemy_TEST->FindComponent("Sprite");
     RigidBodyComponent* EnemyTest_rig = (RigidBodyComponent*)Enemy_TEST->FindComponent("RigidBody");
 
+
+   
+  
+    playerPos = player_trs->GetPos();
+    enemyTestPos = EnemyTest_trs->GetPos();
+    chaseVec.x = playerPos.x - enemyTestPos.x;
+    chaseVec.y = playerPos.y - enemyTestPos.y;
+
+    if (!(ColliderManager::GetInst()->isFacingtheSameDirection(chaseVec, enemyDir)))
+    {
+        //Chase_outTime = 0.0f;
+        enemyDir = !(enemyDir);
+    }
 
     //std::cout << "(" << player_trs->GetPos().x << "," << player_trs->GetPos().y << ")" << std::endl;
     //Right Click : Right attack
@@ -148,7 +165,7 @@ void Level::StageBoss_Lvl::Update()
     if (AEInputCheckTriggered(AEVK_4))
         CreateSupplement({ 0, -300 });
 
-    if (gameOver)
+    if (!(player_comp->IsAlive()))
     {
         GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
         gsm->ChangeLevel(new Level::GameOver_Lvl);
@@ -274,7 +291,8 @@ void Level::StageBoss_Lvl::Update()
         }
         else
         {
-            costLink->Move(Enemy_TEST, node[nodeID1], FoundedPath[PathIndex], 1, node[nodeID2]);
+            //문제될시 player삭제 NaveMesh매니저 Move전부 바꿔주기
+            costLink->Move(Enemy_TEST, node[nodeID1], FoundedPath[PathIndex], 1, node[nodeID2], player);
         }
 
     }   
@@ -450,6 +468,24 @@ void Level::StageBoss_Lvl::Collision()
             }
 
         }
+    }
+    //여기가 보스랑 플레이어가 부딫히는 부분
+
+    if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, 0.5, 1, 1))
+    {
+        m_fDt = (f32)AEFrameRateControllerGetFrameTime();
+        melee_DelayAtk += m_fDt;
+        //std::cout << melee_DelayAtk << std::endl;
+        if (melee_DelayAtk > 0.5f)//0.05초주기
+        {
+            player_comp->TakeDamge();
+            //std::cout << "Attack Player" << std::endl;
+        }
+    }
+    else 
+    {
+        m_fDt = 0.0f;
+        melee_DelayAtk = 0.f;
     }
 }
 

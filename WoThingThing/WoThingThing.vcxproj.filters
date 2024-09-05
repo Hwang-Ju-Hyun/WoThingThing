@@ -299,6 +299,15 @@
     <ClCompile Include="GameOver_Lvl.cpp">
       <Filter>Level\GameOver</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageResource.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="MultiAnimationComponent.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -453,6 +462,15 @@
     </ClInclude>
     <ClInclude Include="GameOver_Lvl.h">
       <Filter>Level\GameOver</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageResource.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="MultiAnimationComponent.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

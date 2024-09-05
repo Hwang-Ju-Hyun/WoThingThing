@@ -12,6 +12,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AiComponent.h" />
+    <ClInclude Include="AnimationComponent.h" />
     <ClInclude Include="AudioResource.h" />
     <ClInclude Include="BaseComponent.h" />
     <ClInclude Include="BaseEnemyState.h" />
@@ -36,6 +37,7 @@
     <ClInclude Include="ImageResource.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MainMenu_Lvl.h" />
+    <ClInclude Include="MultiAnimationComponent.h" />
     <ClInclude Include="Patrol.h" />
     <ClInclude Include="MapEditor.h" />
     <ClInclude Include="NaveMeshManager.h" />
@@ -58,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AiComponent.cpp" />
+    <ClCompile Include="AnimationComponent.cpp" />
     <ClCompile Include="AudioResource.cpp" />
     <ClCompile Include="BaseComponent.cpp" />
     <ClCompile Include="BaseEnemyState.cpp" />
@@ -81,6 +84,7 @@
     <ClCompile Include="ImageResource.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MainMenu_Lvl.cpp" />
+    <ClCompile Include="MultiAnimationComponent.cpp" />
     <ClCompile Include="Patrol.cpp" />
     <ClCompile Include="MapEditor.cpp" />
     <ClCompile Include="NaveMeshManager.cpp" />
