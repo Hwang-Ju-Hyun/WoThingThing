@@ -11,6 +11,7 @@ namespace Level
 {
     class Stage01_Lvl : public GSM::BaseLevel
     {
+        GameObject* background;
         GameObject* player;
         GameObject* mouseAim;
         GameObject* aimTrace;

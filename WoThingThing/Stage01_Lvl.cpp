@@ -38,6 +38,7 @@
 
 #include "Bullet.h"
 #include"TargetAim_Sniper.h"
+#include"AnimationComponent.h"
 
 AEVec2 enemyDvec{ 1, 0 };
 
@@ -53,6 +54,8 @@ void Level::Stage01_Lvl::Init()
 {    
     //Object and Component Init
     
+
+
     //인제 temp는 보스 맵이 된거여
     //Serializer::GetInst()->LoadLevel("temp.json");
 

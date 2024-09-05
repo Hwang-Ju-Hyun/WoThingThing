@@ -11,7 +11,7 @@ namespace Level
     private:
         GameObject* player;
         GameObject* mouseAim;
-        GameObject* aimTrace; 
+        GameObject* aimTrace;
         
         bool gameOver;
     public:
@@ -34,5 +34,13 @@ namespace Level
     public:
         void HandleCollision(GameObject* obj1, GameObject* obj2);
         void Collision();
+
+    private:
+        bool enemyDir;
+        AEVec2 playerPos;
+        AEVec2 enemyTestPos;
+        AEVec2 chaseVec;
+        float m_fDt;
+        float melee_DelayAtk;
     };
 }

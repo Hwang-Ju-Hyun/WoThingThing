@@ -1,6 +1,7 @@
 #include "ResourceManager.h"
 #include "AudioResource.h"
 #include "TextResource.h"
+#include "ImageResource.h"
 
 ResourceManager::ResourceManager()
 {
@@ -81,6 +82,9 @@ Resource* ResourceManager::Get(const std::string& _resName,const std::string& _p
 			break;
 		case ResourceManager::png:
 		case ResourceManager::jpg:			
+			resource = new ImageResource(_resName);
+			resource = static_cast<ImageResource*>(resource);
+			m_mapRes.insert({ _resName,resource });
 			break;
 		case ResourceManager::wav:
 		case ResourceManager::mp3:

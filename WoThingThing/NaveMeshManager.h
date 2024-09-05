@@ -31,7 +31,7 @@ public:
 			JUMP = 4,			
 		};		
 	public:
-		virtual void Move(GameObject* _obj, TransComponent::Node _nodeInfo,int startNode,int endNode, TransComponent::Node _nextNode);
+		virtual void Move(GameObject* _obj, TransComponent::Node _nodeInfo,int startNode,int endNode, TransComponent::Node _nextNode, GameObject * _player);
 		virtual void ExtraParam(float _val);		
 		int cost = 0;
 	public:
@@ -40,11 +40,12 @@ public:
 	};
 	struct Walk :public CostLink
 	{
-		virtual void Move(GameObject* _obj,TransComponent::Node _nodeInfo,int startNode, int endNode, TransComponent::Node _nextNode) override;
+		virtual void Move(GameObject* _obj,TransComponent::Node _nodeInfo,int startNode, int endNode, TransComponent::Node _nextNode, GameObject* _player) override;
+		float AccTime = 0.f;
 	};
 	struct Jump :public CostLink
 	{
-		virtual void Move(GameObject* _obj, TransComponent::Node _nodeInfo, int startNode, int endNode, TransComponent::Node _nextNode) override;
+		virtual void Move(GameObject* _obj, TransComponent::Node _nodeInfo, int startNode, int endNode, TransComponent::Node _nextNode, GameObject* _player) override;
 		virtual void ExtraParam(float _val) override;
 		bool IsJumpDone = false;
 		//Extra Params
