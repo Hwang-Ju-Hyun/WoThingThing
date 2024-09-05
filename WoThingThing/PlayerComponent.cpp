@@ -129,7 +129,7 @@ void PlayerComponent::MoveMent()
 	{						
 
 		//player_trs->AddPos(-5.f, 0.f);
-		player_trs->MovePos(-5.f, 0.f, manipulActive, dt);
+		player_trs->MovePos(-10.f, 0.f, manipulActive, dt);
 		//Dash
 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
 		{
@@ -171,7 +171,7 @@ void PlayerComponent::MoveMent()
 	if (AEInputCheckCurr(AEVK_D))
 	{		
 		//player_trs->AddPos(5.f, 0.f);
-		player_trs->MovePos(5.f, 0.f, manipulActive, dt);
+		player_trs->MovePos(10.f, 0.f, manipulActive, dt);
 		//Dash
 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
 		{
