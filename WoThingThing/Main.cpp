@@ -55,10 +55,10 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		AESysFrameEnd();
 
 		// check if forcing the application to quit
-		if ((AESysDoesWindowExist() == false) || AEInputCheckTriggered(AEVK_SCROLLLOCK))
+		if ((AESysDoesWindowExist() == false) || AEInputCheckTriggered(AEVK_ESCAPE))
 		{			
 			gsm->ChangeLevel(nullptr);
-			//gsm->Exit();
+			gsm->Exit();
 		}							
 	}
 

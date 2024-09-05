@@ -4,7 +4,7 @@
 
 class GameObject;
 
-class AnimationComponent : public BaseComponent
+class BulletAnimationComponent : public BaseComponent
 {
     AEGfxVertexList* mesh;
     AEGfxTexture* pTex;
@@ -21,19 +21,14 @@ class AnimationComponent : public BaseComponent
     f32 current_sprite_uv_offset_x;
     f32 current_sprite_uv_offset_y;
 
-    bool dashState, jumpState, attackState, longattackState;
-    f32 dashTimer, jumpTimer, attackTimer, longattackTimer;
-    bool flip;
-
     std::string current;
+
 public:
+    BulletAnimationComponent(GameObject* _owner);
+    ~BulletAnimationComponent();
 
     void Initialize();
     void ChangeAnimation(std::string _name, f32 rows, f32 cols, f32 max, f32 duration);
-
-
-    AnimationComponent(GameObject* _owner);
-    ~AnimationComponent();
 
     virtual void Update() override;
 };

@@ -78,14 +78,15 @@ void Level::Stage01_Lvl::Init()
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
-    player->AddComponent("Sprite", new SpriteComponent(player));    
-    //player->AddComponent("Animation", new AnimationComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
     //Add Image Resource??
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });
 
 
+    playerAnim = new GameObject("PlayerAnim");
+    playerAnim->AddComponent("Transform", new TransComponent(playerAnim));
+    playerAnim->AddComponent("Animation", new AnimationComponent(playerAnim));
 
 
     aimTrace = new GameObject("aimTrace");
@@ -172,15 +173,25 @@ void Level::Stage01_Lvl::Update()
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     //SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
-    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
-        
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp"); 
     
     Collision();
-   
-    std::cout << player_trs->GetPos().x << player_trs->GetPos().y << std::endl;
+  
+    s8 pFont = AEGfxCreateFont("Assets/esamanru-Bold.ttf", 20);
+    std::string str1 = std::to_string(GetBullet());
+    std::string str2 = "Bullet: ";
+    const char* cstr1 = str1.c_str();
+    const char* cstr2 = str2.c_str();
+    AEGfxPrint(pFont, cstr1, -0.85, 0.8, 1, 1, 1, 1, 1);
+    AEGfxPrint(pFont, cstr2, -0.95, 0.8, 1, 1, 1, 1, 1);
+
+    if(player_trs->GetPos().y<-1800)
+        player_comp->SetHealth(-1);
+
+
 
     //패딩시 진동 
-    if(IsVibration==false)
+    if (IsVibration == false)
     {
         CameraManager::GetInst()->Update();
     }
@@ -221,7 +232,6 @@ void Level::Stage01_Lvl::Update()
             IsVibration = false;
         }
     }
-    
     
     
 
@@ -392,6 +402,18 @@ void Level::Stage01_Lvl::Collision()
                     {
                         SniperObjID = obj->GetID();
 
+                        //Create Gun && Bullet
+                        TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(EnemySniper[SniperObjID]->FindComponent("Transform"));
+                        if (!player_comp->GetObtain())
+                        {
+                            CreateGun(EnemyMelee_trs->GetPos());
+                        }
+                        if (player_comp->GetObtain())
+                        {
+                            CreateSupplement(EnemyMelee_trs->GetPos());
+                        }
+                        //===========================
+
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         if (!bullet_comp->EnemyShoot)
                         {
@@ -414,6 +436,19 @@ void Level::Stage01_Lvl::Collision()
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {
                 SniperObjID = obj->GetID();
+
+                //Create Gun && Bullet
+                TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(EnemySniper[SniperObjID]->FindComponent("Transform"));
+                if (!player_comp->GetObtain())
+                {
+                    CreateGun(EnemyMelee_trs->GetPos());
+                }
+                if (player_comp->GetObtain())
+                {
+                    CreateSupplement(EnemyMelee_trs->GetPos());
+                }
+                //========================
+
                 EnemySniper[SniperObjID]->SetActive(false);
                 EnemySniper[SniperObjID] = nullptr;
 
@@ -439,6 +474,18 @@ void Level::Stage01_Lvl::Collision()
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         if (!bullet_comp->EnemyShoot)
                         {
+                            //Create Gun && Bullet
+                            TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(Enemy[meeleObjID]->FindComponent("Transform"));
+                            if (!player_comp->GetObtain())
+                            {
+                                CreateGun(EnemyMelee_trs->GetPos());
+                            }
+                            if (player_comp->GetObtain())
+                            {
+                                CreateSupplement(EnemyMelee_trs->GetPos());
+                            }
+                            //================================
+
                             Enemy[meeleObjID]->SetActive(false);
                             Enemy[meeleObjID] = nullptr;
                             bullet_comp->DestroyBullet();
@@ -457,6 +504,19 @@ void Level::Stage01_Lvl::Collision()
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj)) 
             {
                 meeleObjID = obj->GetID();
+
+                //Create Gun && Bullet
+                TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(Enemy[meeleObjID]->FindComponent("Transform"));
+                if (!player_comp->GetObtain())
+                {
+                    CreateGun(EnemyMelee_trs->GetPos());
+                }
+                if (player_comp->GetObtain())
+                {
+                    CreateSupplement(EnemyMelee_trs->GetPos());
+                }
+                //==========================
+
                 Enemy[meeleObjID]->SetActive(false);
                 Enemy[meeleObjID] = nullptr;
              

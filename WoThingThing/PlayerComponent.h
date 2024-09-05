@@ -21,6 +21,8 @@ class PlayerComponent : public BaseComponent
     GameObject* mouseAim;
     GameObject* aim_line;
 
+    AEVec2 norVec;
+
     GameObject* melee;
     GameObject* gauge;
 
@@ -54,7 +56,12 @@ public:
     GameObject* GetMelee();
     bool GetObtain();
     void SetObtain();
+    bool GetMeleeAction();
+    bool GetShotAction();
     ////////////////////////
+
+    void SetNorVec(AEVec2 norV);
+    AEVec2 GetNorVec();
 
 
     //황주현 코드추가
