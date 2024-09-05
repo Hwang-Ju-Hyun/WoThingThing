@@ -232,7 +232,7 @@ void Level::StageBoss_Lvl::Update()
             nodeID2 = nodeID1;
         else
             nodeID2 = FoundedPath[PathIndex + 1];
-        int idx = 0;
+        int idx = 0;        
         while (nodeID2 != node_link[nodeID1][idx].first)
         {
             idx++;
@@ -255,8 +255,26 @@ void Level::StageBoss_Lvl::Update()
     //=======NEVER TOUCH UPPER CODE EXCEPT HWNAG JUHYUN==========
     //======================WARNING=============================
 
-
-    if (Enemy_TEST->GetHP() >= 10&& Enemy_TEST->GetHP()<15)
+    if (Enemy_TEST->GetHP() >=15 && Enemy_TEST->GetHP() <= 20)
+    {
+        AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
+        AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+        AEVec2Normalize(&nor_dVec, &dVec);
+        float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
+        AttackDelayTime += deltaTime;
+        if (AttackDelayTime > 3.f)
+        {
+            auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
+            AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
+            bgm_res->SetSFXorMusic(Sound::SFX);
+            auto bgm_audio = bgm_res->GetAudio();
+            auto bgm_audioGroup = bgm_res->GetAudioGroup();
+            AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);                                   
+            AttackDelayTime = 0.f;
+        }
+    }
+    else if (Enemy_TEST->GetHP() >= 10&& Enemy_TEST->GetHP()<15)
     {                        
         AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
         AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
@@ -290,9 +308,19 @@ void Level::StageBoss_Lvl::Update()
         AEVec2Normalize(&nor_dVec, &dVec);
         float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
         AttackDelayTime += deltaTime;
-        if (AttackDelayTime > 0.5f)
+                        
+        if (AttackDelayTime > 0.75f)
         {
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);            
+
+            auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossGun3", "Assets/BossGun3.mp3");
+            AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
+            bgm_res->SetSFXorMusic(Sound::SFX);
+            auto bgm_audio = bgm_res->GetAudio();
+            auto bgm_audioGroup = bgm_res->GetAudioGroup();
+            AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+
+            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+
             AttackDelayTime = 0.f;
         }
     }
@@ -459,12 +487,13 @@ void Level::StageBoss_Lvl::Collision()
             //Player Death
             if (ColliderManager::GetInst()->IsCollision(player, obj))
             {
+                //player_comp->TakeDamge();
                 auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDeadToBoss", "Assets/Dead1.wav");
                 AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
                 bgm_resDead->SetSFXorMusic(Sound::SFX);
                 auto bgm_audioDead = bgm_resDead->GetAudio();
                 auto bgm_audioGroupDead = bgm_resDead->GetAudioGroup();
-                AEAudioPlay(bgm_audioDead, bgm_audioGroupDead, 1.f, 1.f, 0);
+                AEAudioPlay(bgm_audioDead, bgm_audioGroupDead, 1.f, 1.f, 0);               
                 gameOver = true;
             }
         }        
@@ -478,20 +507,54 @@ void Level::StageBoss_Lvl::Collision()
                 obj->SetActive(false);
             }
         }
+        if (obj->GetName() == "Enemy_TEST")
+        {
+            //총알부분
+            for (auto findObj : GoManager::GetInst()->Allobj())
+            {
+                if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "BossBullet")
+                {
+                    if (ColliderManager::GetInst()->IsCollision(findObj, obj))
+                    {                        
+                        BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
+                        if (!bullet_comp->EnemyShoot)
+                        {                                                                                  
+                            bullet_comp->DestroyBullet(); 
+                            obj->AddHP(-1);
+                        }
+                    }
+                }
+            }
+        }
     }
+    
     //여기가 보스랑 플레이어가 부딫히는 부분
     if (ColliderManager::GetInst()->GetPlayerSearchOnOff() == true)
     {
         if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, 0.5, 1, 1))
         {
+        
+            //맞추기 힘드네
             Enemy_ani->ChangeAnimation("BossAtk", 1, 4, 4, 0.1);
             m_fDt = (f32)AEFrameRateControllerGetFrameTime();
             melee_DelayAtk += m_fDt;
             //std::cout << melee_DelayAtk << std::endl;
-            if (melee_DelayAtk > 0.5f)//0.05초주기
-            {
-                player_comp->TakeDamge();
-                //std::cout << "Attack Player" << std::endl;
+            if (melee_DelayAtk > 0.4f)//0.05초주기
+            {   
+                
+                float f = AEFrameRateControllerGetFrameTime();
+                time += f;
+                auto res_BossMelee = ResourceManager::GetInst()->Get("sfx_EnemyBossSword", "Assets/BossSword.mp3");
+                AudioResource* bgm_resMelee = static_cast<AudioResource*>(res_BossMelee);
+                bgm_resMelee->SetSFXorMusic(Sound::SFX);
+                auto bgm_audio = bgm_resMelee->GetAudio();
+                auto bgm_audioGroup = bgm_resMelee->GetAudioGroup();
+                AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+                if (time > 0.4f)
+                {
+                    player_comp->TakeDamge();
+                }
+                
             }
         }
         else

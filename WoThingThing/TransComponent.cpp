@@ -42,18 +42,12 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	}
 
 	//추가 파트(백무송)
-
-	if (_owner->GetName() == "Test_player")
-	{
-		m_vPos = { -200,-200 };
-		m_vScale = { 50,100 };
-		m_fRot = 0.f;
-	}
+	
 
 	if (_owner->GetName() == "Enemy" && _owner->GetID() == 0)
 	{
 		////pos 절대 고정해 
-		m_vPos = { 600,-1250 };
+		m_vPos = { 1200,-1250 };
 		m_vScale = { 100,80 };
 		m_fRot = 0.f;
 	}
@@ -61,14 +55,14 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	if (_owner->GetName() == "Enemy" && _owner->GetID() == 1)
 	{
 		//pos 절대 고정해 
-		m_vPos = { 900,-1250 };
+		m_vPos = { 1000,-1250 };
 		m_vScale = { 100,80 };
 		m_fRot = 0.f;
 	}
 
 	if (_owner->GetName() == "Enemy" && _owner->GetID() == 2)
 	{
-		m_vPos = { 850,-1282 };
+		m_vPos = { 950,-1282 };
 		m_vScale = { 100,80 };
 		m_fRot = 0.f;
 	}
@@ -195,7 +189,7 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	
 	if (_owner->GetName() == "EnemySniper" && _owner->GetID() == 0)
 	{
-		m_vPos = { -850,-1250 };
+		m_vPos = { -670,-1250 };
 		m_vScale = { 80,75 };
 		m_fRot = 0.f;
 	}

@@ -14,7 +14,8 @@ namespace Level
         GameObject* aimTrace;
         float AccTime = 0.f;
         float AttackDelayTime = 0.f;
-        bool gameOver;
+        bool gameOver;        
+
     public:
         StageBoss_Lvl();
         ~StageBoss_Lvl();
@@ -22,7 +23,7 @@ namespace Level
         virtual void Init() override;
         virtual void Update() override;
         virtual void Exit() override;
-
+        float time=0.f;
     private:        
         GameObject* Platform;        
         GameObject* Enemy_TEST;

@@ -15,6 +15,7 @@ bool PlayerComponent::meleeAction = true;
 bool PlayerComponent::shotAction = false;
 bool PlayerComponent::obtainGun = false;
 
+
 PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 {
 	m_vVelocity = { 0.f, 0.f };
@@ -45,7 +46,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	timeManipul = maniCapacity;
 	manipulActive = false;
 
-	playerhealth = 1000000;
+	playerhealth = 100;
 }
 
 //About Player's movement
@@ -94,10 +95,19 @@ void PlayerComponent::MoveMent()
 			timeManipul += dt;
 		//std::cout << timeManipul << std::endl;
 	}
+	float deltaTime = AEFrameRateControllerGetFrameTime();
+	firstAccTime += deltaTime;
+	
+	if (firstAccTime > 3)
+	{
+		firstMove = true;
+		firstAccTime = 0.f;
+	}
 
 	//Jump
-	if (AEInputCheckTriggered(AEVK_W))
+	if (AEInputCheckTriggered(AEVK_W)&&firstMove)
 	{
+		firstMove = false;
 		jumpCnt++;
 		if (jumpCnt <= 2)
 			Jump(550);
@@ -124,10 +134,9 @@ void PlayerComponent::MoveMent()
 	// 황주현 코드 수정 -> 밑에 코드를 setjumpcntzero ::Stage01 handleCollision에서 구현
 	if (AEInputCheckCurr(AEVK_W) && AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_SPACE))
 		Dash({ 1, 1 });
-		
-	if (AEInputCheckCurr(AEVK_A))
+	
+	if (AEInputCheckCurr(AEVK_A) && firstMove)
 	{						
-
 		//player_trs->AddPos(-5.f, 0.f);
 		player_trs->MovePos(-5.f, 0.f, manipulActive, dt);
 		//Dash
@@ -148,7 +157,7 @@ void PlayerComponent::MoveMent()
 			Dash({ -1, 1 });
 		}
 			
-		else if (AEInputCheckTriggered(AEVK_SPACE))
+		else if (AEInputCheckTriggered(AEVK_SPACE) )
 		{
 			AccTime += AEFrameRateControllerGetFrameTime();
 			auto res = ResourceManager::GetInst()->Get("sfx_dash2", "Assets/dash.mp3");
@@ -168,7 +177,7 @@ void PlayerComponent::MoveMent()
 	}	
 	
 	//Right
-	if (AEInputCheckCurr(AEVK_D))
+	if (AEInputCheckCurr(AEVK_D) && firstMove)
 	{		
 		//player_trs->AddPos(5.f, 0.f);
 		player_trs->MovePos(5.f, 0.f, manipulActive, dt);

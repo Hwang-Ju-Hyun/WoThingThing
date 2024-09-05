@@ -28,23 +28,23 @@ class PlayerComponent : public BaseComponent
 
     static int jumpCnt;
     static bool meleeAction, shotAction, obtainGun;
-
+   
     bool manipulActive;
     f32 timeManipul;
     int playerhealth;
     float maniCapacity;
     float AccTime=0.f;
+    float firstAccTime = 0.f;
 public:
     PlayerComponent(GameObject* _owner);
     ~PlayerComponent() {};
-
     //About Player's movement
     void Jump(float jumpVal);
     void Dash(AEVec2 directVec);
     void MoveMent();
     bool GetManiActive();
     ///////////////////////////
-
+    bool firstMove;
     //About mouse
     void MouseAim();
     void MouseTraceLine();

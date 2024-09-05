@@ -108,21 +108,20 @@ void NaveMeshManager::CreateLinkTable()
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link3;
 	link3.push_back({ 2, walk });
 	link3.push_back({ 4, walk });
-
+	link3.push_back({ 9, jump });
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link4;
-	link4.push_back({ 3, walk });
-	link4.push_back({ 9, jump });
-	link4.push_back({ 5, walk });
+	link4.push_back({ 3, walk });	
+	link4.push_back({ 6, walk });
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link5;
 	link5.push_back({ 6, walk });
-	link5.push_back({ 4, walk });
-	link5.push_back({ 8, jump });
+	link5.push_back({ 4, walk });	
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link6;
 	link6.push_back({ 5, walk });
 	link6.push_back({ 7, walk });
+	link6.push_back({ 8, jump });
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link7;
 	link7.push_back({ 6, walk });
@@ -137,7 +136,8 @@ void NaveMeshManager::CreateLinkTable()
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link9;
 	link9.push_back({ 4, walk });
 	link9.push_back({ 8, walk });	
-	link9.push_back({ 10, jump });	
+	link9.push_back({ 10, jump });
+	link9.push_back({ 17, jump });
 
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link10;
@@ -149,23 +149,24 @@ void NaveMeshManager::CreateLinkTable()
 	link11.push_back({ 12, jump });
 	link11.push_back({ 2,  walk});
 	link11.push_back({ 10,  walk });
+	link11.push_back({ 13,  jump });
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link12;
 	link12.push_back({ 2, walk });
 	link12.push_back({ 1, walk });
-	link12.push_back({ 11, jump });
-	link12.push_back({ 13, jump });
+	link12.push_back({ 11, jump });	
 
 
-	std::vector<std::pair<int/*nodeID*/, CostLink*>> link13;
-	link13.push_back({ 14, walk });
+	std::vector<std::pair<int/*nodeID*/, CostLink*>> link13;	
 	link13.push_back({ 12, walk });
 	link13.push_back({ 1, walk });
+	link13.push_back({ 14, walk });
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link14;
 	link14.push_back({ 20, jump });
 	link14.push_back({ 13, walk });
 	link14.push_back({ 0, walk });
+	link14.push_back({ 11, jump });
 
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link15;
@@ -179,8 +180,9 @@ void NaveMeshManager::CreateLinkTable()
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link17;
 	link17.push_back({ 8, walk });
-	link17.push_back({ 18, walk });
+	link17.push_back({ 18, jump });
 	link17.push_back({ 5, walk });
+	link17.push_back({ 16, jump });
 
 
 	std::vector<std::pair<int/*nodeID*/, CostLink*>> link18;
@@ -475,7 +477,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 				if (isStunned) // 스턴 상태일 때
 				{					
 					AccTime += m_fDt; // 시간 증가
-				    if (AccTime >= 1) {
+				    if (AccTime >= 2) {
 				        
 						isStunned = false;
 						AccTime = 0.f;
@@ -490,10 +492,19 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 				else // 스턴 상태가 아닐 때
 				{
 					// 이동 방향 계산
+					float dt = AEFrameRateControllerGetFrameTime();
 					AEVec2 direction = { _nextNode.node_pos.x - _nodeInfo.node_pos.x, 0 };
 					AEVec2 normalize_dir;
 					AEVec2Normalize(&normalize_dir, &direction);
-					obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f }); // 이동
+					if (player_comp->GetManiActive()) 
+					{
+						obj_trs->AddPos({ normalize_dir.x * 10.f * dt * 30, 0.f });
+					}
+					else 
+					{
+						obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f });
+					}
+					//obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f }); // 이동
 					obj_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
 				}
 			}
@@ -517,29 +528,33 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 		if ( _nodeInfo.node_id == 9
 			|| _nodeInfo.node_id == 8)
 		{
-			Height = 570;
+			obj_rb->AddVelocity({ 0.f,100.f });
+			Height = 900;			
 		}
 		else if (_nodeInfo.node_id == 1)
 		{
-			Height = 650;
+			obj_rb->AddVelocity({ 100.f,100.f });
+			Height = 900;			
 		}
 		else if(_nodeInfo.node_id == 2)
 		{
-			Height = 670;
+			obj_rb->AddVelocity({ 100.f,100.f });
+			Height = 800;
 		}
 		else if(_nodeInfo.node_id==12)
 		{
+			obj_rb->AddVelocity({ 0.f,100.f });
 			Height =900;
 		}
 		else if (_nodeInfo.node_id == 4 || _nodeInfo.node_id == 5)
 		{
-			Height = 550;
+			Height = 610;
 		}
 		else if (_nodeInfo.node_id == 11 || _nodeInfo.node_id == 10)
 		{
-			Height = 540;
+			Height = 640;
 		}
-		obj_rb->jump(Height);
+		obj_rb->jump(Height);		
 		Height = 600;
 		IsJumpDone = true;
 	}

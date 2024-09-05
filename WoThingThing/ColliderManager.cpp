@@ -157,8 +157,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 		float R_SearchPlayer_RightX = Search_RightArea_X + x_range * (enemy_Scale.x / 2.f);
 		float R_SearchPlayer_TopY = enemy_Pos.y + y_range * (enemy_Scale.y / 2.f);
 		float R_SearchPlayer_BotY = enemy_Pos.y - bottom_y_range * (enemy_Scale.y / 2.f);
-	
-		DrawRect(R_SearchPlayer_LeftX, R_SearchPlayer_BotY, R_SearchPlayer_RightX, R_SearchPlayer_TopY, 1, 0, 0);
+
 		if (TestCollisionRectRectInclusive(R_SearchPlayer_RightX, R_SearchPlayer_LeftX, R_SearchPlayer_TopY, R_SearchPlayer_BotY,
 			obj2Right, obj2Left, obj2TopY, obj2BotY))
 		{
@@ -190,7 +189,7 @@ bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, boo
 	{
 		//이 부분 그리게 하기 나중에 코드 작성
 		float Search_LeftArea_X = enemy_Pos.x - enemy_Scale.x; //왼쪽 방향으로 가고 있을 때
-		float L_SearchPlayer_RightX = Search_LeftArea_X + enemy_Scale.x / 2.f;
+		float L_SearchPlayer_RightX = Search_LeftArea_X + 2.f * (enemy_Scale.x / 2.f);
 		float L_SearchPlayer_LeftX = Search_LeftArea_X - 1.f * (enemy_Scale.x / 2.f);//x축 범위
 		float L_SearchPlayer_TopY = enemy_Pos.y + 1.f * (enemy_Scale.y / 2.f);//y축 범위
 		float L_SearchPlayer_BotY = enemy_Pos.y - enemy_Scale.y / 2.f;
@@ -210,7 +209,7 @@ bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, boo
 	else if (enemy_dir == false)
 	{
 		float Search_RightArea_X = enemy_Pos.x + enemy_Scale.x;//오른쪽 방향으로 가고 있을 때
-		float R_SearchPlayer_LeftX = Search_RightArea_X - (enemy_Scale.x / 2.f);
+		float R_SearchPlayer_LeftX = Search_RightArea_X - 2.f * (enemy_Scale.x / 2.f);
 		float R_SearchPlayer_RightX = Search_RightArea_X + 1.f * (enemy_Scale.x / 2.f);
 		float R_SearchPlayer_TopY = enemy_Pos.y + 1.f * (enemy_Scale.y / 2.f);
 		float R_SearchPlayer_BotY = enemy_Pos.y - enemy_Scale.y / 2.f;
