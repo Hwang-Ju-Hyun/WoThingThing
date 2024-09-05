@@ -72,7 +72,7 @@ void Level::Stage01_Lvl::Init()
     player->AddComponent("PlayerComp", new PlayerComponent(player));
     //Add Image Resource??
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
-    player_trs->SetScale({ 100,100 });
+    player_trs->SetScale({ 80, 80 });
 
 
 
@@ -94,6 +94,7 @@ void Level::Stage01_Lvl::Init()
 
     Enemy->AddComponent("Transform", new TransComponent(Enemy));
     Enemy->AddComponent("Sprite", new SpriteComponent(Enemy));
+    //Enemy->AddComponent("Animation", new AnimationComponent(Enemy));
     Enemy->AddComponent("RigidBody", new RigidBodyComponent(Enemy));
     Enemy->AddComponent("Ai", new AiComponent(Enemy));
     AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
