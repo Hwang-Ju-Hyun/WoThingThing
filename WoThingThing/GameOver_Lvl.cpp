@@ -11,6 +11,7 @@ Level::GameOver_Lvl::GameOver_Lvl()
 
 Level::GameOver_Lvl::~GameOver_Lvl()
 {
+	//AEGfxDestroyFont(gameoverFont);
 }
 
 void Level::GameOver_Lvl::Init()
@@ -20,10 +21,23 @@ void Level::GameOver_Lvl::Init()
 
 void Level::GameOver_Lvl::Update()
 {
-	AEGfxPrint(gameoverFont, "YOU DIED", -0.3, 0, 1, 1, 1, 1, 1);
+	const char* test1 = "YOU DIED";
+	const char* test2 = "Press R Restart";
+	const char* test3 = "Press ESC Exit";
+	f32 w, h;
 
-	AEGfxPrint(gameoverFont, "Press R Restart", -0.15, -0.3, 0.3, 1, 1, 1, 1);
-	AEGfxPrint(gameoverFont, "Press ESC Exit", -0.15, -0.4, 0.3, 1, 1, 1, 1);
+	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+	AEGfxGetPrintSize(gameoverFont, test1, 1.f, &w, &h);
+
+	//AEGfxPrint(gameoverFont, "YOU DIED", -0.3, 0, 1, 1, 1, 1, 1);
+	AEGfxPrint(gameoverFont, test1, -w / 2, -h / 2, 1, 1, 1, 1, 1);
+
+	//AEGfxPrint(gameoverFont, "Press R Restart", -0.15, -0.3, 0.3, 1, 1, 1, 1);
+	AEGfxPrint(gameoverFont, test2, -0.15, -0.3, 0.3, 1, 1, 1, 1);
+	//AEGfxPrint(gameoverFont, "Press ESC Exit", -0.15, -0.4, 0.3, 1, 1, 1, 1);
+	AEGfxPrint(gameoverFont, test3, -0.15, -0.4, 0.3, 1, 1, 1, 1);
+
+
 
 	if (AEInputCheckCurr(AEVK_R))
 	{

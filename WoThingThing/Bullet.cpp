@@ -10,23 +10,26 @@
 #include "BulletAnimationComponent.h"
 
 #include "ResourceManager.h"
+int remainBullet;
 
 void CreateGun(AEVec2 initPos)
 {
+	remainBullet = 5;
 	GameObject* gun = new GameObject("Gun");
 	GoManager::GetInst()->AddObject(gun);
 	gun->AddComponent("Transform", new TransComponent(gun));
 	gun->AddComponent("BulletAnim", new BulletAnimationComponent(gun));
 	//gun->AddComponent("Sprite", new SpriteComponent(gun));
-
+	
 	TransComponent* gun_trs = (TransComponent*)gun->FindComponent("Transform");
 	gun_trs->SetPos(initPos.x, initPos.y);
 	gun_trs->SetScale({ 60,80 });
 }
 
+
 void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool _enemyShoot)
 {
-	if(!_enemyShoot)
+	if (!_enemyShoot)
 	{
 		if (remainBullet > 0) //Player
 		{

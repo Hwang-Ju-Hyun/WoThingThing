@@ -86,10 +86,7 @@ void Level::Stage01_Lvl::Init()
     
     
     playerAnim = new GameObject("PlayerAnim");
-
-    //꼭 추가할것!
     GoManager::GetInst()->AddObject(playerAnim); //GetInst() == GetPtr()
-    //꼭 추가할것!
     playerAnim->AddComponent("Transform", new TransComponent(playerAnim));
     playerAnim->AddComponent("Animation", new AnimationComponent(playerAnim));
     
@@ -171,13 +168,17 @@ void Level::Stage01_Lvl::Update()
     
     Collision();
  
-    s8 pFont = AEGfxCreateFont("Assets/esamanru-Bold.ttf", 20);
-    std::string str1 = std::to_string(GetBullet());
-    std::string str2 = "Bullet: ";
-    const char* cstr1 = str1.c_str();
-    const char* cstr2 = str2.c_str();
-    AEGfxPrint(pFont, cstr1, -0.85, 0.8, 1, 1, 1, 1, 1);
-    AEGfxPrint(pFont, cstr2, -0.95, 0.8, 1, 1, 1, 1, 1);
+    if(player_comp->GetObtain())
+    {
+        s8 pFont = AEGfxCreateFont("Assets/esamanru-Bold.ttf", 20);
+        std::string str1 = std::to_string(GetBullet());
+        std::string str2 = "Bullet: ";
+        const char* cstr1 = str1.c_str();
+        const char* cstr2 = str2.c_str();
+        AEGfxPrint(pFont, cstr1, -0.85, 0.8, 1, 1, 1, 1, 1);
+        AEGfxPrint(pFont, cstr2, -0.95, 0.8, 1, 1, 1, 1, 1);
+    }
+    
 
     if(player_trs->GetPos().y<-1800)
         player_comp->SetHealth(-1);
@@ -280,7 +281,7 @@ void Level::Stage01_Lvl::Update()
 
 void Level::Stage01_Lvl::Exit()
 {    
-    ResourceManager::GetInst()->RemoveAllRes();    
+    //ResourceManager::GetInst()->RemoveAllRes();    
     EventManager::GetInst()->RemoveAllEvent();
     GoManager::GetInst()->RemoveAllObj();
 }
@@ -350,7 +351,7 @@ void Level::Stage01_Lvl::Collision()
                     bullet_comp->SetState();
                     bullet_comp->EnemyShoot = false;
                     AEVec2 bulletVec = bullet_comp->GetBulletVec();
-                    AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+                    AEVec2 nor_dVec{ 0,0 };
                     AEVec2Normalize(&nor_dVec, &bulletVec);
                     AEVec2Scale(&nor_dVec, &nor_dVec, -1);
                                         
@@ -366,7 +367,7 @@ void Level::Stage01_Lvl::Collision()
                 }
             }
            //Player Death           
-           if (ColliderManager::GetInst()->IsCollision(player, obj))
+           if (ColliderManager::GetInst()->IsCollision(player, obj) && !player_comp->GetInvincible())
            {               
                //gameOver = true;
                player_comp->TakeDamge();
@@ -537,7 +538,6 @@ void Level::Stage01_Lvl::Collision()
             if (ColliderManager::GetInst()->IsCollision(player, obj))
             {
                 player_comp->SetObtain();
-
                 obj->SetActive(false);
             }
         }

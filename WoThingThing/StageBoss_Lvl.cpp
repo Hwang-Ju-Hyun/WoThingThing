@@ -474,7 +474,7 @@ void Level::StageBoss_Lvl::Collision()
             }
 
             //Player Death
-            if (ColliderManager::GetInst()->IsCollision(player, obj))
+            if (ColliderManager::GetInst()->IsCollision(player, obj) && !player_comp->GetInvincible())
             {
                 auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDeadToBoss", "Assets/Dead1.wav");
                 AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
@@ -519,7 +519,7 @@ void Level::StageBoss_Lvl::Collision()
     //여기가 보스랑 플레이어가 부딫히는 부분
     if (ColliderManager::GetInst()->GetPlayerSearchOnOff() == true)
     {
-        if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, 0.5, 1, 1))
+        if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, 0.5, 1, 1) && !player_comp->GetInvincible())
         {
             Enemy_ani->ChangeAnimation("BossAtk", 1, 4, 4, 0.1);
             m_fDt = (f32)AEFrameRateControllerGetFrameTime();

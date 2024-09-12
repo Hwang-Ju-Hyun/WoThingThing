@@ -127,6 +127,7 @@ void AnimationComponent::Update()
 	//Dash
 	if (AEInputCheckTriggered(AEVK_SPACE) && !jumpState && !attackState && !longattackState)
 	{
+		player_comp->SetInvincible(true);
 		dashState = true;
 		dashTimer = 0.f;
 
@@ -139,7 +140,10 @@ void AnimationComponent::Update()
 	}
 	dashTimer += (f32)AEFrameRateControllerGetFrameTime();
 	if (dashTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+	{
+		player_comp->SetInvincible(false);
 		dashState = false;
+	}
 
 	//Jump
 	//cf.) air상태일때 fall 애니메이션만 딱 작동이되고 Land 했을때 다시 Idle로 변하게.
@@ -161,7 +165,7 @@ void AnimationComponent::Update()
 	{
 		attackState = true;
 		attackTimer = 0.f;
-
+	
 		//Flip!!========
 		AEVec2	norD = { 0,0 };
 		if (playerObj != nullptr && player_comp != nullptr)
@@ -173,8 +177,8 @@ void AnimationComponent::Update()
 		else
 			flip = false;
 		//==============
-
-		Initialize();
+	
+		//Initialize();
 		ChangeAnimation("Attack", 1, 8, 8, 0.1);
 	}
 	if (attackState)
@@ -187,6 +191,8 @@ void AnimationComponent::Update()
 		attackState = false;
 		my_trs->SetScale({ 80,80 });
 	}
+
+
 
 	//Long Attack
 	if (player_comp->GetShotAction() && AEInputCheckTriggered(AEVK_LBUTTON))

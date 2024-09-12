@@ -10,10 +10,7 @@
 #include "GoManager.h"
 #include "ResourceManager.h"
 #include "AudioResource.h"
-int PlayerComponent::jumpCnt = 0;
-bool PlayerComponent::meleeAction = true;
-bool PlayerComponent::shotAction = false;
-bool PlayerComponent::obtainGun = false;
+
 
 PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 {
@@ -40,12 +37,21 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	gauge->AddComponent("Sprite", new SpriteComponent(gauge));
 	
 	melee = nullptr;
+	meleeState = false;
+	meleeCooldown = 0.f;
 
 	maniCapacity = 7.f;
 	timeManipul = maniCapacity;
 	manipulActive = false;
 
 	playerhealth = 5;
+
+	jumpCnt = 0;
+	meleeAction = true;
+	shotAction = false;
+	obtainGun = false;
+
+	invincibility = false;
 }
 
 //About Player's movement
@@ -228,7 +234,13 @@ void PlayerComponent::MoveMent()
 	pos.y += (dashVelocity.y) * (1.f * dt);
 
 	//Gravity
-	jumpVelocity.y -= m_vGravity.y * dt;	
+	float accelGravity = 1.f;
+	if (AEInputCheckCurr(AEVK_LCTRL))
+	{
+		accelGravity = 4.f;
+	}
+
+	jumpVelocity.y -= m_vGravity.y * dt * accelGravity;
 	pos.y = pos.y + jumpVelocity.y * dt;
 	static_cast<TransComponent*>(player_trs)->SetPos(pos);
 }
@@ -236,6 +248,16 @@ void PlayerComponent::MoveMent()
 bool PlayerComponent::GetManiActive()
 {
 	return manipulActive;
+}
+
+bool PlayerComponent::GetInvincible()
+{
+	return invincibility;
+}
+
+void PlayerComponent::SetInvincible(bool sw)
+{
+	invincibility = sw;
 }
 
 //About mouse
@@ -316,29 +338,51 @@ void PlayerComponent::Attack()
 		aimTrace_spr->SetScale({ 0,0 });
 		/////////////////////////
 
-		if (AEInputCheckTriggered(AEVK_LBUTTON))
+		if (AEInputCheckTriggered(AEVK_LBUTTON) && !meleeState)
 		{
 			if(melee == nullptr)
-			{							
+			{
+				meleeState = true;
+				meleeCooldown = 0.f;
 
 				melee = new GameObject("Melee");
 				GoManager::GetInst()->AddObject(melee); //GetInst() == GetPtr()
 				melee->AddComponent("Transform", new TransComponent(melee));
+				//melee->AddComponent("Sprite", new SpriteComponent(melee));
 
-				TransComponent* melee_trs = static_cast<TransComponent*>(melee->FindComponent("Transform"));
-				melee_trs->SetPos(player_trs->GetPos().x + (nor_dVec.x * 50.f), player_trs->GetPos().y + (nor_dVec.y * 50.f));
-				melee_trs->SetScale({ 100,100 });
+
 			}
 		}
 		else
 		{
-			//melee_trs->SetScale({ 0, 0 });
-			if (melee != nullptr)
+			if(melee!=nullptr)
+			{
+				TransComponent* melee_trs = static_cast<TransComponent*>(melee->FindComponent("Transform"));
+				melee_trs->SetPos(player_trs->GetPos().x + (nor_dVec.x * 50.f), player_trs->GetPos().y + (nor_dVec.y * 50.f));
+				//melee_trs->SetScale({ 100,100 });
+			}
+
+			meleeCooldown += (f32)AEFrameRateControllerGetFrameTime();
+			if(manipulActive)
+			{
+				if (meleeCooldown >= 3.f)
+				{
+					meleeState = false;
+				}
+			}
+			else 
+			{
+				if (meleeCooldown >= 0.35f)
+				{
+					meleeState = false;
+				}
+				
+			}
+			if (melee != nullptr && !meleeState)
 			{
 				//delete melee;
 				melee->SetActive(false); //Set false means DELETE AND REMOVE GO.
 				melee = nullptr; //I dont have a melee anymore
-
 			}
 		}
 	}
@@ -380,6 +424,11 @@ void PlayerComponent::SetObtain()
 bool PlayerComponent::GetMeleeAction()
 {
 	return meleeAction;
+}
+
+bool PlayerComponent::GetMeleeState()
+{
+	return meleeState;
 }
 
 bool PlayerComponent::GetShotAction()

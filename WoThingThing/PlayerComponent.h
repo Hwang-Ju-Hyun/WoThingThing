@@ -24,16 +24,20 @@ class PlayerComponent : public BaseComponent
     AEVec2 norVec;
 
     GameObject* melee;
+    bool meleeState;
+    f32 meleeCooldown;
     GameObject* gauge;
 
-    static int jumpCnt;
-    static bool meleeAction, shotAction, obtainGun;
+    int jumpCnt;
+    bool meleeAction, shotAction, obtainGun;
 
     bool manipulActive;
     f32 timeManipul;
     int playerhealth;
     float maniCapacity;
     float AccTime=0.f;
+
+    bool invincibility;
 public:
     PlayerComponent(GameObject* _owner);
     ~PlayerComponent() {};
@@ -43,6 +47,9 @@ public:
     void Dash(AEVec2 directVec);
     void MoveMent();
     bool GetManiActive();
+
+    bool GetInvincible();
+    void SetInvincible(bool sw);
     ///////////////////////////
 
     //About mouse
@@ -57,6 +64,7 @@ public:
     bool GetObtain();
     void SetObtain();
     bool GetMeleeAction();
+    bool GetMeleeState();
     bool GetShotAction();
     ////////////////////////
 

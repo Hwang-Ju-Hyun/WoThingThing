@@ -30,7 +30,7 @@ void ESM::EnemyAttack::Update()
 
 	PlayerComponent* player_comp = (PlayerComponent*)Player->FindComponent("PlayerComp");
 
-	if (ColliderManager::GetInst()->MeleeEnemyAttack(Attack_enemy, Player, dir_state))
+	if (ColliderManager::GetInst()->MeleeEnemyAttack(Attack_enemy, Player, dir_state) && !player_comp->GetInvincible())
 	{
 		m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 		melee_DelayAtk += m_fDt;
