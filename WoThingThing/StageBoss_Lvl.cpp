@@ -1,4 +1,3 @@
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 #include <iostream>
 #include "header.h"
 
@@ -255,8 +254,26 @@ void Level::StageBoss_Lvl::Update()
     //=======NEVER TOUCH UPPER CODE EXCEPT HWNAG JUHYUN==========
     //======================WARNING=============================
 
-
-    if (Enemy_TEST->GetHP() >= 10&& Enemy_TEST->GetHP()<15)
+    if (Enemy_TEST->GetHP() >= 15 && Enemy_TEST->GetHP() <= 20)
+    {
+        AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
+        AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+        AEVec2Normalize(&nor_dVec, &dVec);
+        float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
+        AttackDelayTime += deltaTime;
+        if (AttackDelayTime > 3.f)
+        {
+            auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
+            AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
+            bgm_res->SetSFXorMusic(Sound::SFX);
+            auto bgm_audio = bgm_res->GetAudio();
+            auto bgm_audioGroup = bgm_res->GetAudioGroup();
+            AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+            AttackDelayTime = 0.f;
+        }
+    }
+    else if (Enemy_TEST->GetHP() >= 10&& Enemy_TEST->GetHP()<15)
     {                        
         AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
         AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
@@ -476,6 +493,26 @@ void Level::StageBoss_Lvl::Collision()
                 //std::cout << "Add Bullet!" << std::endl;
 
                 obj->SetActive(false);
+            }
+        }
+
+        if (obj->GetName() == "Enemy_TEST")
+        {
+            //ÃÑ¾ËºÎºÐ
+            for (auto findObj : GoManager::GetInst()->Allobj())
+            {
+                if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "BossBullet")
+                {
+                    if (ColliderManager::GetInst()->IsCollision(findObj, obj))
+                    {
+                        BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
+                        if (!bullet_comp->EnemyShoot)
+                        {
+                            bullet_comp->DestroyBullet();
+                            obj->AddHP(-1);
+                        }
+                    }
+                }
             }
         }
     }

@@ -277,7 +277,10 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 		m_vScale = { 80,75 };
 		m_fRot = 0.f;
 	}
-
+	else if (_owner->GetName() == "EnemySniper" && _owner->GetID() > 13)
+	{
+		_owner->SetActive(false);
+	}
 	//enemy bullet¿ë
 	if (_owner->GetName() == "e_bullet") 
 	{

@@ -52,6 +52,7 @@
 
 AEVec2 enemyDvec{ 1, 0 };
 
+
 Level::Stage01_Lvl::Stage01_Lvl()
 {
 }
@@ -151,12 +152,12 @@ void Level::Stage01_Lvl::Init()
     //gameOver = false;
     
     //Audio Init
-    /*auto res = ResourceManager::GetInst()->Get("bgm", "Assets/bouken.mp3");
+    auto res = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
     AudioResource* bgm_res = static_cast<AudioResource*>(res);
     bgm_res->SetSFXorMusic(Sound::MUSIC);
     auto bgm_audio = bgm_res->GetAudio();
     auto bgm_audioGroup = bgm_res->GetAudioGroup();
-    AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);*/
+    AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, -1);
 }
 
 void Level::Stage01_Lvl::Update()
@@ -231,11 +232,11 @@ void Level::Stage01_Lvl::Update()
     //낙사판정
     if ((player_trs->GetPos().x>-3000 && player_trs->GetPos().x < 5000 )&&player_trs->GetPos().y < -1800)
     {        
-        player_comp->SetHealth(11);
+        player_comp->SetHealth(-1);
     }
     else  if (player_trs->GetPos().x >= 5000 &&player_trs->GetPos().y < -900)
     {
-        player_comp->SetHealth(11);
+        player_comp->SetHealth(-1);
     }    
     
     //보스 레벨 진입
@@ -273,7 +274,7 @@ void Level::Stage01_Lvl::Update()
     if (AEInputCheckTriggered(AEVK_F1))
         GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
     
-    
+
 }
 
 

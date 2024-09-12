@@ -18,7 +18,6 @@
 #include "EventManager.h"
 #include "AEInput.h"
 #include"AiComponent.h"
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
 
 Level::TestLevel::TestLevel()
 {
