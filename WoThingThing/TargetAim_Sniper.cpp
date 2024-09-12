@@ -73,7 +73,7 @@ void ESM::TargetAim_Sniper::Update()
 			AttackDelay += m_fDt;
 		}
 		
-		if (AttackDelay >= 0.5f)//공격 딜레이
+		if (AttackDelay >= 1.5f)//공격 딜레이
 		{
 			//bulletComp
 			auto res_EnemyGun = ResourceManager::GetInst()->Get("sfx_EnemyGunShot", "Assets/GunShot.mp3");
@@ -111,7 +111,7 @@ void ESM::TargetAim_Sniper::Update()
 			{
 				AttackDelay += m_fDt;
 			}
-			if (AttackDelay >= 0.5f) // 3초마다 총알 발사
+			if (AttackDelay >= 1.5f) // 3초마다 총알 발사
 			{
 
 				CreateBullet(enemy_trs->GetPos(), nor_dVec, "EnemyBullet", true);
