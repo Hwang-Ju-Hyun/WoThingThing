@@ -54,6 +54,7 @@ public:
 
     //About mouse
     void MouseAim();
+    void DrawAim();
     void MouseTraceLine();
     AEVec2 GetMousePos();
     ///////////////////////

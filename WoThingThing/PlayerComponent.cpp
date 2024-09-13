@@ -10,6 +10,7 @@
 #include "GoManager.h"
 #include "ResourceManager.h"
 #include "AudioResource.h"
+#include "ImageResource.h"
 
 
 PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
@@ -24,7 +25,10 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	mouseAim = new GameObject("mouseAim");
 	GoManager::GetInst()->AddObject(mouseAim);
 	mouseAim->AddComponent("Transform", new TransComponent(mouseAim));
-	mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
+	//mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
+	ResourceManager::GetInst()->Get("Aim", "Assets/Aim.png");
+
+
 
 	aim_line = new GameObject("AimLine");
 	GoManager::GetInst()->AddObject(aim_line);
@@ -254,7 +258,6 @@ bool PlayerComponent::GetInvincible()
 {
 	return invincibility;
 }
-
 void PlayerComponent::SetInvincible(bool sw)
 {
 	invincibility = sw;
@@ -281,8 +284,19 @@ void PlayerComponent::MouseAim()
 	//so, mousePos += player_Cam == World coord mouse position to Camera coord mouse position.
 	mousePos.x += player_Cam.x;
 	mousePos.y += player_Cam.y;
-}
 
+	ImageResource* img = new ImageResource("Assets/Aim.png");
+	img->GetImage();
+
+	DrawAim();
+}
+void PlayerComponent::DrawAim()
+{
+	ImageResource* tempResource = (ImageResource*)ResourceManager::GetInst()->FindRes("Aim");
+	AEGfxTexture* pTex = tempResource->GetImage();
+
+
+}
 void PlayerComponent::MouseTraceLine()
 {
 	TransComponent* aimTrace_trs = (TransComponent*)aim_line->FindComponent("Transform");
@@ -359,7 +373,7 @@ void PlayerComponent::Attack()
 			{
 				TransComponent* melee_trs = static_cast<TransComponent*>(melee->FindComponent("Transform"));
 				melee_trs->SetPos(player_trs->GetPos().x + (nor_dVec.x * 50.f), player_trs->GetPos().y + (nor_dVec.y * 50.f));
-				//melee_trs->SetScale({ 100,100 });
+				melee_trs->SetScale({ 100,100 });
 			}
 
 			meleeCooldown += (f32)AEFrameRateControllerGetFrameTime();
@@ -370,7 +384,7 @@ void PlayerComponent::Attack()
 					meleeState = false;
 				}
 			}
-			else 
+			else
 			{
 				if (meleeCooldown >= 0.35f)
 				{

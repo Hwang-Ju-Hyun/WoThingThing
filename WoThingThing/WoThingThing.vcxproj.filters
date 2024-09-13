@@ -308,9 +308,6 @@
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>Main</Filter>
     </ClCompile>
-    <ClCompile Include="ImageResource.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyAnimationComponent.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -319,6 +316,9 @@
     </ClCompile>
     <ClCompile Include="Congratulation.cpp">
       <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageResource.cpp">
+      <Filter>Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -479,9 +479,6 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="ImageResource.h">
-      <Filter>Main</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageResource.h">
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="ImageResource.h">
@@ -498,6 +495,12 @@
     </ClInclude>
     <ClInclude Include="ImageResource.h">
       <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageResource.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageResource.h">
+      <Filter>Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
