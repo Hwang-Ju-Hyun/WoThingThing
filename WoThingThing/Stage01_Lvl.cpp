@@ -259,7 +259,7 @@ void Level::Stage01_Lvl::Update()
     
     //Player->GetHeath() == 0
     //    gameOver = true
-    
+
     if (!(player_comp->IsAlive()))
     {
         GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
@@ -352,7 +352,7 @@ void Level::Stage01_Lvl::Collision()
             {                             
                 BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
                 if(!bullet_comp->GetState())
-                {                    
+                {
                     bullet_comp->SetState();
                     bullet_comp->EnemyShoot = false;
                     AEVec2 bulletVec = bullet_comp->GetBulletVec();

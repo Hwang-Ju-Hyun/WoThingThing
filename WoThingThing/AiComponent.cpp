@@ -36,8 +36,8 @@ void AiComponent::SetState(const std::string& state_name, const std::string& ene
 	{
 		if (e_state_name == "IDLE")
 		{
-			ESM::IDLE* p = new ESM::IDLE(m_pOwner, Player, set_dir, Time_dir, PlatForm, e_state_name, FirstPlacePos);						
-			esm->ChangeState(p);//p를 넘겨주면 자기자신을 m_pOwner를 넘겨주는거니 참조 한다는거다						
+			ESM::IDLE* p = new ESM::IDLE(m_pOwner, Player, set_dir, Time_dir, PlatForm, e_state_name, FirstPlacePos);			
+			esm->ChangeState(p);//p를 넘겨주면 자기자신을 m_pOwner를 넘겨주는거니 참조 한다는거다			
 		}
 	}
 
