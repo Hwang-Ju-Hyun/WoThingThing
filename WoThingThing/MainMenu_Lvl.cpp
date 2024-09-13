@@ -23,8 +23,8 @@
 void Level::MainMenu_Lvl::Init()
 {
 	StartButton = new GameObject("Start");
-	
 	ExitButton = new GameObject("Exit");	
+
 	GoManager::GetInst()->AddObject(StartButton);	
 	GoManager::GetInst()->AddObject(ExitButton);
 
@@ -33,7 +33,6 @@ void Level::MainMenu_Lvl::Init()
 
 	ExitButton->AddComponent("Transform", new TransComponent(ExitButton));
 	ExitButton->AddComponent("Sprite", new SpriteComponent(ExitButton));
-
 }
 
 void Level::MainMenu_Lvl::Update()

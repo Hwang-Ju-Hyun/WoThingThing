@@ -12,6 +12,7 @@
 #include "AudioResource.h"
 #include "ImageResource.h"
 
+#include "AEEngine.h"
 
 PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 {
@@ -25,9 +26,14 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	mouseAim = new GameObject("mouseAim");
 	GoManager::GetInst()->AddObject(mouseAim);
 	mouseAim->AddComponent("Transform", new TransComponent(mouseAim));
-	//mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
-	ResourceManager::GetInst()->Get("Aim", "Assets/Aim.png");
+	mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
 
+	ResourceManager::GetInst()->Get("Aim", "Assets/Aim.png");
+	TransComponent* aim_trs = (TransComponent*)mouseAim->FindComponent("Transform");
+	aim_trs->SetScale({ 50,50 });
+	SpriteComponent* aim_spr = (SpriteComponent*)mouseAim->FindComponent("Sprite");
+	ImageResource* aimResource = (ImageResource*)ResourceManager::GetInst()->FindRes("Aim");
+	aim_spr->SetTexture(aimResource->GetImage());
 
 
 	aim_line = new GameObject("AimLine");

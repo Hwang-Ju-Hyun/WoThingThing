@@ -19,9 +19,12 @@ SpriteComponent::SpriteComponent(GameObject* _owner)
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
 
 	mesh = AEGfxMeshEnd();
-	//pTex = AEGfxTextureLoad("Assets/idle_1.png");
+
+	pTex = nullptr;
 
 	m_color = { 255,255,255 };
+
+	alpha = 1.f;
 }
 
 SpriteComponent::~SpriteComponent()
@@ -31,48 +34,57 @@ SpriteComponent::~SpriteComponent()
 
 void SpriteComponent::Update()
 {
-
 	if (mesh == nullptr)
 	{
-		//std::cout << "Failed to create mesh" << std::endl;
 		return;
-	}	
-	if (m_pOwner->GetName() == "BackGround")
+	}
+	if (pTex != nullptr)
 	{
 		AEGfxSetRenderMode(AE_GFX_RM_TEXTURE);
+
+		AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, alpha);
+
+		AEGfxSetColorToAdd(0, 0, 0, 0);
+		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+		AEGfxSetTransparency(1.f);
+		AEGfxTextureSet(pTex, 0, 0);
+		TransComponent* trans = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
+		if (trans)
+		{
+			AEMtx33 transf = trans->GetMatrix();
+			AEGfxSetTransform(transf.m);
+		}
+
+		AEGfxMeshDraw(mesh, AE_GFX_MDM_TRIANGLES);
 	}
 	else
 	{
 		AEGfxSetRenderMode(AE_GFX_RM_COLOR);
-	}		
+		AEGfxSetColorToMultiply(m_color.red / 255.f, m_color.green / 255.f, m_color.blue / 255.f, 1);
+		AEGfxSetColorToAdd(0, 0, 0, 0);
+		AEGfxSetBlendMode(AE_GFX_BM_BLEND);
+		AEGfxSetTransparency(1.f);
+		AEGfxTextureSet(pTex, 0, 0);
+		TransComponent* trans = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
+		if (trans)
+		{
+			AEMtx33 transf = trans->GetMatrix();
+			AEGfxSetTransform(transf.m);
+		}
 
-
-	//Set color to Multiply	
-	//AEGfxSetColorToMultiply(155/255.f, 155/255.f, 255/255.f,1);	
-
-	AEGfxSetColorToMultiply(m_color.red/255.f, m_color.green/255.f, m_color.blue/255.f,1);	
-	//AEGfxSetColorToMultiply(1.0f, 1.0f, 1.0f, 1.0f);
-
-	//Set color to add
-	AEGfxSetColorToAdd(0, 0, 0, 0);
-
-	//Set Blend Mode
-	AEGfxSetBlendMode(AE_GFX_BM_BLEND);
-	AEGfxSetTransparency(1);
-	
-
-	//AEGfxTextureSet(pTex, 0, 0);
-
-	TransComponent* trans = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
-	if (trans)
-	{
-		AEMtx33 transf = trans->GetMatrix();
-		AEGfxSetTransform(transf.m);
+		AEGfxMeshDraw(mesh, AE_GFX_MDM_TRIANGLES);
 	}
 
-	AEGfxMeshDraw(mesh, AE_GFX_MDM_TRIANGLES);
-	
 	return;
+}
+
+void SpriteComponent::SetTexture(AEGfxTexture* inputTex)
+{
+	pTex = inputTex;
+}
+void SpriteComponent::SetAlpha(f32 value)
+{
+	alpha = value;
 }
 
 BaseRTTI* SpriteComponent::CreateSpriteComponent()

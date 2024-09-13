@@ -118,6 +118,8 @@ void Level::StageBoss_Lvl::Init()
 
 void Level::StageBoss_Lvl::Update()
 {
+    AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
+    AEInputShowCursor(0);
     //Component Pointer    
 
     //Component 
@@ -130,9 +132,6 @@ void Level::StageBoss_Lvl::Update()
     SpriteComponent* EnemyTest_spr = (SpriteComponent*)Enemy_TEST->FindComponent("Sprite");
     RigidBodyComponent* EnemyTest_rig = (RigidBodyComponent*)Enemy_TEST->FindComponent("RigidBody");
     EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy_TEST->FindComponent("EnemyAnimation");
-
-
-   
   
     playerPos = player_trs->GetPos();
     enemyTestPos = EnemyTest_trs->GetPos();

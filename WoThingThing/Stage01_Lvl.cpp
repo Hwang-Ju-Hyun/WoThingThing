@@ -159,6 +159,8 @@ void Level::Stage01_Lvl::Init()
 
 void Level::Stage01_Lvl::Update()
 {
+    AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
+    AEInputShowCursor(0);
     //Component Pointer
     
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
@@ -268,7 +270,10 @@ void Level::Stage01_Lvl::Update()
 
     //std::cout << std::endl;
     if (AEInputCheckTriggered(AEVK_ESCAPE))
+    {
+        AEInputShowCursor(1);
         GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
+    }
     
     
     

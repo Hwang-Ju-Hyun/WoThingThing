@@ -1,8 +1,11 @@
 #include "Main.h"
-#include "GameStateManager.h"
 #include "header.h"
+
+#include "GameStateManager.h"
 #include "MainMenu_Lvl.h"
 #include "Stage01_Lvl.h"
+#include "GameStart.h"
+
 #include "TimeManager.h"
 #include "CompManager.h"
 #include "EventManager.h"
@@ -42,28 +45,29 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	Level::MainMenu_Lvl MainMenu_lvl;
 	Level::Stage01_Lvl Stage01_lvl;
 	Level::TestLevel Test;
-	gsm->ChangeLevel(new Level::MainMenu_Lvl);
+	Level::GameStart_Lvl GameStart_lvl;
+	gsm->ChangeLevel(new Level::GameStart_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
 		AESysFrameStart();
 
 		//set background color
-		AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
+		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 
 		//Update;
 		CompManager::GetInst()->Update();
 		TimeManager::GetInst()->Update();
-		EventManager::GetInst()->Update();		
+		EventManager::GetInst()->Update();
 		gsm->Update();
 		
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 
 		// check if forcing the application to quit
-		if ((AESysDoesWindowExist() == false) || AEInputCheckTriggered(AEVK_ESCAPE))
-		{			
-			gsm->ChangeLevel(nullptr);			
-		}							
+		//if ((AESysDoesWindowExist() == false) || AEInputCheckTriggered(AEVK_ESCAPE))
+		//{			
+		//	gsm->ChangeLevel(nullptr);			
+		//}							
 	}
 
 	// free the system

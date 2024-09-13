@@ -5,9 +5,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 125,
-          "BLUE": 125,
-          "GREEN": 12
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150
         }
       },
       {
@@ -118,9 +118,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 245,
-          "BLUE": 0,
-          "GREEN": 0
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150
         }
       },
       {
@@ -231,9 +231,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 245,
-          "BLUE": 0,
-          "GREEN": 0
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150
         }
       },
       {
@@ -344,9 +344,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 245,
-          "BLUE": 0,
-          "GREEN": 0
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150
         }
       },
       {
@@ -457,9 +457,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 0,
-          "BLUE": 255,
-          "GREEN": 0
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150
         }
       },
       {
@@ -570,9 +570,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 0,
-          "BLUE": 255,
-          "GREEN": 0
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150
         }
       },
       {
@@ -683,9 +683,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 0,
-          "BLUE": 255,
-          "GREEN": 0
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150
         }
       },
       {
@@ -796,9 +796,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 0,
-          "BLUE": 255,
-          "GREEN": 0
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150
         }
       },
       {
@@ -909,9 +909,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 0,
-          "BLUE": 0,
-          "GREEN": 255
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150
         }
       },
       {
@@ -1022,9 +1022,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 0,
-          "BLUE": 0,
-          "GREEN": 255
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150
         }
       },
       {
@@ -1135,9 +1135,9 @@
       {
         "Type": "Sprite",
         "CompData": {
-          "RED": 255,
-          "BLUE": 0,
-          "GREEN": 255
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150
         }
       },
       {

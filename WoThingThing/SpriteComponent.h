@@ -5,7 +5,7 @@ class GameObject;
 
 class SpriteComponent : public BaseComponent
 {
-    //AEGfxTexture* pTex;
+    f32 alpha;
 public:
     SpriteComponent(GameObject* _owner);
     ~SpriteComponent();
@@ -20,7 +20,12 @@ public:
     };
     Color m_color;
     AEGfxVertexList* mesh;
-    Color& GetColor(){ return m_color; }    
+
+    void SetTexture(AEGfxTexture* inputTex);
+    AEGfxTexture* pTex;
+
+    Color& GetColor() { return m_color; };
+    void SetAlpha(f32 value);
 
     static BaseRTTI* CreateSpriteComponent();
     static constexpr const char* SpriteTypeName = "Sprite";
