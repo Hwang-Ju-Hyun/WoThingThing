@@ -16,7 +16,7 @@ public:
 private:
 	int m_id;
 	float AttackDelay;
-	int m_hp=20;	
+	int m_hp=20;//	
 public:
 	enum weapon
 	{

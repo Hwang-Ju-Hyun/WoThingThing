@@ -80,7 +80,8 @@ void CreateSupplement(AEVec2 initPos)
 	TransComponent* supple_trs = (TransComponent*)supplement->FindComponent("Transform");
 	//initPos 값을 적의 위치로 주면 끝
 	supple_trs->SetPos(initPos.x, initPos.y);
-	supple_trs->SetScale({ 15,20 });
+	supple_trs->SetScale({ 15,
+		});
 
 }
 

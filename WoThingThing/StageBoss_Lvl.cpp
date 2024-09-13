@@ -481,7 +481,7 @@ void Level::StageBoss_Lvl::Collision()
                 auto bgm_audioDead = bgm_resDead->GetAudio();
                 auto bgm_audioGroupDead = bgm_resDead->GetAudioGroup();
                 AEAudioPlay(bgm_audioDead, bgm_audioGroupDead, 1.f, 1.f, 0);
-                gameOver = true;
+                player_comp->TakeDamge();
             }
         }        
         if (obj->GetName() == "BulletSupplement")
@@ -490,7 +490,6 @@ void Level::StageBoss_Lvl::Collision()
             {
                 AddBullet();
                 //std::cout << "Add Bullet!" << std::endl;
-
                 obj->SetActive(false);
             }
         }

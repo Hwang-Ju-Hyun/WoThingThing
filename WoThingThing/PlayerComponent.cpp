@@ -62,6 +62,8 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	obtainGun = false;
 
 	invincibility = false;
+
+	playerhealth = 10;
 }
 
 //About Player's movement

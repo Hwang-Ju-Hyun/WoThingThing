@@ -281,7 +281,7 @@ void Level::Stage01_Lvl::Update()
         GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
     
 
-}
+  }
 
 
 void Level::Stage01_Lvl::Exit()
@@ -371,11 +371,15 @@ void Level::Stage01_Lvl::Collision()
                     AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);                    
                 }
             }
-           //Player Death           
+           //Player Death
            if (ColliderManager::GetInst()->IsCollision(player, obj) && !player_comp->GetInvincible())
            {               
+
+               //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+
                //gameOver = true;
                player_comp->TakeDamge();
+               //bullet_comp->DestroyBullet(); 고민 해보기 (어차피 체력 1이니까)
                 //audio
                auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");               
                AudioResource* bgm_res = static_cast<AudioResource*>(resDead);
