@@ -479,10 +479,7 @@
       <Filter>Main</Filter>
     </ClInclude>
     <ClInclude Include="ImageResource.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageResource.h">
-      <Filter>Header</Filter>
+      <Filter>Resource</Filter>
     </ClInclude>
     <ClInclude Include="EnemyAnimationComponent.h">
       <Filter>Ai\AnimationAi</Filter>
@@ -492,15 +489,6 @@
     </ClInclude>
     <ClInclude Include="Congratulation.h">
       <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageResource.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageResource.h">
-      <Filter>Header</Filter>
-    </ClInclude>
-    <ClInclude Include="ImageResource.h">
-      <Filter>Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
