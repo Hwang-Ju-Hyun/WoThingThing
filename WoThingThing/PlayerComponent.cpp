@@ -45,7 +45,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	timeManipul = maniCapacity;
 	manipulActive = false;
 
-	playerhealth = 5;
+	playerhealth = 10;
 }
 
 //About Player's movement

@@ -28,7 +28,6 @@ extern double	g_appTime;
 #include "AEEngine.h"
 #include "Math.h"
 
-
 #endif
 
 
