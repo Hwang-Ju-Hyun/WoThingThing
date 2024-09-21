@@ -172,13 +172,20 @@ void Level::Stage01_Lvl::Update()
  
     if(player_comp->GetObtain())
     {
-        s8 pFont = AEGfxCreateFont("Assets/esamanru-Bold.ttf", 20);
+        //리소스 매니저 사용해서 관리해주기 안쓰면 맨날 업데이트 되서 너무 많은 폰트가 들어옴
+        //파일 닫기 잘해주기
+        //로드 할때 nullptr 체크하기
+        //오디오 함수 만들기        
+
+
+        auto pFont = static_cast<TextResource*>(ResourceManager::GetInst()->Get("esamanru","Assets/esamanru-Bold.ttf"));
         std::string str1 = std::to_string(GetBullet());
         std::string str2 = "Bullet: ";
         const char* cstr1 = str1.c_str();
         const char* cstr2 = str2.c_str();
-        AEGfxPrint(pFont, cstr1, -0.85, 0.8, 1, 1, 1, 1, 1);
-        AEGfxPrint(pFont, cstr2, -0.95, 0.8, 1, 1, 1, 1, 1);
+
+        AEGfxPrint(pFont->GetFont(), cstr1, -0.85, 0.8, 20/72.f, 1, 1, 1, 1);
+        AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20/72.f, 1, 1, 1, 1);
     }
     
 
@@ -505,7 +512,7 @@ void Level::Stage01_Lvl::Collision()
             //근접
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj)) 
             {
-                meeleObjID = obj->GetID();
+                 meeleObjID = obj->GetID();
 
                 //Create Gun && Bullet
                 TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(Enemy[meeleObjID]->FindComponent("Transform"));
