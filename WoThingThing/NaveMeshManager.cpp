@@ -498,7 +498,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 					AEVec2Normalize(&normalize_dir, &direction);
 					if (player_comp->GetManiActive())
 					{
-						obj_trs->AddPos({ normalize_dir.x * 10.f * dt * 10, 0.f });
+						obj_trs->AddPos({ normalize_dir.x * dt * 10.f, 0.f });
 					}
 					else
 					{
@@ -518,11 +518,14 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 {
 	TransComponent* obj_trs = static_cast<TransComponent*>(_obj->FindComponent("Transform"));
 	RigidBodyComponent* obj_rb = static_cast<RigidBodyComponent*>(_obj->FindComponent("RigidBody"));
-	PathFindMoveComponent*obj_pf= static_cast<PathFindMoveComponent*>(_obj->FindComponent("PathFindMove"));	
+	PathFindMoveComponent*obj_pf= static_cast<PathFindMoveComponent*>(_obj->FindComponent("PathFindMove"));
+	PlayerComponent* player_comp = (PlayerComponent*)_player->FindComponent("PlayerComp");
 	AEVec2 objPos = obj_trs->GetPos();
 	AEVec2 objScale = obj_trs->GetScale();
 	AEVec2 nodePos = _nodeInfo.node_pos;	
 	AEVec2 nodeScale = { 50.f,70.f };
+	//이 부분에 대한 고민 쉬프트를 누르면 점프가 느려지게 하는데 높이는 그만큼 오르게 만들게 해야함  
+	//
 	if (ColliderManager::GetInst()->IsCollision(_obj, _nodeInfo)&&IsJumpDone==false)
 	{
 		if ( _nodeInfo.node_id == 9
@@ -551,7 +554,7 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 			Height = 540;
 		}
 		obj_rb->jump(Height);
-		Height = 600;
+		//Height = 600;
 		IsJumpDone = true;
 	}
 	else
@@ -559,7 +562,15 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 		AEVec2 direction = { _nextNode.node_pos.x - _nodeInfo.node_pos.x, _nextNode.node_pos.y - _nodeInfo.node_pos.y };
 		AEVec2 normalize_dir;
 		AEVec2Normalize(&normalize_dir, &direction);
-		obj_trs->AddPos({ (normalize_dir.x*10.f),0.f });
+		float dt = AEFrameRateControllerGetFrameTime();
+		if (player_comp->GetManiActive())
+		{
+			obj_trs->AddPos({ normalize_dir.x * dt * 10.f, 0.f });
+		}
+		else
+		{
+			obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f });
+		}
 		
 		//obj_rb->AddVelocity(normalize_dir.x * 500.f, normalize_dir.y * 500.f);
 		IsJumpDone = false;

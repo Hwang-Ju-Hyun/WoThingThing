@@ -16,8 +16,8 @@
 #include "MapEditor.h"
 #include "StageBoss_Lvl.h"
 #include "Serializer.h"
-//추가한 부분(백무송)
-//#include "TestLevel.h"
+
+#include"StageBoss_Lvl.h"
 
 
 void Level::MainMenu_Lvl::Init()
@@ -118,7 +118,10 @@ void Level::MainMenu_Lvl::Update()
 
 
 	MenuText_res->SetText("EXIT");
-	AEGfxPrint(font, text, -0.05f, 1.f - (height + 1.37), 1, 1, 1, 1, 1);	
+	AEGfxPrint(font, text, -0.05f, 1.f - (height + 1.37), 1, 1, 1, 1, 1);
+
+	//
+	Level::StageBoss_Lvl::Stage2 = false;
 }
 
 void Level::MainMenu_Lvl::Exit()

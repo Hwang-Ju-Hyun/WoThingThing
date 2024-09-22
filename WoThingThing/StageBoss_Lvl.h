@@ -34,7 +34,7 @@ namespace Level
     public:
         void HandleCollision(GameObject* obj1, GameObject* obj2);
         void Collision();
-
+        static bool Stage2;
     private:
         bool enemyDir;
         AEVec2 playerPos;

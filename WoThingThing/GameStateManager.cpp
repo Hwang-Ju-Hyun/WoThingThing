@@ -83,3 +83,5 @@ bool GSM::GameStateManager::ShouldExit()
 {
 	return m_pCurrentLevel == nullptr;
 }
+
+

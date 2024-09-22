@@ -1,6 +1,6 @@
+#include "GameStart.h"
 #include "GameStateManager.h"
 
-#include "GameStart.h"
 #include "MainMenu_Lvl.h"
 #include "Stage01_Lvl.h"
 #include "GameOver_Lvl.h"
@@ -12,6 +12,7 @@
 
 #include "ResourceManager.h"
 #include "ImageResource.h"
+#include "StageBoss_Lvl.h"
 
 Level::GameStart_Lvl::GameStart_Lvl()
 {
@@ -63,6 +64,8 @@ void Level::GameStart_Lvl::Init()
 
 	preTime = 0.f;
 	totallogoTime = 0.f;
+
+	Level::StageBoss_Lvl::Stage2 = false;
 }
 
 void Level::GameStart_Lvl::Update()

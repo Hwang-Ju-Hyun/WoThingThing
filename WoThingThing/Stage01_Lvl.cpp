@@ -48,6 +48,7 @@
 #include"AnimationComponent.h"
 #include"EnemyAnimationComponent.h"
 
+#include"StageBoss_Lvl.h"
 
 
 AEVec2 enemyDvec{ 1, 0 };
@@ -62,7 +63,8 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 }
 
 void Level::Stage01_Lvl::Init()
-{    
+{
+    
     //Object and Component Init
 
     ResourceManager::GetInst()->Get("MeleeIdle", "Assets/meleeEnemyIdle.png");
@@ -149,12 +151,15 @@ void Level::Stage01_Lvl::Init()
     //gameOver = false;
     
     //Audio Init
-    auto res = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
-    AudioResource* bgm_res = static_cast<AudioResource*>(res);
-    bgm_res->SetSFXorMusic(Sound::MUSIC);
-    auto bgm_audio = bgm_res->GetAudio();
-    auto bgm_audioGroup = bgm_res->GetAudioGroup();
-    AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, -1);
+    //auto res = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
+    //AudioResource* bgm_res = static_cast<AudioResource*>(res);
+    //bgm_res->SetSFXorMusic(Sound::MUSIC);
+    //auto bgm_audio = bgm_res->GetAudio();
+    //auto bgm_audioGroup = bgm_res->GetAudioGroup();
+    //AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, -1);
+
+    //
+    Level::StageBoss_Lvl::Stage2 = false;
 }
 
 void Level::Stage01_Lvl::Update()
@@ -286,7 +291,6 @@ void Level::Stage01_Lvl::Update()
     
     if (AEInputCheckTriggered(AEVK_F1))
         GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
-    
 
   }
 

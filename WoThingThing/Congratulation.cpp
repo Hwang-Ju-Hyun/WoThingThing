@@ -4,7 +4,9 @@
 #include "MainMenu_Lvl.h"
 #include "Stage01_Lvl.h"
 #include"EventManager.h"
-
+//
+#include"StageBoss_Lvl.h"
+//
 s8 CongratulationFont;
 
 
@@ -19,6 +21,7 @@ Level::Congratulation::~Congratulation()
 void Level::Congratulation::Init()
 {
 	CongratulationFont=AEGfxCreateFont("Assets/esamanru-Bold.ttf", 72);
+	Level::StageBoss_Lvl::Stage2 = false;
 }
 
 void Level::Congratulation::Update()
