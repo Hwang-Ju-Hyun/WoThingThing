@@ -89,4 +89,5 @@ public:
     virtual void Update() override;
     virtual void LoadFromJson(const json& str)override;
     virtual json SaveToJson()override;
+
 };

@@ -20,6 +20,7 @@ namespace GSM
 	public:
 		void ChangeLevel(BaseLevel* newLvl);
 		bool ShouldExit();
+
 	};
 }
 

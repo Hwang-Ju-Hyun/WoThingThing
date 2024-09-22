@@ -42,5 +42,8 @@ public:
     virtual json SaveToJson()override;
 public:
     void jump(float jumpVal);
+    bool manipulActive = 7.f;
+    f32 timeManipul;
+    float maniCapacity = false;
 };
 

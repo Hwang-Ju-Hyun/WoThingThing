@@ -41,6 +41,8 @@
 #include "EnemyAnimationComponent.h"
 #include"AnimationComponent.h"
 
+bool Level::StageBoss_Lvl::Stage2 = true;
+
 Level::StageBoss_Lvl::StageBoss_Lvl()
 {
 }
@@ -51,6 +53,7 @@ Level::StageBoss_Lvl::~StageBoss_Lvl()
 
 void Level::StageBoss_Lvl::Init()
 {
+    Stage2 = true;
     //Object and Component Init
     //      
     //stageBoss맵을 불러오자
@@ -101,6 +104,10 @@ void Level::StageBoss_Lvl::Init()
     Enemy_TEST->AddComponent("EnemyAnimation", new EnemyAnimationComponent(Enemy_TEST));
     EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy_TEST->FindComponent("EnemyAnimation");
     Enemy_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
+
+    //
+    //Enemy_TEST->SetHP(20);
+    //
     //TEST===========
 
 
@@ -129,12 +136,12 @@ void Level::StageBoss_Lvl::Update()
     // 
     //Component 
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
-    SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
+    //SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
 
     TransComponent* EnemyTest_trs = (TransComponent*)Enemy_TEST->FindComponent("Transform");
-    SpriteComponent* EnemyTest_spr = (SpriteComponent*)Enemy_TEST->FindComponent("Sprite");
+    //SpriteComponent* EnemyTest_spr = (SpriteComponent*)Enemy_TEST->FindComponent("Sprite");
     RigidBodyComponent* EnemyTest_rig = (RigidBodyComponent*)Enemy_TEST->FindComponent("RigidBody");
     EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy_TEST->FindComponent("EnemyAnimation");
   
@@ -546,10 +553,10 @@ void Level::StageBoss_Lvl::Collision()
             //Player Death
             if (ColliderManager::GetInst()->IsCollision(player, obj) && !player_comp->GetInvincible())
             {
-                /*auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDeadToBoss", "Assets/Dead1.wav");
+                auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDeadToBoss", "Assets/Dead1.wav");
                 AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
                 bgm_resDead->PlayMusicOrSFX(bgm_resDead, Sound::SFX, 1.f, 1.f, 0.f);
-                player_comp->TakeDamge();*/
+                player_comp->TakeDamge();
             }
         }        
         if (obj->GetName() == "BulletSupplement")
@@ -644,7 +651,7 @@ void Level::StageBoss_Lvl::Collision()
     //여기가 보스랑 플레이어가 부딫히는 부분
     if (ColliderManager::GetInst()->GetPlayerSearchOnOff() == true)
     {
-        if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, 0.5, 1, 1) && !player_comp->GetInvincible())
+        if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, -0.5, 1, 1) && !player_comp->GetInvincible())
         {
             Enemy_ani->ChangeAnimation("BossAtk", 1, 4, 4, 0.1);
             m_fDt = (f32)AEFrameRateControllerGetFrameTime();

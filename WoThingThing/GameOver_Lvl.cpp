@@ -3,6 +3,9 @@
 #include "MainMenu_Lvl.h"
 #include "Stage01_Lvl.h"
 #include"EventManager.h"
+//
+#include"StageBoss_Lvl.h"
+//
 s8 gameoverFont;
 
 Level::GameOver_Lvl::GameOver_Lvl()
@@ -17,6 +20,7 @@ Level::GameOver_Lvl::~GameOver_Lvl()
 void Level::GameOver_Lvl::Init()
 {
 	gameoverFont = AEGfxCreateFont("Assets/esamanru-Bold.ttf", 72);
+	Level::StageBoss_Lvl::Stage2 = false;
 }
 
 void Level::GameOver_Lvl::Update()
@@ -44,6 +48,8 @@ void Level::GameOver_Lvl::Update()
 		GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
 		gsm->ChangeLevel(new Level::Stage01_Lvl);
 	}
+	
+
 }
 
 void Level::GameOver_Lvl::Exit()

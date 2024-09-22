@@ -4,12 +4,19 @@
 #include "CompManager.h"
 #include "GameObject.h"
 #include "GoManager.h"
-
+//
+#include"StageBoss_Lvl.h"
+//
 RigidBodyComponent::RigidBodyComponent(GameObject* _owner) : BaseComponent(_owner)	
 {	
 	m_vVelocity = { 0.f, 0.f };
 	m_vGravity = { 0.f, 600.f };
 	jumpVelocity = { 0.f,400.f };
+
+	//실험
+	maniCapacity = 7.f;
+	timeManipul = maniCapacity;
+	manipulActive = false;
 }
 
 RigidBodyComponent::~RigidBodyComponent()
@@ -44,8 +51,30 @@ void RigidBodyComponent::Update()
 	//}
 	AEVec2 pos = static_cast<TransComponent*>(obj)->GetPos();
 	float dt = AEFrameRateControllerGetFrameTime();
-	//left shift : time manipulation
-	
+	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
+	timeManipul = maniCapacity;
+	if (ShouldSlowTime) 
+	{
+		manipulActive = true;
+		timeManipul -= dt;
+		if (timeManipul <= 0.f)
+	    {
+			manipulActive = false; //게이지가 0이면 누르는 동안에도 Manipulate가 안되게
+			timeManipul = 0.f;
+	    }
+	}
+	if (!AEInputCheckCurr(AEVK_LSHIFT))
+	{
+		manipulActive = false;
+		if (timeManipul < maniCapacity)
+			timeManipul += dt;
+	}
+
+
+	if (Level::StageBoss_Lvl::Stage2 && manipulActive)
+	{
+		dt *= 0.1f;  // 시간 조작이 활성화되면 dt를 절반으로 줄여서 점프 속도만 느리게 함
+	}
 	//if (AEInputCheckCurr(AEVK_LSHIFT))
 	//{
 	//	dt *= 0.1f;

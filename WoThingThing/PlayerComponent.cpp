@@ -368,7 +368,7 @@ void PlayerComponent::Attack()
 				melee = new GameObject("Melee");
 				GoManager::GetInst()->AddObject(melee); //GetInst() == GetPtr()
 				melee->AddComponent("Transform", new TransComponent(melee));
-				melee->AddComponent("Sprite", new SpriteComponent(melee));
+				//melee->AddComponent("Sprite", new SpriteComponent(melee));
 
 
 			}
