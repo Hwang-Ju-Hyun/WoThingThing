@@ -48,8 +48,6 @@
 #include"AnimationComponent.h"
 #include"EnemyAnimationComponent.h"
 
-
-
 AEVec2 enemyDvec{ 1, 0 };
 
 
@@ -151,10 +149,7 @@ void Level::Stage01_Lvl::Init()
     //Audio Init
     auto res = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
     AudioResource* bgm_res = static_cast<AudioResource*>(res);
-    bgm_res->SetSFXorMusic(Sound::MUSIC);
-    auto bgm_audio = bgm_res->GetAudio();
-    auto bgm_audioGroup = bgm_res->GetAudioGroup();
-    AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, -1);
+    //bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);
 }
 
 void Level::Stage01_Lvl::Update()
@@ -372,10 +367,7 @@ void Level::Stage01_Lvl::Collision()
                     
                     auto res_padding = ResourceManager::GetInst()->Get("sfx_padding1", "Assets/padding2.wav");      
                     AudioResource* bgm_res = static_cast<AudioResource*>(res_padding);
-                    bgm_res->SetSFXorMusic(Sound::SFX);
-                    auto bgm_audio = bgm_res->GetAudio();
-                    auto bgm_audioGroup = bgm_res->GetAudioGroup();
-                    AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);                    
+                    bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
                 }
             }
            //Player Death
@@ -390,10 +382,7 @@ void Level::Stage01_Lvl::Collision()
                 //audio
                auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");               
                AudioResource* bgm_res = static_cast<AudioResource*>(resDead);
-               bgm_res->SetSFXorMusic(Sound::SFX);
-               auto bgm_audio = bgm_res->GetAudio();
-               auto bgm_audioGroup = bgm_res->GetAudioGroup();
-               AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+               bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
            }
         }
 
@@ -532,10 +521,7 @@ void Level::Stage01_Lvl::Collision()
                 //audio
                 auto res = ResourceManager::GetInst()->Get("sfx_EnemyDeadToMelee", "Assets/kill1.mp3");
                 AudioResource* sfx_res = static_cast<AudioResource*>(res);
-                sfx_res->SetSFXorMusic(Sound::MUSIC);
-                auto sfx_audio = sfx_res->GetAudio();
-                auto sfx_audioGroup = sfx_res->GetAudioGroup();
-                AEAudioPlay(sfx_audio, sfx_audioGroup, 1.f, 1.f, 0);
+                sfx_res->PlayMusicOrSFX(sfx_res, Sound::SFX, 1.0f, 1.0f, 0.f);
             }
         }
 

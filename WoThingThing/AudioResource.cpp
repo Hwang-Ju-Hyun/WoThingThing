@@ -1,5 +1,6 @@
 #include "Resource.h"
 #include "AudioResource.h"
+#include "ResourceManager.h"
 #include <fstream>
 
 AudioResource::AudioResource(std::string _name)
@@ -53,4 +54,12 @@ void AudioResource::UnLoad()
 {
 	AEAudioUnloadAudio(m_Sound);
 	AEAudioUnloadAudioGroup(m_bgm);
+}
+
+void AudioResource::PlayMusicOrSFX(AudioResource* _res, Sound _type, float _volume, float _pitch, s32 _loops)
+{
+	_res->SetSFXorMusic(_type);
+	auto audio = _res->GetAudio();
+	auto audioGroup = _res->GetAudioGroup();
+	AEAudioPlay(audio, audioGroup, _volume, _pitch, _loops);
 }

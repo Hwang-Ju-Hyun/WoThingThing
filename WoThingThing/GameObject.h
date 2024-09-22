@@ -12,11 +12,23 @@ public:
 	GameObject(std::string _name);
 	~GameObject();
 
-//boss용 이렇게 하면 안되는데 막날이어서 그냥 하는중	
-private:
+	//boss용 이렇게 하면 안되는데 막날이어서 그냥 하는중	<- 나중에 시간나면 정리하겠누 ㅋ(황주현)
+public:
 	int m_id;
 	float AttackDelay;
-	int m_hp=20;//	
+	int m_hp = 20;//	
+	bool IsSturn = false;
+	float SturnAccTime = 0.f;
+	float TakeDamageCoolTime = 0.f;
+	bool BossTakeDamage = true;
+	AEVec2 KnockBackChase = { 0.f,0.f };
+	AEVec2 unitKnockBackChase = { 0.f,0.f };
+	float KnockBackAccTime = 0.f;
+public:
+	void SetBossTakeDamage(bool _damage) { BossTakeDamage = _damage; }
+	bool GetBossTakeDamage() { return BossTakeDamage; }
+	void SetSturn(bool _sturn) { IsSturn = _sturn; }
+	bool GetSturn() { return IsSturn; }
 public:
 	enum weapon
 	{

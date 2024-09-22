@@ -15,6 +15,7 @@ public:
     AEAudioGroup GetAudioGroup(){return m_bgm;}
     void SetSFXorMusic(enum Sound _eType);
     virtual void Load(const std::string& _path)override;
-    virtual void UnLoad()override;
+    virtual void UnLoad()override;    
+    void PlayMusicOrSFX(AudioResource* _res,enum Sound _type,float _volume,float _pitch,s32 _loops);
 };
 

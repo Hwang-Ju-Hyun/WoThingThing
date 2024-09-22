@@ -52,9 +52,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 
 	maniCapacity = 7.f;
 	timeManipul = maniCapacity;
-	manipulActive = false;
-
-	playerhealth = 5;
+	manipulActive = false;	
 
 	jumpCnt = 0;
 	meleeAction = true;
@@ -63,7 +61,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 
 	invincibility = false;
 
-	playerhealth = 10;
+	playerhealth = 1e9;
 }
 
 //About Player's movement
@@ -370,7 +368,7 @@ void PlayerComponent::Attack()
 				melee = new GameObject("Melee");
 				GoManager::GetInst()->AddObject(melee); //GetInst() == GetPtr()
 				melee->AddComponent("Transform", new TransComponent(melee));
-				//melee->AddComponent("Sprite", new SpriteComponent(melee));
+				melee->AddComponent("Sprite", new SpriteComponent(melee));
 
 
 			}

@@ -42,5 +42,13 @@ namespace Level
         AEVec2 chaseVec;
         float m_fDt;
         float melee_DelayAtk;
+    public:
+        bool IsVibration = false;
+        float plusX = 0;
+        float minusX = 0;
+        float plusY = 0;
+        float minusY = 0;
+        bool changeCamDir = false;
+        float VibrationAccTime = 0.f;
     };
 }

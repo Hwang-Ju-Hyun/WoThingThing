@@ -169,6 +169,40 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 	return false;
 }
 
+//보스 넉백 콜리전
+bool ColliderManager::KnockBackCollision(GameObject* _obj1, GameObject* _obj2)
+{
+	//obj2는 보스여야함
+	if (_obj1 == nullptr || _obj2 == nullptr)
+	{
+		return false;
+	}	
+
+	BaseComponent* obj_trs1 = _obj1->FindComponent("Transform");
+	BaseComponent* obj_trs2 = _obj2->FindComponent("Transform");
+	AEVec2 obj1_Pos = static_cast<TransComponent*>(obj_trs1)->GetPos();
+	AEVec2 obj2_Pos = static_cast<TransComponent*>(obj_trs2)->GetPos();
+
+	AEVec2 obj1_Scale = static_cast<TransComponent*>(obj_trs1)->GetScale();
+	AEVec2 obj2_Scale = static_cast<TransComponent*>(obj_trs2)->GetScale();
+
+	float obj1Right = obj1_Pos.x + obj1_Scale.x / 2.f;
+	float obj1Left = obj1_Pos.x - obj1_Scale.x / 2.f;
+	float obj1Top = obj1_Pos.y - obj1_Scale.y / 2.f;
+	float obj1Bot = obj1_Pos.y + obj1_Scale.y / 2.f;
+
+
+	float obj2Right =(obj2_Pos.x + obj2_Scale.x / 2.f)+50.f;
+	float obj2Left = (obj2_Pos.x - obj2_Scale.x / 2.f)-50.f;
+	float obj2TopY = (obj2_Pos.y - obj2_Scale.y / 2.f)-50.f;
+	float obj2BotY = (obj2_Pos.y + obj2_Scale.y / 2.f)+50.f;
+
+	DrawRect(obj2Left, obj2BotY, obj2Right, obj2TopY, 1, 0, 0);
+
+	return TestCollisionRectRect(obj1Right, obj1Left, obj1Top, obj1Bot,
+		obj2Right, obj2Left, obj2TopY, obj2BotY);
+}
+
 //변수값만 잘주기
 bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, bool enemy_dir)
 {
@@ -266,15 +300,15 @@ void ColliderManager::DrawRect(float bottomleft_x, float bottomleft_y, float top
 {	
 	AEGfxMeshStart();
 
-	//AEGfxTriAdd(
-	//	-0.5f, -0.5f, 0xFF000000, 0.0f, 1.0f,
-	//	0.5f, -0.5f, 0xFF000000, 1.0f, 1.0f,
-	//	-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
-	//
-	//AEGfxTriAdd(
-	//	0.5f, -0.5f, 0xFF000000, 1.0f, 1.0f,
-	//	0.5f, 0.5f, 0xFF000000, 1.0f, 0.0f,
-	//	-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
+	AEGfxTriAdd(
+		-0.5f, -0.5f, 0xFF000000, 0.0f, 1.0f,
+		0.5f, -0.5f, 0xFF000000, 1.0f, 1.0f,
+		-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
+	
+	AEGfxTriAdd(
+		0.5f, -0.5f, 0xFF000000, 1.0f, 1.0f,
+		0.5f, 0.5f, 0xFF000000, 1.0f, 0.0f,
+		-0.5f, 0.5f, 0xFF000000, 0.0f, 0.0f);
 
 	AEGfxVertexAdd(-0.5f, 0.5f, 0xFF000000, 0.0f, 1.0f);
 	AEGfxVertexAdd(-0.5f, -0.5f, 0xFF000000, 0.0f, 0.0f);
@@ -322,6 +356,7 @@ void ColliderManager::DrawRect(float bottomleft_x, float bottomleft_y, float top
 	
 	return;
 }
+
 
 void ColliderManager::SetPlayerSearchOnOff(bool _on)
 {

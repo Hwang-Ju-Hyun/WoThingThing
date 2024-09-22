@@ -42,6 +42,7 @@ public:
 	{
 		virtual void Move(GameObject* _obj,TransComponent::Node _nodeInfo,int startNode, int endNode, TransComponent::Node _nextNode, GameObject* _player) override;
 		float AccTime = 0.f;
+		float melee_DelayAttack_player = 0.f;
 	};
 	struct Jump :public CostLink
 	{
