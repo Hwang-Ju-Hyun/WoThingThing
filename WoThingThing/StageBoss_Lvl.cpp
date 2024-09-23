@@ -365,13 +365,13 @@ void Level::StageBoss_Lvl::Update()
         }
     }
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
-#endif    
-    std::cout << "Player HP : " << player_comp->GetHealth() << std::endl;
-    std::cout <<"Boss HP : "<< Enemy_TEST->GetHP() << std::endl;    
-    std::cout<<std::endl;
+//#ifdef _DEBUG
+//#define new DEBUG_NEW
+//#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+//#endif    
+//    std::cout << "Player HP : " << player_comp->GetHealth() << std::endl;
+//    std::cout <<"Boss HP : "<< Enemy_TEST->GetHP() << std::endl;    
+//    std::cout<<std::endl;
 
 
 
