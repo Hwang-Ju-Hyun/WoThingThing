@@ -35,7 +35,6 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	ImageResource* aimResource = (ImageResource*)ResourceManager::GetInst()->FindRes("Aim");
 	aim_spr->SetTexture(aimResource->GetImage());
 
-
 	aim_line = new GameObject("AimLine");
 	GoManager::GetInst()->AddObject(aim_line);
 	aim_line->AddComponent("Transform", new TransComponent(aim_line));
@@ -247,7 +246,7 @@ void PlayerComponent::MoveMent()
 	float accelGravity = 1.f;
 	if (AEInputCheckCurr(AEVK_LCTRL))
 	{
-		accelGravity = 4.f;
+		accelGravity = 2.5f;
 	}
 
 	jumpVelocity.y -= m_vGravity.y * dt * accelGravity;

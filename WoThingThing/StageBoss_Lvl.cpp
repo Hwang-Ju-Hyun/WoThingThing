@@ -144,11 +144,22 @@ void Level::StageBoss_Lvl::Update()
     //SpriteComponent* EnemyTest_spr = (SpriteComponent*)Enemy_TEST->FindComponent("Sprite");
     RigidBodyComponent* EnemyTest_rig = (RigidBodyComponent*)Enemy_TEST->FindComponent("RigidBody");
     EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy_TEST->FindComponent("EnemyAnimation");
-  
+
     playerPos = player_trs->GetPos();
     enemyTestPos = EnemyTest_trs->GetPos();
     chaseVec.x = playerPos.x - enemyTestPos.x;
     chaseVec.y = playerPos.y - enemyTestPos.y;
+
+    //Display Bullet===============
+    auto pFont = static_cast<TextResource*>(ResourceManager::GetInst()->Get("esamanru", "Assets/esamanru-Bold.ttf"));
+    std::string str1 = std::to_string(GetBullet());
+    std::string str2 = "Bullet: ";
+    const char* cstr1 = str1.c_str();
+    const char* cstr2 = str2.c_str();
+
+    AEGfxPrint(pFont->GetFont(), cstr1, -0.85, 0.8, 20 / 72.f, 1, 1, 1, 1);
+    AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20 / 72.f, 1, 1, 1, 1);
+    //===========================
 
     if (!(ColliderManager::GetInst()->isFacingtheSameDirection(chaseVec, enemyDir)))
     {
@@ -220,10 +231,6 @@ void Level::StageBoss_Lvl::Update()
     {
         GSM::GameStateManager::GetInst()->Exit();
     }
-
-    //Test line
-    if (AEInputCheckTriggered(AEVK_4))
-        CreateSupplement({ 0, -300 });
 
     if (!(player_comp->IsAlive()))
     {
@@ -557,15 +564,6 @@ void Level::StageBoss_Lvl::Collision()
                 AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
                 bgm_resDead->PlayMusicOrSFX(bgm_resDead, Sound::SFX, 1.f, 1.f, 0.f);
                 player_comp->TakeDamge();
-            }
-        }        
-        if (obj->GetName() == "BulletSupplement")
-        {
-            if (ColliderManager::GetInst()->IsCollision(player, obj))
-            {
-                AddBullet();
-                //std::cout << "Add Bullet!" << std::endl;
-                obj->SetActive(false);
             }
         }
 

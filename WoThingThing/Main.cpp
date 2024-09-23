@@ -52,6 +52,9 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 
 		//Update;
+
+
+
 		CompManager::GetInst()->Update();
 		TimeManager::GetInst()->Update();
 		EventManager::GetInst()->Update();

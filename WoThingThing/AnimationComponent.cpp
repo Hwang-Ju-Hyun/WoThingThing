@@ -96,9 +96,8 @@ void AnimationComponent::Update()
 		my_trs->SetPos(player_trs->GetPos());
 		my_trs->SetScale({ 80,80 });
 	}
-	if (AEInputCheckCurr(AEVK_L
-	) && player_comp->GetManiActive())
-		animation_duration_per_frame = 0.7;
+	if (AEInputCheckCurr(AEVK_LSHIFT) && player_comp->GetManiActive())
+		animation_duration_per_frame = 0.7f;
 	else
 		animation_duration_per_frame = 0.1f;
 

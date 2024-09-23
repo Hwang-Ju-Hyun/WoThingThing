@@ -61,7 +61,15 @@ Level::Stage01_Lvl::~Stage01_Lvl()
 
 void Level::Stage01_Lvl::Init()
 {
-    
+    //Background Image
+    background = new GameObject("Background");
+    GoManager::GetInst()->AddObject(background);
+    background->AddComponent("Transform", new TransComponent(background));
+    background->AddComponent("Sprite", new SpriteComponent(background));
+    ResourceManager::GetInst()->Get("BackgroundImg", "Assets/BackgroundImage.png");
+    SpriteComponent* bg_spr = (SpriteComponent*)background->FindComponent("Sprite");
+    ImageResource* bgResource = (ImageResource*)ResourceManager::GetInst()->FindRes("BackgroundImg");
+    bg_spr->SetTexture(bgResource->GetImage());
     //Object and Component Init
 
     ResourceManager::GetInst()->Get("MeleeIdle", "Assets/meleeEnemyIdle.png");
@@ -70,11 +78,12 @@ void Level::Stage01_Lvl::Init()
     ResourceManager::GetInst()->Get("SniperIdle", "Assets/sniperEnemyIdle.png");//12
     ResourceManager::GetInst()->Get("SniperShootIdle", "Assets/sniperEnemyShootIdle.png");//1
     ResourceManager::GetInst()->Get("SniperShoot", "Assets/sniperEnemyShoot.png");//5
-    
+
     //stage01맵을 불러오자
     Serializer::GetInst()->LoadLevel("Assets/stage01.json");
-    
-    
+
+
+
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
@@ -82,23 +91,23 @@ void Level::Stage01_Lvl::Init()
     //Add Image Resource??
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });
-    
-    
+
+
     playerAnim = new GameObject("PlayerAnim");
     GoManager::GetInst()->AddObject(playerAnim); //GetInst() == GetPtr()
     playerAnim->AddComponent("Transform", new TransComponent(playerAnim));
     playerAnim->AddComponent("Animation", new AnimationComponent(playerAnim));
-    
-    
+
+
     aimTrace = new GameObject("aimTrace");
     GoManager::GetInst()->AddObject(aimTrace);
     aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
-    aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace)); 
-    
-    
+    aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));
+
+
     for (int i = 0; i < Enemy.size(); i++)
     {
-        Enemy[i] = new GameObject("Enemy");       
+        Enemy[i] = new GameObject("Enemy");
         Enemy[i]->SetID(i);
         GoManager::GetInst()->AddObject(Enemy[i]);
         Enemy[i]->AddComponent("Transform", new TransComponent(Enemy[i]));
@@ -108,20 +117,17 @@ void Level::Stage01_Lvl::Init()
         Enemy[i]->AddComponent("Ai", new AiComponent(Enemy[i]));
         TransComponent* Enemy_trs = (TransComponent*)Enemy[i]->FindComponent("Transform");
         AiComponent* Enemy_state = (AiComponent*)Enemy[i]->FindComponent("Ai");
-        
+
         EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy[i]->FindComponent("EnemyAnimation");
         sizeof(EnemyAnimationComponent);
         Enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
-        
+
         Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
         Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
         Enemy_state->Setdir_time(2.0f);
         Enemy_state->SetFirstPlace(Enemy_trs->GetPos());
-        Enemy_state->SetState("IDLE", "Melee");        
+        Enemy_state->SetState("IDLE", "Melee");
     }
-    
-    
-    
     for (int i = 0; i < EnemySniper.size(); i++)
     {
         EnemySniper[i] = new GameObject("EnemySniper");
@@ -139,42 +145,41 @@ void Level::Stage01_Lvl::Init()
         EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
         EnemySniper_state->Setdir_time(1.0f);
         EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
-    } 
-    
+    }
+
     CameraManager::GetInst()->SetMouse(mouseAim);
     CameraManager::GetInst()->SetPlayer(player);
     CameraManager::GetInst()->SetAim(aimTrace);
-    
-    //gameOver = false;
-    
+
     //Audio Init
     auto res = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
     AudioResource* bgm_res = static_cast<AudioResource*>(res);
     //bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);
     Level::StageBoss_Lvl::Stage2 = false;
+
+    
+
 }
 
 void Level::Stage01_Lvl::Update()
 {
-    AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
+    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
+    RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp"); 
+
+    TransComponent* bg_trs = (TransComponent*)background->FindComponent("Transform");
+    bg_trs->SetPos(player_trs->GetPos());
+    bg_trs->SetScale({ 1600,900 });
+
+    //AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
     AEInputShowCursor(0);
     //Component Pointer
     
-    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
-    //SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
-    RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
-    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp"); 
     
     Collision();
  
     if(player_comp->GetObtain())
     {
-        //리소스 매니저 사용해서 관리해주기 안쓰면 맨날 업데이트 되서 너무 많은 폰트가 들어옴
-        //파일 닫기 잘해주기
-        //로드 할때 nullptr 체크하기
-        //오디오 함수 만들기        
-
-
         auto pFont = static_cast<TextResource*>(ResourceManager::GetInst()->Get("esamanru","Assets/esamanru-Bold.ttf"));
         std::string str1 = std::to_string(GetBullet());
         std::string str2 = "Bullet: ";
