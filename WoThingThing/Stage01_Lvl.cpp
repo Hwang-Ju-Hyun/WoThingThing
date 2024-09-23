@@ -175,9 +175,8 @@ void Level::Stage01_Lvl::Update()
     AEInputShowCursor(0);
     //Component Pointer
     
-    
     Collision();
- 
+    
     if(player_comp->GetObtain())
     {
         auto pFont = static_cast<TextResource*>(ResourceManager::GetInst()->Get("esamanru","Assets/esamanru-Bold.ttf"));
@@ -185,12 +184,12 @@ void Level::Stage01_Lvl::Update()
         std::string str2 = "Bullet: ";
         const char* cstr1 = str1.c_str();
         const char* cstr2 = str2.c_str();
-
+    
         AEGfxPrint(pFont->GetFont(), cstr1, -0.85, 0.8, 20/72.f, 1, 1, 1, 1);
         AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20/72.f, 1, 1, 1, 1);
     }
     
-
+    
     if(player_trs->GetPos().y<-1800)
         player_comp->SetHealth(-1);
     
@@ -268,7 +267,7 @@ void Level::Stage01_Lvl::Update()
     
     //Player->GetHeath() == 0
     //    gameOver = true
-
+    
     if (!(player_comp->IsAlive()))
     {
         GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
@@ -276,11 +275,12 @@ void Level::Stage01_Lvl::Update()
     
         return;
     }
+    
 
-    //std::cout << std::endl;
     if (AEInputCheckTriggered(AEVK_ESCAPE))
     {
         AEInputShowCursor(1);
+        AEGfxSetCamPosition(0.f,0.f);
         GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
     }
     
@@ -294,8 +294,8 @@ void Level::Stage01_Lvl::Update()
 
 void Level::Stage01_Lvl::Exit()
 {    
-    //ResourceManager::GetInst()->RemoveAllRes();    
-    EventManager::GetInst()->RemoveAllEvent();
+    ResourceManager::GetInst()->RemoveAllRes();    
+    EventManager::GetInst()->RemoveAllEvent();    
     GoManager::GetInst()->RemoveAllObj();
 }
 

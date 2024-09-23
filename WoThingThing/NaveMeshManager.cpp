@@ -457,57 +457,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 		for (auto obj : GoManager::GetInst()->Allobj())
 		{
 			if (obj->GetName() == "Enemy_TEST")
-			{
-				//float m_fDt = AEFrameRateControllerGetFrameTime();
-				//if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
-				//{
-				//	isStunned = true; // 충돌 발생 시 스턴 상태로 변경
-				//	obj_trs->AddPos({ 0.f, 0.f }); // 위치를 0으로 설정
-				//	melee_DelayAttack_player += m_fDt;
-				//	if (melee_DelayAttack_player >=0.2f)
-				//	{
-				//		obj->AddHP(-1);
-				//		melee_DelayAttack_player = 0.f;
-				//	}					
-				//	ColliderManager::GetInst()->SetPlayerSearchOnOff(false); 
-				//	//Chase_outTime = 0.f; // 시간 초기화
-				//	obj_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);					
-				//}
-				//if (isStunned) // 스턴 상태일 때
-				//{
-				//	AccTime += m_fDt; // 시간 증가
-				//	if (AccTime >= 0.3f) {
-
-				//		isStunned = false;
-				//		AccTime = 0.f;
-				//		ColliderManager::GetInst()->SetPlayerSearchOnOff(true);
-				//	}
-				//	else
-				//	{
-				//		obj_trs->AddPos({ 0.f, 0.f }); // 위치를 0으로 설정						
-				//		obj_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);
-				//	}
-				//}
-				//else // 스턴 상태가 아닐 때
-				//{
-				//	// 이동 방향 계산
-				//	float dt = AEFrameRateControllerGetFrameTime();
-				//	AEVec2 direction = { _nextNode.node_pos.x - _nodeInfo.node_pos.x, 0 };
-				//	AEVec2 normalize_dir;
-				//	AEVec2Normalize(&normalize_dir, &direction);
-				//	if (player_comp->GetManiActive())
-				//	{
-				//		obj_trs->AddPos({ normalize_dir.x * 10.f * dt * 10, 0.f });
-				//	}
-				//	else
-				//	{
-				//		obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f });
-				//	}
-				//	//obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f }); // 이동
-				//	obj_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
-				//}
-				
-
+			{				
 				// 이동 방향 계산
 				if (obj->GetSturn() == false)
 				{
@@ -526,7 +476,10 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 					//obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f }); // 이동
 					obj_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
 				}
-				
+				else
+				{
+					obj_rb->AddVelocity({ 0.f,0.f });
+				}				
 			}
 			
 		}
@@ -544,7 +497,7 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 	AEVec2 nodePos = _nodeInfo.node_pos;	
 	AEVec2 nodeScale = { 50.f,70.f };
 	//이 부분에 대한 고민 쉬프트를 누르면 점프가 느려지게 하는데 높이는 그만큼 오르게 만들게 해야함  
-	//
+	
 	if (ColliderManager::GetInst()->IsCollision(_obj, _nodeInfo)&&IsJumpDone==false)
 	{
 		if ( _nodeInfo.node_id == 9
@@ -578,21 +531,24 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 	}
 	else
 	{
-		AEVec2 direction = { _nextNode.node_pos.x - _nodeInfo.node_pos.x, _nextNode.node_pos.y - _nodeInfo.node_pos.y };
-		AEVec2 normalize_dir;
-		AEVec2Normalize(&normalize_dir, &direction);
-		float dt = AEFrameRateControllerGetFrameTime();
-		if (player_comp->GetManiActive())
+		if (_obj->GetSturn() == false)
 		{
-			obj_trs->AddPos({ normalize_dir.x * dt * 10.f, 0.f });
-		}
-		else
-		{
-			obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f });
-		}
-		
-		//obj_rb->AddVelocity(normalize_dir.x * 500.f, normalize_dir.y * 500.f);
-		IsJumpDone = false;
+			AEVec2 direction = { _nextNode.node_pos.x - _nodeInfo.node_pos.x, _nextNode.node_pos.y - _nodeInfo.node_pos.y };
+			AEVec2 normalize_dir;
+			AEVec2Normalize(&normalize_dir, &direction);
+			float dt = AEFrameRateControllerGetFrameTime();
+			if (player_comp->GetManiActive())
+			{
+				obj_trs->AddPos({ normalize_dir.x * dt * 10.f, 0.f });
+			}
+			else
+			{
+				obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f });
+			}
+
+			//obj_rb->AddVelocity(normalize_dir.x * 500.f, normalize_dir.y * 500.f);
+			IsJumpDone = false;
+		}		
 	}
 		
 	//ERROR I have to fix CalculateDistance

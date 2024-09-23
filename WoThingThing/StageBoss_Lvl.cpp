@@ -85,7 +85,7 @@ void Level::StageBoss_Lvl::Init()
     {
         if (vecObj[i]->GetName() == "Node")
         {
-            vecObj[i]->AddComponent("Sprite", new SpriteComponent(vecObj[i]));
+            //vecObj[i]->AddComponent("Sprite", new SpriteComponent(vecObj[i]));
             SpriteComponent* node_spr = static_cast<SpriteComponent*>(vecObj[i]->FindComponent("Sprite"));
             node_spr->m_color.red = 155;
             node_spr->m_color.green = 250;
@@ -371,17 +371,6 @@ void Level::StageBoss_Lvl::Update()
             AttackDelayTime = 0.f;
         }
     }
-
-//#ifdef _DEBUG
-//#define new DEBUG_NEW
-//#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
-//#endif    
-//    std::cout << "Player HP : " << player_comp->GetHealth() << std::endl;
-//    std::cout <<"Boss HP : "<< Enemy_TEST->GetHP() << std::endl;    
-//    std::cout<<std::endl;
-
-
-
 }
 
 void Level::StageBoss_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
@@ -583,8 +572,9 @@ void Level::StageBoss_Lvl::Collision()
                             obj->AddHP(-1);
                         }
                     }
-                }
-            }
+                }               
+            }  
+            float m_fDt = AEFrameRateControllerGetFrameTime();
             //플레이어의 MeleeAttack
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj)&&obj->GetBossTakeDamage()==true)
             {                
@@ -592,58 +582,55 @@ void Level::StageBoss_Lvl::Collision()
                 obj->AddHP(-1); 
                 obj->SetBossTakeDamage(false);                
             }
-            
-        }
-        if (obj->GetBossTakeDamage() == false)
-        {
-           float m_fDt = AEFrameRateControllerGetFrameTime();
-           obj->TakeDamageCoolTime += m_fDt;
-           if (obj->TakeDamageCoolTime >= 1.f)
-           {
-               obj->SetBossTakeDamage(true);
-               obj->TakeDamageCoolTime = 0.f;
-           }
-        }
-        if (obj->GetSturn() == true)
-        {
-            float m_fDt = AEFrameRateControllerGetFrameTime();
-            obj->SturnAccTime += m_fDt;            
+            //1초당 보스의 피격을 위해서
+            if (obj->GetBossTakeDamage() == false)
+            {                                
+                obj->TakeDamageCoolTime += m_fDt;
 
-            ColliderManager::GetInst()->SetPlayerSearchOnOff(false);
-            EnemyTest_trs->AddPos(0.f, 0.f);
-            Enemy_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);
-        }
-        bool KnockBack = false;
-        if (obj->SturnAccTime >= 1.0f)
-        {
-            obj->SetSturn(false);
-            obj->SturnAccTime = 0.f;
-            ColliderManager::GetInst()->SetPlayerSearchOnOff(true);            
-
-
-            obj->KnockBackChase.x = player_trs->GetPos().x-EnemyTest_trs->GetPos().x;
-            obj->KnockBackChase.y = player_trs->GetPos().y-EnemyTest_trs->GetPos().y;
-
-            //obj->KnockBackChase.x = EnemyTest_trs->GetPos().x - player_trs->GetPos().x;
-            //obj->KnockBackChase.y = EnemyTest_trs->GetPos().y - player_trs->GetPos().y;
-            AEVec2Normalize(&obj->unitKnockBackChase, &obj->KnockBackChase);
-            KnockBack = true;
-
-            if (ColliderManager::GetInst()->KnockBackCollision(player_comp->GetMelee(), obj)&&obj->GetHP()%3==0)
-            {
-               
-            }            
-        }
-        if (KnockBack)
-        {            
-            if (obj->KnockBackAccTime >= 3.f)
-            {
-                KnockBack = false;
-                obj->KnockBackAccTime = 0.f;
+                if (obj->TakeDamageCoolTime >= 1.f)
+                {
+                    obj->SetBossTakeDamage(true);
+                    obj->TakeDamageCoolTime = 0.f;
+                }
             }
-            obj->KnockBackAccTime += m_fDt;
-            player_trs->AddPos({obj->unitKnockBackChase.x,0.f});
-        }
+            //스턴 상태
+            if (obj->GetSturn() == true)
+            {                
+                obj->SturnAccTime += m_fDt;
+                ColliderManager::GetInst()->SetPlayerSearchOnOff(false);
+                EnemyTest_trs->AddPos(0.f, 0.f);
+                Enemy_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);
+            }            
+            //스턴이 끝났다면
+            if (obj->SturnAccTime >= 1.0f)
+            {
+                obj->SetSturn(false);
+                obj->SturnAccTime = 0.f;
+                ColliderManager::GetInst()->SetPlayerSearchOnOff(true);                
+            }         
+            if (ColliderManager::GetInst()->KnockBackCollision(player_comp->GetMelee(), obj) && obj->GetHP() % 3 == 0)
+            {                
+                obj->KnockBack = true;
+
+                obj->KnockBackChase.x = player_trs->GetPos().x - EnemyTest_trs->GetPos().x;
+                obj->KnockBackChase.y = player_trs->GetPos().y - EnemyTest_trs->GetPos().y;
+
+                AEVec2Normalize(&obj->unitKnockBackChase, &obj->KnockBackChase);
+            }
+            if (obj->KnockBack == true&&obj->GetHP()%3==0)
+            {
+                obj->KnockBackAccTime += m_fDt;
+                if (obj->KnockBackAccTime >= 0.4f)
+                {
+                    obj->KnockBack = false;
+                    obj->KnockBackAccTime = 0.f;
+                }
+                else
+                {
+                    player_trs->AddPos(obj->unitKnockBackChase.x*1000.f*m_fDt, obj->unitKnockBackChase.y*1000.f * m_fDt);
+                }
+            }
+        }                            
     }        
 
     //여기가 보스랑 플레이어가 부딫히는 부분

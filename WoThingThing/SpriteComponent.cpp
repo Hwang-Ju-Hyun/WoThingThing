@@ -5,32 +5,30 @@
 
 SpriteComponent::SpriteComponent(GameObject* _owner)
 	:BaseComponent(_owner)
-{
-	AEGfxMeshStart();
+{	
 
+	AEGfxMeshStart();
+	
 	AEGfxTriAdd(
 		-0.5f, -0.5f, 0xFFFFFFFF, 0.0f, 1.0f,
 		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-
+	
 	AEGfxTriAdd(
 		0.5f, -0.5f, 0xFFFFFFFF, 1.0f, 1.0f,
 		0.5f, 0.5f, 0xFFFFFFFF, 1.0f, 0.0f,
 		-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);
-
+	
 	mesh = AEGfxMeshEnd();
-
+	
 	pTex = nullptr;
-	if (_owner->GetName() == "Melee")
-		m_color = { 155,155,255 };
-	else
-		m_color = { 255,255,255 };
-
+	m_color = { 255,255,255 };
+	
 	alpha = 1.f;
 }
 
 SpriteComponent::~SpriteComponent()
-{
+{	
 	AEGfxMeshFree(mesh);
 }
 

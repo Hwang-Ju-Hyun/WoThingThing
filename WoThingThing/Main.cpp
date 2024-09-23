@@ -28,7 +28,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	/*
 		*/
 	// Initialize the system
-	AESysInit(instanceH, show, 1600, 900, 0, 60, true, NULL);
+	AESysInit(instanceH, show, 1600, 900, 1, 60, true, NULL);
 
 	// Changing the window title
 	AESysSetWindowTitle("Asteriods Demo!");
@@ -43,7 +43,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	Level::Stage01_Lvl Stage01_lvl;
 	Level::TestLevel Test;
 	Level::GameStart_Lvl GameStart_lvl;
-	gsm->ChangeLevel(new Level::Stage01_Lvl);
+	gsm->ChangeLevel(new Level::MainMenu_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
 		AESysFrameStart();

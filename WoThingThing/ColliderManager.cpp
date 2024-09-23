@@ -197,7 +197,7 @@ bool ColliderManager::KnockBackCollision(GameObject* _obj1, GameObject* _obj2)
 	float obj2TopY = (obj2_Pos.y - obj2_Scale.y / 2.f)-50.f;
 	float obj2BotY = (obj2_Pos.y + obj2_Scale.y / 2.f)+50.f;
 
-	DrawRect(obj2Left, obj2BotY, obj2Right, obj2TopY, 1, 0, 0);
+	//DrawRect(obj2Left, obj2BotY, obj2Right, obj2TopY, 1, 0, 0);
 
 	return TestCollisionRectRect(obj1Right, obj1Left, obj1Top, obj1Bot,
 		obj2Right, obj2Left, obj2TopY, obj2BotY);
@@ -353,6 +353,7 @@ void ColliderManager::DrawRect(float bottomleft_x, float bottomleft_y, float top
 
 	AEGfxMeshDraw(mesh, AE_GFX_MDM_LINES_STRIP);
 
+	AEGfxEnd();
 	
 	return;
 }
