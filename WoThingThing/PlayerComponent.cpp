@@ -27,40 +27,40 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	GoManager::GetInst()->AddObject(mouseAim);
 	mouseAim->AddComponent("Transform", new TransComponent(mouseAim));
 	mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
-
+	
 	ResourceManager::GetInst()->Get("Aim", "Assets/Aim.png");
 	TransComponent* aim_trs = (TransComponent*)mouseAim->FindComponent("Transform");
 	aim_trs->SetScale({ 50,50 });
 	SpriteComponent* aim_spr = (SpriteComponent*)mouseAim->FindComponent("Sprite");
 	ImageResource* aimResource = (ImageResource*)ResourceManager::GetInst()->FindRes("Aim");
 	aim_spr->SetTexture(aimResource->GetImage());
-
-
+	//
+	//
 	aim_line = new GameObject("AimLine");
 	GoManager::GetInst()->AddObject(aim_line);
 	aim_line->AddComponent("Transform", new TransComponent(aim_line));
 	aim_line->AddComponent("Sprite", new SpriteComponent(aim_line));
-
+	//
 	gauge = new GameObject("Gauge");
 	GoManager::GetInst()->AddObject(gauge);
 	gauge->AddComponent("Transform", new TransComponent(gauge));
 	gauge->AddComponent("Sprite", new SpriteComponent(gauge));
-	
+	//
 	melee = nullptr;
 	meleeState = false;
 	meleeCooldown = 0.f;
-
+	
 	maniCapacity = 7.f;
 	timeManipul = maniCapacity;
 	manipulActive = false;	
-
+	
 	jumpCnt = 0;
 	meleeAction = true;
 	shotAction = false;
 	obtainGun = false;
-
+	
 	invincibility = false;
-
+	
 	playerhealth = 1e9;
 }
 
@@ -289,10 +289,7 @@ void PlayerComponent::MouseAim()
 	//player_Cam == player position in camera coord
 	//so, mousePos += player_Cam == World coord mouse position to Camera coord mouse position.
 	mousePos.x += player_Cam.x;
-	mousePos.y += player_Cam.y;
-
-	ImageResource* img = new ImageResource("Assets/Aim.png");
-	img->GetImage();
+	mousePos.y += player_Cam.y;	
 
 	DrawAim();
 }

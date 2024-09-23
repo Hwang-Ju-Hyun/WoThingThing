@@ -272,7 +272,7 @@ void Level::Stage01_Lvl::Update()
         return;
     }
     
-    //std::cout << std::endl;
+
     if (AEInputCheckTriggered(AEVK_ESCAPE))
     {
         AEInputShowCursor(1);
