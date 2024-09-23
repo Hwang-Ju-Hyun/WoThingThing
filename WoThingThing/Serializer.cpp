@@ -96,6 +96,7 @@ void Serializer::LoadLevel(const std::string& s)
 		}
 	}
 	IsNodeCheck = false;
+	file.close();	
 }
 
 void Serializer::SaveLevel(const std::string& s)

@@ -75,208 +75,208 @@ void Level::Stage01_Lvl::Init()
     Serializer::GetInst()->LoadLevel("Assets/stage01.json");
     
     
-    player = new GameObject("Player");
-    GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
-    player->AddComponent("Transform", new TransComponent(player));
-    player->AddComponent("PlayerComp", new PlayerComponent(player));
-    //Add Image Resource??
-    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
-    player_trs->SetScale({ 80, 80 });
-    
-    
-    playerAnim = new GameObject("PlayerAnim");
-    GoManager::GetInst()->AddObject(playerAnim); //GetInst() == GetPtr()
-    playerAnim->AddComponent("Transform", new TransComponent(playerAnim));
-    playerAnim->AddComponent("Animation", new AnimationComponent(playerAnim));
-    
-    
-    aimTrace = new GameObject("aimTrace");
-    GoManager::GetInst()->AddObject(aimTrace);
-    aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
-    aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace)); 
-    
-    
-    for (int i = 0; i < Enemy.size(); i++)
-    {
-        Enemy[i] = new GameObject("Enemy");       
-        Enemy[i]->SetID(i);
-        GoManager::GetInst()->AddObject(Enemy[i]);
-        Enemy[i]->AddComponent("Transform", new TransComponent(Enemy[i]));
-        //Enemy[i]->AddComponent("Sprite", new SpriteComponent(Enemy[i]));
-        Enemy[i]->AddComponent("EnemyAnimation", new EnemyAnimationComponent(Enemy[i]));
-        Enemy[i]->AddComponent("RigidBody", new RigidBodyComponent(Enemy[i]));
-        Enemy[i]->AddComponent("Ai", new AiComponent(Enemy[i]));
-        TransComponent* Enemy_trs = (TransComponent*)Enemy[i]->FindComponent("Transform");
-        AiComponent* Enemy_state = (AiComponent*)Enemy[i]->FindComponent("Ai");
-        
-        EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy[i]->FindComponent("EnemyAnimation");
-        sizeof(EnemyAnimationComponent);
-        Enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
-        
-        Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-        Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
-        Enemy_state->Setdir_time(2.0f);
-        Enemy_state->SetFirstPlace(Enemy_trs->GetPos());
-        Enemy_state->SetState("IDLE", "Melee");        
-    }
-    
-    
-    
-    for (int i = 0; i < EnemySniper.size(); i++)
-    {
-        EnemySniper[i] = new GameObject("EnemySniper");
-        EnemySniper[i]->SetID(i);
-        GoManager::GetInst()->AddObject(EnemySniper[i]);
-        EnemySniper[i]->AddComponent("Transform", new TransComponent(EnemySniper[i]));
-        //EnemySniper[i]->AddComponent("Sprite", new SpriteComponent(EnemySniper[i]));
-        EnemySniper[i]->AddComponent("EnemyAnimation", new EnemyAnimationComponent(EnemySniper[i]));
-        EnemySniper[i]->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper[i]));
-        EnemySniper[i]->AddComponent("Ai", new AiComponent(EnemySniper[i]));
-        AiComponent* EnemySniper_state = (AiComponent*)EnemySniper[i]->FindComponent("Ai");
-        EnemyAnimationComponent* Enemy_sniperani = (EnemyAnimationComponent*)EnemySniper[i]->FindComponent("EnemyAnimation");
-        //Enemy_sniperani->ChangeAnimation("SniperIdle", 1, 12, 12, 0.1);
-        EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-        EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
-        EnemySniper_state->Setdir_time(1.0f);
-        EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
-    } 
-    
-    CameraManager::GetInst()->SetMouse(mouseAim);
-    CameraManager::GetInst()->SetPlayer(player);
-    CameraManager::GetInst()->SetAim(aimTrace);
-    
-    //gameOver = false;
-    
-    //Audio Init
-    auto res = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
-    AudioResource* bgm_res = static_cast<AudioResource*>(res);
-    //bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);
-    Level::StageBoss_Lvl::Stage2 = false;
+    //player = new GameObject("Player");
+    //GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
+    //player->AddComponent("Transform", new TransComponent(player));
+    //player->AddComponent("PlayerComp", new PlayerComponent(player));
+    ////Add Image Resource??
+    //TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
+    //player_trs->SetScale({ 80, 80 });
+    //
+    //
+    //playerAnim = new GameObject("PlayerAnim");
+    //GoManager::GetInst()->AddObject(playerAnim); //GetInst() == GetPtr()
+    //playerAnim->AddComponent("Transform", new TransComponent(playerAnim));
+    //playerAnim->AddComponent("Animation", new AnimationComponent(playerAnim));
+    //
+    //
+    //aimTrace = new GameObject("aimTrace");
+    //GoManager::GetInst()->AddObject(aimTrace);
+    //aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
+    ////aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace)); 
+    //
+    //
+    //for (int i = 0; i < Enemy.size(); i++)
+    //{
+    //    Enemy[i] = new GameObject("Enemy");       
+    //    Enemy[i]->SetID(i);
+    //    GoManager::GetInst()->AddObject(Enemy[i]);
+    //    Enemy[i]->AddComponent("Transform", new TransComponent(Enemy[i]));
+    //    //Enemy[i]->AddComponent("Sprite", new SpriteComponent(Enemy[i]));
+    //    Enemy[i]->AddComponent("EnemyAnimation", new EnemyAnimationComponent(Enemy[i]));
+    //    Enemy[i]->AddComponent("RigidBody", new RigidBodyComponent(Enemy[i]));
+    //    Enemy[i]->AddComponent("Ai", new AiComponent(Enemy[i]));
+    //    TransComponent* Enemy_trs = (TransComponent*)Enemy[i]->FindComponent("Transform");
+    //    AiComponent* Enemy_state = (AiComponent*)Enemy[i]->FindComponent("Ai");
+    //    
+    //    EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy[i]->FindComponent("EnemyAnimation");
+    //    sizeof(EnemyAnimationComponent);
+    //    Enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+    //    
+    //    Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+    //    Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+    //    Enemy_state->Setdir_time(2.0f);
+    //    Enemy_state->SetFirstPlace(Enemy_trs->GetPos());
+    //    Enemy_state->SetState("IDLE", "Melee");        
+    //}
+    //
+    //
+    //
+    //for (int i = 0; i < EnemySniper.size(); i++)
+    //{
+    //    EnemySniper[i] = new GameObject("EnemySniper");
+    //    EnemySniper[i]->SetID(i);
+    //    GoManager::GetInst()->AddObject(EnemySniper[i]);
+    //    EnemySniper[i]->AddComponent("Transform", new TransComponent(EnemySniper[i]));
+    //    //EnemySniper[i]->AddComponent("Sprite", new SpriteComponent(EnemySniper[i]));
+    //    EnemySniper[i]->AddComponent("EnemyAnimation", new EnemyAnimationComponent(EnemySniper[i]));
+    //    EnemySniper[i]->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper[i]));
+    //    EnemySniper[i]->AddComponent("Ai", new AiComponent(EnemySniper[i]));
+    //    AiComponent* EnemySniper_state = (AiComponent*)EnemySniper[i]->FindComponent("Ai");
+    //    EnemyAnimationComponent* Enemy_sniperani = (EnemyAnimationComponent*)EnemySniper[i]->FindComponent("EnemyAnimation");
+    //    //Enemy_sniperani->ChangeAnimation("SniperIdle", 1, 12, 12, 0.1);
+    //    EnemySniper_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+    //    EnemySniper_state->Setdir(true);//true가 오른쪽, false가 왼쪽
+    //    EnemySniper_state->Setdir_time(1.0f);
+    //    EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
+    //} 
+    //
+    //CameraManager::GetInst()->SetMouse(mouseAim);
+    //CameraManager::GetInst()->SetPlayer(player);
+    //CameraManager::GetInst()->SetAim(aimTrace);
+    //
+    ////gameOver = false;
+    //
+    ////Audio Init
+    //auto res = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
+    //AudioResource* bgm_res = static_cast<AudioResource*>(res);
+    ////bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);
+    //Level::StageBoss_Lvl::Stage2 = false;
 }
 
 void Level::Stage01_Lvl::Update()
 {
-    AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
-    AEInputShowCursor(0);
-    //Component Pointer
-    
-    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
+    //AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
+    //AEInputShowCursor(0);
+    ////Component Pointer
+    //
+    //TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     //SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
-    RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
-    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp"); 
+    //RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
+    //PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp"); 
+    //
+    //Collision();
+    //
+    //if(player_comp->GetObtain())
+    //{
+    //    //리소스 매니저 사용해서 관리해주기 안쓰면 맨날 업데이트 되서 너무 많은 폰트가 들어옴
+    //    //파일 닫기 잘해주기
+    //    //로드 할때 nullptr 체크하기
+    //    //오디오 함수 만들기        
+    //
+    //
+    //    auto pFont = static_cast<TextResource*>(ResourceManager::GetInst()->Get("esamanru","Assets/esamanru-Bold.ttf"));
+    //    std::string str1 = std::to_string(GetBullet());
+    //    std::string str2 = "Bullet: ";
+    //    const char* cstr1 = str1.c_str();
+    //    const char* cstr2 = str2.c_str();
+    //
+    //    AEGfxPrint(pFont->GetFont(), cstr1, -0.85, 0.8, 20/72.f, 1, 1, 1, 1);
+    //    AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20/72.f, 1, 1, 1, 1);
+    //}
+    //
+    //
+    //if(player_trs->GetPos().y<-1800)
+    //    player_comp->SetHealth(-1);
+    //
+    //
+    //
+    ////패딩시 진동 
+    //if (IsVibration == false)
+    //{
+    //    CameraManager::GetInst()->Update();
+    //}
+    //else
+    //{
+    //    float deltaTime = AEFrameRateControllerGetFrameTime();
+    //    AccTime += deltaTime;
+    //    f32 playerPosX = player_trs->GetPos().x;
+    //    f32 playerPosY = player_trs->GetPos().y;
+    //    if (IsVibration && AccTime >= 0 && AccTime < 0.1)
+    //    {
+    //       minusX += -10 * deltaTime;
+    //       minusY +=  10 * deltaTime;
+    //       playerPosX += minusX;
+    //       playerPosY += minusY;
+    //       AEGfxSetCamPosition(playerPosX, playerPosY);
+    //    }
+    //    else if (IsVibration && AccTime >= 0.1&& AccTime < 0.2)
+    //    {
+    //        plusX +=  10*deltaTime;
+    //        plusY += -10*deltaTime;
+    //        playerPosX += plusX;
+    //        playerPosY += plusY;
+    //        AEGfxSetCamPosition(playerPosX, playerPosY);
+    //    }
+    //    else if (IsVibration && AccTime >= 0.2 && AccTime < 0.3)
+    //    {
+    //        minusX += -10*deltaTime;
+    //        minusY +=  10*deltaTime;
+    //        playerPosX += minusX;
+    //        playerPosY += minusY;
+    //        AEGfxSetCamPosition(playerPosX, playerPosY);
+    //    }       
+    //    else if (IsVibration && AccTime >= 0.3)
+    //    {
+    //        AEGfxSetCamPosition(player_trs->GetPos().x, player_trs->GetPos().y);
+    //        AccTime = 0.f;
+    //        IsVibration = false;
+    //    }
+    //}
+    //
+    //
+    //
+    ////낙사판정
+    //if ((player_trs->GetPos().x>-3000 && player_trs->GetPos().x < 5000 )&&player_trs->GetPos().y < -1800)
+    //{        
+    //    player_comp->SetHealth(-1);
+    //}
+    //else  if (player_trs->GetPos().x >= 5000 &&player_trs->GetPos().y < -900)
+    //{
+    //    player_comp->SetHealth(-1);
+    //}    
+    //
+    ////보스 레벨 진입
+    //if (player_trs->GetPos().x >= 11170)
+    //{
+    //    GSM::GameStateManager::GetInst()->ChangeLevel(new Level::StageBoss_Lvl);
+    //    return;
+    //}
+    //
+    //
+    //GoManager::GetInst()->RemoveDeathObj();
+    //
+    //if (AEInputCheckPrev(AEVK_0))
+    //{
+    //    GSM::GameStateManager::GetInst()->Exit();
+    //}
+    //
+    ////Player->GetHeath() == 0
+    ////    gameOver = true
+    //
+    //if (!(player_comp->IsAlive()))
+    //{
+    //    GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
+    //    gsm->ChangeLevel(new Level::GameOver_Lvl);
+    //
+    //    return;
+    //}
     
-    Collision();
- 
-    if(player_comp->GetObtain())
-    {
-        //리소스 매니저 사용해서 관리해주기 안쓰면 맨날 업데이트 되서 너무 많은 폰트가 들어옴
-        //파일 닫기 잘해주기
-        //로드 할때 nullptr 체크하기
-        //오디오 함수 만들기        
-
-
-        auto pFont = static_cast<TextResource*>(ResourceManager::GetInst()->Get("esamanru","Assets/esamanru-Bold.ttf"));
-        std::string str1 = std::to_string(GetBullet());
-        std::string str2 = "Bullet: ";
-        const char* cstr1 = str1.c_str();
-        const char* cstr2 = str2.c_str();
-
-        AEGfxPrint(pFont->GetFont(), cstr1, -0.85, 0.8, 20/72.f, 1, 1, 1, 1);
-        AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20/72.f, 1, 1, 1, 1);
-    }
-    
-
-    if(player_trs->GetPos().y<-1800)
-        player_comp->SetHealth(-1);
-    
-    
-    
-    //패딩시 진동 
-    if (IsVibration == false)
-    {
-        CameraManager::GetInst()->Update();
-    }
-    else
-    {
-        float deltaTime = AEFrameRateControllerGetFrameTime();
-        AccTime += deltaTime;
-        f32 playerPosX = player_trs->GetPos().x;
-        f32 playerPosY = player_trs->GetPos().y;
-        if (IsVibration && AccTime >= 0 && AccTime < 0.1)
-        {
-           minusX += -10 * deltaTime;
-           minusY +=  10 * deltaTime;
-           playerPosX += minusX;
-           playerPosY += minusY;
-           AEGfxSetCamPosition(playerPosX, playerPosY);
-        }
-        else if (IsVibration && AccTime >= 0.1&& AccTime < 0.2)
-        {
-            plusX +=  10*deltaTime;
-            plusY += -10*deltaTime;
-            playerPosX += plusX;
-            playerPosY += plusY;
-            AEGfxSetCamPosition(playerPosX, playerPosY);
-        }
-        else if (IsVibration && AccTime >= 0.2 && AccTime < 0.3)
-        {
-            minusX += -10*deltaTime;
-            minusY +=  10*deltaTime;
-            playerPosX += minusX;
-            playerPosY += minusY;
-            AEGfxSetCamPosition(playerPosX, playerPosY);
-        }       
-        else if (IsVibration && AccTime >= 0.3)
-        {
-            AEGfxSetCamPosition(player_trs->GetPos().x, player_trs->GetPos().y);
-            AccTime = 0.f;
-            IsVibration = false;
-        }
-    }
-    
-    
-    
-    //낙사판정
-    if ((player_trs->GetPos().x>-3000 && player_trs->GetPos().x < 5000 )&&player_trs->GetPos().y < -1800)
-    {        
-        player_comp->SetHealth(-1);
-    }
-    else  if (player_trs->GetPos().x >= 5000 &&player_trs->GetPos().y < -900)
-    {
-        player_comp->SetHealth(-1);
-    }    
-    
-    //보스 레벨 진입
-    if (player_trs->GetPos().x >= 11170)
-    {
-        GSM::GameStateManager::GetInst()->ChangeLevel(new Level::StageBoss_Lvl);
-        return;
-    }
-    
-    
-    GoManager::GetInst()->RemoveDeathObj();
-    
-    if (AEInputCheckPrev(AEVK_0))
-    {
-        GSM::GameStateManager::GetInst()->Exit();
-    }
-    
-    //Player->GetHeath() == 0
-    //    gameOver = true
-
-    if (!(player_comp->IsAlive()))
-    {
-        GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
-        gsm->ChangeLevel(new Level::GameOver_Lvl);
-    
-        return;
-    }
-
     //std::cout << std::endl;
     if (AEInputCheckTriggered(AEVK_ESCAPE))
     {
         AEInputShowCursor(1);
-        GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
+        GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
     }
     
     
@@ -289,8 +289,8 @@ void Level::Stage01_Lvl::Update()
 
 void Level::Stage01_Lvl::Exit()
 {    
-    //ResourceManager::GetInst()->RemoveAllRes();    
-    EventManager::GetInst()->RemoveAllEvent();
+    ResourceManager::GetInst()->RemoveAllRes();    
+    EventManager::GetInst()->RemoveAllEvent();    
     GoManager::GetInst()->RemoveAllObj();
 }
 

@@ -23,6 +23,7 @@ public:
 	bool BossTakeDamage = true;
 	AEVec2 KnockBackChase = { 0.f,0.f };
 	AEVec2 unitKnockBackChase = { 0.f,0.f };
+	bool KnockBack = false;
 	float KnockBackAccTime = 0.f;
 public:
 	void SetBossTakeDamage(bool _damage) { BossTakeDamage = _damage; }
