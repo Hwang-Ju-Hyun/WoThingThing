@@ -125,7 +125,7 @@ void Level::StageBoss_Lvl::Init()
     //Audio
     auto res = ResourceManager::GetInst()->Get("BossBGM", "Assets/BossBgm.mp3");
     AudioResource* bgm_res = static_cast<AudioResource*>(res);
-    //bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);
+    bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);
 }
 
 void Level::StageBoss_Lvl::Update()
