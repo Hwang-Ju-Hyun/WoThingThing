@@ -22,10 +22,7 @@ SpriteComponent::SpriteComponent(GameObject* _owner)
 	mesh = AEGfxMeshEnd();
 	
 	pTex = nullptr;
-	if (_owner->GetName() == "Melee")
-		m_color = { 155,155,255 };
-	else
-		m_color = { 255,255,255 };
+	m_color = { 255,255,255 };
 	
 	alpha = 1.f;
 }

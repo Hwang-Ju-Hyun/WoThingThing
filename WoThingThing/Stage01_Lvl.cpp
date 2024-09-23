@@ -276,7 +276,8 @@ void Level::Stage01_Lvl::Update()
     if (AEInputCheckTriggered(AEVK_ESCAPE))
     {
         AEInputShowCursor(1);
-        GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
+        AEGfxSetCamPosition(0.f,0.f);
+        GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
     }
     
     
