@@ -5,8 +5,7 @@
 
 SpriteComponent::SpriteComponent(GameObject* _owner)
 	:BaseComponent(_owner)
-{
-	std::cout << __FUNCTION__ << std::endl;
+{	
 
 	AEGfxMeshStart();
 	
@@ -32,8 +31,7 @@ SpriteComponent::SpriteComponent(GameObject* _owner)
 }
 
 SpriteComponent::~SpriteComponent()
-{
-	std::cout << __FUNCTION__ << std::endl;
+{	
 	AEGfxMeshFree(mesh);
 }
 
