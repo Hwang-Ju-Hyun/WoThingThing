@@ -31,7 +31,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	AESysInit(instanceH, show, 1600, 900, 1, 60, true, NULL);
 
 	// Changing the window title
-	AESysSetWindowTitle("Asteriods Demo!");
+	AESysSetWindowTitle("WoThingThing");
 
 	AESysReset();
 	
@@ -52,9 +52,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 
 		//Update;
-
-
-
 		CompManager::GetInst()->Update();
 		TimeManager::GetInst()->Update();
 		EventManager::GetInst()->Update();

@@ -82,7 +82,7 @@ void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool
 
 		TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
 		bullet_trs->SetPos(initPos.x + (nor_dVec.x * 50.f), initPos.y + (nor_dVec.y * 50.f));
-		bullet_trs->SetScale({ 15,15 });
+		bullet_trs->SetScale({ 30,30 });
 	}
 }
  

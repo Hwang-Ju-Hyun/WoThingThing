@@ -27,6 +27,8 @@ private:
     void CalculateMatrix();
 public:
     const AEVec2& GetPos()        { return m_vPos; }
+    AEVec2& TempGetPos() { return m_vPos; }
+
     const AEVec2& GetScale()      { return m_vScale; }
     const float& GetRot()         { return m_fRot; }
     const AEMtx33& GetMatrix()    { return m_matMatrix; }
