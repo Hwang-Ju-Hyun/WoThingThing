@@ -65,12 +65,13 @@ void Level::Stage01_Lvl::Init()
     GoManager::GetInst()->AddObject(background);
     background->AddComponent("Transform", new TransComponent(background));
     background->AddComponent("Sprite", new SpriteComponent(background));
-    ResourceManager::GetInst()->Get("BackgroundImg", "Assets/BackgroundImage.png");
+    ResourceManager::GetInst()->Get("BackgroundImg", "Assets/BackgroundNightImage.png");
     SpriteComponent* bg_spr = (SpriteComponent*)background->FindComponent("Sprite");
     ImageResource* bgResource = (ImageResource*)ResourceManager::GetInst()->FindRes("BackgroundImg");
     bg_spr->SetTexture(bgResource->GetImage());
-    //Object and Component Init
+    bg_spr->SetAlpha(0.5f);
 
+    //Object and Component Init
     ResourceManager::GetInst()->Get("MeleeIdle", "Assets/meleeEnemyIdle.png");
     ResourceManager::GetInst()->Get("MeleeChase", "Assets/meleeEnemyChase.png");
     ResourceManager::GetInst()->Get("MeleeAttack", "Assets/meleeEnemyAtk.png");//("MeleeAttack", 1, 5, 5, 0.1);
@@ -82,7 +83,6 @@ void Level::Stage01_Lvl::Init()
     Serializer::GetInst()->LoadLevel("Assets/stage01.json");
 
 
-
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
@@ -92,18 +92,13 @@ void Level::Stage01_Lvl::Init()
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });
 
-
     playerAnim = new GameObject("PlayerAnim");
     GoManager::GetInst()->AddObject(playerAnim); //GetInst() == GetPtr()
     playerAnim->AddComponent("Transform", new TransComponent(playerAnim));
     playerAnim->AddComponent("Animation", new AnimationComponent(playerAnim));
 
-
-    aimTrace = new GameObject("aimTrace");
-    GoManager::GetInst()->AddObject(aimTrace);
-    aimTrace->AddComponent("Transform", new TransComponent(aimTrace));
-    aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));
-
+    CameraManager::GetInst()->SetMouse(mouseAim);
+    CameraManager::GetInst()->SetPlayer(player);
 
     for (int i = 0; i < Enemy.size(); i++)
     {
@@ -149,13 +144,12 @@ void Level::Stage01_Lvl::Init()
 
     CameraManager::GetInst()->SetMouse(mouseAim);
     CameraManager::GetInst()->SetPlayer(player);
-    CameraManager::GetInst()->SetAim(aimTrace);
 
     //Audio Init    
     bgm = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
     bgm_res = static_cast<AudioResource*>(bgm);        
     bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, bgm_volume, bgm_pitch, -1);
-    Level::StageBoss_Lvl::Stage2 = false;    
+    Level::StageBoss_Lvl::Stage2 = false;
 }
 
 void Level::Stage01_Lvl::Update()
@@ -189,7 +183,6 @@ void Level::Stage01_Lvl::Update()
     bg_trs->SetPos(player_trs->GetPos());
     bg_trs->SetScale({ 1600,900 });
 
-    //AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
     AEInputShowCursor(0);
     //Component Pointer
     
@@ -283,9 +276,6 @@ void Level::Stage01_Lvl::Update()
         GSM::GameStateManager::GetInst()->Exit();
     }
     
-    //Player->GetHeath() == 0
-    //    gameOver = true
-    
     if (!(player_comp->IsAlive()))
     {
         GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
@@ -294,16 +284,13 @@ void Level::Stage01_Lvl::Update()
         return;
     }
     
-
     if (AEInputCheckTriggered(AEVK_ESCAPE))
     {
         AEInputShowCursor(1);
         AEGfxSetCamPosition(0.f,0.f);
         GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
     }
-    
-    
-    
+      
     if (AEInputCheckTriggered(AEVK_F1))
         GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
 
@@ -570,7 +557,6 @@ void Level::Stage01_Lvl::Collision()
         }
     }
 }
-
 
 //바닥이랑 obj Collision이면서 위치보정
 void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
