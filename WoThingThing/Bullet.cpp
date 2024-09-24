@@ -18,6 +18,7 @@ void CreateGun(AEVec2 initPos)
 	remainBullet = 5;
 	GameObject* gun = new GameObject("Gun");
 	GoManager::GetInst()->AddObject(gun);
+
 	gun->AddComponent("Transform", new TransComponent(gun));
 	TransComponent* gun_trs = (TransComponent*)gun->FindComponent("Transform");
 	gun_trs->SetPos(initPos.x, initPos.y);
@@ -60,6 +61,20 @@ void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool
 		GoManager::GetInst()->AddObject(bullet);
 		bullet->AddComponent("Transform", new TransComponent(bullet));
 		bullet->AddComponent("Sprite", new SpriteComponent(bullet));
+		if (_bulletname == "BossBullet")
+		{
+			SpriteComponent* bullet_spr = (SpriteComponent*)bullet->FindComponent("Sprite");
+			ResourceManager::GetInst()->Get("BossBullet", "Assets/BossBullet.png");
+			ImageResource* bossBullet = (ImageResource*)ResourceManager::GetInst()->FindRes("BossBullet");
+			bullet_spr->SetTexture(bossBullet->GetImage());
+		}
+		else if (_bulletname == "EnemyBullet")
+		{
+			SpriteComponent* bullet_spr = (SpriteComponent*)bullet->FindComponent("Sprite");
+			ResourceManager::GetInst()->Get("EnemyBullet", "Assets/EnemyBullet.png");
+			ImageResource* enemyBullet = (ImageResource*)ResourceManager::GetInst()->FindRes("EnemyBullet");
+			bullet_spr->SetTexture(enemyBullet->GetImage());
+		}
 		bullet->AddComponent("Bullet", new BulletComponent(bullet));
 		BulletComponent* bullet_comp = (BulletComponent*)bullet->FindComponent("Bullet");
 		bullet_comp->SetBulletVec(nor_dVec);
@@ -67,7 +82,7 @@ void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool
 
 		TransComponent* bullet_trs = (TransComponent*)bullet->FindComponent("Transform");
 		bullet_trs->SetPos(initPos.x + (nor_dVec.x * 50.f), initPos.y + (nor_dVec.y * 50.f));
-		bullet_trs->SetScale({ 10, 10 });
+		bullet_trs->SetScale({ 15,15 });
 	}
 }
  
@@ -77,15 +92,17 @@ void CreateSupplement(AEVec2 initPos)
 	//ii) 플레이어의 총알이 부족할때 마다 근처에서 랜덤하게 생성하기
 	GameObject* supplement = new GameObject("BulletSupplement");
 	GoManager::GetInst()->AddObject(supplement);
-	supplement->AddComponent("Transform", new TransComponent(supplement));
-	supplement->AddComponent("BulletAnim", new BulletAnimationComponent(supplement));
-	//supplement->AddComponent("Sprite", new SpriteComponent(supplement));
 
+	supplement->AddComponent("Transform", new TransComponent(supplement));
 	TransComponent* supple_trs = (TransComponent*)supplement->FindComponent("Transform");
-	//initPos 값을 적의 위치로 주면 끝
 	supple_trs->SetPos(initPos.x, initPos.y);
-	supple_trs->SetScale({ 15,
-		});
+	supple_trs->SetScale({ 40, 40 });
+
+	supplement->AddComponent("Sprite", new SpriteComponent(supplement));
+	SpriteComponent* supple_spr = (SpriteComponent*)supplement->FindComponent("Sprite");
+	ResourceManager::GetInst()->Get("SupplyBullet", "Assets/SupplyBullet.png");
+	ImageResource* suppleBullet = (ImageResource*)ResourceManager::GetInst()->FindRes("SupplyBullet");
+	supple_spr->SetTexture(suppleBullet->GetImage());
 
 }
 

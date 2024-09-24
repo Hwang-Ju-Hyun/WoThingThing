@@ -181,8 +181,10 @@ void Level::Stage01_Lvl::Update()
 
     TransComponent* bg_trs = (TransComponent*)background->FindComponent("Transform");
     bg_trs->SetPos(player_trs->GetPos());
-    bg_trs->SetScale({ 1600,900 });
-
+    bg_trs->SetScale({ 1600, 900 });
+    //bg_trs->SetPos(0, 0);
+    //bg_trs->SetScale({ 1800 * 5,1000 * 5 });
+    
     AEInputShowCursor(0);
     //Component Pointer
     
@@ -415,14 +417,14 @@ void Level::Stage01_Lvl::Collision()
 
                         //Create Gun && Bullet
                         TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(EnemySniper[SniperObjID]->FindComponent("Transform"));
-                        if (!player_comp->GetObtain())
-                        {
-                            CreateGun(EnemyMelee_trs->GetPos());
-                        }
-                        if (player_comp->GetObtain())
-                        {
-                            CreateSupplement(EnemyMelee_trs->GetPos());
-                        }
+                        //if (!player_comp->GetObtain())
+                        //{
+                        //    CreateGun(EnemyMelee_trs->GetPos());
+                        //}
+                        //if (player_comp->GetObtain())
+                        //{
+                        //    CreateSupplement(EnemyMelee_trs->GetPos());
+                        //}
                         //===========================
 
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
@@ -430,7 +432,14 @@ void Level::Stage01_Lvl::Collision()
                         {
                             EnemySniper[SniperObjID]->SetActive(false);
                             EnemySniper[SniperObjID] = nullptr; 
-                            
+                            if (!player_comp->GetObtain())
+                            {
+                                CreateGun(EnemyMelee_trs->GetPos());
+                            }
+                            if (player_comp->GetObtain())
+                            {
+                                CreateSupplement(EnemyMelee_trs->GetPos());
+                            }
                             auto resSniperDead = ResourceManager::GetInst()->Get("sfx_SniperDeadToBullet", "Assets/Dead2.mp3");                            
                             AudioResource* bgm_res = static_cast<AudioResource*>(resSniperDead);
                             bgm_res->SetSFXorMusic(Sound::SFX);

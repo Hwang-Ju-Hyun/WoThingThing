@@ -352,64 +352,64 @@ void Level::StageBoss_Lvl::Update()
     //=======NEVER TOUCH UPPER CODE EXCEPT HWNAG JUHYUN==========
     //======================WARNING=============================
 
-    //if (Enemy_TEST->GetHP() >= 15 && Enemy_TEST->GetHP() <= 20)
-    //{
-    //    AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
-    //    AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
-    //    AEVec2Normalize(&nor_dVec, &dVec);
-    //    float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
-    //    AttackDelayTime += deltaTime;
-    //    if (AttackDelayTime > 3.f)
-    //    {
-    //        auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
-    //        AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun); 
-    //        bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
-    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-    //        AttackDelayTime = 0.f;
-    //    }
-    //}
-    //else if (Enemy_TEST->GetHP() >= 10&& Enemy_TEST->GetHP()<15)
-    //{                        
-    //    AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
-    //    AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
-    //    AEVec2Normalize(&nor_dVec, &dVec);
-    //    float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
-    //    AttackDelayTime += deltaTime;
-    //    if (AttackDelayTime > 1.5f)
-    //    {
-    //        auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
-    //        AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
-    //        bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
-    //
-    //       /* bgm_res->SetSFXorMusic(Sound::SFX);
-    //        auto bgm_audio = bgm_res->GetAudio();
-    //        auto bgm_audioGroup = bgm_res->GetAudioGroup();
-    //        AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);*/
-    //
-    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-    //        nor_dVec.y += 0.05f;
-    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-    //        nor_dVec.y += 0.05f;
-    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-    //        nor_dVec.y -= 0.15f;
-    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-    //        nor_dVec.y -= 0.30f;
-    //        AttackDelayTime = 0.f;
-    //    }
-    //}
-    //else if (Enemy_TEST->GetHP() < 10)
-    //{
-    //    AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
-    //    AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
-    //    AEVec2Normalize(&nor_dVec, &dVec);
-    //    float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
-    //    AttackDelayTime += deltaTime;
-    //    if (AttackDelayTime > 0.5f)
-    //    {
-    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);            
-    //        AttackDelayTime = 0.f;
-    //    }
-    //}
+    if (Enemy_TEST->GetHP() >= 15 && Enemy_TEST->GetHP() <= 20)
+    {
+        AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
+        AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+        AEVec2Normalize(&nor_dVec, &dVec);
+        float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
+        AttackDelayTime += deltaTime;
+        if (AttackDelayTime > 3.f)
+        {
+            auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
+            AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun); 
+            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+            AttackDelayTime = 0.f;
+        }
+    }
+    else if (Enemy_TEST->GetHP() >= 10&& Enemy_TEST->GetHP()<15)
+    {                        
+        AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
+        AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+        AEVec2Normalize(&nor_dVec, &dVec);
+        float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
+        AttackDelayTime += deltaTime;
+        if (AttackDelayTime > 1.5f)
+        {
+            auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
+            AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
+            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+    
+           /* bgm_res->SetSFXorMusic(Sound::SFX);
+            auto bgm_audio = bgm_res->GetAudio();
+            auto bgm_audioGroup = bgm_res->GetAudioGroup();
+            AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);*/
+    
+            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+            nor_dVec.y += 0.05f;
+            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+            nor_dVec.y += 0.05f;
+            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+            nor_dVec.y -= 0.15f;
+            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+            nor_dVec.y -= 0.30f;
+            AttackDelayTime = 0.f;
+        }
+    }
+    else if (Enemy_TEST->GetHP() < 10)
+    {
+        AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
+        AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+        AEVec2Normalize(&nor_dVec, &dVec);
+        float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
+        AttackDelayTime += deltaTime;
+        if (AttackDelayTime > 0.5f)
+        {
+            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);            
+            AttackDelayTime = 0.f;
+        }
+    }
 }
 
 void Level::StageBoss_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
