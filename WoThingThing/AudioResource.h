@@ -8,8 +8,15 @@ public:
     ~AudioResource();
 private:
     int m_check;
-    AEAudio m_Sound;    
-    AEAudioGroup m_bgm;    
+    AEAudio m_Sound;
+    AEAudioGroup m_bgm;
+    float m_volume = 1.f;
+    float m_pitch = 1.f;
+public:
+    void SetVolume(float _vol) { m_volume = _vol; }
+    const float GetVolume() { return m_volume; }
+    void SetPitch(float _pitch) { m_pitch = _pitch; }
+    const float GetPitch() { return m_pitch; }
 public:    
     AEAudio GetAudio() { return m_Sound; }
     AEAudioGroup GetAudioGroup(){return m_bgm;}

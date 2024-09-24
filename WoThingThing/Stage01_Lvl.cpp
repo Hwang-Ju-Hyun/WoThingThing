@@ -50,9 +50,8 @@
 #include"StageBoss_Lvl.h"
 AEVec2 enemyDvec{ 1, 0 };
 
-
 Level::Stage01_Lvl::Stage01_Lvl()
-{
+{    
 }
 
 Level::Stage01_Lvl::~Stage01_Lvl()
@@ -151,21 +150,39 @@ void Level::Stage01_Lvl::Init()
     CameraManager::GetInst()->SetPlayer(player);
     CameraManager::GetInst()->SetAim(aimTrace);
 
-    //Audio Init
-    auto res = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
-    AudioResource* bgm_res = static_cast<AudioResource*>(res);
-    //bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);
-    Level::StageBoss_Lvl::Stage2 = false;
-
-    
-
+    //Audio Init    
+    bgm = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
+    bgm_res = static_cast<AudioResource*>(bgm);        
+    bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, bgm_volume, bgm_pitch, -1);
+    Level::StageBoss_Lvl::Stage2 = false;    
 }
 
 void Level::Stage01_Lvl::Update()
-{
+{               
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp"); 
+    float dt = AEFrameRateControllerGetFrameTime();
+    if (player_comp->GetManiActive() == true)
+    {        
+        float vol = bgm_res->GetPitch();
+        if (vol >= 0.3)
+        {
+            bgm_res->SetPitch(vol - dt);
+            AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());            
+        }  
+        player_comp->SetTriggeredButton(true);
+    }
+    else if(player_comp->GetTriggeredButton()==true)
+    {
+        float vol = bgm_res->GetPitch();
+        if (vol <= 1.0)
+        {
+            bgm_res->SetPitch(vol + dt);
+            AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());
+        }
+    }
+
 
     TransComponent* bg_trs = (TransComponent*)background->FindComponent("Transform");
     bg_trs->SetPos(player_trs->GetPos());

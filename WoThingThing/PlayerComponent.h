@@ -36,7 +36,7 @@ class PlayerComponent : public BaseComponent
     int playerhealth;
     float maniCapacity;
     float AccTime=0.f;
-
+    bool IsTriggeredButton=false;
     bool invincibility;
 public:
     PlayerComponent(GameObject* _owner);
@@ -81,6 +81,8 @@ public:
     {
         playerhealth = _health;
     }
+    void SetTriggeredButton(bool _tri) { IsTriggeredButton = _tri; }
+    bool GetTriggeredButton() { return IsTriggeredButton; }
 
     void TakeDamge();
     bool IsAlive();

@@ -459,7 +459,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 			if (obj->GetName() == "Enemy_TEST")
 			{				
 				// 이동 방향 계산
-				if (obj->GetSturn() == false)
+				if (obj->GetSturn() == false && _obj->KnockBack == false)
 				{
 					float dt = AEFrameRateControllerGetFrameTime();
 					AEVec2 direction = { _nextNode.node_pos.x - _nodeInfo.node_pos.x, 0 };
@@ -478,7 +478,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 				}
 				else
 				{
-					obj_rb->AddVelocity({ 0.f,0.f });
+					obj_trs->AddPos({ 0.f,0.f });
 				}				
 			}
 			
@@ -525,13 +525,20 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 		{
 			Height = 540;
 		}
-		obj_rb->jump(Height);
-		//Height = 600;
-		IsJumpDone = true;
+		if (_obj->GetSturn() == false && _obj->KnockBack == false)
+		{
+			obj_rb->jump(Height);
+			//Height = 600;
+			IsJumpDone = true;
+		}
+		else
+		{
+			obj_trs->AddPos({ 0.f,0.f });
+		}
 	}
 	else
 	{
-		if (_obj->GetSturn() == false)
+		if (_obj->GetSturn() == false && _obj->KnockBack == false)
 		{
 			AEVec2 direction = { _nextNode.node_pos.x - _nodeInfo.node_pos.x, _nextNode.node_pos.y - _nodeInfo.node_pos.y };
 			AEVec2 normalize_dir;

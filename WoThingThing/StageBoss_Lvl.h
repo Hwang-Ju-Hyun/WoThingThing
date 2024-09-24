@@ -3,6 +3,8 @@
 #include "header.h"
 
 class GameObject;
+class Resource;
+class AudioResource;
 
 namespace Level
 {
@@ -15,6 +17,8 @@ namespace Level
         float AccTime = 0.f;
         float AttackDelayTime = 0.f;
         bool gameOver;
+        Resource* bgm;
+        AudioResource* bgm_res;
     public:
         StageBoss_Lvl();
         ~StageBoss_Lvl();

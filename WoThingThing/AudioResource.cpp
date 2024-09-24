@@ -60,6 +60,6 @@ void AudioResource::PlayMusicOrSFX(AudioResource* _res, Sound _type, float _volu
 {
 	_res->SetSFXorMusic(_type);
 	auto audio = _res->GetAudio();
-	auto audioGroup = _res->GetAudioGroup();
-	AEAudioPlay(audio, audioGroup, _volume, _pitch, _loops);
+	m_bgm = _res->GetAudioGroup();
+	AEAudioPlay(audio, m_bgm, _volume, _pitch, _loops);
 }

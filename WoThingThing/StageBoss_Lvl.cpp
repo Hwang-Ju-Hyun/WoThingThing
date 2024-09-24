@@ -60,6 +60,8 @@ void Level::StageBoss_Lvl::Init()
     ResourceManager::GetInst()->Get("BossSturn", "Assets/BossSturn.png");//(1,2,2,0.1)
     ResourceManager::GetInst()->Get("BossRun", "Assets/BossRun.png");//(1,6,6,0.1)
     ResourceManager::GetInst()->Get("BossAtk", "Assets/BossAtk.png");//(1, 4, 4, 0.1);
+    ResourceManager::GetInst()->Get("KnockBack", "Assets/KnockBack.png");
+
     Serializer::GetInst()->LoadLevel("Assets/stageBoss.json");
 
 
@@ -123,8 +125,8 @@ void Level::StageBoss_Lvl::Init()
     enemyDir = true;
 
     //Audio
-    auto res = ResourceManager::GetInst()->Get("BossBGM", "Assets/BossBgm.mp3");
-    AudioResource* bgm_res = static_cast<AudioResource*>(res);
+    bgm = ResourceManager::GetInst()->Get("BossBGM", "Assets/BossBgm.mp3");
+    bgm_res = static_cast<AudioResource*>(bgm);
     bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);
 }
 
@@ -132,8 +134,7 @@ void Level::StageBoss_Lvl::Update()
 {
     AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
     AEInputShowCursor(0);
-    //Component Pointer    
-    // 
+    //Component Pointer        
     //Component 
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     //SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
@@ -158,14 +159,35 @@ void Level::StageBoss_Lvl::Update()
     const char* cstr2 = str2.c_str();
 
     AEGfxPrint(pFont->GetFont(), cstr1, -0.85, 0.8, 20 / 72.f, 1, 1, 1, 1);
-    AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20 / 72.f, 1, 1, 1, 1);
-    //===========================
+    AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20 / 72.f, 1, 1, 1, 1);    
+
+    float dt = AEFrameRateControllerGetFrameTime();
 
     if (!(ColliderManager::GetInst()->isFacingtheSameDirection(chaseVec, enemyDir)))
     {
         //Chase_outTime = 0.0f;
         enemyDir = !(enemyDir);
         Enemy_ani->SetEnemyDir(!enemyDir);
+    }
+
+    if (player_comp->GetManiActive() == true)
+    {
+        float vol = bgm_res->GetPitch();
+        if (vol >= 0.3)
+        {
+            bgm_res->SetPitch(vol - dt);
+            AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());
+        }
+        player_comp->SetTriggeredButton(true);
+    }
+    else if (player_comp->GetTriggeredButton() == true)
+    {
+        float vol = bgm_res->GetPitch();
+        if (vol <= 1.0)
+        {
+            bgm_res->SetPitch(vol + dt);
+            AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());
+        }
     }
     
     
@@ -313,64 +335,64 @@ void Level::StageBoss_Lvl::Update()
     //=======NEVER TOUCH UPPER CODE EXCEPT HWNAG JUHYUN==========
     //======================WARNING=============================
 
-    if (Enemy_TEST->GetHP() >= 15 && Enemy_TEST->GetHP() <= 20)
-    {
-        AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
-        AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
-        AEVec2Normalize(&nor_dVec, &dVec);
-        float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
-        AttackDelayTime += deltaTime;
-        if (AttackDelayTime > 3.f)
-        {
-            auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
-            AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun); 
-            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-            AttackDelayTime = 0.f;
-        }
-    }
-    else if (Enemy_TEST->GetHP() >= 10&& Enemy_TEST->GetHP()<15)
-    {                        
-        AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
-        AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
-        AEVec2Normalize(&nor_dVec, &dVec);
-        float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
-        AttackDelayTime += deltaTime;
-        if (AttackDelayTime > 1.5f)
-        {
-            auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
-            AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
-            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
-
-           /* bgm_res->SetSFXorMusic(Sound::SFX);
-            auto bgm_audio = bgm_res->GetAudio();
-            auto bgm_audioGroup = bgm_res->GetAudioGroup();
-            AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);*/
-
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-            nor_dVec.y += 0.05f;
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-            nor_dVec.y += 0.05f;
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-            nor_dVec.y -= 0.15f;
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-            nor_dVec.y -= 0.30f;
-            AttackDelayTime = 0.f;
-        }
-    }
-    else if (Enemy_TEST->GetHP() < 10)
-    {
-        AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
-        AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
-        AEVec2Normalize(&nor_dVec, &dVec);
-        float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
-        AttackDelayTime += deltaTime;
-        if (AttackDelayTime > 0.5f)
-        {
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);            
-            AttackDelayTime = 0.f;
-        }
-    }
+    //if (Enemy_TEST->GetHP() >= 15 && Enemy_TEST->GetHP() <= 20)
+    //{
+    //    AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
+    //    AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+    //    AEVec2Normalize(&nor_dVec, &dVec);
+    //    float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
+    //    AttackDelayTime += deltaTime;
+    //    if (AttackDelayTime > 3.f)
+    //    {
+    //        auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
+    //        AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun); 
+    //        bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+    //        AttackDelayTime = 0.f;
+    //    }
+    //}
+    //else if (Enemy_TEST->GetHP() >= 10&& Enemy_TEST->GetHP()<15)
+    //{                        
+    //    AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
+    //    AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+    //    AEVec2Normalize(&nor_dVec, &dVec);
+    //    float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
+    //    AttackDelayTime += deltaTime;
+    //    if (AttackDelayTime > 1.5f)
+    //    {
+    //        auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
+    //        AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
+    //        bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+    //
+    //       /* bgm_res->SetSFXorMusic(Sound::SFX);
+    //        auto bgm_audio = bgm_res->GetAudio();
+    //        auto bgm_audioGroup = bgm_res->GetAudioGroup();
+    //        AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);*/
+    //
+    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+    //        nor_dVec.y += 0.05f;
+    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+    //        nor_dVec.y += 0.05f;
+    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+    //        nor_dVec.y -= 0.15f;
+    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+    //        nor_dVec.y -= 0.30f;
+    //        AttackDelayTime = 0.f;
+    //    }
+    //}
+    //else if (Enemy_TEST->GetHP() < 10)
+    //{
+    //    AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
+    //    AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+    //    AEVec2Normalize(&nor_dVec, &dVec);
+    //    float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
+    //    AttackDelayTime += deltaTime;
+    //    if (AttackDelayTime > 0.5f)
+    //    {
+    //        CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);            
+    //        AttackDelayTime = 0.f;
+    //    }
+    //}
 }
 
 void Level::StageBoss_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
@@ -530,7 +552,7 @@ void Level::StageBoss_Lvl::Collision()
                     AEVec2Scale(&nor_dVec, &nor_dVec, -1);
 
                     bullet_comp->SetBulletVec(nor_dVec);       
-                    IsVibration = true;
+                    //IsVibration = true;
                 }
                 /*bullet_comp->EnemyShoot = false;
                 AEVec2 returnbullet = bullet_comp->GetBulletVec();
@@ -572,66 +594,69 @@ void Level::StageBoss_Lvl::Collision()
                             obj->AddHP(-1);
                         }
                     }
-                }               
-            }  
-            float m_fDt = AEFrameRateControllerGetFrameTime();
-            //플레이어의 MeleeAttack
-            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj)&&obj->GetBossTakeDamage()==true)
-            {                
-                obj->SetSturn(true);                                
-                obj->AddHP(-1); 
-                obj->SetBossTakeDamage(false);                
-            }
-            //1초당 보스의 피격을 위해서
-            if (obj->GetBossTakeDamage() == false)
-            {                                
-                obj->TakeDamageCoolTime += m_fDt;
-
-                if (obj->TakeDamageCoolTime >= 1.f)
-                {
-                    obj->SetBossTakeDamage(true);
-                    obj->TakeDamageCoolTime = 0.f;
                 }
-            }
-            //스턴 상태
-            if (obj->GetSturn() == true)
-            {                
-                obj->SturnAccTime += m_fDt;
-                ColliderManager::GetInst()->SetPlayerSearchOnOff(false);
-                EnemyTest_trs->AddPos(0.f, 0.f);
-                Enemy_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);
-            }            
-            //스턴이 끝났다면
-            if (obj->SturnAccTime >= 1.0f)
-            {
-                obj->SetSturn(false);
-                obj->SturnAccTime = 0.f;
-                ColliderManager::GetInst()->SetPlayerSearchOnOff(true);                
-            }         
-            if (ColliderManager::GetInst()->KnockBackCollision(player_comp->GetMelee(), obj) && obj->GetHP() % 3 == 0)
-            {                
-                obj->KnockBack = true;
-
-                obj->KnockBackChase.x = player_trs->GetPos().x - EnemyTest_trs->GetPos().x;
-                obj->KnockBackChase.y = player_trs->GetPos().y - EnemyTest_trs->GetPos().y;
-
-                AEVec2Normalize(&obj->unitKnockBackChase, &obj->KnockBackChase);
-            }
-            if (obj->KnockBack == true&&obj->GetHP()%3==0)
-            {
-                obj->KnockBackAccTime += m_fDt;
-                if (obj->KnockBackAccTime >= 0.4f)
-                {
-                    obj->KnockBack = false;
-                    obj->KnockBackAccTime = 0.f;
-                }
-                else
-                {
-                    player_trs->AddPos(obj->unitKnockBackChase.x*1000.f*m_fDt, obj->unitKnockBackChase.y*1000.f * m_fDt);
-                }
-            }
-        }                            
+            }                                   
+        }
     }        
+    if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), Enemy_TEST) && Enemy_TEST->GetBossTakeDamage() == true)
+    {
+        Enemy_TEST->SetSturn(true);
+        Enemy_TEST->AddHP(-1);
+        Enemy_TEST->SetBossTakeDamage(false);
+    }
+    if (ColliderManager::GetInst()->KnockBackCollision(player_comp->GetMelee(), Enemy_TEST) && Enemy_TEST->GetHP() % 3 == 0)
+    {
+        Enemy_TEST->KnockBack = true;
+        Enemy_TEST->KnockBackChase.x = player_trs->GetPos().x - EnemyTest_trs->GetPos().x;
+        Enemy_TEST->KnockBackChase.y = player_trs->GetPos().y - EnemyTest_trs->GetPos().y;
+        AEVec2Normalize(&Enemy_TEST->unitKnockBackChase, &Enemy_TEST->KnockBackChase);
+    }
+    //넉백
+    if (Enemy_TEST->KnockBack == true)
+    {
+        Enemy_TEST->SetSturn(false);
+        Enemy_TEST->KnockBackAccTime += m_fDt;
+        if (Enemy_TEST->KnockBackAccTime >= 1.0f)
+        {
+            Enemy_TEST->KnockBack = false;
+            Enemy_TEST->KnockBackAccTime = 0.f;
+            Enemy_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
+        }
+        else
+        {
+            EnemyTest_trs->AddPos({ 0.f,0.f });
+            player_trs->AddPos(Enemy_TEST->unitKnockBackChase.x * 500.f * m_fDt, Enemy_TEST->unitKnockBackChase.y * 500.f * m_fDt);
+            Enemy_ani->ChangeAnimation("KnockBack", 1, 8, 8, 0.1);
+        }
+    }
+    //1초당 보스의 피격을 위해서
+    if (Enemy_TEST->GetBossTakeDamage() == false)
+    {
+        Enemy_TEST->TakeDamageCoolTime += m_fDt;
+
+        if (Enemy_TEST->TakeDamageCoolTime >= 1.f)
+        {
+            Enemy_TEST->SetBossTakeDamage(true);
+            Enemy_TEST->TakeDamageCoolTime = 0.f;
+        }
+    }
+    //스턴 상태
+    if (Enemy_TEST->GetSturn() == true)
+    {
+        Enemy_TEST->SturnAccTime += m_fDt;
+        ColliderManager::GetInst()->SetPlayerSearchOnOff(false);
+        EnemyTest_trs->AddPos(0.f, 0.f);
+        Enemy_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);
+    }
+    //스턴이 끝났다면
+    if (Enemy_TEST->SturnAccTime >= 1.0f)
+    {
+        Enemy_TEST->SetSturn(false);
+        Enemy_TEST->SturnAccTime = 0.f;
+        ColliderManager::GetInst()->SetPlayerSearchOnOff(true);
+    }
+
+    
 
     //여기가 보스랑 플레이어가 부딫히는 부분
     if (ColliderManager::GetInst()->GetPlayerSearchOnOff() == true)

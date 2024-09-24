@@ -5,7 +5,8 @@
 
 class GameObject;
 class MainMenu_Lvl;
-
+class Resource;
+class AudioResource;
 
 namespace Level
 {
@@ -41,11 +42,15 @@ namespace Level
         std::array<GameObject*, 20> Enemy;
         std::array<GameObject*, 14> EnemySniper;
         GameObject* Boss1;
-
         GameObject* Enemy_TEST;
-
+        Resource* bgm;
+        AudioResource* bgm_res;
+        bool bgm_flag = false;
+        float bgm_pitch = 1.0f;
+        float bgm_volume = 1.43f;
     public:       
         int counter = 0;
+        
     public:
         void HandleCollision(GameObject* obj1, GameObject* obj2);
         void Collision();
