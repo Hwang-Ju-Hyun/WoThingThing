@@ -737,17 +737,24 @@ void Level::StageBoss_Lvl::Collision()
     //여기가 보스랑 플레이어가 부딫히는 부분
     if (ColliderManager::GetInst()->GetPlayerSearchOnOff() == true)
     {
-        if (ColliderManager::GetInst()->MeleeEnemyAttack(Enemy_TEST, player, enemyDir) && !player_comp->GetInvincible())
+        if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, -0.5, 1, 1) && !player_comp->GetInvincible())
         {
             Enemy_ani->ChangeAnimation("BossAtk", 1, 4, 4, 0.1);
             m_fDt = (f32)AEFrameRateControllerGetFrameTime();
-            melee_DelayAtk += m_fDt;
-            //std::cout << melee_DelayAtk << std::endl;
-            if (melee_DelayAtk > 0.5f)//0.05초주기
+            if (player_comp->GetManiActive())
+            {
+                melee_DelayAtk += m_fDt * 0.1;
+            }
+            else
+            {
+                melee_DelayAtk += m_fDt;
+            }
+
+            if (melee_DelayAtk > 0.4f)
             {
                 player_comp->TakeDamge();
-                //std::cout << "Attack Player" << std::endl;
             }
+
         } 
         else 
         {

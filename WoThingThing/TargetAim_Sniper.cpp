@@ -64,7 +64,7 @@ void ESM::TargetAim_Sniper::Update()
 		m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 		
 
-		if (ShouldSlowTime) 
+		if (player_comp->GetManiActive())
 		{
 			AttackDelay += m_fDt * 0.1;
 		}
