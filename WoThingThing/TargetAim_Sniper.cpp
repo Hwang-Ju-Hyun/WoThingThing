@@ -56,7 +56,7 @@ void ESM::TargetAim_Sniper::Update()
 	//실질적인 부분
 	if (ColliderManager::GetInst()->PlayerSearch(TargetAim_enemy, Player, dir_state, 18.f, 18.f, 10.f))
 	{
-		Enemy_sniperani->ChangeAnimation("SniperShoot", 1, 5, 5, 0.1);
+		Enemy_sniperani->ChangeAnimation("SniperShoot", 1, 5, 5, 0.2);
 		m_fDt_Target = 0.0f;
 		Search_outTime = 0.0f;
 

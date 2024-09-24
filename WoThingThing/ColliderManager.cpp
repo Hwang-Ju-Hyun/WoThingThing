@@ -82,6 +82,7 @@ bool ColliderManager::IsCollision(GameObject* _obj1, TransComponent::Node _node)
 	float obj2TopY = obj2_Pos.y - obj2_Scale.y / 2.f;
 	float obj2BotY = obj2_Pos.y + obj2_Scale.y / 2.f;
 
+
 	if (obj1Right<obj2Left || obj1Left>obj2Right || obj1Bot<obj2TopY || obj1Top>obj2BotY)
 		return false;
 	return true;
@@ -110,6 +111,37 @@ bool ColliderManager::IsCollision(GameObject* _obj1, AEVec2 _vec)
 	if (obj1Right<obj2Left || obj1Left>obj2Right || obj1Bot<obj2TopY || obj1Top>obj2BotY)
 		return false;
 	return true;
+}
+
+//Player의 피견판정 범위 줄어들게 하기
+bool ColliderManager::handle_Player_EnemyAtk_Collision(GameObject* _obj1, GameObject* _obj2)
+{
+	if (_obj1 == nullptr || _obj2 == nullptr)
+	{
+		return false;
+	}
+
+	//obj1이 player이기 때문에 건들기 
+	BaseComponent* obj_trs1 = _obj1->FindComponent("Transform");
+	BaseComponent* obj_trs2 = _obj2->FindComponent("Transform");
+	AEVec2 obj1_Pos = static_cast<TransComponent*>(obj_trs1)->GetPos();
+	AEVec2 obj2_Pos = static_cast<TransComponent*>(obj_trs2)->GetPos();
+
+	AEVec2 obj1_Scale = static_cast<TransComponent*>(obj_trs1)->GetScale();
+	AEVec2 obj2_Scale = static_cast<TransComponent*>(obj_trs2)->GetScale();
+
+	float obj1Right = obj1_Pos.x + ((obj1_Scale.x / 4.f) - 8.f);
+	float obj1Left = obj1_Pos.x - ((obj1_Scale.x / 4.f) - 8.f);
+	float obj1Top = obj1_Pos.y - obj1_Scale.y / 2.f;
+	float obj1Bot = obj1_Pos.y + obj1_Scale.y / 2.f;
+
+	float obj2Right = obj2_Pos.x + obj2_Scale.x / 2.f;
+	float obj2Left = obj2_Pos.x - obj2_Scale.x / 2.f;
+	float obj2TopY = obj2_Pos.y - obj2_Scale.y / 2.f;
+	float obj2BotY = obj2_Pos.y + obj2_Scale.y / 2.f;
+
+	return TestCollisionRectRect(obj1Right, obj1Left, obj1Top, obj1Bot,
+		obj2Right, obj2Left, obj2TopY, obj2BotY);
 }
 
 //근접 캐릭터용, range부분 더 늘리기?
@@ -197,7 +229,7 @@ bool ColliderManager::KnockBackCollision(GameObject* _obj1, GameObject* _obj2)
 	float obj2TopY = (obj2_Pos.y - obj2_Scale.y / 2.f)-50.f;
 	float obj2BotY = (obj2_Pos.y + obj2_Scale.y / 2.f)+50.f;
 
-	DrawRect(obj2Left, obj2BotY, obj2Right, obj2TopY, 1, 0, 0);
+	//DrawRect(obj2Left, obj2BotY, obj2Right, obj2TopY, 1, 0, 0);
 
 	return TestCollisionRectRect(obj1Right, obj1Left, obj1Top, obj1Bot,
 		obj2Right, obj2Left, obj2TopY, obj2BotY);
@@ -214,10 +246,11 @@ bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, boo
 	AEVec2 enemy_Scale = static_cast<TransComponent*>(enemy_trs)->GetScale();
 	AEVec2 obj2_Scale = static_cast<TransComponent*>(obj_trs2)->GetScale();
 
-	float obj2RightX = obj2_Pos.x + obj2_Scale.x / 2.f;
-	float obj2LeftX = obj2_Pos.x - obj2_Scale.x / 2.f;
+	float obj2RightX = obj2_Pos.x + ((obj2_Scale.x / 4.f) - 8.f);
+	float obj2LeftX = obj2_Pos.x - ((obj2_Scale.x / 4.f) - 8.f);
 	float obj2TopY = obj2_Pos.y + obj2_Scale.y / 2.f;
 	float obj2BotY = obj2_Pos.y - obj2_Scale.y / 2.f;
+
 
 	//영역의 좌표(정사각형 기준)
 	if (enemy_dir == true) //보는 방향에 따른 영역 변환
@@ -225,7 +258,7 @@ bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, boo
 		//이 부분 그리게 하기 나중에 코드 작성
 		float Search_LeftArea_X = enemy_Pos.x - enemy_Scale.x; //왼쪽 방향으로 가고 있을 때
 		float L_SearchPlayer_RightX = Search_LeftArea_X + enemy_Scale.x / 2.f;
-		float L_SearchPlayer_LeftX = Search_LeftArea_X - 1.f * (enemy_Scale.x / 2.f);//x축 범위
+		float L_SearchPlayer_LeftX = Search_LeftArea_X - (0.2f * (enemy_Scale.x / 2.f));//x축 범위
 		float L_SearchPlayer_TopY = enemy_Pos.y + 1.f * (enemy_Scale.y / 2.f);//y축 범위
 		float L_SearchPlayer_BotY = enemy_Pos.y - enemy_Scale.y / 2.f;
 
@@ -245,7 +278,7 @@ bool ColliderManager::MeleeEnemyAttack(GameObject* _obj1, GameObject* _obj2, boo
 	{
 		float Search_RightArea_X = enemy_Pos.x + enemy_Scale.x;//오른쪽 방향으로 가고 있을 때
 		float R_SearchPlayer_LeftX = Search_RightArea_X - (enemy_Scale.x / 2.f);
-		float R_SearchPlayer_RightX = Search_RightArea_X + 1.f * (enemy_Scale.x / 2.f);
+		float R_SearchPlayer_RightX = Search_RightArea_X + (0.2f * (enemy_Scale.x / 2.f));
 		float R_SearchPlayer_TopY = enemy_Pos.y + 1.f * (enemy_Scale.y / 2.f);
 		float R_SearchPlayer_BotY = enemy_Pos.y - enemy_Scale.y / 2.f;
 

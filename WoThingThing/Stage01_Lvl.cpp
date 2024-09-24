@@ -79,6 +79,7 @@ void Level::Stage01_Lvl::Init()
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
+    //player->AddComponent("Sprite", new SpriteComponent(player));
     //Add Image Resource??
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });
@@ -305,7 +306,7 @@ void Level::Stage01_Lvl::Collision()
     for (auto obj : GoManager::GetInst()->Allobj())
     {
         //Platform
-        if (obj->GetName() == "Platform")
+        if (obj->GetName() == "Platform")//IsCollision
         {
             //플레이어 플랫폼 충돌처리
             //with Player
@@ -372,8 +373,9 @@ void Level::Stage01_Lvl::Collision()
                 }
             }
            //Player Death
-           if (ColliderManager::GetInst()->IsCollision(player, obj) && !player_comp->GetInvincible())
-           {               
+           //새로운 Collision box사용
+            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible())
+            {               
 
                //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
 
@@ -384,7 +386,7 @@ void Level::Stage01_Lvl::Collision()
                auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");               
                AudioResource* bgm_res = static_cast<AudioResource*>(resDead);
                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
-           }
+            }
         }
 
 

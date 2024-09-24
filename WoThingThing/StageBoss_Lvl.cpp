@@ -66,7 +66,7 @@ void Level::StageBoss_Lvl::Init()
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
-   //player->AddComponent("Sprite", new SpriteComponent(player));
+    //player->AddComponent("Sprite", new SpriteComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
     player->AddComponent("Animation", new AnimationComponent(player));
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
@@ -551,7 +551,8 @@ void Level::StageBoss_Lvl::Collision()
             }
 
             //Player Death
-            if (ColliderManager::GetInst()->IsCollision(player, obj) && !player_comp->GetInvincible())
+            //이 부분도 새론운 Collision 추가
+            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible())
             {
                 auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDeadToBoss", "Assets/Dead1.wav");
                 AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
@@ -559,6 +560,7 @@ void Level::StageBoss_Lvl::Collision()
                 player_comp->TakeDamge();
             }
         }        
+        //삭제 예정
         if (obj->GetName() == "BulletSupplement")
         {
             if (ColliderManager::GetInst()->IsCollision(player, obj))
@@ -587,7 +589,7 @@ void Level::StageBoss_Lvl::Collision()
                     }
                 }
             }
-            //플레이어의 MeleeAttack
+            //플레이어의 MeleeAttack으로 보스 데미지 입는 부분
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj)&&obj->GetBossTakeDamage()==true)
             {                
                 obj->SetSturn(true);                                
@@ -651,7 +653,7 @@ void Level::StageBoss_Lvl::Collision()
     //여기가 보스랑 플레이어가 부딫히는 부분
     if (ColliderManager::GetInst()->GetPlayerSearchOnOff() == true)
     {
-        if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, -0.5, 1, 1) && !player_comp->GetInvincible())
+        if (ColliderManager::GetInst()->MeleeEnemyAttack(Enemy_TEST, player, enemyDir) && !player_comp->GetInvincible())
         {
             Enemy_ani->ChangeAnimation("BossAtk", 1, 4, 4, 0.1);
             m_fDt = (f32)AEFrameRateControllerGetFrameTime();
