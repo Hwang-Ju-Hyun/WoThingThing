@@ -403,12 +403,12 @@ void Level::Stage01_Lvl::Collision()
 
         //Sniper죽는판정
         if (obj->GetName() == "EnemySniper")
-        {           
+        {
             int SniperObjID = 0;
             //Test: Collision Enemy with Player's Bullet
             for (auto findObj : GoManager::GetInst()->Allobj())
             {
-                //총알로 죽을시
+                //스나이퍼 총알로 죽을시
                 if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
                 {
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
@@ -432,6 +432,7 @@ void Level::Stage01_Lvl::Collision()
                         {
                             EnemySniper[SniperObjID]->SetActive(false);
                             EnemySniper[SniperObjID] = nullptr; 
+
                             if (!player_comp->GetObtain())
                             {
                                 CreateGun(EnemyMelee_trs->GetPos());
@@ -440,14 +441,16 @@ void Level::Stage01_Lvl::Collision()
                             {
                                 CreateSupplement(EnemyMelee_trs->GetPos());
                             }
+
                             auto resSniperDead = ResourceManager::GetInst()->Get("sfx_SniperDeadToBullet", "Assets/Dead2.mp3");                            
                             AudioResource* bgm_res = static_cast<AudioResource*>(resSniperDead);
                             bgm_res->SetSFXorMusic(Sound::SFX);
                             auto bgm_audio = bgm_res->GetAudio();
                             auto bgm_audioGroup = bgm_res->GetAudioGroup();
                             AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+                            bullet_comp->DestroyBullet();//문제 생기면 if문 밖에 다시 놔두기 그러면 크기는 고정 시킬 수 밖에 없음
                         }
-                        bullet_comp->DestroyBullet();
+                        //bullet_comp->DestroyBullet();(고친 부분)
                     }
                 }             
             }
