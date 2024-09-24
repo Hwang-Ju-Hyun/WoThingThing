@@ -48,11 +48,7 @@ void EnemyAnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 c
 			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);  // bottom left
 		mesh = AEGfxMeshEnd();
 		//=======================================================================
-	}
-	else
-	{
-
-	}
+	}	
 }
 
 void EnemyAnimationComponent::SetEnemyDir(bool dir)
@@ -164,4 +160,43 @@ void EnemyAnimationComponent::Update()
 	AEGfxMeshDraw(mesh, AE_GFX_MDM_TRIANGLES);
 
 	return;
+}
+
+void EnemyAnimationComponent::LoadFromJson(const json& str)
+{
+	auto compData = str.find("CompData");
+	if (compData != str.end())
+	{
+		auto name = compData->find("name");
+		current = name.value();
+		auto rows = compData->find("rows");
+		spritesheet_rows = rows.value();
+		auto cols = compData->find("cols");
+		spritesheet_cols = cols.value();
+		auto animation_per_frame = compData->find("animation_duration_per_frame");
+		animation_duration_per_frame = animation_per_frame.value();
+	}
+}
+
+json EnemyAnimationComponent::SaveToJson(const json& str)
+{
+	json data;
+	data["Type"] = "EnemyAnimation";
+
+	json compData;
+	compData["name"] = current;
+	compData["rows"] = spritesheet_rows;
+	compData["cols"] = spritesheet_cols;
+	compData["animation_duration_per_frame"] = animation_duration_per_frame;
+
+	data["CompData"] = compData;
+
+	return data;
+}
+
+BaseRTTI* EnemyAnimationComponent::CreateEnemyAnimationComponent()
+{
+	GameObject* lastObj = GoManager::GetInst()->GetLastObj();	//아마 여기가 문제일듯 <- 아니네	
+	BaseRTTI* p = lastObj->AddComponent("EnemyAnimation", new EnemyAnimationComponent(lastObj));
+	return p;
 }

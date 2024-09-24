@@ -455,7 +455,7 @@ void TransComponent::LoadFromJson(const json& str)
 	
 }
 static int nodeID = 0;
-json TransComponent::SaveToJson()
+json TransComponent::SaveToJson(const json& str)
 {
 	json data;
 	//Save the type
@@ -473,15 +473,18 @@ json TransComponent::SaveToJson()
 	data["CompData"] = compData;
 
 	//A section for the nodes
-	json nodejson;	
-	auto listNode=NaveMeshManager::GetInst()->GetallNode();
-	for (auto it : listNode)
+	if (str == "stageBoss")
 	{
-		//Save its position
-		nodejson[it.node_id] = { it.node_pos.x,it.node_pos.y };		
-	}
+		json nodejson;
+		auto listNode = NaveMeshManager::GetInst()->GetallNode();
+		for (auto it : listNode)
+		{
+			//Save its position
+			nodejson[it.node_id] = { it.node_pos.x,it.node_pos.y };
+		}
 
-	data["Nodes"] = nodejson;
+		data["Nodes"] = nodejson;
+	}	
 
 	return data;
 }

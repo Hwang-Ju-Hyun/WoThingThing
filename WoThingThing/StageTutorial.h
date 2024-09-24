@@ -8,12 +8,13 @@ class AudioResource;
 
 namespace Level
 {
-	class StageTutorial :public GSM::BaseLevel
+	class StageTutorial_Lvl :public GSM::BaseLevel
 	{
     public:
-        StageTutorial();
-        ~StageTutorial();
+        StageTutorial_Lvl();
+        ~StageTutorial_Lvl();
     private:
+        GameObject* background;
         GameObject* player;
         GameObject* mouseAim;
         GameObject* aimTrace;
@@ -29,6 +30,7 @@ namespace Level
         AEVec2 chaseVec;
         float m_fDt;
         float melee_DelayAtk;
+      
     public:
         bool IsVibration = false;
         float plusX = 0;

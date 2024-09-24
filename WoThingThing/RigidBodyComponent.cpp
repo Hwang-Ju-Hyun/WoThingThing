@@ -4,7 +4,7 @@
 #include "CompManager.h"
 #include "GameObject.h"
 #include "GoManager.h"
-//
+#include "ResourceManager.h"
 #include"StageBoss_Lvl.h"
 //
 RigidBodyComponent::RigidBodyComponent(GameObject* _owner) : BaseComponent(_owner)	
@@ -101,12 +101,28 @@ void RigidBodyComponent::Update()
 
 void RigidBodyComponent::LoadFromJson(const json& str)
 {
-	return;
+	auto compData = str.find("CompData");
+	if (compData != str.end())
+	{
+		auto velocity = compData->find("Velocity");
+		m_vVelocity.x = velocity->begin().value();
+		m_vVelocity.y = (velocity->begin()+1).value();
+	}
 }
 
-json RigidBodyComponent::SaveToJson()
+json RigidBodyComponent::SaveToJson(const json& str)
 {
-	return json();
+	json data;
+	data["Type"] = "RigidBody";
+
+	json compData;
+	compData["Velocity"] = { m_vVelocity.x, m_vVelocity.y };
+	/*compData["VelocityX"] = m_vVelocity.x ;
+	compData["VelocityY"] = m_vVelocity.y;*/
+
+	data["CompData"] = compData;
+
+	return data;
 }
 
 void RigidBodyComponent::jump(float jumpVal)
@@ -117,4 +133,11 @@ void RigidBodyComponent::jump(float jumpVal)
 	jumpVelocity.y = jumpVal;
 	pos.y += jumpVelocity.y * dt;
 	static_cast<TransComponent*>(EnemyTEST_trs)->SetPos(pos);
+}
+
+BaseRTTI* RigidBodyComponent::CreateRigidBodyComponent()
+{
+	GameObject* lastObj = GoManager::GetInst()->GetLastObj();	//아마 여기가 문제일듯 <- 아니네	
+	BaseRTTI* p = lastObj->AddComponent("RigidBody", new RigidBodyComponent(lastObj));
+	return p;
 }

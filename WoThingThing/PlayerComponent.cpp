@@ -519,7 +519,7 @@ void PlayerComponent::LoadFromJson(const json& str)
 {
 	return;
 }
-json PlayerComponent::SaveToJson()
+json PlayerComponent::SaveToJson(const json& str)
 {
 	return json();
 }

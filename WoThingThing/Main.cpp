@@ -11,6 +11,7 @@
 #include "EventManager.h"
 #include "CameraManager.h"
 #include <memory>
+#include "StageTutorial.h"
 #include "TestLevel.h"//추가부분(백무송)
 
 
@@ -43,7 +44,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	Level::Stage01_Lvl Stage01_lvl;
 	Level::TestLevel Test;
 	Level::GameStart_Lvl GameStart_lvl;
-	gsm->ChangeLevel(new Level::MainMenu_Lvl);
+	Level::StageTutorial_Lvl StageTutorial_lvl;
+	gsm->ChangeLevel(new Level::StageTutorial_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
 		AESysFrameStart();

@@ -22,6 +22,6 @@ public:
 	GameObject* m_pOwner;
 
 	virtual void LoadFromJson(const json& str);
-	virtual json SaveToJson();
+	virtual json SaveToJson(const json& str);
 };
 

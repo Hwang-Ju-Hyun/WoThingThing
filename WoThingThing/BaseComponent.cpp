@@ -18,7 +18,7 @@ void BaseComponent::LoadFromJson(const json& str)
 {
 }
 
-json BaseComponent::SaveToJson()
+json BaseComponent::SaveToJson(const json& str)
 {
 	return json();
 }

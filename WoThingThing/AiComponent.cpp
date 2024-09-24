@@ -6,6 +6,7 @@
 #include"ColliderManager.h"
 #include"IDLE_Sniper.h"
 #include "BaseComponent.h"
+#include "GoManager.h"
 
 //
 AiComponent::AiComponent(GameObject* _owner) :BaseComponent(_owner), e_state_name("E")
@@ -25,7 +26,6 @@ void AiComponent::Update()
 	//EnemyStateManager에서 ChangeState를 해주는데 State자체는 IDle과 Patrol
 	//IDLE과 Patrol은 직접 헤더를 include해서 접근하게 시킨다.
 	esm->Update();
-
 }
 
 void AiComponent::SetState(const std::string& state_name, const std::string& enemyCategories)
@@ -92,9 +92,32 @@ void AiComponent::SetFirstPlace(AEVec2 _FirstPlacePos)
 
 void AiComponent::LoadFromJson(const json& str)
 {
+	auto compData = str.find("CompData");
+	if (compData != str.end())
+	{
+		auto categories = e_Categories;
+		auto time_dir = Time_dir;
+		auto firstplacepos = FirstPlacePos;
+	}
 }
 
-json AiComponent::SaveToJson()
+json AiComponent::SaveToJson(const json& str)
 {
-	return json();
+	json data;
+	data["Type"] = "Ai";
+
+	json compData;
+	compData["Categories"] = e_Categories;
+	compData["TimeDir"] = Time_dir;
+	compData["FirstPlacePos"] = { FirstPlacePos.x,FirstPlacePos.y };
+	
+	data["CompData"] = compData;
+	return data;
+}
+
+BaseRTTI* AiComponent::CreateAiComponent()
+{
+	GameObject* lastObj = GoManager::GetInst()->GetLastObj();	//아마 여기가 문제일듯 <- 아니네	
+	BaseRTTI* p = lastObj->AddComponent("Ai", new AiComponent(lastObj));
+	return p;
 }

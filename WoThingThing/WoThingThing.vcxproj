@@ -113,8 +113,9 @@
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="stage01.json" />
-    <None Include="stageBoss.json" />
+    <None Include="..\bin\Debug\x64\Assets\stage01.json" />
+    <None Include="..\bin\Debug\x64\Assets\stageBoss.json" />
+    <None Include="..\bin\Debug\x64\Assets\stageTutorial.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

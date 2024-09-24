@@ -123,7 +123,7 @@ void SpriteComponent::LoadFromJson(const json& str)
 	}	
 }
 
-json SpriteComponent::SaveToJson()
+json SpriteComponent::SaveToJson(const json& str)
 {
 	json data;
 	data["Type"] = "Sprite";

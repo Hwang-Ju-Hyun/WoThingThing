@@ -33,5 +33,7 @@ public:
 
 public:
     virtual void LoadFromJson(const json& str)override;
-    virtual json SaveToJson()override;
+    virtual json SaveToJson(const json& str)override;
+public:
+    static BaseRTTI* CreateAiComponent();
 };
