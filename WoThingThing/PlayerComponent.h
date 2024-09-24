@@ -41,7 +41,6 @@ class PlayerComponent : public BaseComponent
 public:
     PlayerComponent(GameObject* _owner);
     ~PlayerComponent() {};
-
     //About Player's movement
     void Jump(float jumpVal);
     void Dash(AEVec2 directVec);

@@ -34,6 +34,7 @@ void ESM::EnemyAttack::Update()
 	{
 		m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 		melee_DelayAtk += m_fDt;
+		bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
 		if (melee_DelayAtk > 0.2f)
 		{
 			auto res_EnemyMeleeAtk = ResourceManager::GetInst()->Get("sfx_EnemyMeleeAtk", "Assets/EnemyMeleeAttack.mp3");
