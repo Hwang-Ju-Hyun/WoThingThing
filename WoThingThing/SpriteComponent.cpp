@@ -3,8 +3,10 @@
 #include "TransComponent.h"
 #include "GoManager.h"
 
-SpriteComponent::SpriteComponent(GameObject* _owner)
-	:BaseComponent(_owner)
+#include "ResourceManager.h"
+#include "ImageResource.h"
+
+SpriteComponent::SpriteComponent(GameObject* _owner) : BaseComponent(_owner)
 {	
 
 	AEGfxMeshStart();
@@ -96,6 +98,8 @@ BaseRTTI* SpriteComponent::CreateSpriteComponent()
 
 void SpriteComponent::LoadFromJson(const json& str)
 {
+
+
 	auto compData = str.find("CompData");
 	if (compData != str.end())
 	{
@@ -107,10 +111,16 @@ void SpriteComponent::LoadFromJson(const json& str)
 
 		auto g = compData->find("GREEN");
 		m_color.green = g.value();
-	}
 
-	
-
+		auto pfName = compData->find("TextureName");
+		auto pfPath = compData->find("TexturePath");
+		if(pfName != compData->end() && pfPath != compData->end())
+		{
+			ResourceManager::GetInst()->Get(pfName.value(), pfPath.value());
+			ImageResource* bgResource = (ImageResource*)ResourceManager::GetInst()->FindRes(pfName.value());
+			this->SetTexture(bgResource->GetImage());
+		}
+	}	
 }
 
 json SpriteComponent::SaveToJson()
@@ -122,6 +132,7 @@ json SpriteComponent::SaveToJson()
 	compData["RED"] = m_color.red;
 	compData["BLUE"] = m_color.blue;
 	compData["GREEN"] = m_color.green;
+
 
 	data["CompData"] = compData;
 	return data;

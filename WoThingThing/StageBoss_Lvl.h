@@ -9,6 +9,7 @@ namespace Level
     class StageBoss_Lvl :public GSM::BaseLevel
     {
     private:
+        GameObject* background;
         GameObject* player;
         GameObject* mouseAim;
         GameObject* aimTrace;

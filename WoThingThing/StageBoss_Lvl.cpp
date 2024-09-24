@@ -41,6 +41,8 @@
 #include "EnemyAnimationComponent.h"
 #include"AnimationComponent.h"
 
+#include "ImageResource.h"
+
 bool Level::StageBoss_Lvl::Stage2 = true;
 
 Level::StageBoss_Lvl::StageBoss_Lvl()
@@ -53,6 +55,17 @@ Level::StageBoss_Lvl::~StageBoss_Lvl()
 
 void Level::StageBoss_Lvl::Init()
 {
+    //Background Image
+    background = new GameObject("Background");
+    GoManager::GetInst()->AddObject(background);
+    background->AddComponent("Transform", new TransComponent(background));
+    background->AddComponent("Sprite", new SpriteComponent(background));
+    ResourceManager::GetInst()->Get("BackgroundImg", "Assets/BossBackgroundImage.png");
+    SpriteComponent* bg_spr = (SpriteComponent*)background->FindComponent("Sprite");
+    ImageResource* bgResource = (ImageResource*)ResourceManager::GetInst()->FindRes("BackgroundImg");
+    bg_spr->SetTexture(bgResource->GetImage());
+    bg_spr->SetAlpha(0.5f);
+
     Stage2 = true;
     //Object and Component Init
     //      
@@ -130,12 +143,16 @@ void Level::StageBoss_Lvl::Init()
 
 void Level::StageBoss_Lvl::Update()
 {
-    AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
+    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
+    TransComponent* bg_trs = (TransComponent*)background->FindComponent("Transform");
+    bg_trs->SetPos(player_trs->GetPos());
+    bg_trs->SetScale({ 1600,900 });
+
+    //AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
     AEInputShowCursor(0);
     //Component Pointer    
     // 
     //Component 
-    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     //SpriteComponent* player_spr = (SpriteComponent*)player->FindComponent("Sprite");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");

@@ -8,8 +8,8 @@
           "RED": 150,
           "BLUE": 150,
           "GREEN": 150,
-		  "TextureName" : "Pf",
-		  "TexturePath" : "Assets/Platform.png"
+		  "TextureName" : "Pillar",
+		  "TexturePath" : "Assets/BossStagePillar.png"
         }
       },
       {
@@ -123,8 +123,8 @@
           "RED": 150,
           "BLUE": 150,
           "GREEN": 150,
-		  "TextureName" : "Pf",
-		  "TexturePath" : "Assets/Platform.png"
+		  "TextureName" : "Pillar",
+		  "TexturePath" : "Assets/BossStagePillar.png"
         }
       },
       {
@@ -238,8 +238,8 @@
           "RED": 150,
           "BLUE": 150,
           "GREEN": 150,
-		  "TextureName" : "Pf",
-		  "TexturePath" : "Assets/Platform.png"
+		  "TextureName" : "BossPlatform",
+		  "TexturePath" : "Assets/BossStagePlatform.png"
         }
       },
       {
@@ -353,8 +353,8 @@
           "RED": 150,
           "BLUE": 150,
           "GREEN": 150,
-		  "TextureName" : "Pf",
-		  "TexturePath" : "Assets/Platform.png"
+		  "TextureName" : "Pillar",
+		  "TexturePath" : "Assets/BossStagePillar.png"
         }
       },
       {
@@ -468,8 +468,8 @@
           "RED": 150,
           "BLUE": 150,
           "GREEN": 150,
-		  "TextureName" : "Pf",
-		  "TexturePath" : "Assets/Platform.png"
+		  "TextureName" : "BossPlatform",
+		  "TexturePath" : "Assets/BossStagePlatform.png"
         }
       },
       {

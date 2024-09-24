@@ -95,8 +95,8 @@
           "RED": 150,
           "BLUE": 150,
           "GREEN": 150,
-		  "TextureName" : "Pf",
-		  "TexturePath" : "Assets/Platform.png"
+		  "TextureName" : "LargePf",
+		  "TexturePath" : "Assets/LargePlatform.png"
         }
       },
       {
