@@ -7,7 +7,9 @@
         "CompData": {
           "RED": 150,
           "BLUE": 150,
-          "GREEN": 150
+          "GREEN": 150,
+		  "TextureName" : "Pillar",
+		  "TexturePath" : "Assets/BossStagePillar.png"
         }
       },
       {
@@ -120,7 +122,9 @@
         "CompData": {
           "RED": 150,
           "BLUE": 150,
-          "GREEN": 150
+          "GREEN": 150,
+		  "TextureName" : "Pillar",
+		  "TexturePath" : "Assets/BossStagePillar.png"
         }
       },
       {
@@ -233,7 +237,9 @@
         "CompData": {
           "RED": 150,
           "BLUE": 150,
-          "GREEN": 150
+          "GREEN": 150,
+		  "TextureName" : "BossPlatform",
+		  "TexturePath" : "Assets/BossStagePlatform.png"
         }
       },
       {
@@ -346,7 +352,9 @@
         "CompData": {
           "RED": 150,
           "BLUE": 150,
-          "GREEN": 150
+          "GREEN": 150,
+		  "TextureName" : "Pillar",
+		  "TexturePath" : "Assets/BossStagePillar.png"
         }
       },
       {
@@ -459,7 +467,9 @@
         "CompData": {
           "RED": 150,
           "BLUE": 150,
-          "GREEN": 150
+          "GREEN": 150,
+		  "TextureName" : "BossPlatform",
+		  "TexturePath" : "Assets/BossStagePlatform.png"
         }
       },
       {
@@ -572,7 +582,9 @@
         "CompData": {
           "RED": 150,
           "BLUE": 150,
-          "GREEN": 150
+          "GREEN": 150,
+		  "TextureName" : "Pf",
+		  "TexturePath" : "Assets/Platform.png"
         }
       },
       {
@@ -685,7 +697,9 @@
         "CompData": {
           "RED": 150,
           "BLUE": 150,
-          "GREEN": 150
+          "GREEN": 150,
+		  "TextureName" : "Pf",
+		  "TexturePath" : "Assets/Platform.png"
         }
       },
       {
@@ -798,7 +812,9 @@
         "CompData": {
           "RED": 150,
           "BLUE": 150,
-          "GREEN": 150
+          "GREEN": 150,
+		  "TextureName" : "Pf",
+		  "TexturePath" : "Assets/Platform.png"
         }
       },
       {
@@ -911,7 +927,9 @@
         "CompData": {
           "RED": 150,
           "BLUE": 150,
-          "GREEN": 150
+          "GREEN": 150,
+		  "TextureName" : "Pf",
+		  "TexturePath" : "Assets/Platform.png"
         }
       },
       {
@@ -1024,7 +1042,9 @@
         "CompData": {
           "RED": 150,
           "BLUE": 150,
-          "GREEN": 150
+          "GREEN": 150,
+		  "TextureName" : "Pf",
+		  "TexturePath" : "Assets/Platform.png"
         }
       },
       {
@@ -1137,7 +1157,9 @@
         "CompData": {
           "RED": 150,
           "BLUE": 150,
-          "GREEN": 150
+          "GREEN": 150,
+		  "TextureName" : "Pf",
+		  "TexturePath" : "Assets/Platform.png"
         }
       },
       {

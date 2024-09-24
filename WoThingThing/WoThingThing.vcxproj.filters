@@ -153,6 +153,9 @@
     <Filter Include="Manager\EnemyStateMgr">
       <UniqueIdentifier>{7a4a7220-9308-461c-9d73-140ad5fbe6c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Level\Tutorial">
+      <UniqueIdentifier>{7ae5cf99-60c0-46f0-ba80-a299321c48d4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -320,6 +323,15 @@
     <ClCompile Include="ImageResource.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
+    <ClCompile Include="GameStart.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStart.h">
+      <Filter>Header</Filter>
+    </ClCompile>
+    <ClCompile Include="StageTutorial.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -478,9 +490,6 @@
     <ClInclude Include="AnimationComponent.h">
       <Filter>Main</Filter>
     </ClInclude>
-    <ClInclude Include="ImageResource.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyAnimationComponent.h">
       <Filter>Ai\AnimationAi</Filter>
     </ClInclude>
@@ -488,6 +497,9 @@
       <Filter>Header</Filter>
     </ClInclude>
     <ClInclude Include="Congratulation.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="StageTutorial.h">
       <Filter>Header</Filter>
     </ClInclude>
   </ItemGroup>
