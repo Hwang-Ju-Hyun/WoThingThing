@@ -198,15 +198,16 @@ xcopy "$(SolutionDir)Extern\Assets\*" "$(OutDir)Assets\" /s /r /y /q</Command>
       <AdditionalDependencies>Alpha_Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>xcopy "$(SolutionDir)Extern\Assets\*" "$(OutDir)Assets\" /s /r /y /q
+      <Command>
 
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\freetype.dll" "$(OutDir)" /s /r /y /q
 
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\Alpha_Engine.dll" "$(OutDir)" /s /r /y /q
 
+xcopy "$(OutDir)Assets\*.json" "$(SolutionDir)Extern\Assets\" /s /r /y /q
+xcopy "$(SolutionDir)Extern\Assets\*" "$(OutDir)Assets\" /s /r /y /q
 xcopy "$(SolutionDir)Extern\AlphaEngine\lib\fmod.dll" "$(OutDir)" /s /r /y /q
-
-xcopy "$(OutDir)Assets\*.json" "$(SolutionDir)Extern\Assets\" /s /r /y /q</Command>
+</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

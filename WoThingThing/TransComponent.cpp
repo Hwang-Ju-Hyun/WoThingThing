@@ -12,7 +12,6 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 	//이 코드들도 나중에 stage01 _init으로 옮겨야함
 	if (_owner->GetName() == "Player")
 	{
-		//pos 절대 고정해 
 		m_vPos = {200,0 };
 		m_vScale = { 80,80 };
 		m_fRot = 0.f;

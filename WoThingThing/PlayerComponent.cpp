@@ -27,8 +27,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	GoManager::GetInst()->AddObject(mouseAim);
 	mouseAim->AddComponent("Transform", new TransComponent(mouseAim));
 	mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
-	
-	ResourceManager::GetInst()->Get("Aim", "Assets/Aim.png");
+	ResourceManager::GetInst()->Get("Aim", "Assets/Aim_1.png");
 	TransComponent* aim_trs = (TransComponent*)mouseAim->FindComponent("Transform");
 	aim_trs->SetScale({ 50,50 });
 	SpriteComponent* aim_spr = (SpriteComponent*)mouseAim->FindComponent("Sprite");
@@ -39,12 +38,14 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	GoManager::GetInst()->AddObject(aim_line);
 	aim_line->AddComponent("Transform", new TransComponent(aim_line));
 	aim_line->AddComponent("Sprite", new SpriteComponent(aim_line));
+
 	//
 	gauge = new GameObject("Gauge");
 	GoManager::GetInst()->AddObject(gauge);
 	gauge->AddComponent("Transform", new TransComponent(gauge));
 	gauge->AddComponent("Sprite", new SpriteComponent(gauge));
 	//
+	
 	melee = nullptr;
 	meleeState = false;
 	meleeCooldown = 0.f;

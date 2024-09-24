@@ -10,6 +10,7 @@
 #include "BulletAnimationComponent.h"
 
 #include "ResourceManager.h"
+#include "ImageResource.h"
 int remainBullet;
 
 void CreateGun(AEVec2 initPos)
@@ -18,12 +19,15 @@ void CreateGun(AEVec2 initPos)
 	GameObject* gun = new GameObject("Gun");
 	GoManager::GetInst()->AddObject(gun);
 	gun->AddComponent("Transform", new TransComponent(gun));
-	gun->AddComponent("BulletAnim", new BulletAnimationComponent(gun));
-	//gun->AddComponent("Sprite", new SpriteComponent(gun));
-	
 	TransComponent* gun_trs = (TransComponent*)gun->FindComponent("Transform");
 	gun_trs->SetPos(initPos.x, initPos.y);
-	gun_trs->SetScale({ 60,80 });
+	gun_trs->SetScale({ 80,80 });
+
+	gun->AddComponent("Sprite", new SpriteComponent(gun));
+	SpriteComponent* gun_spr = (SpriteComponent*)gun->FindComponent("Sprite");
+	ResourceManager::GetInst()->Get("CreateGun", "Assets/CreateGun.png");
+	ImageResource* createGun = (ImageResource*)ResourceManager::GetInst()->FindRes("CreateGun");
+	gun_spr->SetTexture(createGun->GetImage());
 }
 
 
