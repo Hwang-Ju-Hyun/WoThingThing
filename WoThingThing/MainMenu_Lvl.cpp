@@ -8,10 +8,13 @@
 #include "SpriteComponent.h"
 #include "ColliderManager.h"
 #include "GameStateManager.h"
+
 #include "Resource.h"
 #include "ResourceManager.h"
 #include "TextResource.h"
 #include "ImageResource.h"
+#include "AudioResource.h"
+
 #include "Stage01_Lvl.h"
 #include "CompManager.h"
 #include "MapEditor.h"
@@ -78,6 +81,12 @@ void Level::MainMenu_Lvl::Init()
 	ImageResource* ExitBtnImg = (ImageResource*)ResourceManager::GetInst()->FindRes("ExitBtn");
 	ExitBtn_spr->SetTexture(ExitBtnImg->GetImage());
 	//==========================================================================================
+
+	btnSfx = ResourceManager::GetInst()->Get("btnSFX", "Assets/SelectBtn.wav");
+	btn_res = static_cast<AudioResource*>(btnSfx);
+
+	mainmenuBGM = ResourceManager::GetInst()->Get("btnSFX", /* 배경음악 소스 넣기 "Assets/SelectBtn.wav"*/);
+	BGM_res = static_cast<AudioResource*>(btnSfx);
 }
 
 void Level::MainMenu_Lvl::Update()
@@ -97,6 +106,8 @@ void Level::MainMenu_Lvl::Update()
 
 	if (AETestPointToRect(&mousePos, &StartBtn_trs->TempGetPos(), 280, 90))
 	{
+		btn_res->PlayMusicOrSFX(btn_res, Sound::MUSIC, bgm_volume, bgm_pitch, 0);
+
 		AEVec2 Scale = { StartBtn_trs->GetScale().x, StartBtn_trs->GetScale().y };
 		StartBtn_trs->SetScale({ Scale.x * 1.15f, Scale.y * 1.15f });
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
@@ -106,6 +117,8 @@ void Level::MainMenu_Lvl::Update()
 	}
 	else if (AETestPointToRect(&mousePos, &HowBtn_trs->TempGetPos(), 280, 90))
 	{
+		btn_res->PlayMusicOrSFX(btn_res, Sound::MUSIC, bgm_volume, bgm_pitch, 0);
+
 		AEVec2 Scale = { HowBtn_trs->GetScale().x, HowBtn_trs->GetScale().y };
 		HowBtn_trs->SetScale({ Scale.x * 1.15f, Scale.y * 1.15f });
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
@@ -116,6 +129,8 @@ void Level::MainMenu_Lvl::Update()
 	}
 	else if (AETestPointToRect(&mousePos, &ExitBtn_trs->TempGetPos(), 280, 90))
 	{
+		btn_res->PlayMusicOrSFX(btn_res, Sound::MUSIC, bgm_volume, bgm_pitch, 0);
+
 		AEVec2 Scale = { ExitBtn_trs->GetScale().x, ExitBtn_trs->GetScale().y };
 		ExitBtn_trs->SetScale({ Scale.x * 1.15f, Scale.y * 1.15f });
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
