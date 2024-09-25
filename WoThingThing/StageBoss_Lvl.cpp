@@ -1,13 +1,10 @@
 #include <iostream>
 #include "header.h"
-
 #include "GameStateManager.h"
 #include "MainMenu_Lvl.h"
 #include "Stage01_Lvl.h"
-
 #include "GameObject.h"
 #include "GoManager.h"
-
 #include "BaseComponent.h"
 #include "TransComponent.h"
 #include "SpriteComponent.h"
@@ -15,14 +12,12 @@
 #include "RigidBodyComponent.h"
 #include "PlayerComponent.h"
 #include "CompManager.h"
-
 #include "EventManager.h"
 #include "ColliderManager.h"
 #include "ResourceManager.h"
 #include "TimeManager.h"
 #include "AudioResource.h"
 #include "TextResource.h"
-
 #include "Serializer.h"
 #include "NaveMeshManager.h"
 #include "Utility.h"
@@ -40,7 +35,6 @@
 #include "GameOver_Lvl.h"
 #include "EnemyAnimationComponent.h"
 #include"AnimationComponent.h"
-
 #include "ImageResource.h"
 
 bool Level::StageBoss_Lvl::Stage2 = true;

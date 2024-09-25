@@ -160,72 +160,75 @@ void AnimationComponent::Update()
 	if (jumpTimer >= animation_duration_per_frame * spritesheet_max_sprites)
 		jumpState = false;
 
-	//Attack
-	if (player_comp->GetMeleeAction() && AEInputCheckTriggered(AEVK_LBUTTON))
+	//Attack	
+	if (player_comp->GetIsAttackTutorial() == true || player_comp->GetIsTutorialStage() == false)
 	{
-		attackState = true;
-		attackTimer = 0.f;
-	
-		//Flip!!========
-		AEVec2	norD = { 0,0 };
-		if (playerObj != nullptr && player_comp != nullptr)
+		if (player_comp->GetMeleeAction() && AEInputCheckTriggered(AEVK_LBUTTON))
 		{
-			norD = player_comp->GetNorVec();
+			attackState = true;
+			attackTimer = 0.f;
+
+			//Flip!!========
+			AEVec2	norD = { 0,0 };
+			if (playerObj != nullptr && player_comp != nullptr)
+			{
+				norD = player_comp->GetNorVec();
+			}
+			if (norD.x < 0)
+				flip = true;
+			else
+				flip = false;
+			//==============
+
+			//Initialize();
+			ChangeAnimation("Attack", 1, 8, 8, 0.1);
 		}
-		if (norD.x < 0)
-			flip = true;
-		else
-			flip = false;
-		//==============
-	
-		//Initialize();
-		ChangeAnimation("Attack", 1, 8, 8, 0.1);
-	}
-	if (attackState)
-	{
-		my_trs->SetScale({ 256,96 });
-	}
-	attackTimer += (f32)AEFrameRateControllerGetFrameTime();
-	if (attackState && attackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
-	{
-		attackState = false;
-		my_trs->SetScale({ 80,80 });
-	}
-
-
-
-	//Long Attack
-	if (player_comp->GetShotAction() && AEInputCheckTriggered(AEVK_LBUTTON))
-	{
-		longattackState = true;
-		longattackTimer = 0.f;
-
-		//Flip!!========
-		AEVec2	norD = { 0,0 };
-		if (playerObj != nullptr && player_comp != nullptr)
+		if (attackState)
 		{
-			norD = player_comp->GetNorVec();
+			my_trs->SetScale({ 256,96 });
 		}
-		if (norD.x < 0)
-			flip = true;
-		else
-			flip = false;
-		//==============
+		attackTimer += (f32)AEFrameRateControllerGetFrameTime();
+		if (attackState && attackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+		{
+			attackState = false;
+			my_trs->SetScale({ 80,80 });
+		}
 
-		Initialize();
-		ChangeAnimation("LongAttack", 1, 8, 8, 0.1);
-	}
-	if (longattackState)
-	{
-		my_trs->SetScale({ 110,100 });
-	}
-	longattackTimer += (f32)AEFrameRateControllerGetFrameTime();
-	if (longattackState && longattackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
-	{
-		longattackState = false;
-		my_trs->SetScale({ 80,80 });
-	}
 
+
+		//Long Attack
+		if (player_comp->GetShotAction() && AEInputCheckTriggered(AEVK_LBUTTON))
+		{
+			longattackState = true;
+			longattackTimer = 0.f;
+
+			//Flip!!========
+			AEVec2	norD = { 0,0 };
+			if (playerObj != nullptr && player_comp != nullptr)
+			{
+				norD = player_comp->GetNorVec();
+			}
+			if (norD.x < 0)
+				flip = true;
+			else
+				flip = false;
+			//==============
+
+			Initialize();
+			ChangeAnimation("LongAttack", 1, 8, 8, 0.1);
+		}
+		if (longattackState)
+		{
+			my_trs->SetScale({ 110,100 });
+		}
+		longattackTimer += (f32)AEFrameRateControllerGetFrameTime();
+		if (longattackState && longattackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+		{
+			longattackState = false;
+			my_trs->SetScale({ 80,80 });
+		}
+	}
+	
 	animation_timer += (f32)AEFrameRateControllerGetFrameTime() /* * delay*/;
 	if (animation_timer >= animation_duration_per_frame)
 	{

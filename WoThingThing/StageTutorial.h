@@ -1,6 +1,7 @@
 #pragma once
 #include "BaseLevel.h"
 #include "header.h"
+#include <array>
 
 class GameObject;
 class Resource;
@@ -14,6 +15,8 @@ namespace Level
         StageTutorial_Lvl();
         ~StageTutorial_Lvl();
     private:
+        std::array<GameObject*, 3> Enemy;
+        std::array<GameObject*, 2> EnemySniper;
         GameObject* background;
         GameObject* player;
         GameObject* mouseAim;
@@ -30,7 +33,12 @@ namespace Level
         AEVec2 chaseVec;
         float m_fDt;
         float melee_DelayAtk;
-      
+    private:
+        float MoveAccTime = 0.f;
+    public:
+        void SetMoveAccTime(float _time) { MoveAccTime = _time; }
+        void AddMoveAccTime(float _time) { MoveAccTime += _time; }
+        const float GetMoveAccTime() { return MoveAccTime; }
     public:
         bool IsVibration = false;
         float plusX = 0;
@@ -40,8 +48,14 @@ namespace Level
         bool changeCamDir = false;
         float VibrationAccTime = 0.f;
     public:
+        void SetVibration(bool _vib) { IsVibration = _vib; }
+        const bool GetVibration() { return IsVibration; }
+    public:
         void HandleCollision(GameObject* obj1, GameObject* obj2);
         void Collision();
+    private:
+        int EnemyDeathCnt = 3;
+        int EnemySniperDeathCnt = 2;
     public:
         virtual void Init() override;
         virtual void Update() override;

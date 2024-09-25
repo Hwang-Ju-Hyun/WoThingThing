@@ -48,6 +48,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	gsm->ChangeLevel(new Level::StageTutorial_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
+		AEFrameRateControllerReset();
+
 		AESysFrameStart();
 
 		//set background color

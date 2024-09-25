@@ -90,147 +90,156 @@ void PlayerComponent::MoveMent()
 {
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 	float dt = AEFrameRateControllerGetFrameTime();
-	//D 와 SHIFT를 눌렀을때만 적용 됨 --> 그냥 SHIFT를 누르고 있으면 전체적으로 적용되게 변경
-	if (AEInputCheckCurr(AEVK_LSHIFT))
+	//D 와 SHIFT를 눌렀을때만 적용 됨 --> 그냥 SHIFT를 누르고 있으면 전체적으로 적용되게 변경	
+	if ((IsTutorialStage == false || IsTimeManipulateTutorial == true)&&DoNotMove==true)
 	{
-		manipulActive = true;
-		timeManipul -= dt;
-		//std::cout << timeManipul << std::endl;
-
-		if (timeManipul <= 0.f)
+		if (AEInputCheckCurr(AEVK_LSHIFT))
 		{
-			manipulActive = false; //게이지가 0이면 누르는 동안에도 Manipulate가 안되게
-			timeManipul = 0.f;
+			manipulActive = true;
+			timeManipul -= dt;
+			//std::cout << timeManipul << std::endl;
+
+			if (timeManipul <= 0.f)
+			{
+				manipulActive = false; //게이지가 0이면 누르는 동안에도 Manipulate가 안되게
+				timeManipul = 0.f;
+			}
 		}
-	}
-	if (!AEInputCheckCurr(AEVK_LSHIFT))
-	{
-		manipulActive = false;
-		if (timeManipul < maniCapacity)
-			timeManipul += dt;
-		//std::cout << timeManipul << std::endl;
+		if (!AEInputCheckCurr(AEVK_LSHIFT))
+		{
+			manipulActive = false;
+			if (timeManipul < maniCapacity)
+				timeManipul += dt;
+			//std::cout << timeManipul << std::endl;
+		}
 	}
 
 	//Jump
-	if (AEInputCheckTriggered(AEVK_W))
+	if ((IsTutorialStage == false || IsMovementTutorial == true)&& DoNotMove == false)
 	{
-		jumpCnt++;
-		if (jumpCnt <= 2)
-			Jump(550);
-		if (jumpCnt == 1)
+		if (AEInputCheckTriggered(AEVK_W))
 		{
-			auto res = ResourceManager::GetInst()->Get("sfx_jump1", "Assets/jump1.mp3");
-			AudioResource* bgm_res = static_cast<AudioResource*>(res);
-			bgm_res->SetSFXorMusic(Sound::SFX);
-			auto bgm_audio = bgm_res->GetAudio();
-			auto bgm_audioGroup = bgm_res->GetAudioGroup();
-			AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
-		}
-		else if (jumpCnt == 2)
-		{
-			auto res = ResourceManager::GetInst()->Get("sfx_jump2", "Assets/jump2.mp3");
-			AudioResource* bgm_res = static_cast<AudioResource*>(res);
-			bgm_res->SetSFXorMusic(Sound::SFX);
-			auto bgm_audio = bgm_res->GetAudio();
-			auto bgm_audioGroup = bgm_res->GetAudioGroup();
-			AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
-		}
-	}
-	//Landing	
-	// 황주현 코드 수정 -> 밑에 코드를 setjumpcntzero ::Stage01 handleCollision에서 구현
-	if (AEInputCheckCurr(AEVK_W) && AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_SPACE))
-		Dash({ 1, 1 });
-		
-	if (AEInputCheckCurr(AEVK_A))
-	{						
-
-		//player_trs->AddPos(-5.f, 0.f);
-		player_trs->MovePos(-10.f, 0.f, manipulActive, dt);
-		//Dash
-		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
-		{
-			AccTime += AEFrameRateControllerGetFrameTime();
-			auto res = ResourceManager::GetInst()->Get("sfx_dash1", "Assets/dash.mp3");
-			AudioResource* bgm_res = static_cast<AudioResource*>(res);
-			bgm_res->SetSFXorMusic(Sound::SFX);
-			auto bgm_audio = bgm_res->GetAudio();
-			auto bgm_audioGroup = bgm_res->GetAudioGroup();
-			AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
-			if (AccTime > 1.5)
+			jumpCnt++;
+			if (jumpCnt <= 2)
+				Jump(550);
+			if (jumpCnt == 1)
 			{
-				AEAudioStopGroup(bgm_audioGroup);
-				AccTime = 0;
+				auto res = ResourceManager::GetInst()->Get("sfx_jump1", "Assets/jump1.mp3");
+				AudioResource* bgm_res = static_cast<AudioResource*>(res);
+				bgm_res->SetSFXorMusic(Sound::SFX);
+				auto bgm_audio = bgm_res->GetAudio();
+				auto bgm_audioGroup = bgm_res->GetAudioGroup();
+				AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
 			}
-			Dash({ -1, 1 });
-		}
-			
-		else if (AEInputCheckTriggered(AEVK_SPACE))
-		{
-			AccTime += AEFrameRateControllerGetFrameTime();
-			auto res = ResourceManager::GetInst()->Get("sfx_dash2", "Assets/dash.mp3");
-			AudioResource* bgm_res = static_cast<AudioResource*>(res);
-			bgm_res->SetSFXorMusic(Sound::SFX);
-			auto bgm_audio = bgm_res->GetAudio();
-			auto bgm_audioGroup = bgm_res->GetAudioGroup();
-			AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
-			if (AccTime > 1.5)
+			else if (jumpCnt == 2)
 			{
-				AEAudioStopGroup(bgm_audioGroup);
-				AccTime = 0;
+				auto res = ResourceManager::GetInst()->Get("sfx_jump2", "Assets/jump2.mp3");
+				AudioResource* bgm_res = static_cast<AudioResource*>(res);
+				bgm_res->SetSFXorMusic(Sound::SFX);
+				auto bgm_audio = bgm_res->GetAudio();
+				auto bgm_audioGroup = bgm_res->GetAudioGroup();
+				AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
 			}
-			Dash({ -1, 0 });
 		}
-			
-	}	
-	
-	//Right
-	if (AEInputCheckCurr(AEVK_D))
-	{		
-		//player_trs->AddPos(5.f, 0.f);
-		player_trs->MovePos(10.f, 0.f, manipulActive, dt);
-		//Dash
-		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
-		{
-			AccTime += AEFrameRateControllerGetFrameTime();
-			auto res = ResourceManager::GetInst()->Get("sfx_dash3", "Assets/dash.mp3");
-			AudioResource* bgm_res = static_cast<AudioResource*>(res);
-			bgm_res->SetSFXorMusic(Sound::SFX);
-			auto bgm_audio = bgm_res->GetAudio();
-			auto bgm_audioGroup = bgm_res->GetAudioGroup();
-			AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
-			if (AccTime > 1.5)
-			{
-				AEAudioStopGroup(bgm_audioGroup);
-				AccTime = 0;
-			}
+		//Landing	
+		// 황주현 코드 수정 -> 밑에 코드를 setjumpcntzero ::Stage01 handleCollision에서 구현
+		if (AEInputCheckCurr(AEVK_W) && AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_SPACE))
 			Dash({ 1, 1 });
-		}			
-		else if (AEInputCheckTriggered(AEVK_SPACE))
+
+		if (AEInputCheckCurr(AEVK_A))
 		{
-			AccTime += AEFrameRateControllerGetFrameTime();
-			auto res = ResourceManager::GetInst()->Get("sfx_dash4", "Assets/dash.mp3");
-			AudioResource* bgm_res = static_cast<AudioResource*>(res);
-			bgm_res->SetSFXorMusic(Sound::SFX);
-			auto bgm_audio = bgm_res->GetAudio();
-			auto bgm_audioGroup = bgm_res->GetAudioGroup();
-			AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
-			if (AccTime > 1.5)
+
+			//player_trs->AddPos(-5.f, 0.f);
+			player_trs->MovePos(-10.f, 0.f, manipulActive, dt);
+			//Dash
+			if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
 			{
-				AEAudioStopGroup(bgm_audioGroup);
-				AccTime = 0;
+				AccTime += AEFrameRateControllerGetFrameTime();
+				auto res = ResourceManager::GetInst()->Get("sfx_dash1", "Assets/dash.mp3");
+				AudioResource* bgm_res = static_cast<AudioResource*>(res);
+				bgm_res->SetSFXorMusic(Sound::SFX);
+				auto bgm_audio = bgm_res->GetAudio();
+				auto bgm_audioGroup = bgm_res->GetAudioGroup();
+				AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+				if (AccTime > 1.5)
+				{
+					AEAudioStopGroup(bgm_audioGroup);
+					AccTime = 0;
+				}
+				Dash({ -1, 1 });
 			}
-			Dash({ 1, 0 });
+
+			else if (AEInputCheckTriggered(AEVK_SPACE))
+			{
+				AccTime += AEFrameRateControllerGetFrameTime();
+				auto res = ResourceManager::GetInst()->Get("sfx_dash2", "Assets/dash.mp3");
+				AudioResource* bgm_res = static_cast<AudioResource*>(res);
+				bgm_res->SetSFXorMusic(Sound::SFX);
+				auto bgm_audio = bgm_res->GetAudio();
+				auto bgm_audioGroup = bgm_res->GetAudioGroup();
+				AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+				if (AccTime > 1.5)
+				{
+					AEAudioStopGroup(bgm_audioGroup);
+					AccTime = 0;
+				}
+				Dash({ -1, 0 });
+			}
+
 		}
-			
+
+		//Right
+		if (AEInputCheckCurr(AEVK_D))
+		{
+			//player_trs->AddPos(5.f, 0.f);
+			player_trs->MovePos(10.f, 0.f, manipulActive, dt);
+			//Dash
+			if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
+			{
+				AccTime += AEFrameRateControllerGetFrameTime();
+				auto res = ResourceManager::GetInst()->Get("sfx_dash3", "Assets/dash.mp3");
+				AudioResource* bgm_res = static_cast<AudioResource*>(res);
+				bgm_res->SetSFXorMusic(Sound::SFX);
+				auto bgm_audio = bgm_res->GetAudio();
+				auto bgm_audioGroup = bgm_res->GetAudioGroup();
+				AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+				if (AccTime > 1.5)
+				{
+					AEAudioStopGroup(bgm_audioGroup);
+					AccTime = 0;
+				}
+				Dash({ 1, 1 });
+			}
+			else if (AEInputCheckTriggered(AEVK_SPACE))
+			{
+				AccTime += AEFrameRateControllerGetFrameTime();
+				auto res = ResourceManager::GetInst()->Get("sfx_dash4", "Assets/dash.mp3");
+				AudioResource* bgm_res = static_cast<AudioResource*>(res);
+				bgm_res->SetSFXorMusic(Sound::SFX);
+				auto bgm_audio = bgm_res->GetAudio();
+				auto bgm_audioGroup = bgm_res->GetAudioGroup();
+				AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+				if (AccTime > 1.5)
+				{
+					AEAudioStopGroup(bgm_audioGroup);
+					AccTime = 0;
+				}
+				Dash({ 1, 0 });
+			}
+
+		}
 	}
+
 
 	AEVec2 pos = static_cast<TransComponent*>(player_trs)->GetPos();
 
-	//left shift : time manipulation
-	if (AEInputCheckCurr(AEVK_LSHIFT)&& manipulActive)
-		//if (manipulActive)
+	if ((IsTutorialStage == false || IsTimeManipulateTutorial == true)&& DoNotMove == false)
+	{
+		//left shift : time manipulation
+		if (AEInputCheckCurr(AEVK_LSHIFT) && manipulActive)
+			//if (manipulActive)
 			dt *= 0.1f;
-
+	}	
 	//if dash velocity is too low. set to 0 (dash ended)
 	if (AEVec2Length(&dashVelocity) <= 300.f)
 	{
@@ -332,95 +341,98 @@ AEVec2 PlayerComponent::GetMousePos()
 void PlayerComponent::Attack()
 {
 	//melee attack
-	if (AEInputCheckTriggered(AEVK_1))
-		meleeAction = true, shotAction = false;
-	//shot attack
-	else if (AEInputCheckTriggered(AEVK_2) && obtainGun)
-		meleeAction = false, shotAction = true;
-
-	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
-
-	AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
-
-	//Direction Vector between player and mouse
-	AEVec2 dVec = { (mousePos.x - player_trs->GetPos().x), (mousePos.y - player_trs->GetPos().y) }; //direction Vector
-	AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
-	AEVec2Normalize(&nor_dVec, &dVec);
-	SetNorVec(nor_dVec);
-
-	if (meleeAction)
+	if (IsTutorialStage == false || IsAttackTutorial == true)
 	{
-		//Remove about shotAttack
-		TransComponent* aimTrace_spr = (TransComponent*)aim_line->FindComponent("Transform");
-		aimTrace_spr->SetScale({ 0,0 });
-		/////////////////////////
+		if (AEInputCheckTriggered(AEVK_1))
+			meleeAction = true, shotAction = false;
+		//shot attack
+		else if (AEInputCheckTriggered(AEVK_2) && obtainGun)
+			meleeAction = false, shotAction = true;
 
-		if (AEInputCheckTriggered(AEVK_LBUTTON) && !meleeState)
+		TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
+
+		AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
+
+		//Direction Vector between player and mouse
+		AEVec2 dVec = { (mousePos.x - player_trs->GetPos().x), (mousePos.y - player_trs->GetPos().y) }; //direction Vector
+		AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
+		AEVec2Normalize(&nor_dVec, &dVec);
+		SetNorVec(nor_dVec);
+
+		if (meleeAction)
 		{
-			if(melee == nullptr)
+			//Remove about shotAttack
+			TransComponent* aimTrace_spr = (TransComponent*)aim_line->FindComponent("Transform");
+			aimTrace_spr->SetScale({ 0,0 });
+			/////////////////////////
+
+			if (AEInputCheckTriggered(AEVK_LBUTTON) && !meleeState)
 			{
-				meleeState = true;
-				meleeCooldown = 0.f;
-
-				melee = new GameObject("Melee");
-				GoManager::GetInst()->AddObject(melee); //GetInst() == GetPtr()
-				melee->AddComponent("Transform", new TransComponent(melee));
-				//melee->AddComponent("Sprite", new SpriteComponent(melee));
-
-
-			}
-		}
-		else
-		{
-			if(melee!=nullptr)
-			{
-				TransComponent* melee_trs = static_cast<TransComponent*>(melee->FindComponent("Transform"));
-				melee_trs->SetPos(player_trs->GetPos().x + (nor_dVec.x * 50.f), player_trs->GetPos().y + (nor_dVec.y * 50.f));
-				melee_trs->SetScale({ 100,100 });
-			}
-
-			meleeCooldown += (f32)AEFrameRateControllerGetFrameTime();
-			if(manipulActive)
-			{
-				if (meleeCooldown >= 3.f)
+				if (melee == nullptr)
 				{
-					meleeState = false;
+					meleeState = true;
+					meleeCooldown = 0.f;
+
+					melee = new GameObject("Melee");
+					GoManager::GetInst()->AddObject(melee); //GetInst() == GetPtr()
+					melee->AddComponent("Transform", new TransComponent(melee));
+					//melee->AddComponent("Sprite", new SpriteComponent(melee));
+
+
 				}
 			}
 			else
 			{
-				if (meleeCooldown >= 0.35f)
+				if (melee != nullptr)
 				{
-					meleeState = false;
+					TransComponent* melee_trs = static_cast<TransComponent*>(melee->FindComponent("Transform"));
+					melee_trs->SetPos(player_trs->GetPos().x + (nor_dVec.x * 50.f), player_trs->GetPos().y + (nor_dVec.y * 50.f));
+					melee_trs->SetScale({ 100,100 });
 				}
-				
-			}
-			if (melee != nullptr && !meleeState)
-			{
-				//delete melee;
-				melee->SetActive(false); //Set false means DELETE AND REMOVE GO.
-				melee = nullptr; //I dont have a melee anymore
+
+				meleeCooldown += (f32)AEFrameRateControllerGetFrameTime();
+				if (manipulActive)
+				{
+					if (meleeCooldown >= 3.f)
+					{
+						meleeState = false;
+					}
+				}
+				else
+				{
+					if (meleeCooldown >= 0.35f)
+					{
+						meleeState = false;
+					}
+
+				}
+				if (melee != nullptr && !meleeState)
+				{
+					//delete melee;
+					melee->SetActive(false); //Set false means DELETE AND REMOVE GO.
+					melee = nullptr; //I dont have a melee anymore
+				}
 			}
 		}
-	}
-	else if (shotAction)
-	{
-		MouseTraceLine();
-		if (AEInputCheckTriggered(AEVK_LBUTTON))
+		else if (shotAction)
 		{
-			AccTime += AEFrameRateControllerGetFrameTime();
-			auto res = ResourceManager::GetInst()->Get("sfx_gun", "Assets/PlayerGun.mp3");
-			AudioResource* bgm_res = static_cast<AudioResource*>(res);
-			bgm_res->SetSFXorMusic(Sound::SFX);
-			auto bgm_audio = bgm_res->GetAudio();
-			auto bgm_audioGroup = bgm_res->GetAudioGroup();
-			AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
-			if (AccTime > 1.3)
+			MouseTraceLine();
+			if (AEInputCheckTriggered(AEVK_LBUTTON))
 			{
-				AEAudioStopGroup(bgm_audioGroup);
-				AccTime = 0;
+				AccTime += AEFrameRateControllerGetFrameTime();
+				auto res = ResourceManager::GetInst()->Get("sfx_gun", "Assets/PlayerGun.mp3");
+				AudioResource* bgm_res = static_cast<AudioResource*>(res);
+				bgm_res->SetSFXorMusic(Sound::SFX);
+				auto bgm_audio = bgm_res->GetAudio();
+				auto bgm_audioGroup = bgm_res->GetAudioGroup();
+				AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+				if (AccTime > 1.3)
+				{
+					AEAudioStopGroup(bgm_audioGroup);
+					AccTime = 0;
+				}
+				CreateBullet(player_trs->GetPos(), nor_dVec, "PlayerBullet", false);
 			}
-			CreateBullet(player_trs->GetPos(), nor_dVec, "PlayerBullet", false);
 		}
 	}
 }
@@ -506,6 +518,7 @@ void PlayerComponent::Gauge()
 	gauge_trs->SetPos(player_trs->GetPos().x - 700 - ((len - curLen)/2.f), player_trs->GetPos().y + 400);
 
 }
+
 
 void PlayerComponent::Update()
 {

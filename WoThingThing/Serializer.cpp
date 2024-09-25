@@ -38,6 +38,7 @@ void Serializer::LoadLevel(const std::string& s)
 	}
 	json AllData;
 	file >> AllData;	//The json has all the file data
+	int i = 0;
 	nlohmann::ordered_json::basic_json::iterator item;
 	for (nlohmann::ordered_json::basic_json::value_type& item : AllData)//Depending on how you saved, you look for some values or others
 	{
@@ -51,7 +52,7 @@ void Serializer::LoadLevel(const std::string& s)
 
 			GameObject* go = new GameObject("Platform");
 			GoManager::GetInst()->AddObject(go);
-
+			go->SetID(i++);
 			//Find the Component section
 			nlohmann::ordered_json::basic_json::iterator cmp = item.find("Components");
 			if (cmp == item.end()) //Not Found
@@ -114,6 +115,7 @@ void Serializer::SaveLevel(const std::string& s)
 		{
 			json obj;
 			obj["Platform"] = i++;
+			go->SetID(i);
 			for (auto c : go->GetAllComp())//map
 			{
 				BaseComponent* comp = c.second;
