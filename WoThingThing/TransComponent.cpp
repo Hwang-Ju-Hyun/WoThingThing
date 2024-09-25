@@ -311,6 +311,15 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 		m_fRot = 0.f;
 	}
 
+	if (_owner->GetName() == "Boss_drone")
+	{
+		m_vPos = { 2000,90 };
+		//보스만 계속 x좌표 73만큼 움직이게 만들기
+		m_vScale = { 60,51 };
+		m_fRot = 0.f;
+	}
+
+
 	if (_owner->GetName() == "BackGround")
 	{
 		m_vPos = { 0,0 };

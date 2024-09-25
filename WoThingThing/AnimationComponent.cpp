@@ -183,6 +183,7 @@ void AnimationComponent::Update()
 	}
 	if (attackState)
 	{
+		//my_trs->SetScale({ 80,80 }); 이 부분임
 		my_trs->SetScale({ 256,96 });
 	}
 	attackTimer += (f32)AEFrameRateControllerGetFrameTime();
@@ -270,6 +271,5 @@ void AnimationComponent::Update()
 	}
 
 	AEGfxMeshDraw(mesh, AE_GFX_MDM_TRIANGLES);
-
 	return;
 }

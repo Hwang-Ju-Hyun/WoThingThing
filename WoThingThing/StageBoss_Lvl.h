@@ -13,6 +13,7 @@ namespace Level
     private:
         GameObject* background;
         GameObject* player;
+        GameObject* playerAnim;
         GameObject* mouseAim;
         GameObject* aimTrace;
         float AccTime = 0.f;
@@ -31,6 +32,7 @@ namespace Level
     private:        
         GameObject* Platform;        
         GameObject* Enemy_TEST;
+        GameObject* Boss_drone;
         
         GameObject* Boss1;
     public:
@@ -55,5 +57,7 @@ namespace Level
         float minusY = 0;
         bool changeCamDir = false;
         float VibrationAccTime = 0.f;
+        bool Boss_drone_dir = true;
+        bool Boss_bullet_pattern1;
     };
 }

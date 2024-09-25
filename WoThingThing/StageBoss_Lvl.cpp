@@ -1,8 +1,8 @@
 #include <iostream>
 #include "header.h"
 
-#include "GameStateManager.h"
 #include "MainMenu_Lvl.h"
+#include "GameStateManager.h"
 #include "Stage01_Lvl.h"
 
 #include "GameObject.h"
@@ -74,6 +74,7 @@ void Level::StageBoss_Lvl::Init()
     ResourceManager::GetInst()->Get("BossRun", "Assets/BossRun.png");//(1,6,6,0.1)
     ResourceManager::GetInst()->Get("BossAtk", "Assets/BossAtk.png");//(1, 4, 4, 0.1);
     ResourceManager::GetInst()->Get("KnockBack", "Assets/KnockBack.png");
+    ResourceManager::GetInst()->Get("Boss_drone_Atk", "Assets/Boss_drone_Atk.png");//(1,12,12,0.1)
 
     Serializer::GetInst()->LoadLevel("Assets/stageBoss.json");
 
@@ -83,10 +84,15 @@ void Level::StageBoss_Lvl::Init()
     player->AddComponent("Transform", new TransComponent(player));
     //player->AddComponent("Sprite", new SpriteComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
-    player->AddComponent("Animation", new AnimationComponent(player));
+    //player->AddComponent("Animation", new AnimationComponent(player));
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });
 
+
+    playerAnim = new GameObject("PlayerAnim");
+    GoManager::GetInst()->AddObject(playerAnim); //GetInst() == GetPtr()
+    playerAnim->AddComponent("Transform", new TransComponent(playerAnim));
+    playerAnim->AddComponent("Animation", new AnimationComponent(playerAnim));
 
     aimTrace = new GameObject("aimTrace");
     GoManager::GetInst()->AddObject(aimTrace);
@@ -126,6 +132,16 @@ void Level::StageBoss_Lvl::Init()
     //TEST===========
 
 
+    //보스 드론부분
+    Boss_drone = new GameObject("Boss_drone");
+    GoManager::GetInst()->AddObject(Boss_drone);
+    Boss_drone->AddComponent("Transform", new TransComponent(Boss_drone));
+    //Boss_drone->AddComponent("Sprite", new SpriteComponent(Boss_drone));
+    Boss_drone->AddComponent("EnemyAnimation", new EnemyAnimationComponent(Boss_drone));
+    EnemyAnimationComponent* Boss_drone_ani = (EnemyAnimationComponent*)Boss_drone->FindComponent("EnemyAnimation");
+    Boss_drone_ani->ChangeAnimation("Boss_drone_Atk", 1, 12, 12, 0.4);
+    Boss_drone_ani->SetEnemyDir(true);
+
     CameraManager::GetInst()->SetMouse(mouseAim);
     CameraManager::GetInst()->SetPlayer(player);
     CameraManager::GetInst()->SetAim(aimTrace);
@@ -141,14 +157,20 @@ void Level::StageBoss_Lvl::Init()
     bgm = ResourceManager::GetInst()->Get("BossBGM", "Assets/BossBgm.mp3");
     bgm_res = static_cast<AudioResource*>(bgm);
     bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);
+
+    Boss_bullet_pattern1 = true;
+
 }
 
 void Level::StageBoss_Lvl::Update()
 {
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     TransComponent* bg_trs = (TransComponent*)background->FindComponent("Transform");
+
     bg_trs->SetPos(player_trs->GetPos());
     bg_trs->SetScale({ 1600,900 });
+
+    
 
     //AEGfxSetBackgroundColor(0.3f, 0.3f, 0.3f);
     AEInputShowCursor(0);
@@ -163,10 +185,32 @@ void Level::StageBoss_Lvl::Update()
     RigidBodyComponent* EnemyTest_rig = (RigidBodyComponent*)Enemy_TEST->FindComponent("RigidBody");
     EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy_TEST->FindComponent("EnemyAnimation");
 
+    TransComponent* boss_drone_trs = (TransComponent*)Boss_drone->FindComponent("Transform");
+    EnemyAnimationComponent* boss_drone_ani = (EnemyAnimationComponent*)Boss_drone->FindComponent("EnemyAnimation");
     playerPos = player_trs->GetPos();
     enemyTestPos = EnemyTest_trs->GetPos();
     chaseVec.x = playerPos.x - enemyTestPos.x;
     chaseVec.y = playerPos.y - enemyTestPos.y;
+
+    //먼저 보스 드론위치를 보스와 맞추기
+    boss_drone_trs->SetPos(EnemyTest_trs->GetPos().x + 80, EnemyTest_trs->GetPos().y);
+    if (ColliderManager::GetInst()->isFacingtheSameDirection(chaseVec, Boss_drone_dir))
+    {
+        Boss_drone_dir = !(Boss_drone_dir);
+        boss_drone_ani->SetEnemyDir(!Boss_drone_dir);
+    }
+
+    if (Boss_drone_dir) 
+    {
+        boss_drone_trs->SetPos(EnemyTest_trs->GetPos().x - 80, EnemyTest_trs->GetPos().y);
+    }
+    else 
+    {
+        boss_drone_trs->SetPos(EnemyTest_trs->GetPos().x + 80, EnemyTest_trs->GetPos().y);
+    }
+
+
+
 
     //Display Bullet===============
     auto pFont = static_cast<TextResource*>(ResourceManager::GetInst()->Get("esamanru", "Assets/esamanru-Bold.ttf"));
@@ -359,13 +403,18 @@ void Level::StageBoss_Lvl::Update()
         AEVec2Normalize(&nor_dVec, &dVec);
         float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
         AttackDelayTime += deltaTime;
-        if (AttackDelayTime > 3.f)
+        if (AttackDelayTime > 2.4f && Boss_bullet_pattern1)
         {
+            Boss_bullet_pattern1 = false;
             auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
             AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun); 
             bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
             CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-            AttackDelayTime = 0.f;
+            if (AttackDelayTime >= 4.8f) 
+            {
+                AttackDelayTime = 0.f;
+                Boss_bullet_pattern1 = true;
+            }
         }
     }
     else if (Enemy_TEST->GetHP() >= 10&& Enemy_TEST->GetHP()<15)
@@ -737,7 +786,7 @@ void Level::StageBoss_Lvl::Collision()
     //여기가 보스랑 플레이어가 부딫히는 부분
     if (ColliderManager::GetInst()->GetPlayerSearchOnOff() == true)
     {
-        if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, -0.5, 1, 1) && !player_comp->GetInvincible())
+        if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, 0.1, 1, 1) && !player_comp->GetInvincible())
         {
             Enemy_ani->ChangeAnimation("BossAtk", 1, 4, 4, 0.1);
             m_fDt = (f32)AEFrameRateControllerGetFrameTime();
@@ -773,3 +822,5 @@ void Level::StageBoss_Lvl::Exit()
     GoManager::GetInst()->RemoveAllObj();
     //Serializer::GetInst()->SaveLevel("Assets/stageBoss.json");
 }
+
+

@@ -16,7 +16,7 @@
 void ESM::EnemyAttack::Init()
 {
 	EnemyAnimationComponent* Enemy_meleeani = (EnemyAnimationComponent*)Attack_enemy->FindComponent("EnemyAnimation");
-	Enemy_meleeani->ChangeAnimation("MeleeAttack", 1, 5, 5, 0.1);
+	Enemy_meleeani->ChangeAnimation("MeleeAttack", 1, 5, 5, 0.05);
 	melee_DelayAtk = 0.f;
 	m_fDt = 0.f;
 }
@@ -41,7 +41,7 @@ void ESM::EnemyAttack::Update()
 		{
 			melee_DelayAtk += m_fDt;
 		}
-		if (melee_DelayAtk > 0.5f)
+		if (melee_DelayAtk > 0.25f)
 		{
 			auto res_EnemyMeleeAtk = ResourceManager::GetInst()->Get("sfx_EnemyMeleeAtk", "Assets/EnemyMeleeAttack.mp3");
 			AudioResource* bgm_res = static_cast<AudioResource*>(res_EnemyMeleeAtk);
