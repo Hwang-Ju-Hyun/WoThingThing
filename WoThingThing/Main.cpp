@@ -2,9 +2,7 @@
 #include "header.h"
 
 #include "GameStateManager.h"
-#include "MainMenu_Lvl.h"
-#include "Stage01_Lvl.h"
-#include "GameStart.h"
+#include "GameStart_Lvl.h" 
 
 #include "TimeManager.h"
 #include "CompManager.h"
@@ -13,6 +11,8 @@
 #include <memory>
 #include "StageTutorial.h"
 #include "TestLevel.h"//추가부분(백무송)
+
+#include "ResourceManager.h"
 
 
 
@@ -32,14 +32,13 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	AESysInit(instanceH, show, 1600, 900, 1, 60, true, NULL);
 
 	// Changing the window title
-	AESysSetWindowTitle("Asteriods Demo!");
+	AESysSetWindowTitle("WoThingThing");
 
 	AESysReset();
 	
 	//Initialize GSM;
 	GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
-	
-	
+
 	gsm->ChangeLevel(new Level::GameStart_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
@@ -51,9 +50,6 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		AEGfxSetBackgroundColor(0.f, 0.f, 0.f);
 
 		//Update;
-
-
-
 		CompManager::GetInst()->Update();
 		TimeManager::GetInst()->Update();
 		EventManager::GetInst()->Update();
@@ -63,10 +59,10 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		AESysFrameEnd();
 
 		// check if forcing the application to quit
-		//if ((AESysDoesWindowExist() == false) || AEInputCheckTriggered(AEVK_ESCAPE))
-		//{			
-		//	gsm->ChangeLevel(nullptr);			
-		//}							
+		if ((AESysDoesWindowExist() == false))
+		{			
+			gsm->ChangeLevel(nullptr);			
+		}							
 	}
 
 	// free the system

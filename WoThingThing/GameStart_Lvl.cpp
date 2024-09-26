@@ -1,4 +1,4 @@
-#include "GameStart.h"
+#include "GameStart_Lvl.h"
 #include "GameStateManager.h"
 
 #include "MainMenu_Lvl.h"
@@ -14,13 +14,6 @@
 #include "ImageResource.h"
 #include "StageBoss_Lvl.h"
 
-Level::GameStart_Lvl::GameStart_Lvl()
-{
-}
-
-Level::GameStart_Lvl::~GameStart_Lvl()
-{
-}
 
 f32 Level::GameStart_Lvl::lerp(f32 a, f32 b, f32 v)
 {
@@ -44,13 +37,13 @@ void Level::GameStart_Lvl::Init()
 	SpriteComponent* digipenLogo_spr = (SpriteComponent*)DigipenLogo->FindComponent("Sprite");
 	ImageResource* digipenResource = (ImageResource*)ResourceManager::GetInst()->FindRes("DigipenLogo");
 	digipenLogo_trs->SetPos(0, 0);
-	digipenLogo_trs->SetScale({ 1200,450 });
+	digipenLogo_trs->SetScale({ 1026,250 });
 	digipenLogo_spr->SetTexture(digipenResource->GetImage());
 
 	TeamLogo->AddComponent("Transform", new TransComponent(TeamLogo));
 	TransComponent* teamLogo_trs = (TransComponent*)TeamLogo->FindComponent("Transform");
 	teamLogo_trs->SetPos(0, 0);
-	teamLogo_trs->SetScale({ 1000,500 });
+	teamLogo_trs->SetScale({ 1024,1024 });
 
 	TeamLogo->AddComponent("Sprite", new SpriteComponent(TeamLogo));
 	SpriteComponent* teamLogo_spr = (SpriteComponent*)TeamLogo->FindComponent("Sprite");

@@ -27,8 +27,6 @@ AEVec2 BulletComponent::GetBulletVec()
 void BulletComponent::DestroyBullet()
 {
 	m_pOwner->SetActive(false);
-	// 주석 풀 시 진짜 사형
-	//m_pOwner = nullptr;
 }
 
 void BulletComponent::SetState()

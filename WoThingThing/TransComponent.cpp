@@ -365,7 +365,7 @@ void TransComponent::AddPos(const AEVec2& _pos)
 
 void TransComponent::AddPos(float _posX, float _posY)
 {
-	float dt = AEFrameRateControllerGetFrameTime();
+	float dt = static_cast<float>(AEFrameRateControllerGetFrameTime());
 	if (AEInputCheckCurr(AEVK_L
 	))
 	{

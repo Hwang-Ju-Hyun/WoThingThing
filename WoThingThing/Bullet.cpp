@@ -43,7 +43,6 @@ void CreateBullet(AEVec2 initPos, AEVec2 nor_dVec, std::string _bulletname, bool
 			GameObject* bullet = new GameObject(_bulletname);
 			GoManager::GetInst()->AddObject(bullet);
 			bullet->AddComponent("Transform", new TransComponent(bullet));
-			//bullet->AddComponent("Sprite", new SpriteComponent(bullet));
 			bullet->AddComponent("BulletAnim", new BulletAnimationComponent(bullet));
 			bullet->AddComponent("Bullet", new BulletComponent(bullet));
 			BulletComponent* bullet_comp = (BulletComponent*)bullet->FindComponent("Bullet");
@@ -103,7 +102,6 @@ void CreateSupplement(AEVec2 initPos)
 	ResourceManager::GetInst()->Get("SupplyBullet", "Assets/SupplyBullet.png");
 	ImageResource* suppleBullet = (ImageResource*)ResourceManager::GetInst()->FindRes("SupplyBullet");
 	supple_spr->SetTexture(suppleBullet->GetImage());
-
 }
 
 int GetBullet()

@@ -153,6 +153,9 @@
     <Filter Include="Manager\EnemyStateMgr">
       <UniqueIdentifier>{7a4a7220-9308-461c-9d73-140ad5fbe6c2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Level\GameStart">
+      <UniqueIdentifier>{148194a6-4ac6-4d0c-a064-8c685e383b67}</UniqueIdentifier>
+	</Filter>
     <Filter Include="Level\Tutorial">
       <UniqueIdentifier>{7ae5cf99-60c0-46f0-ba80-a299321c48d4}</UniqueIdentifier>
     </Filter>
@@ -314,6 +317,27 @@
     <ClCompile Include="GameOver_Lvl.cpp">
       <Filter>Level\GameOver</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAnimationComponent.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Congratulation.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageResource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStart_Lvl.cpp">
+      <Filter>Level\GameStart</Filter>
+    </ClCompile>
+    <ClCompile Include="GameStart_Lvl.h">
+      <Filter>Level\GameStart</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletAnimationComponent.cpp">
+      <Filter>Component\Bullet</Filter>
+	</ClCompile>
     <ClCompile Include="ImageResource.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
@@ -493,6 +517,9 @@
     <ClInclude Include="GameOver_Lvl.h">
       <Filter>Level\GameOver</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Main</Filter>
+    </ClInclude>
     <ClInclude Include="EnemyAnimationComponent.h">
       <Filter>Ai\AnimationAi</Filter>
     </ClInclude>
@@ -507,6 +534,9 @@
     </ClInclude>
     <ClInclude Include="AnimationComponent.h">
       <Filter>Component\Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletAnimationComponent.h">
+      <Filter>Component\Bullet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

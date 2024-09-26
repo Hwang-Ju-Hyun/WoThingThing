@@ -18,7 +18,7 @@
 void ESM::TargetAim_Sniper::Init()
 {
 	EnemyAnimationComponent* Enemy_sniperani = (EnemyAnimationComponent*)TargetAim_enemy->FindComponent("EnemyAnimation");
-	Enemy_sniperani->ChangeAnimation("SniperShootIdle", 1, 1, 1, 0.1);
+	Enemy_sniperani->ChangeAnimation("SniperShootIdle", 1, 1, 1, 0.1f);
 	bullet_Vec = { 0.f, 0.f };
 	bullet_const = { 50.f, 50.f };
 
@@ -66,7 +66,7 @@ void ESM::TargetAim_Sniper::Update()
 
 		if (player_comp->GetManiActive())
 		{
-			AttackDelay += m_fDt * 0.1;
+			AttackDelay += m_fDt * 0.1f;
 		}
 		else 
 		{

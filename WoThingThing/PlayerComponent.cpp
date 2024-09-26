@@ -266,7 +266,6 @@ bool PlayerComponent::GetManiActive()
 {
 	return manipulActive;
 }
-
 bool PlayerComponent::GetInvincible()
 {
 	return invincibility;
@@ -304,8 +303,6 @@ void PlayerComponent::DrawAim()
 {
 	ImageResource* tempResource = (ImageResource*)ResourceManager::GetInst()->FindRes("Aim");
 	AEGfxTexture* pTex = tempResource->GetImage();
-
-
 }
 void PlayerComponent::MouseTraceLine()
 {
