@@ -16,7 +16,7 @@
 void ESM::EnemyAttack::Init()
 {
 	EnemyAnimationComponent* Enemy_meleeani = (EnemyAnimationComponent*)Attack_enemy->FindComponent("EnemyAnimation");
-	Enemy_meleeani->ChangeAnimation("MeleeAttack", 1, 5, 5, 0.05);
+	Enemy_meleeani->ChangeAnimation("MeleeAttack", 1, 5, 5, 0.05f);
 	melee_DelayAtk = 0.f;
 	m_fDt = 0.f;
 }
@@ -35,7 +35,7 @@ void ESM::EnemyAttack::Update()
 		m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 		if (player_comp->GetManiActive())
 		{
-			melee_DelayAtk += m_fDt * 0.1;
+			melee_DelayAtk += m_fDt * 0.1f;
 		}
 		else
 		{

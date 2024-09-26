@@ -42,7 +42,7 @@ public:
     virtual json SaveToJson(const json& str)override;
 public:
     void jump(float jumpVal);
-    bool manipulActive = 7.f;   //true
+    bool manipulActive = true;   //true
     f32 timeManipul;
     float maniCapacity = false;
 public:

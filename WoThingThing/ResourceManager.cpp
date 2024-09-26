@@ -37,6 +37,8 @@ ResourceManager::Select_Extension ResourceManager::Get_Extension(const std::stri
 	{
 		return mp3;
 	}
+
+	return nothing;
 }
 
 Resource* ResourceManager::FindRes(const std::string& _name)

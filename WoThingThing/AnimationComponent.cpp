@@ -16,7 +16,7 @@ void AnimationComponent::Initialize()
 	current_sprite_uv_offset_y = 0.f;
 }
 
-void AnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 cols, f32 max, f32 duration)
+void AnimationComponent::ChangeAnimation(std::string _name, u32 rows, u32 cols, u32 max, f32 duration)
 {
 
 	if (this->current != _name)
@@ -66,7 +66,7 @@ AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owne
 
 
 
-	ChangeAnimation("Idle", 1, 8, 8, 0.1);
+	ChangeAnimation("Idle", 1, 8, 8, 0.1f);
 
 	dashState = false, jumpState = false, attackState = false, longattackState = false;
 	dashTimer = 0.f, jumpTimer = 0.f, attackTimer = 0.f, longattackTimer = 0.f;
@@ -105,14 +105,14 @@ void AnimationComponent::Update()
 	//Right
 	if (AEInputCheckCurr(AEVK_D) && !dashState && !jumpState && !attackState && !longattackState)
 	{
-		ChangeAnimation("Run", 1, 8, 8, 0.1);
+		ChangeAnimation("Run", 1, 8, 8, 0.1f);
 		flip = false;
 	}
 
 	//Left
 	else if (AEInputCheckCurr(AEVK_A) && !dashState && !jumpState && !attackState && !longattackState)
 	{
-		ChangeAnimation("Run", 1, 8, 8, 0.1);
+		ChangeAnimation("Run", 1, 8, 8, 0.1f);
 		flip = true;
 	}
 
@@ -120,7 +120,7 @@ void AnimationComponent::Update()
 	else if (!dashState && !jumpState && !attackState && !longattackState)
 	{
 		flip = false;
-		ChangeAnimation("Idle", 1, 8, 8, 0.1);
+		ChangeAnimation("Idle", 1, 8, 8, 0.1f);
 	}
 	
 
@@ -136,7 +136,7 @@ void AnimationComponent::Update()
 			flip = true;
 		}
 
-		ChangeAnimation("Dash", 1, 6, 6, 0.1);
+		ChangeAnimation("Dash", 1, 6, 6, 0.1f);
 	}
 	dashTimer += (f32)AEFrameRateControllerGetFrameTime();
 	if (dashTimer >= animation_duration_per_frame * spritesheet_max_sprites)
@@ -181,7 +181,7 @@ void AnimationComponent::Update()
 			//==============
 
 			//Initialize();
-			ChangeAnimation("Attack", 1, 8, 8, 0.1);
+			ChangeAnimation("Attack", 1, 8, 8, 0.1f);
 		}
 		if (attackState)
 		{
@@ -215,7 +215,7 @@ void AnimationComponent::Update()
 			//==============
 
 			Initialize();
-			ChangeAnimation("LongAttack", 1, 8, 8, 0.1);
+			ChangeAnimation("LongAttack", 1, 8, 8, 0.1f);
 		}
 		if (longattackState)
 		{

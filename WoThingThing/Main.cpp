@@ -3,6 +3,7 @@
 
 #include "GameStateManager.h"
 #include "GameStart_Lvl.h" 
+#include "MainMenu_Lvl.h"
 
 #include "TimeManager.h"
 #include "CompManager.h"
@@ -35,11 +36,11 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	AESysSetWindowTitle("WoThingThing");
 
 	AESysReset();
-	
+
 	//Initialize GSM;
 	GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
 	
-	gsm->ChangeLevel(new Level::GameStart_Lvl);
+	gsm->ChangeLevel(new Level::MainMenu_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
 		AEFrameRateControllerReset();

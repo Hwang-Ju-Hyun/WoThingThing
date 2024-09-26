@@ -105,7 +105,7 @@ void Level::MainMenu_Lvl::Update()
 
 	s32 mousePosX, mousePosY;
 	AEInputGetCursorPosition(&mousePosX, &mousePosY);
-	AEVec2 mousePos = { mousePosX - 800,  -(mousePosY - 450) };
+	AEVec2 mousePos = { mousePosX - 800.f,  -(mousePosY - 450.f) };
 
 
 	if (AETestPointToRect(&mousePos, &StartBtn_trs->TempGetPos(), 280, 90))
