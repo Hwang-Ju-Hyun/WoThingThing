@@ -1,0 +1,303 @@
+[
+  {
+    "Platform": 0,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150,
+          "TextureName": "Pillar",
+          "TexturePath": "Assets/BossStagePillar.png"
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            0.0,
+            700.0
+          ],
+          "sca": [
+            300.0,
+            1550.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 1,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 150,
+          "BLUE": 150,
+          "GREEN": 150,
+          "TextureName": "Pillar",
+          "TexturePath": "Assets/BossStagePillar.png"
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -300.0,
+            700.0
+          ],
+          "sca": [
+            700.0,
+            1550.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 2,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 255,
+          "GREEN": 150
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            1000.0,
+            -200.0
+          ],
+          "sca": [
+            3000.0,
+            550.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 3,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 150,
+          "GREEN": 150
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            3000.0,
+            -200.0
+          ],
+          "sca": [
+            1000.0,
+            550.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 4,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 150,
+          "GREEN": 255
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            4500.0,
+            -200.0
+          ],
+          "sca": [
+            2000.0,
+            550.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 5,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 150,
+          "GREEN": 255
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            1300.0,
+            300.0
+          ],
+          "sca": [
+            300.0,
+            150.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 6,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 150,
+          "GREEN": 255
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            800.0,
+            600.0
+          ],
+          "sca": [
+            300.0,
+            150.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 7,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 150,
+          "GREEN": 255
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            1500.0,
+            900.0
+          ],
+          "sca": [
+            700.0,
+            100.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 8,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 0,
+          "GREEN": 0
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            2000.0,
+            0.0
+          ],
+          "sca": [
+            300.0,
+            4500.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 9,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0,
+          "BLUE": 255,
+          "GREEN": 0
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            7000.0,
+            -200.0
+          ],
+          "sca": [
+            3000.0,
+            550.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 10,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 0,
+          "GREEN": 0
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            6500.0,
+            0.0
+          ],
+          "sca": [
+            800.0,
+            3000.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  }
+]

@@ -58,6 +58,8 @@ namespace Level
         bool changeCamDir = false;
         float VibrationAccTime = 0.f;
         bool Boss_drone_dir = true;
-        bool Boss_bullet_pattern1;
+        bool Boss_bullet_count1;
+        bool Boss_bullet_count2;
+        bool Boss_bullet_count3;
     };
 }

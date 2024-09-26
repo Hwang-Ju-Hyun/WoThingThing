@@ -158,7 +158,9 @@ void Level::StageBoss_Lvl::Init()
     bgm_res = static_cast<AudioResource*>(bgm);
     bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);
 
-    Boss_bullet_pattern1 = true;
+    Boss_bullet_count1 = true;
+    Boss_bullet_count2 = true;
+    Boss_bullet_count3 = true;
 
 }
 
@@ -330,6 +332,7 @@ void Level::StageBoss_Lvl::Update()
     //=======NEVER TOUCH DOWN CODE EXCEPT HWNAG JUHYUN==========        
     RigidBodyComponent* EnemyTEST_rg = static_cast<RigidBodyComponent*>(Enemy_TEST->FindComponent("RigidBody"));
     PathFindMoveComponent* EnemyTEST_pf = static_cast<PathFindMoveComponent*>(Enemy_TEST->FindComponent("PathFindMove"));
+    EnemyAnimationComponent* Boss_drone_ani = (EnemyAnimationComponent*)Boss_drone->FindComponent("EnemyAnimation");
 
     NaveMeshManager::GetInst()->SetMinCost(10000.f);
     //플레이어한테서 가장 가까운 노드를 찾는다
@@ -403,47 +406,54 @@ void Level::StageBoss_Lvl::Update()
         AEVec2Normalize(&nor_dVec, &dVec);
         float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
         AttackDelayTime += deltaTime;
-        if (AttackDelayTime > 2.4f && Boss_bullet_pattern1)
+        if (AttackDelayTime > 2.4f)
         {
-            Boss_bullet_pattern1 = false;
-            auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
-            AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun); 
-            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-            if (AttackDelayTime >= 4.8f) 
+            if (Boss_bullet_count1)
+            {
+                Boss_bullet_count1 = false;
+                auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
+                AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
+                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+                CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+            }
+            if (AttackDelayTime > 4.8f)
             {
                 AttackDelayTime = 0.f;
-                Boss_bullet_pattern1 = true;
+                Boss_bullet_count1 = true;
             }
         }
     }
     else if (Enemy_TEST->GetHP() >= 10&& Enemy_TEST->GetHP()<15)
-    {                        
+    {
+        //Boss_drone_ani->ChangeAnimation("Boss_drone_Atk", 1, 12, 12, 0.3);
         AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
         AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
         AEVec2Normalize(&nor_dVec, &dVec);
         float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
         AttackDelayTime += deltaTime;
-        if (AttackDelayTime > 1.5f)
+        if (AttackDelayTime > 1.8f)
         {
-            auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
-            AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
-            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
-    
-           /* bgm_res->SetSFXorMusic(Sound::SFX);
-            auto bgm_audio = bgm_res->GetAudio();
-            auto bgm_audioGroup = bgm_res->GetAudioGroup();
-            AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);*/
-    
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-            nor_dVec.y += 0.05f;
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-            nor_dVec.y += 0.05f;
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-            nor_dVec.y -= 0.15f;
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
-            nor_dVec.y -= 0.30f;
-            AttackDelayTime = 0.f;
+
+                Boss_bullet_count2 = false;
+                auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
+                AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
+                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+
+                /* bgm_res->SetSFXorMusic(Sound::SFX);
+                 auto bgm_audio = bgm_res->GetAudio();
+                 auto bgm_audioGroup = bgm_res->GetAudioGroup();
+                 AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);*/
+                CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+                nor_dVec.y += 0.05f;
+                CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+                nor_dVec.y += 0.05f;
+                CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+                nor_dVec.y -= 0.15f;
+                CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+                nor_dVec.y -= 0.30f;
+                AttackDelayTime = 0.f;
+                Boss_bullet_count2 = true;
+
         }
     }
     else if (Enemy_TEST->GetHP() < 10)
