@@ -273,7 +273,6 @@ void AnimationComponent::Update()
 	}
 
 	AEGfxMeshDraw(mesh, AE_GFX_MDM_TRIANGLES);
-
 	return;
 }
 

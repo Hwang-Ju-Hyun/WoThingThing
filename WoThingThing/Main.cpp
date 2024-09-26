@@ -45,7 +45,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	Level::TestLevel Test;
 	Level::GameStart_Lvl GameStart_lvl;
 	Level::StageTutorial_Lvl StageTutorial_lvl;
-	gsm->ChangeLevel(new Level::Stage01_Lvl);
+	gsm->ChangeLevel(new Level::StageTutorial_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
 		AEFrameRateControllerReset();

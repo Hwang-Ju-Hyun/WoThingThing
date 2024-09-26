@@ -16,7 +16,7 @@ public:
 public:
 	int m_id;
 	float AttackDelay;
-	int m_hp = 20;	
+	int m_hp = 20;
 	bool IsSturn = false;
 	float SturnAccTime = 0.f;
 	float TakeDamageCoolTime = 0.f;

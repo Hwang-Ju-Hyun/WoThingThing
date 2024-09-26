@@ -56,7 +56,7 @@ void ESM::TargetAim_Sniper::Update()
 	//실질적인 부분
 	if (ColliderManager::GetInst()->PlayerSearch(TargetAim_enemy, Player, dir_state, 18.f, 18.f, 10.f))
 	{
-		Enemy_sniperani->ChangeAnimation("SniperShoot", 1, 5, 5, 0.2);
+		Enemy_sniperani->ChangeAnimation("SniperShoot", 1, 5, 5, 0.15);
 		m_fDt_Target = 0.0f;
 		Search_outTime = 0.0f;
 
@@ -64,7 +64,7 @@ void ESM::TargetAim_Sniper::Update()
 		m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 		
 
-		if (ShouldSlowTime) 
+		if (player_comp->GetManiActive())
 		{
 			AttackDelay += m_fDt * 0.1;
 		}
@@ -72,7 +72,7 @@ void ESM::TargetAim_Sniper::Update()
 		{
 			AttackDelay += m_fDt;
 		}
-		if (AttackDelay >= 1.f)//공격 딜레이
+		if (AttackDelay >= 0.75f)//공격 딜레이
 		{
 			//bulletComp
 			auto res_EnemyGun = ResourceManager::GetInst()->Get("sfx_EnemyGunShot", "Assets/GunShot.mp3");
@@ -111,7 +111,7 @@ void ESM::TargetAim_Sniper::Update()
 				AttackDelay += m_fDt;
 			}
 
-			if (AttackDelay >= 1.f) // 3초마다 총알 발사
+			if (AttackDelay >= 0.75f) // 3초마다 총알 발사
 			{
 
 				CreateBullet(enemy_trs->GetPos(), nor_dVec, "EnemyBullet", true);

@@ -61,7 +61,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	
 	invincibility = false;
 	
-	playerhealth = 1e9;
+	playerhealth = 1;
 }
 
 //About Player's movement
