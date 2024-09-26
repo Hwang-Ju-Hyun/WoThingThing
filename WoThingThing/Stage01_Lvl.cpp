@@ -361,10 +361,11 @@ void Level::Stage01_Lvl::Collision()
         //Enemy Bullet
         if (obj->GetName() == "EnemyBullet")
         {
+            BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
             //with Player's Melee ==> Parrying
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {                             
-                BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+                //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
                 if(!bullet_comp->GetState())
                 {
                     bullet_comp->SetState();
@@ -384,7 +385,7 @@ void Level::Stage01_Lvl::Collision()
             }
            //Player Death
            //새로운 Collision box사용
-            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible())
+            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible()  && bullet_comp->EnemyShoot)
             {               
 
                //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
