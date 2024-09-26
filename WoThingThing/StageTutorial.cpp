@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 #include "ImageResource.h"
 #include "Resource.h"
+#include "Stage01_Lvl.h"
 #include "AudioResource.h"
 #include "EventManager.h"
 #include "PlayerComponent.h"
@@ -58,7 +59,7 @@ void Level::StageTutorial_Lvl::Init()
     player->AddComponent("PlayerComp", new PlayerComponent(player));
     player->AddComponent("Animation", new AnimationComponent(player));
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
-    player_trs->SetScale({ 80, 80 });    
+    player_trs->SetScale({ 80, 80 });        
 
     //PlayerAim
     aimTrace = new GameObject("aimTrace");
@@ -103,7 +104,7 @@ void Level::StageTutorial_Lvl::Init()
         TransComponent* enemy_trs=static_cast<TransComponent*>(Enemy[i]->FindComponent("Transform"));
         RigidBodyComponent* enemy_rg= static_cast<RigidBodyComponent*>(Enemy[i]->FindComponent("RigidBody"));
         EnemyAnimationComponent* enemy_ani = static_cast<EnemyAnimationComponent*>(Enemy[i]->FindComponent("EnemyAnimation"));
-        AiComponent* enemy_ai = static_cast<AiComponent*>(Enemy[i]->FindComponent("Ai"));
+        //AiComponent* enemy_ai = static_cast<AiComponent*>(Enemy[i]->FindComponent("Ai"));
         Enemy[i]->SetID(i);
         Enemy[i]->SetName("Enemy");
         switch (i)
@@ -111,29 +112,29 @@ void Level::StageTutorial_Lvl::Init()
         case 0:
             enemy_trs->SetPos({ 3200,120 });
             enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
-            enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-            enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
-            enemy_ai->Setdir_time(2.0f);
-            enemy_ai->SetFirstPlace(enemy_trs->GetPos());
-            enemy_ai->SetState("IDLE", "Melee");
+            //enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+            //enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
+            //enemy_ai->Setdir_time(2.0f);
+            //enemy_ai->SetFirstPlace(enemy_trs->GetPos());
+            //enemy_ai->SetState("IDLE", "Melee");
             break;
         case 1:
             enemy_trs->SetPos({ 3900,120 });
             enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
-            enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-            enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
-            enemy_ai->Setdir_time(2.0f);
-            enemy_ai->SetFirstPlace(enemy_trs->GetPos());
-            enemy_ai->SetState("IDLE", "Melee");
+            //enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+            //enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
+            //enemy_ai->Setdir_time(2.0f);
+            //enemy_ai->SetFirstPlace(enemy_trs->GetPos());
+            //enemy_ai->SetState("IDLE", "Melee");
             break;
         case 2:
             enemy_trs->SetPos({ 4700,120 });
             enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
-            enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
-            enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
-            enemy_ai->Setdir_time(2.0f);
-            enemy_ai->SetFirstPlace(enemy_trs->GetPos());
-            enemy_ai->SetState("IDLE", "Melee");
+            //enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+            //enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
+            //enemy_ai->Setdir_time(2.0f);
+            //enemy_ai->SetFirstPlace(enemy_trs->GetPos());
+            //enemy_ai->SetState("IDLE", "Melee");
             break;
         }
     }
@@ -227,6 +228,7 @@ void Level::StageTutorial_Lvl::Update()
     //
     //AEGfxPrint(pFont->GetFont(), cstr1, -0.85, 0.8, 20 / 72.f, 1, 1, 1, 1);
     //AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20 / 72.f, 1, 1, 1, 1);
+    
 
     //tutorial
     static bool MovementTutorial = false;
@@ -278,7 +280,7 @@ void Level::StageTutorial_Lvl::Update()
     {
         AddMoveAccTime(dt);
         SetVibration(true);
-        if (GetMoveAccTime() >= 1.f)
+        if (GetMoveAccTime() >= 3.0f)
         {
             player_comp->SetDoNotMove(false);
             SetVibration(false);
@@ -296,7 +298,7 @@ void Level::StageTutorial_Lvl::Update()
                     TransComponent* platform_trs = (TransComponent*)platform->FindComponent("Transform");
                     AEVec2 plat_pos = platform_trs->GetPos();
                     AEVec2 plat_scale = platform_trs->GetScale();
-                    plat_pos.y -= dt * 500.f;
+                    plat_pos.y -= dt * 650.f;
                     platform_trs->SetPos({ plat_pos.x,plat_pos.y });
                 }
             }
@@ -332,6 +334,27 @@ void Level::StageTutorial_Lvl::Update()
     if (player_trs->GetPos().x >= 6800)
     {
         player_comp->SetIsTimeManipulateTutorial(true);        
+    }
+
+    
+    if (EnemySniperDeathCnt <= 0)
+    {
+        for (auto platform : GoManager::GetInst()->Allobj())
+        {
+            if (platform->GetName() == "Platform")
+            {
+                if (platform->GetID() == 17)
+                {
+                    TransComponent* platform_trs = (TransComponent*)platform->FindComponent("Transform");
+                    AEVec2 plat_pos = platform_trs->GetPos();
+                    AEVec2 plat_scale = platform_trs->GetScale();
+                    plat_scale.x -= dt*100 ;
+                    platform_trs->SetScale({ plat_scale.x,plat_pos.y });
+                    if (plat_scale.x <= 0)
+                        platform_trs->SetPos(-5000.f, -5000.f);//ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ
+                }
+            }
+        }
     }
     
 
@@ -386,14 +409,21 @@ void Level::StageTutorial_Lvl::Update()
 
     Collision();
 
+
     std::cout << player_trs->GetPos().x << "," << player_trs->GetPos().y << std::endl;
     
+        
+    if (player_trs->GetPos().x >= 8900 && player_trs->GetPos().y <= -1500 && EnemySniperDeathCnt <= 0)
+    {
+        GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
+        return;
+    }
 }
 
 void Level::StageTutorial_Lvl::Exit()
 {
-    auto res = ResourceManager::GetInst()->GetReource();
     ResourceManager::GetInst()->RemoveAllRes();
+    EventManager::GetInst()->RemoveAllEvent();
     GoManager::GetInst()->RemoveAllObj();
 }
 

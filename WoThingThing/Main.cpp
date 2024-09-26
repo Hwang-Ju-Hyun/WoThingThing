@@ -5,6 +5,7 @@
 #include "GameStart_Lvl.h" 
 
 #include "TimeManager.h"
+#include "Stage01_Lvl.h"
 #include "CompManager.h"
 #include "EventManager.h"
 #include "CameraManager.h"
@@ -39,7 +40,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	//Initialize GSM;
 	GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
 
-	gsm->ChangeLevel(new Level::GameStart_Lvl);
+	gsm->ChangeLevel(new Level::Stage01_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
 		AEFrameRateControllerReset();

@@ -299,5 +299,194 @@
         }
       }
     ]
+  },
+  {
+    "Platform": 11,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 125,
+          "BLUE": 125,
+          "GREEN": 125
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            1500.0,
+            1650.0
+          ],
+          "sca": [
+            4000.0,
+            400.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 12,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 125,
+          "GREEN": 125
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            5000.0,
+            1650.0
+          ],
+          "sca": [
+            3500.0,
+            400.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 13,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 125,
+          "GREEN": 255
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            8000.0,
+            1650.0
+          ],
+          "sca": [
+            3000.0,
+            400.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 14,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 255,
+          "GREEN": 0
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            9500.0,
+            1650.0
+          ],
+          "sca": [
+            500.0,
+            7000.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 15,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 125,
+          "GREEN": 255
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            8000.0,
+            1650.0
+          ],
+          "sca": [
+            3000.0,
+            400.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 16,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 255,
+          "BLUE": 0,
+          "GREEN": 0
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            8850.0,
+            -1135.0
+          ],
+          "sca": [
+            300.0,
+            1330.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  },
+  {
+    "Platform": 17,
+    "Components": [
+      {
+        "Type": "Sprite",
+        "CompData": {
+          "RED": 0,
+          "BLUE": 0,
+          "GREEN": 255
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            9125.0,
+            80.0
+          ],
+          "sca": [
+            255.0,
+            100.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
   }
 ]

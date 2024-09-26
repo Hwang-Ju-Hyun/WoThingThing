@@ -456,6 +456,8 @@ void Level::Stage01_Lvl::Collision()
             //플레이어의 밀리어택으로 스나이퍼가 죽을시
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {
+                if (obj->GetActive() == false)
+                    continue;
                 SniperObjID = obj->GetID();
 
                 //Create Gun && Bullet
@@ -521,6 +523,8 @@ void Level::Stage01_Lvl::Collision()
             //근접
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj)) 
             {
+                if (obj->GetActive() == false)
+                    continue;
                  meeleObjID = obj->GetID();
 
                 //Create Gun && Bullet
@@ -536,8 +540,7 @@ void Level::Stage01_Lvl::Collision()
                 //==========================
 
                 Enemy[meeleObjID]->SetActive(false);
-                Enemy[meeleObjID] = nullptr;
-             
+                Enemy[meeleObjID] = nullptr;                
                 //audio
                 auto res = ResourceManager::GetInst()->Get("sfx_EnemyDeadToMelee", "Assets/kill1.mp3");
                 AudioResource* sfx_res = static_cast<AudioResource*>(res);
