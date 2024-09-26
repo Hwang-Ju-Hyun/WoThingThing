@@ -107,6 +107,9 @@ public:
 
     void SetDoNotMove(bool _move) { DoNotMove = _move; }
     const bool GetDoNotMove() { return DoNotMove; }
+
+    void SetManipulate(bool _mani) { manipulActive=_mani; }
+    const bool GetManipulate() { return manipulActive; }
 public:
     virtual void Update() override;
     virtual void LoadFromJson(const json& str)override;

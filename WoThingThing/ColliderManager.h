@@ -24,7 +24,7 @@ public:
 	bool KnockBackCollision(GameObject* _obj1, GameObject* _obj2);
 private:
 	bool PlayerSearchOnOff = true;
-public:
+public:	
 	void SetPlayerSearchOnOff(bool _on);
 	bool GetPlayerSearchOnOff();
 };

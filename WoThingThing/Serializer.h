@@ -13,5 +13,8 @@ public:
 public:
 	GameObject* LoadEnemy(const std::string& s);
 	void SaveEnemy(const std::string& s);
+
+	GameObject* LoadEnemySniper(const std::string& s);
+	void SaveEnemySniper(const std::string& s);
 };
 

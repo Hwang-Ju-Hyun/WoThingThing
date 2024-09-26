@@ -58,7 +58,7 @@ void Level::StageTutorial_Lvl::Init()
     player->AddComponent("PlayerComp", new PlayerComponent(player));
     player->AddComponent("Animation", new AnimationComponent(player));
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
-    player_trs->SetScale({ 80, 80 });
+    player_trs->SetScale({ 80, 80 });    
 
     //PlayerAim
     aimTrace = new GameObject("aimTrace");
@@ -67,30 +67,35 @@ void Level::StageTutorial_Lvl::Init()
     aimTrace->AddComponent("Sprite", new SpriteComponent(aimTrace));
 
 
-    //GameObject* Enemy=new GameObject("Enemy");
-    //Enemy->SetID(0);
-    //GoManager::GetInst()->AddObject(Enemy);
-    //Enemy->AddComponent("Transform", new TransComponent(Enemy));
+    //GameObject* EnemySniper=new GameObject("EnemySniper");
+    //EnemySniper->SetID(0);
+    //GoManager::GetInst()->AddObject(EnemySniper);
+    //EnemySniper->AddComponent("Transform", new TransComponent(EnemySniper));
     ////Enemy->AddComponent("Sprite", new SpriteComponent(Enemy));
-    //Enemy->AddComponent("EnemyAnimation", new EnemyAnimationComponent(Enemy));
-    //Enemy->AddComponent("RigidBody", new RigidBodyComponent(Enemy));
-    //Enemy->AddComponent("Ai", new AiComponent(Enemy));
-    //TransComponent* Enemy_trs = (TransComponent*)Enemy->FindComponent("Transform");
-    //AiComponent* Enemy_state = (AiComponent*)Enemy->FindComponent("Ai");
+    //EnemySniper->AddComponent("EnemyAnimation", new EnemyAnimationComponent(EnemySniper));
+    //EnemySniper->AddComponent("RigidBody", new RigidBodyComponent(EnemySniper));
+    //EnemySniper->AddComponent("Ai", new AiComponent(EnemySniper));
+    //TransComponent* Enemy_trs = (TransComponent*)EnemySniper->FindComponent("Transform");
+    //AiComponent* Enemy_state = (AiComponent*)EnemySniper->FindComponent("Ai");
     //
-    //EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy->FindComponent("EnemyAnimation");   
-    //Enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+    //EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)EnemySniper->FindComponent("EnemyAnimation");
+    //Enemy_ani->ChangeAnimation("SniperIdle", 1, 12, 12, 0.1);
     //
     //Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
     //Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
     //Enemy_state->Setdir_time(2.0f);
     //Enemy_state->SetFirstPlace(Enemy_trs->GetPos());
-    //Enemy_state->SetState("IDLE", "Melee");
+    //Enemy_state->SetState("IDLE_Sniper", "Sniper");
+
+
 
     //Serializer    
     Serializer::GetInst()->LoadLevel("Assets/stageTutorial.json");
     //Serializer::GetInst()->SaveEnemy("Assets/stageTutorial_Enemy.json");
+    //Serializer::GetInst()->SaveEnemySniper("Assets/stageTutorial_EnemySniper.json");
     //Serializer::GetInst()->LoadEnemy("Assets/stageTutorial_Enemy.json");        
+    //Serializer::GetInst()->LoadEnemySniper("Assets/stageTutorial_EnemySniper.json");
+    
 
     for (int i = 0; i <Enemy.size(); i++)
     {
@@ -104,7 +109,7 @@ void Level::StageTutorial_Lvl::Init()
         switch (i)
         {
         case 0:
-            enemy_trs->SetPos({ 3200,100 });
+            enemy_trs->SetPos({ 3200,120 });
             enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
             enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
             enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
@@ -113,7 +118,7 @@ void Level::StageTutorial_Lvl::Init()
             enemy_ai->SetState("IDLE", "Melee");
             break;
         case 1:
-            enemy_trs->SetPos({ 3900,100 });
+            enemy_trs->SetPos({ 3900,120 });
             enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
             enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
             enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
@@ -122,7 +127,7 @@ void Level::StageTutorial_Lvl::Init()
             enemy_ai->SetState("IDLE", "Melee");
             break;
         case 2:
-            enemy_trs->SetPos({ 4700,100 });
+            enemy_trs->SetPos({ 4700,120 });
             enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
             enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
             enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
@@ -131,7 +136,37 @@ void Level::StageTutorial_Lvl::Init()
             enemy_ai->SetState("IDLE", "Melee");
             break;
         }
-    }    
+    }
+    
+    for (int i = 0; i < EnemySniper.size(); i++)
+    {
+        EnemySniper[i] = Serializer::GetInst()->LoadEnemySniper("Assets/stageTutorial_EnemySniper.json");
+        TransComponent* enemy_trs = static_cast<TransComponent*>(EnemySniper[i]->FindComponent("Transform"));
+        RigidBodyComponent* enemy_rg = static_cast<RigidBodyComponent*>(EnemySniper[i]->FindComponent("RigidBody"));
+        EnemyAnimationComponent* enemy_ani = static_cast<EnemyAnimationComponent*>(EnemySniper[i]->FindComponent("EnemyAnimation"));
+        AiComponent* enemy_ai = static_cast<AiComponent*>(EnemySniper[i]->FindComponent("Ai"));
+        EnemySniper[i]->SetID(i);
+        EnemySniper[i]->SetName("EnemySniper");
+        switch (i)
+        {
+        case 0:
+            enemy_trs->SetPos({ 7400,100 });
+            //enemy_ani->ChangeAnimation("SniperIdle", 1, 12, 12, 0.1);
+            enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+            enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
+            enemy_ai->Setdir_time(1.0f);            
+            enemy_ai->SetState("IDLE_Sniper", "Sniper");
+            break;
+        case 1:
+            enemy_trs->SetPos({ 8000,100 });
+            //enemy_ani->ChangeAnimation("SniperIdle", 1, 12, 12, 0.1);
+            enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
+            enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
+            enemy_ai->Setdir_time(1.0f);            
+            enemy_ai->SetState("IDLE_Sniper", "Sniper");
+            break;
+        }
+    }
 
     
    
@@ -143,7 +178,7 @@ void Level::StageTutorial_Lvl::Init()
     //Audio
     bgm = ResourceManager::GetInst()->Get("BossBGM", "Assets/BossBgm.mp3");
     bgm_res = static_cast<AudioResource*>(bgm);
-    bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);
+    bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);    
 }
 
 
@@ -159,8 +194,7 @@ void Level::StageTutorial_Lvl::Update()
     bg_trs->SetScale({ 1600,900 });
     
     AEInputShowCursor(0);
-
-    std::cout << "awdawd : " << Enemy.size() << std::endl;
+    
     float dt = AEFrameRateControllerGetFrameTime();
     if (player_comp->GetManiActive() == true)
     {
@@ -215,7 +249,7 @@ void Level::StageTutorial_Lvl::Update()
     }
 
 
-    if (player_trs->GetPos().x >= 5500 && EnemyDeathCnt <= 0&&AttackTutorial==false)
+    if (player_trs->GetPos().x >= 5500 /*&& EnemyDeathCnt <= 0*/&&AttackTutorial==false)
     {
         AttackTutorial = true;
         player_comp->SetDoNotMove(true);
@@ -244,7 +278,7 @@ void Level::StageTutorial_Lvl::Update()
     {
         AddMoveAccTime(dt);
         SetVibration(true);
-        if (GetMoveAccTime() >= 4.f)
+        if (GetMoveAccTime() >= 1.f)
         {
             player_comp->SetDoNotMove(false);
             SetVibration(false);
@@ -267,12 +301,7 @@ void Level::StageTutorial_Lvl::Update()
                 }
             }
         }
-    }
-  
-    if (player_trs->GetPos().x >= 7000)
-    {
-        player_comp->SetIsAttackTutorial(true);
-    }
+    }  
 
     if (player_trs->GetPos().x >= 5500 && EnemyDeathCnt <= 0 && AttackTutorial == false)
     {
@@ -297,6 +326,12 @@ void Level::StageTutorial_Lvl::Update()
                 }
             }
         }
+    }
+
+
+    if (player_trs->GetPos().x >= 6800)
+    {
+        player_comp->SetIsTimeManipulateTutorial(true);        
     }
     
 
@@ -468,8 +503,6 @@ void Level::StageTutorial_Lvl::Collision()
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
 
-
-
     //Collision       
     for (auto obj : GoManager::GetInst()->Allobj())
     {
@@ -544,7 +577,6 @@ void Level::StageTutorial_Lvl::Collision()
             //새로운 Collision box사용
             if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible())
             {
-
                 //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
 
                 //gameOver = true;
@@ -593,10 +625,7 @@ void Level::StageTutorial_Lvl::Collision()
 
                             auto resSniperDead = ResourceManager::GetInst()->Get("sfx_SniperDeadToBullet", "Assets/Dead2.mp3");
                             AudioResource* bgm_res = static_cast<AudioResource*>(resSniperDead);
-                            bgm_res->SetSFXorMusic(Sound::SFX);
-                            auto bgm_audio = bgm_res->GetAudio();
-                            auto bgm_audioGroup = bgm_res->GetAudioGroup();
-                            AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+                            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f, 1.0f, 0.f);
                         }
                         bullet_comp->DestroyBullet();
                     }
@@ -625,10 +654,7 @@ void Level::StageTutorial_Lvl::Collision()
 
                 auto resDeadfromMelee = ResourceManager::GetInst()->Get("sfx_SniperDeadToMelee", "Assets/kill2.wav");
                 AudioResource* bgm_res = static_cast<AudioResource*>(resDeadfromMelee);
-                bgm_res->SetSFXorMusic(Sound::MUSIC);
-                auto bgm_audio = bgm_res->GetAudio();
-                auto bgm_audioGroup = bgm_res->GetAudioGroup();
-                AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f,1.0f, 0.f);
             }
         }
         if (obj->GetName() == "Enemy")
@@ -664,10 +690,7 @@ void Level::StageTutorial_Lvl::Collision()
 
                             auto res = ResourceManager::GetInst()->Get("sfx_EnemyDeadToBullet", "Assets/Dead2.mp3");
                             AudioResource* bgm_res = static_cast<AudioResource*>(res);
-                            bgm_res->SetSFXorMusic(Sound::MUSIC);
-                            auto bgm_audio = bgm_res->GetAudio();
-                            auto bgm_audioGroup = bgm_res->GetAudioGroup();
-                            AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+                            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f, 1.0f, 0.f);
                         }
                     }
                 }

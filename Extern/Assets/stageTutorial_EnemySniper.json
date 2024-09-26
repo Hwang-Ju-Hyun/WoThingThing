@@ -1,0 +1,51 @@
+[
+  {
+    "EnemySniper": 0,
+    "Components": [
+      {
+        "Type": "Ai",
+        "CompData": {
+          "Categories": "Sniper",
+          "TimeDir": 2.0,
+          "FirstPlacePos": [
+            -850.0,
+            -1250.0
+          ]
+        }
+      },
+      {
+        "Type": "EnemyAnimation",
+        "CompData": {
+          "name": "SniperIdle",
+          "rows": 1,
+          "cols": 12,
+          "max": 12,
+          "animation_duration_per_frame": 0.10000000149011612
+        }
+      },
+      {
+        "Type": "RigidBody",
+        "CompData": {
+          "Velocity": [
+            0.0,
+            0.0
+          ]
+        }
+      },
+      {
+        "Type": "Transform",
+        "CompData": {
+          "Pos": [
+            -850.0,
+            -1250.0
+          ],
+          "sca": [
+            80.0,
+            75.0
+          ],
+          "Rot": 0.0
+        }
+      }
+    ]
+  }
+]

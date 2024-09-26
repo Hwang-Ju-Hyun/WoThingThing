@@ -91,7 +91,7 @@ void PlayerComponent::MoveMent()
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 	float dt = AEFrameRateControllerGetFrameTime();
 	//D 와 SHIFT를 눌렀을때만 적용 됨 --> 그냥 SHIFT를 누르고 있으면 전체적으로 적용되게 변경	
-	if ((IsTutorialStage == false || IsTimeManipulateTutorial == true)&&DoNotMove==true)
+	if (DoNotMove==false)
 	{
 		if (AEInputCheckCurr(AEVK_LSHIFT))
 		{
@@ -115,7 +115,7 @@ void PlayerComponent::MoveMent()
 	}
 
 	//Jump
-	if ((IsTutorialStage == false || IsMovementTutorial == true)&& DoNotMove == false)
+	if (DoNotMove == false)
 	{
 		if (AEInputCheckTriggered(AEVK_W))
 		{
@@ -233,13 +233,11 @@ void PlayerComponent::MoveMent()
 
 	AEVec2 pos = static_cast<TransComponent*>(player_trs)->GetPos();
 
-	if ((IsTutorialStage == false || IsTimeManipulateTutorial == true)&& DoNotMove == false)
-	{
-		//left shift : time manipulation
-		if (AEInputCheckCurr(AEVK_LSHIFT) && manipulActive)
-			//if (manipulActive)
-			dt *= 0.1f;
-	}	
+	//left shift : time manipulation
+	if (AEInputCheckCurr(AEVK_LSHIFT) && manipulActive)
+		//if (manipulActive)
+		dt *= 0.1f;
+
 	//if dash velocity is too low. set to 0 (dash ended)
 	if (AEVec2Length(&dashVelocity) <= 300.f)
 	{

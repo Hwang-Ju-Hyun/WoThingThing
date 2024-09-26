@@ -74,7 +74,7 @@ EnemyAnimationComponent::EnemyAnimationComponent(GameObject* _owner) : BaseCompo
 	
 	//ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
 	
-
+	current = "";
 	dashState = false, jumpState = false;
 	dashTimer = 0.f, jumpTimer = 0.f;
 	flip = false;
@@ -89,7 +89,11 @@ EnemyAnimationComponent::~EnemyAnimationComponent()
 void EnemyAnimationComponent::Update()
 {
 	if (mesh == nullptr)
+	{
+		std::cout << "Mesh is NULL" << std::endl;
 		return;
+	}
+		
 
 	GameObject* tempPlayer = GoManager::GetInst()->FindObj("Player");
 	PlayerComponent* temp_comp = (PlayerComponent*)tempPlayer->FindComponent("PlayerComp");
@@ -167,14 +171,19 @@ void EnemyAnimationComponent::LoadFromJson(const json& str)
 	auto compData = str.find("CompData");
 	if (compData != str.end())
 	{
-		auto name = compData->find("name");
-		current = name.value();
 		auto rows = compData->find("rows");
-		spritesheet_rows = rows.value();
+		
+		
 		auto cols = compData->find("cols");
-		spritesheet_cols = cols.value();
+		
+		
+		auto max_sprite_cnt = compData->find("max");
+		
+
 		auto animation_per_frame = compData->find("animation_duration_per_frame");
-		animation_duration_per_frame = animation_per_frame.value();
+		
+		auto name = compData->find("name");
+		ChangeAnimation(name.value(), rows.value(), cols.value(), max_sprite_cnt.value(), animation_per_frame.value());				
 	}
 }
 
@@ -187,6 +196,7 @@ json EnemyAnimationComponent::SaveToJson(const json& str)
 	compData["name"] = current;
 	compData["rows"] = spritesheet_rows;
 	compData["cols"] = spritesheet_cols;
+	compData["max"] = spritesheet_max_sprites;
 	compData["animation_duration_per_frame"] = animation_duration_per_frame;
 
 	data["CompData"] = compData;
