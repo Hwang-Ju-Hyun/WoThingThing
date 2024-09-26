@@ -4,9 +4,6 @@
 #include <vector>
 
 class GameObject;
-class MainMenu_Lvl;
-class Stage01_Lvl;
-class GameOver_Lvl;
 
 namespace Level
 {
@@ -23,8 +20,8 @@ namespace Level
 
 
 	public:
-		GameStart_Lvl() {};
-		~GameStart_Lvl() {};
+		GameStart_Lvl() : BaseLevel(){}
+		~GameStart_Lvl() {}
 
 		f32 lerp(f32 a, f32 b, f32 v);
 

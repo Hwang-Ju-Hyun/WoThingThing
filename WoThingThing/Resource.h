@@ -19,7 +19,7 @@ public:
 	{
 		m_resPath = _name;
 	}
-	std::string& const GetName()
+	const std::string&  GetName()
 	{
 		return m_resPath;
 	}

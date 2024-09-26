@@ -2,9 +2,7 @@
 #include "header.h"
 
 #include "GameStateManager.h"
-#include "MainMenu_Lvl.h"
-#include "Stage01_Lvl.h"
-#include "GameStart_Lvl.h"
+#include "GameStart_Lvl.h" 
 
 #include "TimeManager.h"
 #include "CompManager.h"
@@ -13,6 +11,8 @@
 #include <memory>
 #include "StageTutorial.h"
 #include "TestLevel.h"//추가부분(백무송)
+
+#include "ResourceManager.h"
 
 
 
@@ -39,14 +39,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	//Initialize GSM;
 	GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
 	
-
-
-	Level::MainMenu_Lvl MainMenu_lvl;
-	Level::Stage01_Lvl Stage01_lvl;
-	Level::TestLevel Test;
-	Level::GameStart_Lvl GameStart_lvl;
-	Level::StageTutorial_Lvl StageTutorial_lvl;
-	gsm->ChangeLevel(new Level::MainMenu_Lvl);
+	gsm->ChangeLevel(new Level::GameStart_Lvl);
 	while(gsm->ShouldExit()==false)
 	{
 		AEFrameRateControllerReset();
@@ -66,10 +59,10 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		AESysFrameEnd();
 
 		// check if forcing the application to quit
-		//if ((AESysDoesWindowExist() == false) || AEInputCheckTriggered(AEVK_ESCAPE))
-		//{			
-		//	gsm->ChangeLevel(nullptr);			
-		//}							
+		if ((AESysDoesWindowExist() == false))
+		{			
+			gsm->ChangeLevel(nullptr);			
+		}							
 	}
 
 	// free the system
