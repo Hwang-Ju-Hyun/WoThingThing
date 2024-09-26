@@ -605,13 +605,15 @@ void Level::StageBoss_Lvl::Collision()
         //패딩
         if (obj->GetName() == "BossBullet")
         {
+            BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {
                 auto res_padding = ResourceManager::GetInst()->Get("sfx_paddingBoss", "Assets/padding2.wav");
                 AudioResource* bgm_res = static_cast<AudioResource*>(res_padding);
                 bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0.f);
 
-                BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+                //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+
                 if (!bullet_comp->GetState())
                 {
                     bullet_comp->SetState();
@@ -640,7 +642,7 @@ void Level::StageBoss_Lvl::Collision()
 
             //Player Death
             //이 부분도 새론운 Collision 추가
-            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible())
+            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible() && bullet_comp->EnemyShoot)
             {
                 auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDeadToBoss", "Assets/Dead1.wav");
                 AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
