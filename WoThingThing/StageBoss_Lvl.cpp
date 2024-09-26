@@ -82,6 +82,9 @@ void Level::StageBoss_Lvl::Init()
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });
 
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    player_comp->SetObtain();
+
 
     playerAnim = new GameObject("PlayerAnim");
     GoManager::GetInst()->AddObject(playerAnim); //GetInst() == GetPtr()
