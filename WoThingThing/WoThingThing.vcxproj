@@ -81,8 +81,8 @@
     <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameOver_Lvl.cpp" />
-    <ClCompile Include="GameStart.cpp" />
-    <ClCompile Include="GameStart.h" />
+    <ClCompile Include="GameStart_Lvl.cpp" />
+    <ClCompile Include="GameStart_Lvl.h" />
     <ClCompile Include="GameStateManager.cpp" />
     <ClCompile Include="GoManager.cpp" />
     <ClCompile Include="IDLE.cpp" />

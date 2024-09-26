@@ -1,4 +1,4 @@
-#include "GameStart.h"
+#include "GameStart_Lvl.h"
 #include "GameStateManager.h"
 
 #include "MainMenu_Lvl.h"
@@ -14,13 +14,6 @@
 #include "ImageResource.h"
 #include "StageBoss_Lvl.h"
 
-Level::GameStart_Lvl::GameStart_Lvl()
-{
-}
-
-Level::GameStart_Lvl::~GameStart_Lvl()
-{
-}
 
 f32 Level::GameStart_Lvl::lerp(f32 a, f32 b, f32 v)
 {

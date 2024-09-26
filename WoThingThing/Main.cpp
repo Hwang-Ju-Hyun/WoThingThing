@@ -4,7 +4,7 @@
 #include "GameStateManager.h"
 #include "MainMenu_Lvl.h"
 #include "Stage01_Lvl.h"
-#include "GameStart.h"
+#include "GameStart_Lvl.h"
 
 #include "TimeManager.h"
 #include "CompManager.h"
@@ -39,10 +39,10 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
 	
 
-	Level::MainMenu_Lvl MainMenu_lvl;
-	Level::Stage01_Lvl Stage01_lvl;
-	Level::TestLevel Test;
-	Level::GameStart_Lvl GameStart_lvl;
+	//Level::MainMenu_Lvl MainMenu_lvl;
+	//Level::Stage01_Lvl Stage01_lvl;
+	//Level::TestLevel Test;
+	//Level::GameStart_Lvl GameStart_lvl;
 	gsm->ChangeLevel(new Level::MainMenu_Lvl);
 	while(gsm->ShouldExit()==false)
 	{

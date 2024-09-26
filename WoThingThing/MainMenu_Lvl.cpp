@@ -85,10 +85,12 @@ void Level::MainMenu_Lvl::Init()
 	btnSfx = ResourceManager::GetInst()->Get("btnSFX", "Assets/SelectBtn.wav");
 	btn_res = static_cast<AudioResource*>(btnSfx);
 
-	mainmenuBGM = ResourceManager::GetInst()->Get("btnSFX", /* 배경음악 소스 넣기 "Assets/SelectBtn.wav"*/);
-	BGM_res = static_cast<AudioResource*>(btnSfx);
+	mainmenuBGM = ResourceManager::GetInst()->Get("mainmenuBGM", "Assets/MainMenuBGM.mp3");
+	BGM_res = static_cast<AudioResource*>(mainmenuBGM);
+	BGM_res->PlayMusicOrSFX(BGM_res, Sound::MUSIC, bgm_volume, bgm_pitch, -1);
 }
 
+bool onceSFX = false;
 void Level::MainMenu_Lvl::Update()
 {
 	//AddComponent를 사용하여 map에 저장하는 이유는 저장한 컴포넌트에 해당하는 기능을 다른곳에서도 사용가능하게 할려고 만들어준다.
@@ -104,9 +106,14 @@ void Level::MainMenu_Lvl::Update()
 	AEInputGetCursorPosition(&mousePosX, &mousePosY);
 	AEVec2 mousePos = { mousePosX - 800,  -(mousePosY - 450) };
 
+
 	if (AETestPointToRect(&mousePos, &StartBtn_trs->TempGetPos(), 280, 90))
 	{
-		btn_res->PlayMusicOrSFX(btn_res, Sound::MUSIC, bgm_volume, bgm_pitch, 0);
+		if (!onceSFX)
+		{
+			btn_res->PlayMusicOrSFX(btn_res, Sound::MUSIC, bgm_volume, bgm_pitch, 0);
+			onceSFX = true;
+		}
 
 		AEVec2 Scale = { StartBtn_trs->GetScale().x, StartBtn_trs->GetScale().y };
 		StartBtn_trs->SetScale({ Scale.x * 1.15f, Scale.y * 1.15f });
@@ -117,8 +124,11 @@ void Level::MainMenu_Lvl::Update()
 	}
 	else if (AETestPointToRect(&mousePos, &HowBtn_trs->TempGetPos(), 280, 90))
 	{
-		btn_res->PlayMusicOrSFX(btn_res, Sound::MUSIC, bgm_volume, bgm_pitch, 0);
-
+		if (!onceSFX)
+		{
+			btn_res->PlayMusicOrSFX(btn_res, Sound::MUSIC, bgm_volume, bgm_pitch, 0);
+			onceSFX = true;
+		}
 		AEVec2 Scale = { HowBtn_trs->GetScale().x, HowBtn_trs->GetScale().y };
 		HowBtn_trs->SetScale({ Scale.x * 1.15f, Scale.y * 1.15f });
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
@@ -129,8 +139,11 @@ void Level::MainMenu_Lvl::Update()
 	}
 	else if (AETestPointToRect(&mousePos, &ExitBtn_trs->TempGetPos(), 280, 90))
 	{
-		btn_res->PlayMusicOrSFX(btn_res, Sound::MUSIC, bgm_volume, bgm_pitch, 0);
-
+		if (!onceSFX)
+		{
+			btn_res->PlayMusicOrSFX(btn_res, Sound::MUSIC, bgm_volume, bgm_pitch, 0);
+			onceSFX = true;
+		}
 		AEVec2 Scale = { ExitBtn_trs->GetScale().x, ExitBtn_trs->GetScale().y };
 		ExitBtn_trs->SetScale({ Scale.x * 1.15f, Scale.y * 1.15f });
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
@@ -138,6 +151,9 @@ void Level::MainMenu_Lvl::Update()
 			GSM::GameStateManager::GetInst()->ChangeLevel(nullptr);
 		}
 	}
+	else
+		onceSFX = false;
+
 }
 
 void Level::MainMenu_Lvl::Exit()

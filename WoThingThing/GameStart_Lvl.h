@@ -23,8 +23,8 @@ namespace Level
 
 
 	public:
-		GameStart_Lvl();
-		~GameStart_Lvl();
+		GameStart_Lvl() {};
+		~GameStart_Lvl() {};
 
 		f32 lerp(f32 a, f32 b, f32 v);
 
