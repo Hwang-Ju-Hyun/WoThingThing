@@ -254,7 +254,7 @@ void PlayerComponent::MoveMent()
 	float accelGravity = 1.f;
 	if (AEInputCheckCurr(AEVK_LCTRL))
 	{
-		accelGravity = 2.5f;
+		accelGravity = 4.f;
 	}
 
 	jumpVelocity.y -= m_vGravity.y * dt * accelGravity;
