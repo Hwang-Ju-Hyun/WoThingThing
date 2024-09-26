@@ -43,8 +43,8 @@ void ESM::IDLE::Update()
 	TransComponent* enemy_trs = (TransComponent*)enemy->FindComponent("Transform");
 	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
 	//
-	float dt = AEFrameRateControllerGetFrameTime();
-	float ct = AEFrameRateControllerGetFrameTime();
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
+	f32 ct = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	if (ShouldSlowTime)
 	{
 		mainpulActice = true;
@@ -92,7 +92,7 @@ void ESM::IDLE::Update()
 	}
 	else 
 	{
-		Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+		Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1f);
 		m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 		idle_time += m_fDt;
 		

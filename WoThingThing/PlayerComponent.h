@@ -82,7 +82,7 @@ public:
     void SetJumpCntZero();    
     void SetJumpVelocityZero();
     int GetHealth();
-    void SetHealth(float _health)
+    void SetHealth(int _health)
     {
         playerhealth = _health;
     }

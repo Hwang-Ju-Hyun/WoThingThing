@@ -18,7 +18,7 @@ void ESM::Chase::Init()
 	//TimeManager::GetInst()->SetAccTime(0.0f);
 	//Chase_time = 0.f;
 	EnemyAnimationComponent* Enemy_meleeani = (EnemyAnimationComponent*)Chase_enemy->FindComponent("EnemyAnimation");
-	Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1);
+	Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1f);
 	m_fDt = 0.f;
 	Chase_outTime = 0.f;
 
@@ -30,7 +30,7 @@ void ESM::Chase::Init()
 
 void ESM::Chase::Update()
 {
-	float dt = AEFrameRateControllerGetFrameTime();//시간 느려지게하는 용
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());//시간 느려지게하는 용
 	EnemyAnimationComponent* Enemy_meleeani = (EnemyAnimationComponent*)Chase_enemy->FindComponent("EnemyAnimation");
 
 	//밖에다가 해주기
@@ -57,7 +57,7 @@ void ESM::Chase::Update()
 	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
 
 	//3초 쿨타임 적용파트
-	float ct = AEFrameRateControllerGetFrameTime();
+	f32 ct = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	if (ShouldSlowTime)
 	{
 		mainpulActice = true;
@@ -98,7 +98,7 @@ void ESM::Chase::Update()
 				slowChase.x = unitChaseVec.x * 0.98f * dt * 30.f;
 				slowChase.y = unitChaseVec.y * 0.98f * dt * 30.f;
 				enemy_trs->AddPos(slowChase);
-				Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1);
+				Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1f);
 			}
 			else
 			{
@@ -106,7 +106,7 @@ void ESM::Chase::Update()
 				StopVec.x = 0;
 				StopVec.y = 0;
 				enemy_trs->AddPos(StopVec);
-				Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+				Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1f);
 			}
 		}
 		else
@@ -117,7 +117,7 @@ void ESM::Chase::Update()
 				ChaseVecAdd.x = unitChaseVec.x * const_chaseVec.x;
 				ChaseVecAdd.y = unitChaseVec.y * const_chaseVec.y;
 				enemy_trs->AddPos(ChaseVecAdd);
-				Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1);
+				Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1f);
 				
 			}
 			else 
@@ -126,7 +126,7 @@ void ESM::Chase::Update()
 				StopVec.x = 0;
 				StopVec.y = 0;
 				enemy_trs->AddPos(StopVec);
-				Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+				Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1f);
 			}
 		}
 		if (ColliderManager::GetInst()->MeleeEnemyAttack(Chase_enemy, Player, dir_state))
@@ -157,7 +157,7 @@ void ESM::Chase::Update()
 					slowChase.x = unitChaseVec.x * 0.98f * dt * 30.f;
 					slowChase.y = unitChaseVec.y * 0.98f * dt * 30.f;
 					enemy_trs->AddPos(slowChase);
-					Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1);
+					Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1f);
 				}
 				else
 				{
@@ -165,7 +165,7 @@ void ESM::Chase::Update()
 					StopVec.x = 0;
 					StopVec.y = 0;
 					enemy_trs->AddPos(StopVec);
-					Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+					Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1f);
 				}
 			}
 			else 
@@ -175,7 +175,7 @@ void ESM::Chase::Update()
 					ChaseVecAdd.x = unitChaseVec.x * const_chaseVec.x;
 					ChaseVecAdd.y = unitChaseVec.y * const_chaseVec.y;
 					enemy_trs->AddPos(ChaseVecAdd);
-					Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1);
+					Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1f);
 				}
 				else
 				{
@@ -183,7 +183,7 @@ void ESM::Chase::Update()
 					StopVec.x = 0;
 					StopVec.y = 0;
 					enemy_trs->AddPos(StopVec);
-					Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+					Enemy_meleeani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1f);
 				}
 			}
 

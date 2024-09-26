@@ -15,7 +15,7 @@ void EnemyAnimationComponent::Initialize()
 	current_sprite_uv_offset_y = 0.f;
 }
 
-void EnemyAnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 cols, f32 max, f32 duration)
+void EnemyAnimationComponent::ChangeAnimation(std::string _name, u32 rows, u32 cols, u32 max, f32 duration)
 {
 	if (this->current != _name)
 	{
@@ -100,7 +100,7 @@ void EnemyAnimationComponent::Update()
 	bool manipulActive = temp_comp->GetManiActive();
 	if (manipulActive)
 	{
-		animation_timer += (f32)AEFrameRateControllerGetFrameTime() * 0.1;
+		animation_timer += (f32)AEFrameRateControllerGetFrameTime() * 0.1f;
 	}
 	else
 	{

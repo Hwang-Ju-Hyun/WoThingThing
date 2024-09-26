@@ -69,7 +69,7 @@ void PlayerComponent::Jump(float jumpVal)
 {
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 	AEVec2 pos = static_cast<TransComponent*>(player_trs)->GetPos();
-	float dt = AEFrameRateControllerGetFrameTime();
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	jumpVelocity.y = jumpVal;
 	pos.y += jumpVelocity.y * dt;
 	static_cast<TransComponent*>(player_trs)->SetPos(pos);
@@ -79,7 +79,7 @@ void PlayerComponent::Dash(AEVec2 directVec)
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 	AEVec2 pos = static_cast<TransComponent*>(player_trs)->GetPos();
 
-	float dt = AEFrameRateControllerGetFrameTime();
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 
 	dashVelocity.x = directVec.x * dash_const.x;
 	dashVelocity.y = directVec.y * dash_const.y;
@@ -89,7 +89,7 @@ void PlayerComponent::Dash(AEVec2 directVec)
 void PlayerComponent::MoveMent()
 {
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
-	float dt = AEFrameRateControllerGetFrameTime();
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	//D 와 SHIFT를 눌렀을때만 적용 됨 --> 그냥 SHIFT를 누르고 있으면 전체적으로 적용되게 변경	
 	if (DoNotMove==false)
 	{
@@ -154,7 +154,7 @@ void PlayerComponent::MoveMent()
 			//Dash
 			if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
 			{
-				AccTime += AEFrameRateControllerGetFrameTime();
+				AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 				auto res = ResourceManager::GetInst()->Get("sfx_dash1", "Assets/dash.mp3");
 				AudioResource* bgm_res = static_cast<AudioResource*>(res);
 				bgm_res->SetSFXorMusic(Sound::SFX);
@@ -171,7 +171,7 @@ void PlayerComponent::MoveMent()
 
 			else if (AEInputCheckTriggered(AEVK_SPACE))
 			{
-				AccTime += AEFrameRateControllerGetFrameTime();
+				AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 				auto res = ResourceManager::GetInst()->Get("sfx_dash2", "Assets/dash.mp3");
 				AudioResource* bgm_res = static_cast<AudioResource*>(res);
 				bgm_res->SetSFXorMusic(Sound::SFX);
@@ -196,7 +196,7 @@ void PlayerComponent::MoveMent()
 			//Dash
 			if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
 			{
-				AccTime += AEFrameRateControllerGetFrameTime();
+				AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 				auto res = ResourceManager::GetInst()->Get("sfx_dash3", "Assets/dash.mp3");
 				AudioResource* bgm_res = static_cast<AudioResource*>(res);
 				bgm_res->SetSFXorMusic(Sound::SFX);
@@ -212,7 +212,7 @@ void PlayerComponent::MoveMent()
 			}
 			else if (AEInputCheckTriggered(AEVK_SPACE))
 			{
-				AccTime += AEFrameRateControllerGetFrameTime();
+				AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 				auto res = ResourceManager::GetInst()->Get("sfx_dash4", "Assets/dash.mp3");
 				AudioResource* bgm_res = static_cast<AudioResource*>(res);
 				bgm_res->SetSFXorMusic(Sound::SFX);
@@ -254,7 +254,7 @@ void PlayerComponent::MoveMent()
 	float accelGravity = 1.f;
 	if (AEInputCheckCurr(AEVK_LCTRL))
 	{
-		accelGravity = 2.5f;
+		accelGravity = 4.f;
 	}
 
 	jumpVelocity.y -= m_vGravity.y * dt * accelGravity;
@@ -285,7 +285,7 @@ void PlayerComponent::MouseAim()
 	mouseX -= 800;              //mouse X position lerp
 	mouseY -= 450, mouseY *= -1;//mouse Y position lerp
 
-	mousePos.x = mouseX, mousePos.y = mouseY;
+	mousePos.x = static_cast<f32>(mouseX), mousePos.y = static_cast<f32>(mouseY);
 	AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
 	aim_trs->SetPos(mousePos);
 	aim_trs->AddPos({ player_Cam.x,player_Cam.y });
@@ -414,7 +414,7 @@ void PlayerComponent::Attack()
 			MouseTraceLine();
 			if (AEInputCheckTriggered(AEVK_LBUTTON))
 			{
-				AccTime += AEFrameRateControllerGetFrameTime();
+				AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 				auto res = ResourceManager::GetInst()->Get("sfx_gun", "Assets/PlayerGun.mp3");
 				AudioResource* bgm_res = static_cast<AudioResource*>(res);
 				bgm_res->SetSFXorMusic(Sound::SFX);
