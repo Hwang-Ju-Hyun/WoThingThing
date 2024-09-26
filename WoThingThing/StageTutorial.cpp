@@ -150,7 +150,7 @@ void Level::StageTutorial_Lvl::Init()
         switch (i)
         {
         case 0:
-            enemy_trs->SetPos({ 7400,100 });
+            enemy_trs->SetPos({ 7800,100 });
             //enemy_ani->ChangeAnimation("SniperIdle", 1, 12, 12, 0.1);
             enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
             enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
@@ -158,7 +158,7 @@ void Level::StageTutorial_Lvl::Init()
             enemy_ai->SetState("IDLE_Sniper", "Sniper");
             break;
         case 1:
-            enemy_trs->SetPos({ 8000,100 });
+            enemy_trs->SetPos({ 8340,100 });
             //enemy_ani->ChangeAnimation("SniperIdle", 1, 12, 12, 0.1);
             enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
             enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
@@ -632,30 +632,30 @@ void Level::StageTutorial_Lvl::Collision()
                 }
             }
             //플레이어의 밀리어택으로 스나이퍼가 죽을시
-            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
-            {
-                SniperObjID = obj->GetID();
+            //if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
+            //{
+            //    SniperObjID = obj->GetID();
 
-                //Create Gun && Bullet
-                TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(EnemySniper[SniperObjID]->FindComponent("Transform"));
-                if (!player_comp->GetObtain())
-                {
-                    CreateGun(EnemyMelee_trs->GetPos());
-                }
-                if (player_comp->GetObtain())
-                {
-                    CreateSupplement(EnemyMelee_trs->GetPos());
-                }
-                //========================
+            //    //Create Gun && Bullet
+            //    TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(EnemySniper[SniperObjID]->FindComponent("Transform"));
+            //    if (!player_comp->GetObtain())
+            //    {
+            //        CreateGun(EnemyMelee_trs->GetPos());
+            //    }
+            //    if (player_comp->GetObtain())
+            //    {
+            //        CreateSupplement(EnemyMelee_trs->GetPos());
+            //    }
+            //    //========================
 
-                EnemySniper[SniperObjID]->SetActive(false);
-                EnemySniper[SniperObjID] = nullptr;
-                EnemySniperDeathCnt--;
+            //    EnemySniper[SniperObjID]->SetActive(false);
+            //    EnemySniper[SniperObjID] = nullptr;
+            //    EnemySniperDeathCnt--;
 
-                auto resDeadfromMelee = ResourceManager::GetInst()->Get("sfx_SniperDeadToMelee", "Assets/kill2.wav");
-                AudioResource* bgm_res = static_cast<AudioResource*>(resDeadfromMelee);
-                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f,1.0f, 0.f);
-            }
+            //    auto resDeadfromMelee = ResourceManager::GetInst()->Get("sfx_SniperDeadToMelee", "Assets/kill2.wav");
+            //    AudioResource* bgm_res = static_cast<AudioResource*>(resDeadfromMelee);
+            //    bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f,1.0f, 0.f);
+            //}
         }
         if (obj->GetName() == "Enemy")
         {
