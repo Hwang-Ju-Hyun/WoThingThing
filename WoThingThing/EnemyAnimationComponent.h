@@ -40,4 +40,9 @@ public:
     ~EnemyAnimationComponent();
 
     virtual void Update() override;
+
+    virtual void LoadFromJson(const json& str)override;
+    virtual json SaveToJson(const json& str)override;
+public:
+    static BaseRTTI* CreateEnemyAnimationComponent();
 };

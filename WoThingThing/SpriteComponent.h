@@ -31,5 +31,5 @@ public:
     static constexpr const char* SpriteTypeName = "Sprite";
 
     virtual void LoadFromJson(const json& str)override;
-    virtual json SaveToJson()override;
+    virtual json SaveToJson(const json& str)override;
 };

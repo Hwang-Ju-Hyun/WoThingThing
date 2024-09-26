@@ -4,7 +4,6 @@
 
 CompManager::CompManager()
 {
-
 }
 
 CompManager::~CompManager()
@@ -14,6 +13,7 @@ CompManager::~CompManager()
 
 void CompManager::AddComponent(std::string _name, BaseComponent* _comp)
 {
+
 	if (_comp == nullptr)
 	{
 		//std::cerr << "AddComponent Error!(CompManger) : new Component is nullptr" << std::endl;
@@ -45,7 +45,7 @@ void CompManager::AddComponent(std::string _name, BaseComponent* _comp)
 //}
 
 void CompManager::RemoveComponent(BaseComponent* _comp)
-{
+{	
 	bool IsCompExist = false;
 	for (auto iter = m_vecCompMgr.begin(); iter != m_vecCompMgr.end(); iter++)
 	{
@@ -83,15 +83,19 @@ void CompManager::Init()
 }
 
 void CompManager::Update()
-{	
-	
-	for (auto iter : m_vecCompMgr)
+{		
+	std::vector<BaseComponent*> m_vecCopyCompMgr = m_vecCompMgr;
+
+	for (auto iter : m_vecCopyCompMgr)
 	{
+		//std::cout << m_vecCompMgr.size() << std::endl;
 		if (iter)
 		{
 			iter->Update();
 		}
+		//std::cout << m_vecCompMgr.size() << std::endl;
 	}
+	
 }
 
 void CompManager::Exit()

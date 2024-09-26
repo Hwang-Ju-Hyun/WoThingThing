@@ -18,12 +18,15 @@ public:
 	GameObject* FindObj(const std::string& _name)const;
 
 	GameObject* GetLastObj();	
-	const std::vector<GameObject*>& Allobj() const
+	
+	//나의아저씨 함수
+	std::vector<GameObject*> Allobj() const
 	{
 		m_vecObj;
-
+	
 		return m_vecObj; 
 	}
-
-};
-
+};	
+	
+	
+	

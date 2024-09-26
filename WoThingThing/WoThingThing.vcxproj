@@ -52,6 +52,7 @@
     <ClInclude Include="SpriteComponent.h" />
     <ClInclude Include="Stage01_Lvl.h" />
     <ClInclude Include="StageBoss_Lvl.h" />
+    <ClInclude Include="StageTutorial.h" />
     <ClInclude Include="TargetAim_Sniper.h" />
     <ClInclude Include="TestLevel.h" />
     <ClInclude Include="TextResource.h" />
@@ -103,6 +104,7 @@
     <ClCompile Include="SpriteComponent.cpp" />
     <ClCompile Include="Stage01_Lvl.cpp" />
     <ClCompile Include="StageBoss_Lvl.cpp" />
+    <ClCompile Include="StageTutorial.cpp" />
     <ClCompile Include="TargetAim_Sniper.cpp" />
     <ClCompile Include="TestLevel.cpp" />
     <ClCompile Include="TextResource.cpp" />
@@ -111,8 +113,9 @@
     <ClCompile Include="Utility.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="stage01.json" />
-    <None Include="stageBoss.json" />
+    <None Include="..\bin\Debug\x64\Assets\stage01.json" />
+    <None Include="..\bin\Debug\x64\Assets\stageBoss.json" />
+    <None Include="..\bin\Debug\x64\Assets\stageTutorial.json" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

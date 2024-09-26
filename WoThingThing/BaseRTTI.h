@@ -8,6 +8,6 @@ class BaseRTTI
 {
 public:
 	virtual void LoadFromJson(const json& str) = 0;
-	virtual json SaveToJson() = 0;
+	virtual json SaveToJson(const json& str) = 0;
 	virtual ~BaseRTTI() {}
 };

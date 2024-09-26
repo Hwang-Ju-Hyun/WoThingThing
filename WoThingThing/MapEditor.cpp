@@ -98,44 +98,44 @@ void Level::MapEditor::Update()
 	
 	int a = 0;
 
-	if (AEInputCheckCurr(AEVK_RETURN))
-	{
-		json AllData;
-		//Counter instead of name as I do not have one
-		int i = 0;
-		for (GameObject* go : GoManager::GetInst()->Allobj())
-		{
-			auto aa = GoManager::GetInst()->Allobj();
-			aa.size();
-			json components;
-			if (go->GetName() == "Platform")
-			{
-				json obj;
-				obj["Platform"] = i++;
-				for (auto c : go->GetAllComp())//map
-				{
-					BaseComponent* comp = c.second;
-					components.push_back(comp->SaveToJson());//Check in a moment			
-				}
-				obj["Components"] = components;
-				AllData.push_back(obj);
-			}
-		}
-		std::fstream file;
-		file.open("stageBoss1.json", std::fstream::out);//Open as write mode. Create it if it does not exist!
+	//if (AEInputCheckCurr(AEVK_RETURN))
+	//{
+	//	json AllData;
+	//	//Counter instead of name as I do not have one
+	//	int i = 0;
+	//	for (GameObject* go : GoManager::GetInst()->Allobj())
+	//	{
+	//		auto aa = GoManager::GetInst()->Allobj();
+	//		aa.size();
+	//		json components;
+	//		if (go->GetName() == "Platform")
+	//		{
+	//			json obj;
+	//			obj["Platform"] = i++;
+	//			for (auto c : go->GetAllComp())//map
+	//			{
+	//				BaseComponent* comp = c.second;
+	//				components.push_back(comp->SaveToJson(s));//Check in a moment			
+	//			}
+	//			obj["Components"] = components;
+	//			AllData.push_back(obj);
+	//		}
+	//	}
+	//	std::fstream file;
+	//	file.open("stageBoss1.json", std::fstream::out);//Open as write mode. Create it if it does not exist!
 
-		if (!file.is_open())
-		{
-			int a = 0;
-			//Print error
-			//return
-		}
+	//	if (!file.is_open())
+	//	{
+	//		int a = 0;
+	//		//Print error
+	//		//return
+	//	}
 
-		//file << AllData; //All in 1 line
-		file << std::setw(2) << AllData;
+	//	//file << AllData; //All in 1 line
+	//	file << std::setw(2) << AllData;
 
-		file.close();
-	}
+	//	file.close();
+	//}
 	CameraManager::GetInst()->Update();
 	if (AEInputCheckCurr(AEVK_B))
 	{		

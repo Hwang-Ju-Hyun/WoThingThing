@@ -113,8 +113,7 @@ void Level::Stage01_Lvl::Init()
         TransComponent* Enemy_trs = (TransComponent*)Enemy[i]->FindComponent("Transform");
         AiComponent* Enemy_state = (AiComponent*)Enemy[i]->FindComponent("Ai");
 
-        EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy[i]->FindComponent("EnemyAnimation");
-        sizeof(EnemyAnimationComponent);
+        EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy[i]->FindComponent("EnemyAnimation");        
         Enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
 
         Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
@@ -153,7 +152,7 @@ void Level::Stage01_Lvl::Init()
 }
 
 void Level::Stage01_Lvl::Update()
-{               
+{                   
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp"); 
@@ -514,10 +513,7 @@ void Level::Stage01_Lvl::Collision()
 
                             auto res = ResourceManager::GetInst()->Get("sfx_EnemyDeadToBullet", "Assets/Dead2.mp3");
                             AudioResource* bgm_res = static_cast<AudioResource*>(res);
-                            bgm_res->SetSFXorMusic(Sound::MUSIC);
-                            auto bgm_audio = bgm_res->GetAudio();
-                            auto bgm_audioGroup = bgm_res->GetAudioGroup();
-                            AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
+                            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f, 1.0f, 0.f);
                         }
                     }
                 }

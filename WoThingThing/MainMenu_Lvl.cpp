@@ -22,6 +22,7 @@
 #include "Serializer.h"
 
 #include"StageBoss_Lvl.h"
+#include "StageTutorial.h"
 
 
 void Level::MainMenu_Lvl::Init()
@@ -133,8 +134,7 @@ void Level::MainMenu_Lvl::Update()
 		HowBtn_trs->SetScale({ Scale.x * 1.15f, Scale.y * 1.15f });
 		if (AEInputCheckTriggered(AEVK_LBUTTON))
 		{
-			//Go to Tutorial == Go to Africa
-			//GSM::GameStateManager::GetInst()->ChangeLevel(new Level::Stage01_Lvl);
+			GSM::GameStateManager::GetInst()->ChangeLevel(new Level::StageTutorial_Lvl);
 		}
 	}
 	else if (AETestPointToRect(&mousePos, &ExitBtn_trs->TempGetPos(), 280, 90))

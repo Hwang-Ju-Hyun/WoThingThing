@@ -48,11 +48,7 @@ void EnemyAnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 c
 			-0.5f, 0.5f, 0xFFFFFFFF, 0.0f, 0.0f);  // bottom left
 		mesh = AEGfxMeshEnd();
 		//=======================================================================
-	}
-	else
-	{
-
-	}
+	}	
 }
 
 void EnemyAnimationComponent::SetEnemyDir(bool dir)
@@ -78,7 +74,7 @@ EnemyAnimationComponent::EnemyAnimationComponent(GameObject* _owner) : BaseCompo
 	
 	//ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
 	
-
+	current = "";
 	dashState = false, jumpState = false;
 	dashTimer = 0.f, jumpTimer = 0.f;
 	flip = false;
@@ -93,7 +89,11 @@ EnemyAnimationComponent::~EnemyAnimationComponent()
 void EnemyAnimationComponent::Update()
 {
 	if (mesh == nullptr)
+	{
+		std::cout << "Mesh is NULL" << std::endl;
 		return;
+	}
+		
 
 	GameObject* tempPlayer = GoManager::GetInst()->FindObj("Player");
 	PlayerComponent* temp_comp = (PlayerComponent*)tempPlayer->FindComponent("PlayerComp");
@@ -164,4 +164,49 @@ void EnemyAnimationComponent::Update()
 	AEGfxMeshDraw(mesh, AE_GFX_MDM_TRIANGLES);
 
 	return;
+}
+
+void EnemyAnimationComponent::LoadFromJson(const json& str)
+{
+	auto compData = str.find("CompData");
+	if (compData != str.end())
+	{
+		auto rows = compData->find("rows");
+		
+		
+		auto cols = compData->find("cols");
+		
+		
+		auto max_sprite_cnt = compData->find("max");
+		
+
+		auto animation_per_frame = compData->find("animation_duration_per_frame");
+		
+		auto name = compData->find("name");
+		ChangeAnimation(name.value(), rows.value(), cols.value(), max_sprite_cnt.value(), animation_per_frame.value());				
+	}
+}
+
+json EnemyAnimationComponent::SaveToJson(const json& str)
+{
+	json data;
+	data["Type"] = "EnemyAnimation";
+
+	json compData;
+	compData["name"] = current;
+	compData["rows"] = spritesheet_rows;
+	compData["cols"] = spritesheet_cols;
+	compData["max"] = spritesheet_max_sprites;
+	compData["animation_duration_per_frame"] = animation_duration_per_frame;
+
+	data["CompData"] = compData;
+
+	return data;
+}
+
+BaseRTTI* EnemyAnimationComponent::CreateEnemyAnimationComponent()
+{
+	GameObject* lastObj = GoManager::GetInst()->GetLastObj();	//아마 여기가 문제일듯 <- 아니네	
+	BaseRTTI* p = lastObj->AddComponent("EnemyAnimation", new EnemyAnimationComponent(lastObj));
+	return p;
 }

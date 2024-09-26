@@ -311,6 +311,15 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 		m_fRot = 0.f;
 	}
 
+	if (_owner->GetName() == "Boss_drone")
+	{
+		m_vPos = { 2000,90 };
+		//보스만 계속 x좌표 73만큼 움직이게 만들기
+		m_vScale = { 60,51 };
+		m_fRot = 0.f;
+	}
+
+
 	if (_owner->GetName() == "BackGround")
 	{
 		m_vPos = { 0,0 };
@@ -455,7 +464,7 @@ void TransComponent::LoadFromJson(const json& str)
 	
 }
 static int nodeID = 0;
-json TransComponent::SaveToJson()
+json TransComponent::SaveToJson(const json& str)
 {
 	json data;
 	//Save the type
@@ -473,15 +482,18 @@ json TransComponent::SaveToJson()
 	data["CompData"] = compData;
 
 	//A section for the nodes
-	json nodejson;	
-	auto listNode=NaveMeshManager::GetInst()->GetallNode();
-	for (auto it : listNode)
+	if (str == "stageBoss")
 	{
-		//Save its position
-		nodejson[it.node_id] = { it.node_pos.x,it.node_pos.y };		
-	}
+		json nodejson;
+		auto listNode = NaveMeshManager::GetInst()->GetallNode();
+		for (auto it : listNode)
+		{
+			//Save its position
+			nodejson[it.node_id] = { it.node_pos.x,it.node_pos.y };
+		}
 
-	data["Nodes"] = nodejson;
+		data["Nodes"] = nodejson;
+	}	
 
 	return data;
 }

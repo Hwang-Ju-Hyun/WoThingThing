@@ -39,11 +39,13 @@ public:
     virtual void Update() override;
 
     virtual void LoadFromJson(const json& str)override;
-    virtual json SaveToJson()override;
+    virtual json SaveToJson(const json& str)override;
 public:
     void jump(float jumpVal);
     bool manipulActive = 7.f;
     f32 timeManipul;
     float maniCapacity = false;
+public:
+    static BaseRTTI* CreateRigidBodyComponent();
 };
 

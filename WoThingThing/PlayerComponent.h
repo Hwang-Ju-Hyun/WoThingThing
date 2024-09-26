@@ -38,6 +38,12 @@ class PlayerComponent : public BaseComponent
     float AccTime=0.f;
     bool IsTriggeredButton=false;
     bool invincibility;
+
+    bool IsTutorialStage = false;
+    bool IsMovementTutorial = false;
+    bool IsTimeManipulateTutorial = false;
+    bool IsAttackTutorial = false;    
+    bool DoNotMove = false;
 public:
     PlayerComponent(GameObject* _owner);
     ~PlayerComponent() {};
@@ -86,9 +92,27 @@ public:
     void TakeDamge();
     bool IsAlive();
     void Gauge();
+public:
+    void SetIsTutorialStage(bool _IsTutorialStage) { IsTutorialStage = _IsTutorialStage; }
+    const bool GetIsTutorialStage() { return IsMovementTutorial; }
 
+    void SetIsMovementTutorial(bool _MoveTutorial) { IsMovementTutorial = _MoveTutorial; }
+    const bool GetIsMovementTutorial() { return IsMovementTutorial; }
+
+    void SetIsTimeManipulateTutorial(bool _timeTutorial) { IsTimeManipulateTutorial = _timeTutorial; }
+    const bool GetIsTimeManipulateTutoria() { return IsTimeManipulateTutorial; }
+
+    void SetIsAttackTutorial(bool _atkTutorial) { IsAttackTutorial = _atkTutorial; }
+    const bool GetIsAttackTutorial() { return IsAttackTutorial; }
+
+    void SetDoNotMove(bool _move) { DoNotMove = _move; }
+    const bool GetDoNotMove() { return DoNotMove; }
+
+    void SetManipulate(bool _mani) { manipulActive=_mani; }
+    const bool GetManipulate() { return manipulActive; }
+public:
     virtual void Update() override;
     virtual void LoadFromJson(const json& str)override;
-    virtual json SaveToJson()override;
+    virtual json SaveToJson(const json& str)override;
 
 };
