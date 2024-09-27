@@ -336,13 +336,15 @@ void PlayerComponent::Attack()
 	//melee attack
 	if (IsTutorialStage == false || IsAttackTutorial == true)
 	{
-		//if (AEInputCheckTriggered(AEVK_1))
-		//	meleeAction = true, shotAction = false;
-		////shot attack
-		//else if (AEInputCheckTriggered(AEVK_2) && obtainGun)
-		//	meleeAction = false, shotAction = true;
-		if (obtainGun)
-			shotAction = true;
+		if (AEInputCheckTriggered(AEVK_1))
+			meleeAction = true, shotAction = false;
+		//shot attack
+		else if (AEInputCheckTriggered(AEVK_2) && obtainGun)
+			meleeAction = false, shotAction = true;
+
+		//Rightclick으로 원할시
+		//if (obtainGun)
+		//	shotAction = true;
 
 		TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 
@@ -407,7 +409,8 @@ void PlayerComponent::Attack()
 		if (shotAction)
 		{
 			MouseTraceLine();
-			if (AEInputCheckTriggered(AEVK_RBUTTON))
+			//if (AEInputCheckTriggered(AEVK_RBUTTON)) //Rightclick 으로 원할시
+			if (AEInputCheckTriggered(AEVK_LBUTTON))
 			{
 				AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 				auto res = ResourceManager::GetInst()->Get("sfx_gun", "Assets/PlayerGun.mp3");

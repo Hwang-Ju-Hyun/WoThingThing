@@ -193,7 +193,8 @@ void AnimationComponent::Update()
 				my_trs->SetScale({ 80,80 });
 			}
 			//Long Attack
-			if (player_comp->GetShotAction() && AEInputCheckTriggered(AEVK_RBUTTON))
+			//if (player_comp->GetShotAction() && AEInputCheckTriggered(AEVK_RBUTTON)) //RightClick 으로 원할시
+			if (player_comp->GetShotAction() && AEInputCheckTriggered(AEVK_LBUTTON))
 			{
 				longattackState = true;
 				longattackTimer = 0.f;
