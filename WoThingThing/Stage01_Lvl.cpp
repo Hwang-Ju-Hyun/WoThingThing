@@ -150,7 +150,6 @@ void Level::Stage01_Lvl::Init()
     //Aim Img 맨 나중에 그리기.
     player->AddComponent("PlayerComp", new PlayerComponent(player));
 
-    preTime = 0.f;
     duringDeath = 0.f;
 }
 
@@ -269,8 +268,10 @@ void Level::Stage01_Lvl::Update()
     
     if (!(player_comp->IsAlive()))
     {
-        duringDeath += static_cast<f32>(AEFrameRateControllerGetFrameTime());
+        AnimationComponent* player_anim = (AnimationComponent*)playerAnim->FindComponent("Animation");
+        player_anim->ChangeAnimation("Death", 1, 24, 24, 0.1f);
 
+        duringDeath += static_cast<f32>(AEFrameRateControllerGetFrameTime());
         if(duringDeath >=2.4f)
         {
             GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();

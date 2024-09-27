@@ -76,14 +76,8 @@ void Level::StageBoss_Lvl::Init()
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
-    //player->AddComponent("Sprite", new SpriteComponent(player));
-    player->AddComponent("PlayerComp", new PlayerComponent(player));
-    //player->AddComponent("Animation", new AnimationComponent(player));
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });
-
-    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
-    player_comp->SetObtain();
 
 
     playerAnim = new GameObject("PlayerAnim");
@@ -158,6 +152,10 @@ void Level::StageBoss_Lvl::Init()
     Boss_bullet_count1 = true;
     Boss_bullet_count2 = true;
     Boss_bullet_count3 = true;
+
+    player->AddComponent("PlayerComp", new PlayerComponent(player));
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    player_comp->SetObtain();
 
 }
 
@@ -316,10 +314,17 @@ void Level::StageBoss_Lvl::Update()
 
     if (!(player_comp->IsAlive()))
     {
-        GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
-        gsm->ChangeLevel(new Level::GameOver_Lvl);
+        AnimationComponent* player_anim = (AnimationComponent*)playerAnim->FindComponent("Animation");
+        player_anim->ChangeAnimation("Death", 1, 24, 24, 0.1f);
 
-        return;
+        duringDeath += static_cast<f32>(AEFrameRateControllerGetFrameTime());
+        if (duringDeath >= 2.4f)
+        {
+            GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
+            gsm->ChangeLevel(new Level::GameOver_Lvl);
+
+            return;
+        }
     }
    
     
@@ -649,7 +654,8 @@ void Level::StageBoss_Lvl::Collision()
             {
                 auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDeadToBoss", "Assets/Dead1.wav");
                 AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
-                bgm_resDead->PlayMusicOrSFX(bgm_resDead, Sound::SFX, 1.f, 1.f, 0);
+                if (player_comp->IsAlive())
+                    bgm_resDead->PlayMusicOrSFX(bgm_resDead, Sound::SFX, 1.f, 1.f, 0);
                 player_comp->TakeDamge();
             }
         }
@@ -810,6 +816,11 @@ void Level::StageBoss_Lvl::Collision()
 
             if (melee_DelayAtk > 0.4f)
             {
+                auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDeadToBoss", "Assets/Dead1.wav");
+                AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
+                if (player_comp->IsAlive())
+                    bgm_resDead->PlayMusicOrSFX(bgm_resDead, Sound::SFX, 1.f, 1.f, 0);
+
                 player_comp->TakeDamge();
             }
 

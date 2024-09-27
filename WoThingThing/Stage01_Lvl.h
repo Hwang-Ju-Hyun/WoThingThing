@@ -38,7 +38,6 @@ namespace Level
         f32 probalGun = 0.45f;
         f32 probalBullet = 0.3f;
 
-        f32 preTime;
         f32 duringDeath;
     public:       
         Stage01_Lvl();

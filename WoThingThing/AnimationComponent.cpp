@@ -88,25 +88,20 @@ void AnimationComponent::Update()
 	GameObject* playerObj = GoManager::GetInst()->FindObj("Player");
 	PlayerComponent* player_comp = (PlayerComponent*)playerObj->FindComponent("PlayerComp");
 
-	if (!player_comp->IsAlive())
+	if (playerObj != nullptr)
 	{
-		ChangeAnimation("Death", 1, 24, 24, 0.1f);
+		TransComponent* player_trs = (TransComponent*)playerObj->FindComponent("Transform");
+		my_trs->SetPos(player_trs->GetPos());
+		my_trs->SetScale({ 80,80 });
 	}
 
+	if (player_comp->GetManiActive())
+		animation_duration_per_frame = 0.7f;
 	else
+		animation_duration_per_frame = 0.1f;
+
+	if (player_comp->IsAlive())
 	{
-
-		if (playerObj != nullptr)
-		{
-			TransComponent* player_trs = (TransComponent*)playerObj->FindComponent("Transform");
-			my_trs->SetPos(player_trs->GetPos());
-			my_trs->SetScale({ 80,80 });
-		}
-		if (player_comp->GetManiActive())
-			animation_duration_per_frame = 0.7f;
-		else
-			animation_duration_per_frame = 0.1f;
-
 		//Right
 		if (AEInputCheckCurr(AEVK_D) && !dashState && !jumpState && !attackState && !longattackState)
 		{
