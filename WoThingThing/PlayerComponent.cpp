@@ -336,11 +336,13 @@ void PlayerComponent::Attack()
 	//melee attack
 	if (IsTutorialStage == false || IsAttackTutorial == true)
 	{
-		if (AEInputCheckTriggered(AEVK_1))
-			meleeAction = true, shotAction = false;
-		//shot attack
-		else if (AEInputCheckTriggered(AEVK_2) && obtainGun)
-			meleeAction = false, shotAction = true;
+		//if (AEInputCheckTriggered(AEVK_1))
+		//	meleeAction = true, shotAction = false;
+		////shot attack
+		//else if (AEInputCheckTriggered(AEVK_2) && obtainGun)
+		//	meleeAction = false, shotAction = true;
+		if (obtainGun)
+			shotAction = true;
 
 		TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 
@@ -402,10 +404,10 @@ void PlayerComponent::Attack()
 				}
 			}
 		}
-		else if (shotAction)
+		if (shotAction)
 		{
 			MouseTraceLine();
-			if (AEInputCheckTriggered(AEVK_LBUTTON))
+			if (AEInputCheckTriggered(AEVK_RBUTTON))
 			{
 				AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 				auto res = ResourceManager::GetInst()->Get("sfx_gun", "Assets/PlayerGun.mp3");
@@ -510,10 +512,13 @@ void PlayerComponent::Gauge()
 
 void PlayerComponent::Update()
 {
-	MoveMent();
-	MouseAim();
-	Attack();
-	Gauge();
+	if (IsAlive())
+	{
+		MoveMent();
+		MouseAim();
+		Attack();
+		Gauge();
+	}
 }
 
 void PlayerComponent::LoadFromJson(const json& str)

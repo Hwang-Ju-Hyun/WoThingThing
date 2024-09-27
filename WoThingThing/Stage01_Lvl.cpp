@@ -149,6 +149,9 @@ void Level::Stage01_Lvl::Init()
 
     //Aim Img 맨 나중에 그리기.
     player->AddComponent("PlayerComp", new PlayerComponent(player));
+
+    preTime = 0.f;
+    duringDeath = 0.f;
 }
 
 void Level::Stage01_Lvl::Update()
@@ -266,10 +269,15 @@ void Level::Stage01_Lvl::Update()
     
     if (!(player_comp->IsAlive()))
     {
-        GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
-        gsm->ChangeLevel(new Level::GameOver_Lvl);
+        duringDeath += static_cast<f32>(AEFrameRateControllerGetFrameTime());
+
+        if(duringDeath >=2.4f)
+        {
+            GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
+            gsm->ChangeLevel(new Level::GameOver_Lvl);
+            return;
+        }
     
-        return;
     }
     
     if (AEInputCheckTriggered(AEVK_ESCAPE))
@@ -382,10 +390,12 @@ void Level::Stage01_Lvl::Collision()
            //새로운 Collision box사용
             if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible()  && bullet_comp->EnemyShoot)
             {
-               player_comp->TakeDamge();
                auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");               
                AudioResource* bgm_res = static_cast<AudioResource*>(resDead);
-               bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+               if (player_comp->IsAlive())
+                   bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+
+               player_comp->TakeDamge();
             }
         }
 
@@ -419,8 +429,6 @@ void Level::Stage01_Lvl::Collision()
                                 if (Probability() <= probalBullet) //총을 획득했으면, CreateSupple(총알 보충) 
                                     CreateSupplement(EnemyMelee_trs->GetPos());
                             }
-
-
 
                             EnemySniper[SniperObjID]->SetActive(false);
                             EnemySniper[SniperObjID] = nullptr; 
