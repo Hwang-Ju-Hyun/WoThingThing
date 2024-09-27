@@ -59,4 +59,5 @@ bool PathFindMoveComponent::IsArrivedTargetNode(GameObject* _objPos, TransCompon
 
 void PathFindMoveComponent::Update()
 {
+	
 }

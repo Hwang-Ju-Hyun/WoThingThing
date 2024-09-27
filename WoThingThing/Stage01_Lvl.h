@@ -39,7 +39,7 @@ namespace Level
         std::vector<GameObject*> m_vecPlatforms;
         GameObject* Platform;
         std::array<GameObject*, 20> Enemy;
-        std::array<GameObject*, 14> EnemySniper;
+        std::array<GameObject*, 14> EnemySniper;        
         GameObject* Boss1;
         GameObject* Enemy_TEST;
         Resource* bgm;
@@ -47,9 +47,17 @@ namespace Level
         bool bgm_flag = false;
         float bgm_pitch = 1.0f;
         float bgm_volume = 1.43f;
+
+        int EnemyDeathCnt = Enemy.size() + EnemySniper.size();
+    private:
+        bool IsKnockBack = false;
+        AEVec2 unitKnockBackChase = { 0.f,0.f };
+        float KnockBackAccTime = 0.f;
     public:       
+        void SetIsKnockBack(bool _knock) { IsKnockBack = _knock; }
+        const bool GetIsKnockBack() { return IsKnockBack; }
         int counter = 0;
-        
+        const int GetAllEnemyDeathCnt();
     public:
         void HandleCollision(GameObject* obj1, GameObject* obj2);
         void Collision();

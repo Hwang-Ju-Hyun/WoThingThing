@@ -20,7 +20,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 
 	dashVelocity = { 0.f, 0.f };
 	dash_const = { 400.f, 400.f };
-	jumpVelocity = { 0.f, 400.f };
+	jumpVelocity = { 0.f, 0.f };
 	m_vGravity = { 0.f, 600.f };
 
 	mouseAim = new GameObject("mouseAim");
@@ -255,11 +255,15 @@ void PlayerComponent::MoveMent()
 	if (AEInputCheckCurr(AEVK_LCTRL))
 	{
 		accelGravity = 2.5f;
-	}
-
+	}	
 	jumpVelocity.y -= m_vGravity.y * dt * accelGravity;
+	if (jumpVelocity.y <= 0)
+	{
+		int a = 0;
+	}
 	pos.y = pos.y + jumpVelocity.y * dt;
 	static_cast<TransComponent*>(player_trs)->SetPos(pos);
+	
 }
 
 bool PlayerComponent::GetManiActive()
@@ -514,6 +518,15 @@ void PlayerComponent::Gauge()
 
 }
 
+void PlayerComponent::AddAccTime(float _dt)
+{
+	AccTime += _dt;
+}
+
+float PlayerComponent::GetAccTime()
+{
+	return AccTime;
+}
 
 void PlayerComponent::Update()
 {

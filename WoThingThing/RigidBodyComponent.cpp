@@ -49,6 +49,7 @@ void RigidBodyComponent::Update()
 	//	obj->AddPos(5.f, 0.f);
 	//	//if (player_trs->GetPos().x < 770)
 	//}
+
 	AEVec2 pos = static_cast<TransComponent*>(obj)->GetPos();
 	float dt = AEFrameRateControllerGetFrameTime();
 	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);

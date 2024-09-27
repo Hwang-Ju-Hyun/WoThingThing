@@ -43,7 +43,7 @@ class PlayerComponent : public BaseComponent
     bool IsMovementTutorial = false;
     bool IsTimeManipulateTutorial = false;
     bool IsAttackTutorial = false;    
-    bool DoNotMove = false;
+    bool DoNotMove = false;    
 public:
     PlayerComponent(GameObject* _owner);
     ~PlayerComponent() {};
@@ -109,7 +109,10 @@ public:
     const bool GetDoNotMove() { return DoNotMove; }
 
     void SetManipulate(bool _mani) { manipulActive=_mani; }
-    const bool GetManipulate() { return manipulActive; }
+    const bool GetManipulate() { return manipulActive; }     
+public:
+    void AddAccTime(float _dt);
+    float GetAccTime();
 public:
     virtual void Update() override;
     virtual void LoadFromJson(const json& str)override;

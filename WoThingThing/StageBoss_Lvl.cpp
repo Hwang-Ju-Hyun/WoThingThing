@@ -297,7 +297,9 @@ void Level::StageBoss_Lvl::Update()
             IsVibration = false;
         }
     }
-        
+    
+    player_comp->SetInvincible(true);
+
 
     Collision();
 
@@ -337,10 +339,34 @@ void Level::StageBoss_Lvl::Update()
 
     auto node_link = NaveMeshManager::GetInst()->GetvecLink();
     auto node = NaveMeshManager::GetInst()->GetallNode();
+    
+    /*for (auto it : NaveMeshManager::GetInst()->GetallNode())
+        NaveMeshManager::GetInst()->DrawNode(it.node_pos.x - 25, it.node_pos.y - 35, it.node_pos.x + 25, it.node_pos.y + 35, 1.0f, 1.0f, 0);*/
 
-    if (ColliderManager::GetInst()->IsCollision(Enemy_TEST, node[EnemyTest_node]))
+    int i = 0;
+
+
+
+    //for (auto it : NaveMeshManager::GetInst()->GetvecLink())
+    //{
+    //    //draw from
+    //    for (auto n : it)
+    //    {
+    //        //If cost >0 then 
+    //            //Draw line  from node[i] to node [n.first]
+    //        if(n.second->cost > 0)
+    //            NaveMeshManager::GetInst()->DrawNode(node[i].node_pos.x, node[i].node_pos.y, node[n.first].node_pos.x, node[n.first].node_pos.y, 0.0f, 0.0f, 1.0f);
+
+    //        std::cout << i << " | " << n.first << "-> " << n.second->cost << std::endl;
+    //    }
+
+    //    i++;
+    //}
+
+
+        if (ColliderManager::GetInst()->IsCollision(Enemy_TEST, node[EnemyTest_node]))
     {
-        NaveMeshManager::GetInst()->FindShortestPath(EnemyTest_node, player_node, 0);
+        NaveMeshManager::GetInst()->FindShortestPath(EnemyTest_node, player_node, 0);        
     }
     else
     {                          
@@ -366,12 +392,14 @@ void Level::StageBoss_Lvl::Update()
         //costLink는 점프가 될수도 있고  walk가 될 수도 있음                                          
         int nodeID1 = FoundedPath[PathIndex];
         int nodeID2;
-        if (FoundedPath.size() <= PathIndex + 1)
-            nodeID2 = nodeID1;
-        else
+        
+        if (FoundedPath.size() > PathIndex + 1)
             nodeID2 = FoundedPath[PathIndex + 1];
+        else
+            nodeID2 = nodeID1;
+
         int idx = 0;
-        while (nodeID2 != node_link[nodeID1][idx].first)
+        while (nodeID2 != node_link[nodeID1][idx].first && idx < 2)
         { 
             idx++;
         }
