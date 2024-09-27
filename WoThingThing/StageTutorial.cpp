@@ -58,7 +58,7 @@ void Level::StageTutorial_Lvl::Init()
     //player->AddComponent("Sprite", new SpriteComponent(player));
     player->AddComponent("PlayerComp", new PlayerComponent(player));
     player->AddComponent("Animation", new AnimationComponent(player));
-    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
+    player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });        
 
     //PlayerAim
@@ -177,20 +177,44 @@ void Level::StageTutorial_Lvl::Init()
     CameraManager::GetInst()->SetAim(aimTrace);
 
     //Audio
-    bgm = ResourceManager::GetInst()->Get("BossBGM", "Assets/BossBgm.mp3");
+    /*bgm = ResourceManager::GetInst()->Get("BossBGM", "Assets/BossBgm.mp3");
     bgm_res = static_cast<AudioResource*>(bgm);
-    bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);    
+    bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);    */
+
+    const std::vector<GameObject*> all_objs = GoManager::GetInst()->Allobj();
+
+    for (auto platform : all_objs)
+    {
+        if (
+            platform->GetName() == "Platform")
+        {
+            if (platform->GetID() == 10)
+            {
+                platform_attack = platform;
+            }
+            else if (platform->GetID() == 8)
+            {
+                platform_move = platform;
+            }
+            else if (platform->GetID() == 17)
+            {
+                platform_time = platform;
+            }
+        }
+    }
+
+    player_trs = (TransComponent*)player->FindComponent("Transform");
+    player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
+    player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    player_comp->SetIsTutorialStage(true);
+
+    bg_trs = (TransComponent*)background->FindComponent("Transform");
 }
 
 
 void Level::StageTutorial_Lvl::Update()
-{    
-    TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
-    RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
-    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
-    player_comp->SetIsTutorialStage(true);
-
-    TransComponent* bg_trs = (TransComponent*)background->FindComponent("Transform");
+{
+   
     bg_trs->SetPos(player_trs->GetPos());
     bg_trs->SetScale({ 1600,900 });
     
@@ -251,7 +275,7 @@ void Level::StageTutorial_Lvl::Update()
     }
 
 
-    if (player_trs->GetPos().x >= 5500 /*&& EnemyDeathCnt <= 0*/&&AttackTutorial==false)
+    if (player_trs->GetPos().x >= 5500 && EnemyDeathCnt <= 0&&AttackTutorial==false)
     {
         AttackTutorial = true;
         player_comp->SetDoNotMove(true);
@@ -260,20 +284,13 @@ void Level::StageTutorial_Lvl::Update()
 
     if (AttackTutorial == true)
     {
-        for (auto platform : GoManager::GetInst()->Allobj())
-        {
-            if (platform->GetName() == "Platform")
-            {
-                if (platform->GetID() == 10)
-                {
-                    TransComponent* platform_trs = (TransComponent*)platform->FindComponent("Transform");
-                    AEVec2 plat_pos = platform_trs->GetPos();
-                    AEVec2 plat_scale = platform_trs->GetScale();
-                    plat_pos.y -= dt * 500.f;
-                    platform_trs->SetPos({ plat_pos.x,plat_pos.y });
-                }
-            }
-        }
+
+        TransComponent* platform_trs = (TransComponent*)platform_attack->FindComponent("Transform");
+        AEVec2 plat_pos = platform_trs->GetPos();
+        AEVec2 plat_scale = platform_trs->GetScale();
+        plat_pos.y -= dt * 500.f;
+        platform_trs->SetPos({ plat_pos.x,plat_pos.y });
+
     }
 
     if (player_comp->GetDoNotMove() == true)
@@ -289,20 +306,12 @@ void Level::StageTutorial_Lvl::Update()
     
     if (MovementTutorial == true)
     {
-        for (auto platform : GoManager::GetInst()->Allobj())
-        {
-            if (platform->GetName() == "Platform")
-            {
-                if (platform->GetID() == 8)
-                {
-                    TransComponent* platform_trs = (TransComponent*)platform->FindComponent("Transform");
-                    AEVec2 plat_pos = platform_trs->GetPos();
-                    AEVec2 plat_scale = platform_trs->GetScale();
-                    plat_pos.y -= dt * 650.f;
-                    platform_trs->SetPos({ plat_pos.x,plat_pos.y });
-                }
-            }
-        }
+
+        TransComponent* platform_trs = (TransComponent*)platform_move->FindComponent("Transform");
+        AEVec2 plat_pos = platform_trs->GetPos();
+        AEVec2 plat_scale = platform_trs->GetScale();
+        plat_pos.y -= dt * 650.f;
+        platform_trs->SetPos({ plat_pos.x,plat_pos.y });
     }  
 
     if (player_trs->GetPos().x >= 5500 && EnemyDeathCnt <= 0 && AttackTutorial == false)
@@ -314,20 +323,11 @@ void Level::StageTutorial_Lvl::Update()
 
     if (AttackTutorial == true)
     {
-        for (auto platform : GoManager::GetInst()->Allobj())
-        {
-            if (platform->GetName() == "Platform")
-            {
-                if (platform->GetID() == 10)
-                {
-                    TransComponent* platform_trs = (TransComponent*)platform->FindComponent("Transform");
+                    TransComponent* platform_trs = (TransComponent*)platform_attack->FindComponent("Transform");
                     AEVec2 plat_pos = platform_trs->GetPos();
                     AEVec2 plat_scale = platform_trs->GetScale();
                     plat_pos.y -= dt * 500.f;
                     platform_trs->SetPos({ plat_pos.x,plat_pos.y });
-                }
-            }
-        }
     }
 
 
@@ -339,22 +339,13 @@ void Level::StageTutorial_Lvl::Update()
     
     if (EnemySniperDeathCnt <= 0)
     {
-        for (auto platform : GoManager::GetInst()->Allobj())
-        {
-            if (platform->GetName() == "Platform")
-            {
-                if (platform->GetID() == 17)
-                {
-                    TransComponent* platform_trs = (TransComponent*)platform->FindComponent("Transform");
-                    AEVec2 plat_pos = platform_trs->GetPos();
-                    AEVec2 plat_scale = platform_trs->GetScale();
-                    plat_scale.x -= dt*100 ;
-                    platform_trs->SetScale({ plat_scale.x,plat_pos.y });
-                    if (plat_scale.x <= 0)
-                        platform_trs->SetPos(-5000.f, -5000.f);//せせせせせせせせせせせせせせせせせせせせ
-                }
-            }
-        }
+        TransComponent* platform_trs = (TransComponent*)platform_time->FindComponent("Transform");
+        AEVec2 plat_pos = platform_trs->GetPos();
+        AEVec2 plat_scale = platform_trs->GetScale();
+        plat_scale.x -= dt * 100;
+        platform_trs->SetScale({ plat_scale.x,plat_pos.y });
+        if (plat_scale.x <= 0)
+            platform_trs->SetPos(-5000.f, -5000.f);
     }
     
 
@@ -408,9 +399,6 @@ void Level::StageTutorial_Lvl::Update()
     }
 
     Collision();
-
-
-    std::cout << player_trs->GetPos().x << "," << player_trs->GetPos().y << std::endl;
     
         
     if (player_trs->GetPos().x >= 8900 && player_trs->GetPos().y <= -1500 && EnemySniperDeathCnt <= 0)
@@ -528,13 +516,121 @@ void Level::StageTutorial_Lvl::HandleCollision(GameObject* obj1, GameObject* obj
     }
 }
 
+
+//Wall vs Player or Snper
+
+void Level::StageTutorial_Lvl::Collision_WallvsPlayer(GameObject* wall, GameObject* p, bool b)
+{
+    if (p->GetName() == "Platform")
+    {
+        return;
+    }
+
+    if (ColliderManager::GetInst()->IsCollision(wall, p))
+    {
+        BulletComponent* bullet_comp = (BulletComponent*)p->FindComponent("Bullet");
+
+        if (bullet_comp)
+            bullet_comp->DestroyBullet();
+        else
+            HandleCollision(p, wall);
+         
+        Enemy_Platform_Collision_Event* e_p_c_e = new Enemy_Platform_Collision_Event(wall, p);
+        EventManager::GetInst()->AddEvent(e_p_c_e);
+    }
+}
+
+
+void Level::StageTutorial_Lvl::Collision_Bullet_Parry(GameObject* bull, GameObject* p)
+
+{
+    //with Player's Melee ==> Parrying
+    if (ColliderManager::GetInst()->IsCollision(p, bull))
+    {
+        BulletComponent* bullet_comp = (BulletComponent*)bull->FindComponent("Bullet");
+        if (!bullet_comp->GetState())
+        {
+            bullet_comp->SetState();
+            bullet_comp->EnemyShoot = false;
+            AEVec2 bulletVec = bullet_comp->GetBulletVec();
+            AEVec2 nor_dVec{ 0,0 };
+            AEVec2Normalize(&nor_dVec, &bulletVec);
+            AEVec2Scale(&nor_dVec, &nor_dVec, -1);
+
+            bullet_comp->SetBulletVec(nor_dVec);
+            IsVibration = true;
+
+            auto res_padding = ResourceManager::GetInst()->Get("sfx_padding1", "Assets/padding2.wav");
+            AudioResource* bgm_res = static_cast<AudioResource*>(res_padding);
+            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+        }
+    }
+}
+
+void Level::StageTutorial_Lvl::Collision_Bullet_Player(GameObject* bull, GameObject* p)
+{
+    if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(p, bull) && !player_comp->GetInvincible())
+    {
+        //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+
+        //gameOver = true;
+        player_comp->TakeDamge();
+        //bullet_comp->DestroyBullet(); 壱肯 背左奄 (嬢託杷 端径 1戚艦猿)
+         //audio
+        auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");
+        AudioResource* bgm_res = static_cast<AudioResource*>(resDead);
+        bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+    }
+}
+
+
 void Level::StageTutorial_Lvl::Collision()
 {
+    const std::vector<GameObject*> all_objs = GoManager::GetInst()->Allobj();
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
 
+
+
+    //for (int i = 0; i < all_objs.size(); i++)
+    //{
+    //    GameObject* A = all_objs[i];
+    //
+    //    for (int j = i + 1; j < all_objs.size(); j++)
+    //    {
+    //        GameObject* B = all_objs[j];
+    //
+    //        if (A->GetName() == "Platform")//IsCollision
+    //            Collision_WallvsPlayer(A, B);
+    //
+    //        if (A->GetName() == "Bullet")
+    //        {
+    //            if (B->GetName() == "EnemyBullet")
+    //                Collision_WallvsPlayer(B, A);
+    //
+    //            if (B->GetName() == "Melee")
+    //            {
+    //                Collision_Bullet_Parry(A, B);
+    //            }
+    //
+    //            if (B->GetName() == "Player")
+    //            {
+    //                Collision_Bullet_Player(A, B);
+    //            }              
+    //        }
+    //
+    //        bool b = (A->GetName() == "Enemy");
+    //        if (A->GetName() == "EnemySniper" || b)
+    //        {
+    //            //if(B->GetName())
+    //
+    //           // Collision_Enemy(A,B)
+    //        }
+    //    }
+    //}
+
     //Collision       
-    for (auto obj : GoManager::GetInst()->Allobj())
+    for (auto obj : all_objs)
     {
         //Platform
         if (obj->GetName() == "Platform")//IsCollision
@@ -565,8 +661,9 @@ void Level::StageTutorial_Lvl::Collision()
                     HandleCollision(EnemySniper[i], obj);
                 }
             }
+
             //恥硝 巴熊廿 中宜坦軒
-            for (auto findObj : GoManager::GetInst()->Allobj())
+            for (auto findObj : all_objs)
             {
                 if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
                 {
@@ -578,54 +675,57 @@ void Level::StageTutorial_Lvl::Collision()
                 }
             }
         }
+        
         //鳶漁 (鋼紫)
+        
         //Enemy Bullet
         if (obj->GetName() == "EnemyBullet")
         {
-            //with Player's Melee ==> Parrying
-            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
-            {
-                BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
-                if (!bullet_comp->GetState())
-                {
-                    bullet_comp->SetState();
-                    bullet_comp->EnemyShoot = false;
-                    AEVec2 bulletVec = bullet_comp->GetBulletVec();
-                    AEVec2 nor_dVec{ 0,0 };
-                    AEVec2Normalize(&nor_dVec, &bulletVec);
-                    AEVec2Scale(&nor_dVec, &nor_dVec, -1);
-
-                    bullet_comp->SetBulletVec(nor_dVec);
-                    IsVibration = true;
-
-                    auto res_padding = ResourceManager::GetInst()->Get("sfx_padding1", "Assets/padding2.wav");
-                    AudioResource* bgm_res = static_cast<AudioResource*>(res_padding);
-                    bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
-                }
-            }
-            //Player Death
-            //歯稽錘 Collision box紫遂
-            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible())
-            {
-                //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
-
-                //gameOver = true;
-                player_comp->TakeDamge();
-                //bullet_comp->DestroyBullet(); 壱肯 背左奄 (嬢託杷 端径 1戚艦猿)
-                 //audio
-                auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");
-                AudioResource* bgm_res = static_cast<AudioResource*>(resDead);
-                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
-            }
+            
+           //with Player's Melee ==> Parrying
+           if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
+           {
+               BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+               if (!bullet_comp->GetState())
+               {
+                   bullet_comp->SetState();
+                   bullet_comp->EnemyShoot = false;
+                   AEVec2 bulletVec = bullet_comp->GetBulletVec();
+                   AEVec2 nor_dVec{ 0,0 };
+                   AEVec2Normalize(&nor_dVec, &bulletVec);
+                   AEVec2Scale(&nor_dVec, &nor_dVec, -1);
+        
+                   bullet_comp->SetBulletVec(nor_dVec);
+                   IsVibration = true;
+        
+                   auto res_padding = ResourceManager::GetInst()->Get("sfx_padding1", "Assets/padding2.wav");
+                   AudioResource* bgm_res = static_cast<AudioResource*>(res_padding);
+                   bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+               }
+           }
+           //Player Death
+           //歯稽錘 Collision box紫遂
+           if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible())
+           {
+               //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+           
+               //gameOver = true;
+               player_comp->TakeDamge();
+               //bullet_comp->DestroyBullet(); 壱肯 背左奄 (嬢託杷 端径 1戚艦猿)
+                //audio
+               auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");
+               AudioResource* bgm_res = static_cast<AudioResource*>(resDead);
+               bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+           }
         }
 
 
         //Sniper宋澗毒舛
         if (obj->GetName() == "EnemySniper")
-        {
+         {
             int SniperObjID = 0;
-            //Test: Collision Enemy with Player's Bullet
-            for (auto findObj : GoManager::GetInst()->Allobj())
+            ////Test: Collision Enemy with Player's Bullet
+            for (auto findObj : all_objs)
             {
                 //恥硝稽 宋聖獣
                 if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
@@ -633,7 +733,7 @@ void Level::StageTutorial_Lvl::Collision()
                     if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
                         SniperObjID = obj->GetID();
-
+            
                         //Create Gun && Bullet
                         TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(EnemySniper[SniperObjID]->FindComponent("Transform"));
                         if (!player_comp->GetObtain())
@@ -645,14 +745,14 @@ void Level::StageTutorial_Lvl::Collision()
                             CreateSupplement(EnemyMelee_trs->GetPos());
                         }
                         //===========================
-
+            
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         if (!bullet_comp->EnemyShoot)
                         {
                             EnemySniper[SniperObjID]->SetActive(false);
                             EnemySniper[SniperObjID] = nullptr;
                             EnemySniperDeathCnt--;
-
+            
                             auto resSniperDead = ResourceManager::GetInst()->Get("sfx_SniperDeadToBullet", "Assets/Dead2.mp3");
                             AudioResource* bgm_res = static_cast<AudioResource*>(resSniperDead);
                             bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f, 1.0f, 0);
@@ -661,38 +761,39 @@ void Level::StageTutorial_Lvl::Collision()
                     }
                 }
             }
-            //巴傾戚嬢税 腔軒嬢澱生稽 什蟹戚遁亜 宋聖獣
-            //if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
-            //{
-            //    SniperObjID = obj->GetID();
+            ////巴傾戚嬢税 腔軒嬢澱生稽 什蟹戚遁亜 宋聖獣
+            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
+            {
+                SniperObjID = obj->GetID();
 
-            //    //Create Gun && Bullet
-            //    TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(EnemySniper[SniperObjID]->FindComponent("Transform"));
-            //    if (!player_comp->GetObtain())
-            //    {
-            //        CreateGun(EnemyMelee_trs->GetPos());
-            //    }
-            //    if (player_comp->GetObtain())
-            //    {
-            //        CreateSupplement(EnemyMelee_trs->GetPos());
-            //    }
-            //    //========================
+                //Create Gun && Bullet
+                TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(EnemySniper[SniperObjID]->FindComponent("Transform"));
+                if (!player_comp->GetObtain())
+                {
+                    CreateGun(EnemyMelee_trs->GetPos());
+                }
+                if (player_comp->GetObtain())
+                {
+                    CreateSupplement(EnemyMelee_trs->GetPos());
+                }
+                //========================
 
-            //    EnemySniper[SniperObjID]->SetActive(false);
-            //    EnemySniper[SniperObjID] = nullptr;
-            //    EnemySniperDeathCnt--;
+                EnemySniper[SniperObjID]->SetActive(false);
+                EnemySniper[SniperObjID] = nullptr;
+                EnemySniperDeathCnt--;
 
 
                 auto resDeadfromMelee = ResourceManager::GetInst()->Get("sfx_SniperDeadToMelee", "Assets/kill2.wav");
                 AudioResource* bgm_res = static_cast<AudioResource*>(resDeadfromMelee);
-                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f,1.0f, 0);
+                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f, 1.0f, 0);
             }
+        }
         
         if (obj->GetName() == "Enemy")
         {
             //恥硝採歳
             int meeleObjID = 0;
-            for (auto findObj : GoManager::GetInst()->Allobj())
+            for (auto findObj : all_objs)
             {
                 if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
                 {

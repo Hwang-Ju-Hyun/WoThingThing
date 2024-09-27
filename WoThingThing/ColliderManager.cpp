@@ -30,7 +30,6 @@ bool TestCollisionRectRectInclusive(float obj1Right, float obj1Left, float obj1T
 		return true;
 	return false;
 }
-
 //나중에 여기 부분 건들기
 bool ColliderManager::IsCollision(GameObject* _obj1, GameObject* _obj2)
 {

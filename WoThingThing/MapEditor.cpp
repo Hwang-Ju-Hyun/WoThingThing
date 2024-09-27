@@ -66,7 +66,7 @@ void Level::MapEditor::Update()
 	RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
 	PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
 
-	std::cout << player_trs->GetPos().x << "," << player_trs->GetPos().y << std::endl;
+	//std::cout << player_trs->GetPos().x << "," << player_trs->GetPos().y << std::endl;
 	const int NumberofTile = 20;
 
 	goTileW = 1600 / 20;

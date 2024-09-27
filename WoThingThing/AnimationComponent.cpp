@@ -6,6 +6,8 @@
 #include "ResourceManager.h"
 #include "PlayerComponent.h"
 
+//Test
+#include "BulletAnimationComponent.h"
 
 
 void AnimationComponent::Initialize()
@@ -63,16 +65,11 @@ AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owne
 	ResourceManager::GetInst()->Get("Attack", "Assets/PlayerAttack_SpriteSheet.png");
 	ResourceManager::GetInst()->Get("LongAttack", "Assets/PlayerLongAttack_SpriteSheet.png");
 
-
-
-
 	ChangeAnimation("Idle", 1, 8, 8, 0.1f);
 
 	dashState = false, jumpState = false, attackState = false, longattackState = false;
 	dashTimer = 0.f, jumpTimer = 0.f, attackTimer = 0.f, longattackTimer = 0.f;
 	flip = false;
-
-
 }
 
 AnimationComponent::~AnimationComponent()
@@ -87,6 +84,7 @@ void AnimationComponent::Update()
 		return;
 
 	TransComponent* my_trs = (TransComponent*)this->m_pOwner->FindComponent("Transform");
+
 	GameObject* playerObj = GoManager::GetInst()->FindObj("Player");
 	PlayerComponent* player_comp = (PlayerComponent*)playerObj->FindComponent("PlayerComp");
 
@@ -96,11 +94,10 @@ void AnimationComponent::Update()
 		my_trs->SetPos(player_trs->GetPos());
 		my_trs->SetScale({ 80,80 });
 	}
-	if (AEInputCheckCurr(AEVK_LSHIFT) && player_comp->GetManiActive())
+	if (player_comp->GetManiActive())
 		animation_duration_per_frame = 0.7f;
 	else
 		animation_duration_per_frame = 0.1f;
-
 
 	//Right
 	if (AEInputCheckCurr(AEVK_D) && !dashState && !jumpState && !attackState && !longattackState)
@@ -121,6 +118,7 @@ void AnimationComponent::Update()
 	{
 		flip = false;
 		ChangeAnimation("Idle", 1, 8, 8, 0.1f);
+
 	}
 	
 

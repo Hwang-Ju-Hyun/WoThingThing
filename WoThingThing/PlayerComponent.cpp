@@ -27,7 +27,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	GoManager::GetInst()->AddObject(mouseAim);
 	mouseAim->AddComponent("Transform", new TransComponent(mouseAim));
 	mouseAim->AddComponent("Sprite", new SpriteComponent(mouseAim));
-	ResourceManager::GetInst()->Get("Aim", "Assets/Aim_1.png");
+	ResourceManager::GetInst()->Get("Aim", "Assets/Aim.png");
 	TransComponent* aim_trs = (TransComponent*)mouseAim->FindComponent("Transform");
 	aim_trs->SetScale({ 50,50 });
 	SpriteComponent* aim_spr = (SpriteComponent*)mouseAim->FindComponent("Sprite");
@@ -115,8 +115,7 @@ void PlayerComponent::MoveMent()
 	}
 
 	//Jump
-	if (DoNotMove == false)
-	{
+	
 		if (AEInputCheckTriggered(AEVK_W))
 		{
 			jumpCnt++;
@@ -226,8 +225,7 @@ void PlayerComponent::MoveMent()
 				}
 				Dash({ 1, 0 });
 			}
-
-		}
+		
 	}
 
 
@@ -356,10 +354,8 @@ void PlayerComponent::Attack()
 
 		if (meleeAction)
 		{
-			//Remove about shotAttack
 			TransComponent* aimTrace_spr = (TransComponent*)aim_line->FindComponent("Transform");
 			aimTrace_spr->SetScale({ 0,0 });
-			/////////////////////////
 
 			if (AEInputCheckTriggered(AEVK_LBUTTON) && !meleeState)
 			{
@@ -369,11 +365,8 @@ void PlayerComponent::Attack()
 					meleeCooldown = 0.f;
 
 					melee = new GameObject("Melee");
-					GoManager::GetInst()->AddObject(melee); //GetInst() == GetPtr()
+					GoManager::GetInst()->AddObject(melee);
 					melee->AddComponent("Transform", new TransComponent(melee));
-					//melee->AddComponent("Sprite", new SpriteComponent(melee));
-
-
 				}
 			}
 			else
