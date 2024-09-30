@@ -33,6 +33,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	// Initialize the system
 	AESysInit(instanceH, show, 1600, 900, 0, 60, true, NULL);
 
+
 	// Changing the window title
 	AESysSetWindowTitle("WoThingThing");
 
@@ -65,6 +66,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 		{			
 			gsm->ChangeLevel(nullptr);			
 		}							
+
+		std::cout << AEFrameRateControllerGetFrameRate()<< std::endl;
 	}
 
 	// free the system

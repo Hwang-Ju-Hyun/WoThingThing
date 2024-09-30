@@ -6,6 +6,8 @@
 #include "ResourceManager.h"
 #include "PlayerComponent.h"
 
+//Test
+#include "BulletAnimationComponent.h"
 
 
 void AnimationComponent::Initialize()
@@ -62,17 +64,13 @@ AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owne
 	ResourceManager::GetInst()->Get("Jump", "Assets/PlayerJump&Fall_SpriteSheet.png");
 	ResourceManager::GetInst()->Get("Attack", "Assets/PlayerAttack_SpriteSheet.png");
 	ResourceManager::GetInst()->Get("LongAttack", "Assets/PlayerLongAttack_SpriteSheet.png");
-
-
-
+	ResourceManager::GetInst()->Get("Death", "Assets/PlayerDeath_SpriteSheet.png");
 
 	ChangeAnimation("Idle", 1, 8, 8, 0.1f);
 
 	dashState = false, jumpState = false, attackState = false, longattackState = false;
 	dashTimer = 0.f, jumpTimer = 0.f, attackTimer = 0.f, longattackTimer = 0.f;
 	flip = false;
-
-
 }
 
 AnimationComponent::~AnimationComponent()
@@ -96,137 +94,140 @@ void AnimationComponent::Update()
 		my_trs->SetPos(player_trs->GetPos());
 		my_trs->SetScale({ 80,80 });
 	}
-	if (AEInputCheckCurr(AEVK_LSHIFT) && player_comp->GetManiActive())
+
+	if (player_comp->GetManiActive())
 		animation_duration_per_frame = 0.7f;
 	else
 		animation_duration_per_frame = 0.1f;
 
-
-	//Right
-	if (AEInputCheckCurr(AEVK_D) && !dashState && !jumpState && !attackState && !longattackState)
+	if (player_comp->IsAlive())
 	{
-		ChangeAnimation("Run", 1, 8, 8, 0.1f);
-		flip = false;
-	}
-
-	//Left
-	else if (AEInputCheckCurr(AEVK_A) && !dashState && !jumpState && !attackState && !longattackState)
-	{
-		ChangeAnimation("Run", 1, 8, 8, 0.1f);
-		flip = true;
-	}
-
-	//Idle
-	else if (!dashState && !jumpState && !attackState && !longattackState)
-	{
-		flip = false;
-		ChangeAnimation("Idle", 1, 8, 8, 0.1f);
-	}
-	
-
-	//Dash
-	if (AEInputCheckTriggered(AEVK_SPACE) && !jumpState && !attackState && !longattackState)
-	{
-		player_comp->SetInvincible(true);
-		dashState = true;
-		dashTimer = 0.f;
-
-		if (AEInputCheckCurr(AEVK_A))
+		//Right
+		if (AEInputCheckCurr(AEVK_D) && !dashState && !jumpState && !attackState && !longattackState)
 		{
+			ChangeAnimation("Run", 1, 8, 8, 0.1f);
+			flip = false;
+		}
+
+		//Left
+		else if (AEInputCheckCurr(AEVK_A) && !dashState && !jumpState && !attackState && !longattackState)
+		{
+			ChangeAnimation("Run", 1, 8, 8, 0.1f);
 			flip = true;
 		}
 
-		ChangeAnimation("Dash", 1, 6, 6, 0.1f);
-	}
-	dashTimer += (f32)AEFrameRateControllerGetFrameTime();
-	if (dashTimer >= animation_duration_per_frame * spritesheet_max_sprites)
-	{
-		player_comp->SetInvincible(false);
-		dashState = false;
-	}
-
-	//Jump
-	//cf.) air상태일때 fall 애니메이션만 딱 작동이되고 Land 했을때 다시 Idle로 변하게.
-	if (AEInputCheckTriggered(AEVK_W) && !dashState && !attackState && !longattackState)
-	{
-		jumpState = true;
-		jumpTimer = 0.f;
-
-		Initialize();
-		ChangeAnimation("Jump", 1, 6, 6, 0.25);
-		//ChangeAnimation("Assets/PlayerJump&Fall_SpriteSheet.png");
-	}
-	jumpTimer += (f32)AEFrameRateControllerGetFrameTime();
-	if (jumpTimer >= animation_duration_per_frame * spritesheet_max_sprites)
-		jumpState = false;
-
-	//Attack	
-	if (player_comp->GetIsAttackTutorial() == true || player_comp->GetIsTutorialStage() == false)
-	{
-		if (player_comp->GetMeleeAction() && AEInputCheckTriggered(AEVK_LBUTTON))
+		//Idle
+		else if (!dashState && !jumpState && !attackState && !longattackState)
 		{
-			attackState = true;
-			attackTimer = 0.f;
+			flip = false;
+			ChangeAnimation("Idle", 1, 8, 8, 0.1f);
 
-			//Flip!!========
-			AEVec2	norD = { 0,0 };
-			if (playerObj != nullptr && player_comp != nullptr)
+		}
+
+		//Dash
+		if (AEInputCheckTriggered(AEVK_SPACE) && !jumpState && !attackState && !longattackState)
+		{
+			player_comp->SetInvincible(true);
+			dashState = true;
+			dashTimer = 0.f;
+
+			if (AEInputCheckCurr(AEVK_A))
 			{
-				norD = player_comp->GetNorVec();
-			}
-			if (norD.x < 0)
 				flip = true;
-			else
-				flip = false;
-			//==============
 
-			//Initialize();
-			ChangeAnimation("Attack", 1, 8, 8, 0.1f);
-		}
-		if (attackState)
-		{
-			my_trs->SetScale({ 256,96 });
-		}
-		attackTimer += (f32)AEFrameRateControllerGetFrameTime();
-		if (attackState && attackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
-		{
-			attackState = false;
-			my_trs->SetScale({ 80,80 });
-		}
-
-		//Long Attack
-		if (player_comp->GetShotAction() && AEInputCheckTriggered(AEVK_LBUTTON))
-		{
-			longattackState = true;
-			longattackTimer = 0.f;
-
-			//Flip!!========
-			AEVec2	norD = { 0,0 };
-			if (playerObj != nullptr && player_comp != nullptr)
-			{
-				norD = player_comp->GetNorVec();
 			}
-			if (norD.x < 0)
-				flip = true;
-			else
-				flip = false;
-			//==============
+
+			ChangeAnimation("Dash", 1, 6, 6, 0.1f);
+		}
+		dashTimer += (f32)AEFrameRateControllerGetFrameTime();
+		if (dashTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+		{
+			player_comp->SetInvincible(false);
+			dashState = false;
+		}
+
+		//Jump
+		//cf.) air상태일때 fall 애니메이션만 딱 작동이되고 Land 했을때 다시 Idle로 변하게.
+		if (AEInputCheckTriggered(AEVK_W) && !dashState && !attackState && !longattackState)
+		{
+			jumpState = true;
+			jumpTimer = 0.f;
 
 			Initialize();
-			ChangeAnimation("LongAttack", 1, 8, 8, 0.1f);
+			ChangeAnimation("Jump", 1, 6, 6, 0.25f);
 		}
-		if (longattackState)
+		jumpTimer += (f32)AEFrameRateControllerGetFrameTime();
+		if (jumpTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+			jumpState = false;
+
+		//Attack	
+		if (player_comp->GetIsAttackTutorial() == true || player_comp->GetIsTutorialStage() == false)
 		{
-			my_trs->SetScale({ 110,100 });
+			if (player_comp->GetMeleeAction() && AEInputCheckTriggered(AEVK_LBUTTON))
+			{
+				attackState = true;
+				attackTimer = 0.f;
+
+				//Flip!!========
+				AEVec2	norD = { 0,0 };
+				if (playerObj != nullptr && player_comp != nullptr)
+				{
+					norD = player_comp->GetNorVec();
+				}
+				if (norD.x < 0)
+					flip = true;
+				else
+					flip = false;
+				//==============
+
+				//Initialize();
+				ChangeAnimation("Attack", 1, 8, 8, 0.1f);
+			}
+			if (attackState)
+			{
+				my_trs->SetScale({ 256,96 });
+			}
+			attackTimer += (f32)AEFrameRateControllerGetFrameTime();
+			if (attackState && attackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+			{
+				attackState = false;
+				my_trs->SetScale({ 80,80 });
+			}
+			//Long Attack
+			//if (player_comp->GetShotAction() && AEInputCheckTriggered(AEVK_RBUTTON)) //RightClick 으로 원할시
+			if (player_comp->GetShotAction() && AEInputCheckTriggered(AEVK_LBUTTON))
+			{
+				longattackState = true;
+				longattackTimer = 0.f;
+
+				//Flip!!========
+				AEVec2	norD = { 0,0 };
+				if (playerObj != nullptr && player_comp != nullptr)
+				{
+					norD = player_comp->GetNorVec();
+				}
+				if (norD.x < 0)
+					flip = true;
+				else
+					flip = false;
+				//==============
+
+				Initialize();
+				ChangeAnimation("LongAttack", 1, 6, 6, 0.1f);
+			}
+			if (longattackState)
+			{
+				my_trs->SetScale({ 110,100 });
+			}
+			longattackTimer += (f32)AEFrameRateControllerGetFrameTime();
+			if (longattackState && longattackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+			{
+				longattackState = false;
+				my_trs->SetScale({ 80,80 });
+			}
 		}
-		longattackTimer += (f32)AEFrameRateControllerGetFrameTime();
-		//if (longattackState && longattackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
-		//{
-		//	longattackState = false;
-		//	my_trs->SetScale({ 80,80 });
-		//}
 	}
-	
+
 	animation_timer += (f32)AEFrameRateControllerGetFrameTime() /* * delay*/;
 	if (animation_timer >= animation_duration_per_frame)
 	{

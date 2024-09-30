@@ -10,7 +10,6 @@ namespace Level
 {
     class StageBoss_Lvl :public GSM::BaseLevel
     {
-    private:
         GameObject* background;
         GameObject* player;
         GameObject* playerAnim;
@@ -21,6 +20,20 @@ namespace Level
         bool gameOver;
         Resource* bgm;
         AudioResource* bgm_res;
+        
+        GameObject* Platform;        
+        GameObject* Enemy_TEST;
+        GameObject* Boss_drone;        
+        GameObject* Boss1;
+
+        bool enemyDir;
+        AEVec2 playerPos;
+        AEVec2 enemyTestPos;
+        AEVec2 chaseVec;
+        float m_fDt;
+        float melee_DelayAtk;
+
+        f32 duringDeath;
     public:
         StageBoss_Lvl();
         ~StageBoss_Lvl();
@@ -29,27 +42,12 @@ namespace Level
         virtual void Update() override;
         virtual void Exit() override;
 
-    private:        
-        GameObject* Platform;        
-        GameObject* Enemy_TEST;
-        GameObject* Boss_drone;
-        
-        GameObject* Boss1;
-    public:
         int counter = 0;
-    private:             
-    public:
+            
         void HandleCollision(GameObject* obj1, GameObject* obj2);
         void Collision();
         static bool Stage2;
-    private:
-        bool enemyDir;
-        AEVec2 playerPos;
-        AEVec2 enemyTestPos;
-        AEVec2 chaseVec;
-        float m_fDt;
-        float melee_DelayAtk;
-    public:
+
         bool IsVibration = false;
         float plusX = 0;
         float minusX = 0;

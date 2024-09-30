@@ -27,6 +27,8 @@ public:
     BulletAnimationComponent(GameObject* _owner);
     ~BulletAnimationComponent();
 
+    void SetAnim(std::string name, std::string path, u32 rows, u32 cols, u32 max, f32 duration);
+
     void Initialize();
     void ChangeAnimation(std::string _name, u32 rows, u32 cols, u32 max, f32 duration);
 

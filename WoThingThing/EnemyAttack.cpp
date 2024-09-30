@@ -50,16 +50,19 @@ void ESM::EnemyAttack::Update()
 			auto bgm_audioGroup = bgm_res->GetAudioGroup();
 			AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
 
-			player_comp->TakeDamge();
 			m_fDt = 0.0f;
 			melee_DelayAtk = 0.f;
+
 
 			auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");
 			AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
 			bgm_resDead->SetSFXorMusic(Sound::SFX);
 			auto bgm_audioDead = bgm_resDead->GetAudio();
 			auto bgm_audioGroupDead = bgm_resDead->GetAudioGroup();
-			AEAudioPlay(bgm_audioDead, bgm_audioGroupDead, 1.f, 1.f, 0);
+			if (player_comp->IsAlive())
+				AEAudioPlay(bgm_audioDead, bgm_audioGroupDead, 1.f, 1.f, 0);
+
+			player_comp->TakeDamge();
 		}
 	}
 	else 

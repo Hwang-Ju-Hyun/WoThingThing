@@ -51,9 +51,6 @@ void BulletAnimationComponent::ChangeAnimation(std::string _name, u32 rows, u32 
 
 BulletAnimationComponent::BulletAnimationComponent(GameObject* _owner) : BaseComponent(_owner)
 {
-	ResourceManager::GetInst()->Get("BulletAnim", "Assets/Bullet_SpriteSheet.png");
-
-	ChangeAnimation("BulletAnim", 1, 4, 4, 0.1f);
 
 }
 
@@ -105,4 +102,10 @@ BulletAnimationComponent::~BulletAnimationComponent()
 {
 	if (mesh != nullptr)
 		AEGfxMeshFree(mesh);
+}
+
+void BulletAnimationComponent::SetAnim(std::string name, std::string path, u32 rows, u32 cols, u32 max, f32 duration)
+{
+	ResourceManager::GetInst()->Get(name, path);
+	ChangeAnimation(name, rows, cols, max, duration);
 }

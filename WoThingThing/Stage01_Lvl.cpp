@@ -1,4 +1,5 @@
 #include <iostream>
+#include <random>
 #include "header.h"
 #include "GameStateManager.h"
 #include "MainMenu_Lvl.h"
@@ -6,6 +7,7 @@
 #include "GameOver_Lvl.h"
 #include "GameObject.h"
 #include "GoManager.h"
+#include "CompManager.h"
 #include "BaseComponent.h"
 #include "TransComponent.h"
 #include "SpriteComponent.h"
@@ -13,34 +15,41 @@
 #include "PlayerComponent.h"
 #include "BulletComponent.h"
 #include "AnimationComponent.h"
-#include "CompManager.h"
-#include "EventManager.h"
+
+#include "AiComponent.h"
+#include "TargetAim_Sniper.h"
+
 #include "ColliderManager.h"
-#include "ResourceManager.h"
+#include "EventManager.h"
 #include "TimeManager.h"
+
+#include "ResourceManager.h"
 #include "AudioResource.h"
 #include "TextResource.h"
 #include "ImageResource.h"
-#include "Serializer.h"
-#include "NaveMeshManager.h"
-#include "Utility.h"
-#include "AiComponent.h"
-#include "CameraManager.h"
-#include "PathFindMoveComponent.h"
-#include "StageBoss_Lvl.h"
-#include "Chase.h"
 #include "AudioResource.h"
+
+#include "Serializer.h"
+
+#include "NaveMeshManager.h"
+#include "PathFindMoveComponent.h"
+#include "Chase.h"
+
+#include "StageBoss_Lvl.h"
+//#include "Utility.h"
+
+#include "CameraManager.h"
+
 #include "AEAudio.h"
 #include "AEInput.h"
 #include "AEUtil.h"
 #include "AEMath.h"
-#include <random>
 #include "Bullet.h"
-#include"TargetAim_Sniper.h"
+
 #include"AnimationComponent.h"
 #include"EnemyAnimationComponent.h"
-#include"StageBoss_Lvl.h"
-AEVec2 enemyDvec{ 1, 0 };
+#include"BulletAnimationComponent.h"
+//AEVec2 enemyDvec{ 1, 0 };
 
 Level::Stage01_Lvl::Stage01_Lvl()
 {
@@ -77,13 +86,9 @@ void Level::Stage01_Lvl::Init()
     //stage01¸ÊÀ» ºÒ·¯¿ÀÀÚ
     Serializer::GetInst()->LoadLevel("Assets/stage01.json");
 
-
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
-    player->AddComponent("PlayerComp", new PlayerComponent(player));
-    //player->AddComponent("Sprite", new SpriteComponent(player));
-    //Add Image Resource??
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });        
 
@@ -132,37 +137,38 @@ void Level::Stage01_Lvl::Init()
         EnemySniper_state->Setdir(true);//true°¡ ¿À¸¥ÂÊ, false°¡ ¿ÞÂÊ
         EnemySniper_state->Setdir_time(1.0f);
         EnemySniper_state->SetState("IDLE_Sniper", "Sniper");
-    }
 
-    CameraManager::GetInst()->SetMouse(mouseAim);
-    CameraManager::GetInst()->SetPlayer(player);
+    }
 
     //Audio Init    
     bgm = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
     bgm_res = static_cast<AudioResource*>(bgm);
     bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, bgm_volume, bgm_pitch, -1);
     Level::StageBoss_Lvl::Stage2 = false;
+
+    //Aim Img ¸Ç ³ªÁß¿¡ ±×¸®±â.
+    player->AddComponent("PlayerComp", new PlayerComponent(player));
+
+    duringDeath = 0.f;
 }
 
 void Level::Stage01_Lvl::Update()
 {
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
-    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");    
-    
-
-    f64 dt = AEFrameRateControllerGetFrameTime();
-    if (player_comp->GetManiActive() == true)
-    {
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
+    if (player_comp->GetManiActive())
+    {   
         float vol = bgm_res->GetPitch();
         if (vol >= 0.3)
         {
-            bgm_res->SetPitch(vol - float(dt));
-            AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());
+            bgm_res->SetPitch(vol - dt);
+            AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());            
         }
         player_comp->SetTriggeredButton(true);
     }
-    else if (player_comp->GetTriggeredButton() == true)
+    else if(player_comp->GetTriggeredButton())
     {
         float vol = bgm_res->GetPitch();
         if (vol <= 1.0)
@@ -171,17 +177,14 @@ void Level::Stage01_Lvl::Update()
             AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());
         }
     }
-     
-     
+
+
     TransComponent* bg_trs = (TransComponent*)background->FindComponent("Transform");
     bg_trs->SetPos(player_trs->GetPos());
     bg_trs->SetScale({ 1600, 900 });
-    //bg_trs->SetPos(0, 0);
-    //bg_trs->SetScale({ 1800 * 5,1000 * 5 });
 
-     
+    //Hide Cursor
     AEInputShowCursor(0);
-    //Component Pointer
     
 
     if(player_comp->GetObtain())
@@ -195,11 +198,8 @@ void Level::Stage01_Lvl::Update()
         AEGfxPrint(pFont->GetFont(), cstr2, -0.95f, 0.8f, 20.f/72.f, 1.f, 1.f, 1.f, 1.f);
     }
 
-
     if (player_trs->GetPos().y < -1800)
         player_comp->SetHealth(-1);
-
-
 
     //ÆÐµù½Ã Áøµ¿ 
     if (IsVibration == false)
@@ -243,11 +243,17 @@ void Level::Stage01_Lvl::Update()
             IsVibration = false;
         }
     }
-
-
-
+    
     //³«»çÆÇÁ¤
-    if ((player_trs->GetPos().x > -3000 && player_trs->GetPos().x < 5000) && player_trs->GetPos().y < -1800)
+    if(player_trs->GetPos().y<-1800)
+    {
+        player_comp->SetHealth(-1);
+    }
+    if ((player_trs->GetPos().x>-3000 && player_trs->GetPos().x < 5000 )&&player_trs->GetPos().y < -1800)
+    {        
+        player_comp->SetHealth(-1);
+    }
+    else  if (player_trs->GetPos().x >= 5000 &&player_trs->GetPos().y < -900)
     {
         player_comp->SetHealth(-1);
     }
@@ -262,21 +268,21 @@ void Level::Stage01_Lvl::Update()
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::StageBoss_Lvl);
         return;
     }
-
-
+    
     GoManager::GetInst()->RemoveDeathObj();
-
-    if (AEInputCheckPrev(AEVK_0))
-    {
-        GSM::GameStateManager::GetInst()->Exit();
-    }
-
+    
     if (!(player_comp->IsAlive()))
     {
-        GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
-        gsm->ChangeLevel(new Level::GameOver_Lvl);
+        AnimationComponent* player_anim = (AnimationComponent*)playerAnim->FindComponent("Animation");
+        player_anim->ChangeAnimation("Death", 1, 24, 24, 0.1f);
 
-        return;
+        duringDeath += static_cast<f32>(AEFrameRateControllerGetFrameTime());
+        if(duringDeath >=2.4f)
+        {
+            GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
+            gsm->ChangeLevel(new Level::GameOver_Lvl);
+            return;
+        }
     }
 
     if (AEInputCheckTriggered(AEVK_ESCAPE))
@@ -338,13 +344,21 @@ void Level::Stage01_Lvl::Exit()
     GoManager::GetInst()->RemoveAllObj();
 }
 
+
+f32 Level::Stage01_Lvl::Probability()
+{
+    std::random_device rd;  // Seed for the random number engine
+    std::mt19937 gen(rd()); // Mersenne Twister engine
+    std::uniform_real_distribution<> dis(0.f, 1.f); // Distribution between 0.0 and 1.0
+
+    f32 randomValue = static_cast<f32>(dis(gen));
+
+    return randomValue;
+}
 void Level::Stage01_Lvl::Collision()
 {
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
-
-
-
     //Collision       
     for (auto obj : GoManager::GetInst()->Allobj())
     {
@@ -410,8 +424,7 @@ void Level::Stage01_Lvl::Collision()
             //with Player's Melee ==> Parrying
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {
-                //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
-                if (!bullet_comp->GetState())
+                if(!bullet_comp->GetState())
                 {
                     bullet_comp->SetState();
                     bullet_comp->EnemyShoot = false;
@@ -428,20 +441,17 @@ void Level::Stage01_Lvl::Collision()
                     bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
                 }
             }
-            //Player Death
-            //»õ·Î¿î Collision box»ç¿ë
-            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible() && bullet_comp->EnemyShoot)
+
+           //Player Death
+           //»õ·Î¿î Collision box»ç¿ë
+            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible()  && bullet_comp->EnemyShoot)
             {
+               auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");               
+               AudioResource* bgm_res = static_cast<AudioResource*>(resDead);
+               if (player_comp->IsAlive())
+                   bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
 
-                //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
-
-                //gameOver = true;
-                player_comp->TakeDamge();
-                //bullet_comp->DestroyBullet(); °í¹Î ÇØº¸±â (¾îÂ÷ÇÇ Ã¼·Â 1ÀÌ´Ï±î)
-                 //audio
-                auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");
-                AudioResource* bgm_res = static_cast<AudioResource*>(resDead);
-                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+               player_comp->TakeDamge();
             }
         }
 
@@ -460,34 +470,27 @@ void Level::Stage01_Lvl::Collision()
                     {
                         SniperObjID = obj->GetID();
 
-                        //Create Gun && Bullet
-                        TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(EnemySniper[SniperObjID]->FindComponent("Transform"));
-                        //if (!player_comp->GetObtain())
-                        //{
-                        //    CreateGun(EnemyMelee_trs->GetPos());
-                        //}
-                        //if (player_comp->GetObtain())
-                        //{
-                        //    CreateSupplement(EnemyMelee_trs->GetPos());
-                        //}
-                        //===========================
-
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         if (obj->GetActive() && !bullet_comp->EnemyShoot)
                         {
+                            TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(EnemySniper[SniperObjID]->FindComponent("Transform"));
+                            //Create Gun && Bullet
+                            if (!player_comp->GetObtain()) //ÃÑÀ» È¹µæ ¸øÇßÀ» ½Ã, CreateGun(ÃÑ È¹µæ)
+                            {
+                                if (Probability() <= probalGun)
+                                    CreateGun(EnemyMelee_trs->GetPos());
+                            }
+                            else
+                            {
+                                if (Probability() <= probalBullet) //ÃÑÀ» È¹µæÇßÀ¸¸é, CreateSupple(ÃÑ¾Ë º¸Ãæ) 
+                                    CreateSupplement(EnemyMelee_trs->GetPos());
+                            }
+
                             EnemySniper[SniperObjID]->SetActive(false);
 
                             EnemySniper[SniperObjID] = nullptr; 
                             EnemyDeathCnt--;
 
-                            if (!player_comp->GetObtain())
-                            {
-                                CreateGun(EnemyMelee_trs->GetPos());
-                            }
-                            if (player_comp->GetObtain())
-                            {
-                                CreateSupplement(EnemyMelee_trs->GetPos());
-                            }
 
                             auto resSniperDead = ResourceManager::GetInst()->Get("sfx_SniperDeadToBullet", "Assets/Dead2.mp3");
                             AudioResource* bgm_res = static_cast<AudioResource*>(resSniperDead);
@@ -508,17 +511,18 @@ void Level::Stage01_Lvl::Collision()
                     continue;
                 SniperObjID = obj->GetID();
 
-                //Create Gun && Bullet
                 TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(EnemySniper[SniperObjID]->FindComponent("Transform"));
-                if (!player_comp->GetObtain())
+                //Create Gun && Bullet
+                if (!player_comp->GetObtain()) //ÃÑÀ» È¹µæ ¸øÇßÀ» ½Ã, CreateGun(ÃÑ È¹µæ)
                 {
-                    CreateGun(EnemyMelee_trs->GetPos());
+                    if (Probability() <= probalGun)
+                        CreateGun(EnemyMelee_trs->GetPos());
                 }
-                if (player_comp->GetObtain())
+                else
                 {
-                    CreateSupplement(EnemyMelee_trs->GetPos());
+                    if (Probability() <= probalBullet) //ÃÑÀ» È¹µæÇßÀ¸¸é, CreateSupple(ÃÑ¾Ë º¸Ãæ) 
+                        CreateSupplement(EnemyMelee_trs->GetPos());
                 }
-                //========================
 
                 EnemySniper[SniperObjID]->SetActive(false);
                 EnemySniper[SniperObjID] = nullptr;
@@ -546,17 +550,18 @@ void Level::Stage01_Lvl::Collision()
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
                         if (obj->GetActive() && !bullet_comp->EnemyShoot)
                         {
-                            //Create Gun && Bullet
                             TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(Enemy[meeleObjID]->FindComponent("Transform"));
-                            if (!player_comp->GetObtain())
+                            //Create Gun && Bullet
+                            if (!player_comp->GetObtain()) //ÃÑÀ» È¹µæ ¸øÇßÀ» ½Ã, CreateGun(ÃÑ È¹µæ)
                             {
-                                CreateGun(EnemyMelee_trs->GetPos());
+                                if (Probability() <= probalGun)
+                                    CreateGun(EnemyMelee_trs->GetPos());
                             }
-                            if (player_comp->GetObtain())
+                            else
                             {
-                                CreateSupplement(EnemyMelee_trs->GetPos());
+                                if (Probability() <= probalBullet) //ÃÑÀ» È¹µæÇßÀ¸¸é, CreateSupple(ÃÑ¾Ë º¸Ãæ) 
+                                    CreateSupplement(EnemyMelee_trs->GetPos());
                             }
-                            //================================
 
                             Enemy[meeleObjID]->SetActive(false);
                             Enemy[meeleObjID] = nullptr;
@@ -577,17 +582,20 @@ void Level::Stage01_Lvl::Collision()
                     continue;
                  meeleObjID = obj->GetID();
 
-                //Create Gun && Bullet
                 TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(Enemy[meeleObjID]->FindComponent("Transform"));
-                if (!player_comp->GetObtain())
+                //Create Gun && Bullet
+                if (!player_comp->GetObtain()) //ÃÑÀ» È¹µæ ¸øÇßÀ» ½Ã, CreateGun(ÃÑ È¹µæ)
                 {
-                    CreateGun(EnemyMelee_trs->GetPos());
+                    if (Probability() <= probalGun)
+                        CreateGun(EnemyMelee_trs->GetPos());
                 }
-                if (player_comp->GetObtain())
+                else
                 {
-                    CreateSupplement(EnemyMelee_trs->GetPos());
+                    if (Probability() <= probalBullet) //ÃÑÀ» È¹µæÇßÀ¸¸é, CreateSupple(ÃÑ¾Ë º¸Ãæ) 
+                        CreateSupplement(EnemyMelee_trs->GetPos());
                 }
-                //==========================
+
+
 
                 Enemy[meeleObjID]->SetActive(false);
                 Enemy[meeleObjID] = nullptr;    
@@ -724,5 +732,5 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
             break;
         }
     }
-
+   
 }

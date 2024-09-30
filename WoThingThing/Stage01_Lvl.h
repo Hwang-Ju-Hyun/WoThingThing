@@ -14,7 +14,7 @@ namespace Level
     {
         GameObject* background;
         GameObject* player;
-        GameObject* playerAnim;
+        GameObject* playerAnim; 
         GameObject* mouseAim;
         AEGfxTexture* pTex;
         AEGfxVertexList* pMesh;
@@ -47,7 +47,6 @@ namespace Level
         bool bgm_flag = false;
         float bgm_pitch = 1.0f;
         float bgm_volume = 1.43f;
-
         int EnemyDeathCnt = 36;
     public:
         float ChangeAniAccTime = 0.f;
@@ -62,8 +61,15 @@ namespace Level
         int counter = 0;
         const int GetAllEnemyDeathCnt();
     public:
+        f32 probalGun = 0.45f;
+        f32 probalBullet = 0.3f;
+
+        f32 duringDeath;
+
         void HandleCollision(GameObject* obj1, GameObject* obj2);
         void Collision();
+        f32 Probability();
+
     };
 }
 
