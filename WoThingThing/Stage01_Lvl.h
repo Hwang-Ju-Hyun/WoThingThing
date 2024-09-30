@@ -24,7 +24,7 @@ namespace Level
         float AccTime = 0;
     public:
         Stage01_Lvl();
-        ~Stage01_Lvl();
+        ~Stage01_Lvl() override;
 
         virtual void Init() override;
         virtual void Update() override;

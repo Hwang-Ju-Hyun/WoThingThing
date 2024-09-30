@@ -51,7 +51,7 @@
 AEVec2 enemyDvec{ 1, 0 };
 
 Level::Stage01_Lvl::Stage01_Lvl()
-{    
+{
 }
 
 Level::Stage01_Lvl::~Stage01_Lvl()
@@ -113,7 +113,7 @@ void Level::Stage01_Lvl::Init()
         TransComponent* Enemy_trs = (TransComponent*)Enemy[i]->FindComponent("Transform");
         AiComponent* Enemy_state = (AiComponent*)Enemy[i]->FindComponent("Ai");
 
-        EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy[i]->FindComponent("EnemyAnimation");        
+        EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy[i]->FindComponent("EnemyAnimation");
         Enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
 
         Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
@@ -146,28 +146,28 @@ void Level::Stage01_Lvl::Init()
 
     //Audio Init    
     bgm = ResourceManager::GetInst()->Get("bgm", "Assets/BGM01.mp3");
-    bgm_res = static_cast<AudioResource*>(bgm);        
+    bgm_res = static_cast<AudioResource*>(bgm);
     bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, bgm_volume, bgm_pitch, -1);
     Level::StageBoss_Lvl::Stage2 = false;
 }
 
 void Level::Stage01_Lvl::Update()
-{                   
+{
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
-    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp"); 
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
     float dt = AEFrameRateControllerGetFrameTime();
     if (player_comp->GetManiActive() == true)
-    {        
+    {
         float vol = bgm_res->GetPitch();
         if (vol >= 0.3)
         {
             bgm_res->SetPitch(vol - dt);
-            AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());            
-        }  
+            AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());
+        }
         player_comp->SetTriggeredButton(true);
     }
-    else if(player_comp->GetTriggeredButton()==true)
+    else if (player_comp->GetTriggeredButton() == true)
     {
         float vol = bgm_res->GetPitch();
         if (vol <= 1.0)
@@ -183,30 +183,30 @@ void Level::Stage01_Lvl::Update()
     bg_trs->SetScale({ 1600, 900 });
     //bg_trs->SetPos(0, 0);
     //bg_trs->SetScale({ 1800 * 5,1000 * 5 });
-    
+
     AEInputShowCursor(0);
     //Component Pointer
-    
+
     Collision();
-    
-    if(player_comp->GetObtain())
+
+    if (player_comp->GetObtain())
     {
-        auto pFont = static_cast<TextResource*>(ResourceManager::GetInst()->Get("esamanru","Assets/esamanru-Bold.ttf"));
+        auto pFont = static_cast<TextResource*>(ResourceManager::GetInst()->Get("esamanru", "Assets/esamanru-Bold.ttf"));
         std::string str1 = std::to_string(GetBullet());
         std::string str2 = "Bullet: ";
         const char* cstr1 = str1.c_str();
         const char* cstr2 = str2.c_str();
-    
-        AEGfxPrint(pFont->GetFont(), cstr1, -0.85, 0.8, 20/72.f, 1, 1, 1, 1);
-        AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20/72.f, 1, 1, 1, 1);
+
+        AEGfxPrint(pFont->GetFont(), cstr1, -0.85, 0.8, 20 / 72.f, 1, 1, 1, 1);
+        AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20 / 72.f, 1, 1, 1, 1);
     }
-    
-    
-    if(player_trs->GetPos().y<-1800)
+
+
+    if (player_trs->GetPos().y < -1800)
         player_comp->SetHealth(-1);
-    
-    
-    
+
+
+
     //패딩시 진동 
     if (IsVibration == false)
     {
@@ -220,28 +220,28 @@ void Level::Stage01_Lvl::Update()
         f32 playerPosY = player_trs->GetPos().y;
         if (IsVibration && AccTime >= 0 && AccTime < 0.1)
         {
-           minusX += -10 * deltaTime;
-           minusY +=  10 * deltaTime;
-           playerPosX += minusX;
-           playerPosY += minusY;
-           AEGfxSetCamPosition(playerPosX, playerPosY);
+            minusX += -10 * deltaTime;
+            minusY += 10 * deltaTime;
+            playerPosX += minusX;
+            playerPosY += minusY;
+            AEGfxSetCamPosition(playerPosX, playerPosY);
         }
-        else if (IsVibration && AccTime >= 0.1&& AccTime < 0.2)
+        else if (IsVibration && AccTime >= 0.1 && AccTime < 0.2)
         {
-            plusX +=  10*deltaTime;
-            plusY += -10*deltaTime;
+            plusX += 10 * deltaTime;
+            plusY += -10 * deltaTime;
             playerPosX += plusX;
             playerPosY += plusY;
             AEGfxSetCamPosition(playerPosX, playerPosY);
         }
         else if (IsVibration && AccTime >= 0.2 && AccTime < 0.3)
         {
-            minusX += -10*deltaTime;
-            minusY +=  10*deltaTime;
+            minusX += -10 * deltaTime;
+            minusY += 10 * deltaTime;
             playerPosX += minusX;
             playerPosY += minusY;
             AEGfxSetCamPosition(playerPosX, playerPosY);
-        }       
+        }
         else if (IsVibration && AccTime >= 0.3)
         {
             AEGfxSetCamPosition(player_trs->GetPos().x, player_trs->GetPos().y);
@@ -249,59 +249,59 @@ void Level::Stage01_Lvl::Update()
             IsVibration = false;
         }
     }
-    
-    
-    
+
+
+
     //낙사판정
-    if ((player_trs->GetPos().x>-3000 && player_trs->GetPos().x < 5000 )&&player_trs->GetPos().y < -1800)
-    {        
-        player_comp->SetHealth(-1);
-    }
-    else  if (player_trs->GetPos().x >= 5000 &&player_trs->GetPos().y < -900)
+    if ((player_trs->GetPos().x > -3000 && player_trs->GetPos().x < 5000) && player_trs->GetPos().y < -1800)
     {
         player_comp->SetHealth(-1);
-    }    
-    
+    }
+    else  if (player_trs->GetPos().x >= 5000 && player_trs->GetPos().y < -900)
+    {
+        player_comp->SetHealth(-1);
+    }
+
     //보스 레벨 진입
     if (player_trs->GetPos().x >= 11170)
     {
         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::StageBoss_Lvl);
         return;
     }
-    
-    
+
+
     GoManager::GetInst()->RemoveDeathObj();
-    
+
     if (AEInputCheckPrev(AEVK_0))
     {
         GSM::GameStateManager::GetInst()->Exit();
     }
-    
+
     if (!(player_comp->IsAlive()))
     {
         GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
         gsm->ChangeLevel(new Level::GameOver_Lvl);
-    
+
         return;
     }
-    
+
     if (AEInputCheckTriggered(AEVK_ESCAPE))
     {
         AEInputShowCursor(1);
-        AEGfxSetCamPosition(0.f,0.f);
+        AEGfxSetCamPosition(0.f, 0.f);
         GSM::GameStateManager::GetInst()->ChangeLevel(new MainMenu_Lvl);
     }
-      
+
     if (AEInputCheckTriggered(AEVK_F1))
         GSM::GameStateManager::GetInst()->ChangeLevel(new StageBoss_Lvl);
 
-  }
+}
 
 
 void Level::Stage01_Lvl::Exit()
-{    
-    ResourceManager::GetInst()->RemoveAllRes();    
-    EventManager::GetInst()->RemoveAllEvent();    
+{
+    ResourceManager::GetInst()->RemoveAllRes();
+    EventManager::GetInst()->RemoveAllEvent();
     GoManager::GetInst()->RemoveAllObj();
 }
 
@@ -309,9 +309,9 @@ void Level::Stage01_Lvl::Collision()
 {
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
-    
-    
-      
+
+
+
     //Collision       
     for (auto obj : GoManager::GetInst()->Allobj())
     {
@@ -333,8 +333,8 @@ void Level::Stage01_Lvl::Collision()
                     //AI COMP세팅을 해주고
                     Enemy_Platform_Collision_Event* e_p_c_e = new Enemy_Platform_Collision_Event(obj, Enemy[i]);
                     EventManager::GetInst()->AddEvent(e_p_c_e);
-                    
-                }               
+
+                }
             }
             //EnemySniper 플랫폼 충돌처리
             for (int i = 0; i < EnemySniper.size(); i++)
@@ -343,7 +343,7 @@ void Level::Stage01_Lvl::Collision()
                 {
                     HandleCollision(EnemySniper[i], obj);
                 }
-            }           
+            }
             //총알 플랫폼 충돌처리
             for (auto findObj : GoManager::GetInst()->Allobj())
             {
@@ -364,9 +364,9 @@ void Level::Stage01_Lvl::Collision()
             BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
             //with Player's Melee ==> Parrying
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
-            {                             
+            {
                 //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
-                if(!bullet_comp->GetState())
+                if (!bullet_comp->GetState())
                 {
                     bullet_comp->SetState();
                     bullet_comp->EnemyShoot = false;
@@ -374,29 +374,29 @@ void Level::Stage01_Lvl::Collision()
                     AEVec2 nor_dVec{ 0,0 };
                     AEVec2Normalize(&nor_dVec, &bulletVec);
                     AEVec2Scale(&nor_dVec, &nor_dVec, -1);
-                                        
+
                     bullet_comp->SetBulletVec(nor_dVec);
-                    IsVibration = true;                                    
-                    
-                    auto res_padding = ResourceManager::GetInst()->Get("sfx_padding1", "Assets/padding2.wav");      
+                    IsVibration = true;
+
+                    auto res_padding = ResourceManager::GetInst()->Get("sfx_padding1", "Assets/padding2.wav");
                     AudioResource* bgm_res = static_cast<AudioResource*>(res_padding);
                     bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
                 }
             }
-           //Player Death
-           //새로운 Collision box사용
-            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible()  && bullet_comp->EnemyShoot)
-            {               
+            //Player Death
+            //새로운 Collision box사용
+            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible() && bullet_comp->EnemyShoot)
+            {
 
-               //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+                //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
 
-               //gameOver = true;
-               player_comp->TakeDamge();
-               //bullet_comp->DestroyBullet(); 고민 해보기 (어차피 체력 1이니까)
-                //audio
-               auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");               
-               AudioResource* bgm_res = static_cast<AudioResource*>(resDead);
-               bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+                //gameOver = true;
+                player_comp->TakeDamge();
+                //bullet_comp->DestroyBullet(); 고민 해보기 (어차피 체력 1이니까)
+                 //audio
+                auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDead", "Assets/Dead1.wav");
+                AudioResource* bgm_res = static_cast<AudioResource*>(resDead);
+                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
             }
         }
 
@@ -428,10 +428,10 @@ void Level::Stage01_Lvl::Collision()
                         //===========================
 
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
-                        if (!bullet_comp->EnemyShoot)
+                        if (obj->GetActive() && !bullet_comp->EnemyShoot)
                         {
                             EnemySniper[SniperObjID]->SetActive(false);
-                            EnemySniper[SniperObjID] = nullptr; 
+                            EnemySniper[SniperObjID] = nullptr;
 
                             if (!player_comp->GetObtain())
                             {
@@ -442,7 +442,7 @@ void Level::Stage01_Lvl::Collision()
                                 CreateSupplement(EnemyMelee_trs->GetPos());
                             }
 
-                            auto resSniperDead = ResourceManager::GetInst()->Get("sfx_SniperDeadToBullet", "Assets/Dead2.mp3");                            
+                            auto resSniperDead = ResourceManager::GetInst()->Get("sfx_SniperDeadToBullet", "Assets/Dead2.mp3");
                             AudioResource* bgm_res = static_cast<AudioResource*>(resSniperDead);
                             bgm_res->SetSFXorMusic(Sound::SFX);
                             auto bgm_audio = bgm_res->GetAudio();
@@ -452,10 +452,10 @@ void Level::Stage01_Lvl::Collision()
                         }
                         //bullet_comp->DestroyBullet();(고친 부분)
                     }
-                }             
+                }
             }
             //플레이어의 밀리어택으로 스나이퍼가 죽을시
-            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
+            if (obj->GetActive() && ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {
                 SniperObjID = obj->GetID();
 
@@ -481,20 +481,20 @@ void Level::Stage01_Lvl::Collision()
                 auto bgm_audioGroup = bgm_res->GetAudioGroup();
                 AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
             }
-        }        
-        if (obj->GetName() == "Enemy") 
-        {    
+        }
+        if (obj->GetName() == "Enemy")
+        {
             //총알부분
             int meeleObjID = 0;
-            for (auto findObj : GoManager::GetInst()->Allobj())            
-            {                       
-                if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet") 
-                {                    
-                    if (ColliderManager::GetInst()->IsCollision(findObj, obj)) 
+            for (auto findObj : GoManager::GetInst()->Allobj())
+            {
+                if (findObj->GetName() == "PlayerBullet" || findObj->GetName() == "EnemyBullet")
+                {
+                    if (ColliderManager::GetInst()->IsCollision(findObj, obj))
                     {
-                        meeleObjID=obj->GetID();
+                        meeleObjID = obj->GetID();
                         BulletComponent* bullet_comp = (BulletComponent*)findObj->FindComponent("Bullet");
-                        if (!bullet_comp->EnemyShoot)
+                        if (obj->GetActive() && !bullet_comp->EnemyShoot)
                         {
                             //Create Gun && Bullet
                             TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(Enemy[meeleObjID]->FindComponent("Transform"));
@@ -520,9 +520,9 @@ void Level::Stage01_Lvl::Collision()
                 }
             }
             //근접
-            if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj)) 
+            if (obj->GetActive() && ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {
-                 meeleObjID = obj->GetID();
+                meeleObjID = obj->GetID();
 
                 //Create Gun && Bullet
                 TransComponent* EnemyMelee_trs = static_cast<TransComponent*>(Enemy[meeleObjID]->FindComponent("Transform"));
@@ -538,7 +538,7 @@ void Level::Stage01_Lvl::Collision()
 
                 Enemy[meeleObjID]->SetActive(false);
                 Enemy[meeleObjID] = nullptr;
-             
+
                 //audio
                 auto res = ResourceManager::GetInst()->Get("sfx_EnemyDeadToMelee", "Assets/kill1.mp3");
                 AudioResource* sfx_res = static_cast<AudioResource*>(res);
@@ -603,7 +603,7 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
                 direct = i;
             }
         }
-    
+
 
         switch (direct)
         {
@@ -624,7 +624,7 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
             break;
         }
     }
-    else if(obj1->GetName() == "Player")
+    else if (obj1->GetName() == "Player")
     {
         PlayerComponent* obj_player = static_cast<PlayerComponent*>(obj1->FindComponent("PlayerComp"));
 
@@ -645,7 +645,7 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
                 minDistance = distArr[i];
                 direct = i;
             }
-        }     
+        }
 
         switch (direct)
         {
@@ -666,5 +666,5 @@ void Level::Stage01_Lvl::HandleCollision(GameObject* obj1, GameObject* obj2)
             break;
         }
     }
-   
+
 }
