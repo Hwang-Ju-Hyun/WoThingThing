@@ -45,7 +45,7 @@ void Level::StageTutorial_Lvl::Init()
     GoManager::GetInst()->AddObject(background);
     background->AddComponent("Transform", new TransComponent(background));
     background->AddComponent("Sprite", new SpriteComponent(background));
-    ResourceManager::GetInst()->Get("BackgroundImg", "Assets/BossBackgroundImage.png");
+    ResourceManager::GetInst()->Get("BackgroundImg", "Assets/BackgroundNightImage.png");
     SpriteComponent* bg_spr = (SpriteComponent*)background->FindComponent("Sprite");
     ImageResource* bgResource = (ImageResource*)ResourceManager::GetInst()->FindRes("BackgroundImg");
     bg_spr->SetTexture(bgResource->GetImage());
@@ -682,10 +682,7 @@ void Level::StageTutorial_Lvl::Collision()
             //    EnemySniper[SniperObjID] = nullptr;
             //    EnemySniperDeathCnt--;
 
-
-                auto resDeadfromMelee = ResourceManager::GetInst()->Get("sfx_SniperDeadToMelee", "Assets/kill2.wav");
-                AudioResource* bgm_res = static_cast<AudioResource*>(resDeadfromMelee);
-                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f,1.0f, 0);
+                
             }
         
         if (obj->GetName() == "Enemy")

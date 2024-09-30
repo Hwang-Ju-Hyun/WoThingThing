@@ -54,7 +54,7 @@ void Level::StageBoss_Lvl::Init()
     GoManager::GetInst()->AddObject(background);
     background->AddComponent("Transform", new TransComponent(background));
     background->AddComponent("Sprite", new SpriteComponent(background));
-    ResourceManager::GetInst()->Get("BackgroundImg", "Assets/BossBackgroundImage.png");
+    ResourceManager::GetInst()->Get("BackgroundImg", "Assets/BackgroundNightImage.png");
     SpriteComponent* bg_spr = (SpriteComponent*)background->FindComponent("Sprite");
     ImageResource* bgResource = (ImageResource*)ResourceManager::GetInst()->FindRes("BackgroundImg");
     bg_spr->SetTexture(bgResource->GetImage());
@@ -301,12 +301,10 @@ void Level::StageBoss_Lvl::Update()
         }
     }
     
-    player_comp->SetInvincible(true);
 
 
     Collision();
-
-    //CameraManager::GetInst()->Update();    
+ 
 
 
     GoManager::GetInst()->RemoveDeathObj();
