@@ -98,8 +98,6 @@ BaseRTTI* SpriteComponent::CreateSpriteComponent()
 
 void SpriteComponent::LoadFromJson(const json& str)
 {
-
-
 	auto compData = str.find("CompData");
 	if (compData != str.end())
 	{

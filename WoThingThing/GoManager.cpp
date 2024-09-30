@@ -78,7 +78,7 @@ GameObject* GoManager::FindObj(const std::string& _name) const
 
 GameObject* GoManager::GetLastObj()
 {
-    int size = m_vecObj.size();
+    size_t size = m_vecObj.size();
     if (size == 0)
     {
         std::cerr << "GetLastObj Error! : m_vecObj size is Zero!" << std::endl;

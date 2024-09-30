@@ -35,9 +35,9 @@ void PathFindMoveComponent::PlusPathToPathIndex()
 	PathToPathIndex++;
 }
 
-float PathFindMoveComponent::CalculateDistance(AEVec2 _pos1,AEVec2 _scale1, AEVec2 _pos2, AEVec2 _scale2)
+f32 PathFindMoveComponent::CalculateDistance(AEVec2 _pos1,AEVec2 _scale1, AEVec2 _pos2, AEVec2 _scale2)
 {
-	float distance = std::sqrt(std::pow(0, 2) + std::pow((_pos1.y-(_scale1.y/2.f)) - (_pos2.y+(_scale2.y/2.f)), 2));
+	f32 distance = static_cast<f32>(std::sqrt(std::pow(0, 2) + std::pow((_pos1.y-(_scale1.y/2.f)) - (_pos2.y+(_scale2.y/2.f)), 2)));
 	return distance;
 }
 
@@ -59,4 +59,5 @@ bool PathFindMoveComponent::IsArrivedTargetNode(GameObject* _objPos, TransCompon
 
 void PathFindMoveComponent::Update()
 {
+	
 }

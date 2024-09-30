@@ -108,8 +108,6 @@ void Serializer::SaveLevel(const std::string& s)
 	//iterate on each GameObject
 	for (GameObject* go : GoManager::GetInst()->Allobj())
 	{
-		auto aa = GoManager::GetInst()->Allobj();
-		aa.size();
 		json components;
 		if (go->GetName() == "Platform")
 		{
@@ -195,6 +193,7 @@ GameObject* Serializer::LoadEnemy(const std::string& s)
 	}	
 	
 	
+	return nullptr;
 }
 
 void Serializer::SaveEnemy(const std::string& s)
@@ -330,5 +329,7 @@ GameObject* Serializer::LoadEnemySniper(const std::string& s)
 			return go;
 		}
 	}
+
+	return nullptr;
 }
 

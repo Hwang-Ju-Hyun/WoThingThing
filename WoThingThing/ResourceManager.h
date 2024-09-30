@@ -16,7 +16,8 @@ private:
 		jpg,
 		wav,
 		mp3,
-		ttf
+		ttf,
+		nothing
 	};
 	Select_Extension Get_Extension(const std::string& _extension);
 public:	

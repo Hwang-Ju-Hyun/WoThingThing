@@ -45,9 +45,6 @@
     <Filter Include="Resource">
       <UniqueIdentifier>{98185173-146e-4047-8a52-c5b7904656dc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Manager\ResMgr">
-      <UniqueIdentifier>{47b678d4-17c0-4bb1-b96f-fe4c64ded81b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Resource\AudioRes">
       <UniqueIdentifier>{bc3d7089-0437-4d4b-8d5a-f4076a5d5102}</UniqueIdentifier>
     </Filter>
@@ -155,7 +152,7 @@
     </Filter>
     <Filter Include="Level\GameStart">
       <UniqueIdentifier>{148194a6-4ac6-4d0c-a064-8c685e383b67}</UniqueIdentifier>
-	</Filter>
+    </Filter>
     <Filter Include="Level\Tutorial">
       <UniqueIdentifier>{7ae5cf99-60c0-46f0-ba80-a299321c48d4}</UniqueIdentifier>
     </Filter>
@@ -164,6 +161,9 @@
     </Filter>
     <Filter Include="Component\Animation">
       <UniqueIdentifier>{187d98fe-2cb8-43d8-8e79-c8a21e52be49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\NaveMeshMgr\ResMgr">
+      <UniqueIdentifier>{47b678d4-17c0-4bb1-b96f-fe4c64ded81b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -213,7 +213,7 @@
       <Filter>Resource\AudioRes</Filter>
     </ClCompile>
     <ClCompile Include="ResourceManager.cpp">
-      <Filter>Manager\ResMgr</Filter>
+      <Filter>Manager\NaveMeshMgr\ResMgr</Filter>
     </ClCompile>
     <ClCompile Include="EventManager.cpp">
       <Filter>Manager\EventMgr</Filter>
@@ -337,18 +337,12 @@
     </ClCompile>
     <ClCompile Include="BulletAnimationComponent.cpp">
       <Filter>Component\Bullet</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="ImageResource.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="StageTutorial.cpp">
       <Filter>Level\Tutorial</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStart.cpp">
-      <Filter>Level\GameStart</Filter>
-    </ClCompile>
-    <ClCompile Include="GameStart.h">
-      <Filter>Level\GameStart</Filter>
     </ClCompile>
     <ClCompile Include="BulletAnimationComponent.cpp">
       <Filter>Ai\AnimationAi</Filter>
@@ -410,7 +404,7 @@
       <Filter>Resource</Filter>
     </ClInclude>
     <ClInclude Include="ResourceManager.h">
-      <Filter>Manager\ResMgr</Filter>
+      <Filter>Manager\NaveMeshMgr\ResMgr</Filter>
     </ClInclude>
     <ClInclude Include="AudioResource.h">
       <Filter>Resource\AudioRes</Filter>

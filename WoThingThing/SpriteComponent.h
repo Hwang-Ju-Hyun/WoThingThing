@@ -28,7 +28,7 @@ public:
     void SetAlpha(f32 value);
 
     static BaseRTTI* CreateSpriteComponent();
-    static constexpr const char* SpriteTypeName = "Sprite";
+    static constexpr const char* SpriteTypeName = "Sprite";    
 
     virtual void LoadFromJson(const json& str)override;
     virtual json SaveToJson(const json& str)override;

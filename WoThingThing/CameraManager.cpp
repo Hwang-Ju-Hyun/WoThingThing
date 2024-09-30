@@ -27,7 +27,7 @@ void CameraManager::Update()
 		AEVec2 playerPos = player_trs->GetPos();
 		while (1)
 		{
-			float delatTime = AEFrameRateControllerGetFrameTime();
+			f32 delatTime = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 			AccTime += delatTime;						
 			if (AccTime > 0.2f)
 			{
@@ -95,7 +95,7 @@ void CameraManager::vibration()
 	TransComponent* player_trs = dynamic_cast<TransComponent*>(m_pPlayer->FindComponent("Transform"));
 	while (1)
 	{
-		float delatTime = AEFrameRateControllerGetFrameTime();
+		f32 delatTime = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 		if (AccTime >= 1)
 			break;
 		AccTime += delatTime;

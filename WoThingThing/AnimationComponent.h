@@ -29,7 +29,7 @@ class AnimationComponent : public BaseComponent
 public:
 
     void Initialize();
-    void ChangeAnimation(std::string _name, f32 rows, f32 cols, f32 max, f32 duration);
+    void ChangeAnimation(std::string _name, u32 rows, u32 cols, u32 max, f32 duration);
 
 
     AnimationComponent(GameObject* _owner);

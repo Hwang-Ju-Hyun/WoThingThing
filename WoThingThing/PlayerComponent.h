@@ -43,7 +43,7 @@ class PlayerComponent : public BaseComponent
     bool IsMovementTutorial = false;
     bool IsTimeManipulateTutorial = false;
     bool IsAttackTutorial = false;    
-    bool DoNotMove = false;
+    bool DoNotMove = false;    
 public:
     PlayerComponent(GameObject* _owner);
     ~PlayerComponent() {};
@@ -82,7 +82,7 @@ public:
     void SetJumpCntZero();    
     void SetJumpVelocityZero();
     int GetHealth();
-    void SetHealth(float _health)
+    void SetHealth(int _health)
     {
         playerhealth = _health;
     }
@@ -109,7 +109,15 @@ public:
     const bool GetDoNotMove() { return DoNotMove; }
 
     void SetManipulate(bool _mani) { manipulActive=_mani; }
-    const bool GetManipulate() { return manipulActive; }
+    const bool GetManipulate() { return manipulActive; }     
+private:
+    float ChangeWeaponCoolTime = 0.f;
+public:
+    void SetChangeWeaponCoolTime(float _time) { ChangeWeaponCoolTime = _time; }
+    float GetChangeWeaponCoolTime() { return ChangeWeaponCoolTime; }
+public:
+    void AddAccTime(float _dt);
+    float GetAccTime();
 public:
     virtual void Update() override;
     virtual void LoadFromJson(const json& str)override;

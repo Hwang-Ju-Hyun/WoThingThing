@@ -19,7 +19,7 @@ public:
 	int GetPathToPathIndex();
 	void PlusPathToPathIndex();
 public:
-	float CalculateDistance(AEVec2 _pos1, AEVec2 _scale1, AEVec2 _pos2, AEVec2 _scale2);
+	f32 CalculateDistance(AEVec2 _pos1, AEVec2 _scale1, AEVec2 _pos2, AEVec2 _scale2);
 public:
 	bool IsArrivedTargetNode(GameObject* _objPos, TransComponent::Node _nodePos);
 public:

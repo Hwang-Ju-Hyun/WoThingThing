@@ -34,7 +34,7 @@ namespace Level
         float minusX = 0;
         float plusY = 0;
         float minusY = 0;
-        bool changeCamDir=false;                
+        bool changeCamDir=false;        
     private:
         std::vector<GameObject*> m_vecPlatforms;
         GameObject* Platform;
@@ -47,9 +47,20 @@ namespace Level
         bool bgm_flag = false;
         float bgm_pitch = 1.0f;
         float bgm_volume = 1.43f;
+
+        int EnemyDeathCnt = 36;
+    public:
+        float ChangeAniAccTime = 0.f;
+    private:        
+        bool IsKnockBack = false;
+        AEVec2 unitKnockBackChase = { 0.f,0.f };
+        float KnockBackAccTime = 0.f;
+        s8 KnockBackFont = 0;
     public:       
+        void SetIsKnockBack(bool _knock) { IsKnockBack = _knock; }
+        const bool GetIsKnockBack() { return IsKnockBack; }
         int counter = 0;
-        
+        const int GetAllEnemyDeathCnt();
     public:
         void HandleCollision(GameObject* obj1, GameObject* obj2);
         void Collision();

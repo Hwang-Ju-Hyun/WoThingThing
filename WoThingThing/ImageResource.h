@@ -9,7 +9,7 @@ public:
 	ImageResource(const std::string& _name);
 	~ImageResource();
 
-	AEGfxTexture* GetImage();
+	AEGfxTexture* GetImage();	
 
 	virtual void Load(const std::string& _path) override;
 	virtual void UnLoad() override;
