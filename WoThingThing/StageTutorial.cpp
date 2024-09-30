@@ -111,7 +111,7 @@ void Level::StageTutorial_Lvl::Init()
         {
         case 0:
             enemy_trs->SetPos({ 3200,120 });
-            enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+            enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1f);
             //enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
             //enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
             //enemy_ai->Setdir_time(2.0f);
@@ -120,7 +120,7 @@ void Level::StageTutorial_Lvl::Init()
             break;
         case 1:
             enemy_trs->SetPos({ 3900,120 });
-            enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+            enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1f);
             //enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
             //enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
             //enemy_ai->Setdir_time(2.0f);
@@ -129,7 +129,7 @@ void Level::StageTutorial_Lvl::Init()
             break;
         case 2:
             enemy_trs->SetPos({ 4700,120 });
-            enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+            enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1f);
             //enemy_ai->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
             //enemy_ai->Setdir(true);//true가 오른쪽, false가 왼쪽
             //enemy_ai->Setdir_time(2.0f);
@@ -196,7 +196,7 @@ void Level::StageTutorial_Lvl::Update()
     
     AEInputShowCursor(0);
     
-    float dt = AEFrameRateControllerGetFrameTime();
+    f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
     if (player_comp->GetManiActive() == true)
     {
         float vol = bgm_res->GetPitch();
@@ -364,7 +364,7 @@ void Level::StageTutorial_Lvl::Update()
     }
     else
     {
-        float deltaTime = AEFrameRateControllerGetFrameTime();
+        f32 deltaTime = static_cast<f32>(AEFrameRateControllerGetFrameTime());
         AccTime += deltaTime;
         f32 playerPosX = player_trs->GetPos().x;
         f32 playerPosY = player_trs->GetPos().y;
@@ -655,7 +655,7 @@ void Level::StageTutorial_Lvl::Collision()
 
                             auto resSniperDead = ResourceManager::GetInst()->Get("sfx_SniperDeadToBullet", "Assets/Dead2.mp3");
                             AudioResource* bgm_res = static_cast<AudioResource*>(resSniperDead);
-                            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f, 1.0f, 0.f);
+                            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f, 1.0f, 0);
                         }
                         bullet_comp->DestroyBullet();
                     }
@@ -682,11 +682,12 @@ void Level::StageTutorial_Lvl::Collision()
             //    EnemySniper[SniperObjID] = nullptr;
             //    EnemySniperDeathCnt--;
 
-            //    auto resDeadfromMelee = ResourceManager::GetInst()->Get("sfx_SniperDeadToMelee", "Assets/kill2.wav");
-            //    AudioResource* bgm_res = static_cast<AudioResource*>(resDeadfromMelee);
-            //    bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f,1.0f, 0.f);
-            //}
-        }
+
+                auto resDeadfromMelee = ResourceManager::GetInst()->Get("sfx_SniperDeadToMelee", "Assets/kill2.wav");
+                AudioResource* bgm_res = static_cast<AudioResource*>(resDeadfromMelee);
+                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f,1.0f, 0);
+            }
+        
         if (obj->GetName() == "Enemy")
         {
             //총알부분
@@ -720,7 +721,7 @@ void Level::StageTutorial_Lvl::Collision()
 
                             auto res = ResourceManager::GetInst()->Get("sfx_EnemyDeadToBullet", "Assets/Dead2.mp3");
                             AudioResource* bgm_res = static_cast<AudioResource*>(res);
-                            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f, 1.0f, 0.f);
+                            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f, 1.0f, 0);
                         }
                     }
                 }
@@ -748,7 +749,7 @@ void Level::StageTutorial_Lvl::Collision()
                 //audio
                 auto res = ResourceManager::GetInst()->Get("sfx_EnemyDeadToMelee", "Assets/kill1.mp3");
                 AudioResource* sfx_res = static_cast<AudioResource*>(res);
-                sfx_res->PlayMusicOrSFX(sfx_res, Sound::SFX, 1.0f, 1.0f, 0.f);
+                sfx_res->PlayMusicOrSFX(sfx_res, Sound::SFX, 1.0f, 1.0f, 0);
             }
         }
 

@@ -742,40 +742,11 @@
         "CompData": {
           "Pos": [
             200.0,
-            880.0
+            1350.0
           ],
           "sca": [
-            650.0,
-            300.0
-          ],
-          "Rot": 0.0
-        }
-      }
-    ]
-  },
-  {
-    "Platform": 26,
-    "Components": [
-      {
-        "Type": "Sprite",
-        "CompData": {
-          "RED": 0,
-          "BLUE": 0,
-          "GREEN": 255,
-          "TextureName": "Pillar",
-          "TexturePath": "Assets/BossStagePillar.png"
-        }
-      },
-      {
-        "Type": "Transform",
-        "CompData": {
-          "Pos": [
-            11150.0,
-            1000.0
-          ],
-          "sca": [
-            300.0,
-            3000.0
+            600.0,
+            1300.0
           ],
           "Rot": 0.0
         }

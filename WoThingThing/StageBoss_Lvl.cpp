@@ -82,6 +82,9 @@ void Level::StageBoss_Lvl::Init()
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });
 
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    player_comp->SetObtain();
+
 
     playerAnim = new GameObject("PlayerAnim");
     GoManager::GetInst()->AddObject(playerAnim); //GetInst() == GetPtr()
@@ -118,7 +121,7 @@ void Level::StageBoss_Lvl::Init()
     Enemy_TEST->AddComponent("PathFindMove", new PathFindMoveComponent(Enemy_TEST));
     Enemy_TEST->AddComponent("EnemyAnimation", new EnemyAnimationComponent(Enemy_TEST));
     EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy_TEST->FindComponent("EnemyAnimation");
-    Enemy_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
+    Enemy_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1f);
 
     //
     //Enemy_TEST->SetHP(20);
@@ -133,7 +136,7 @@ void Level::StageBoss_Lvl::Init()
     //Boss_drone->AddComponent("Sprite", new SpriteComponent(Boss_drone));
     Boss_drone->AddComponent("EnemyAnimation", new EnemyAnimationComponent(Boss_drone));
     EnemyAnimationComponent* Boss_drone_ani = (EnemyAnimationComponent*)Boss_drone->FindComponent("EnemyAnimation");
-    Boss_drone_ani->ChangeAnimation("Boss_drone_Atk", 1, 12, 12, 0.4);
+    Boss_drone_ani->ChangeAnimation("Boss_drone_Atk", 1, 12, 12, 0.4f);
     Boss_drone_ani->SetEnemyDir(true);
 
     CameraManager::GetInst()->SetMouse(mouseAim);
@@ -215,10 +218,10 @@ void Level::StageBoss_Lvl::Update()
     const char* cstr1 = str1.c_str();
     const char* cstr2 = str2.c_str();
 
-    AEGfxPrint(pFont->GetFont(), cstr1, -0.85, 0.8, 20 / 72.f, 1, 1, 1, 1);
-    AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20 / 72.f, 1, 1, 1, 1);    
+    AEGfxPrint(pFont->GetFont(), cstr1, -0.85f, 0.8f, 20.f / 72.f, 1.f, 1.f, 1.f, 1.f);
+    AEGfxPrint(pFont->GetFont(), cstr2, -0.95f, 0.8f, 20.f / 72.f, 1.f, 1.f, 1.f, 1.f);
 
-    float dt = AEFrameRateControllerGetFrameTime();
+    f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 
     if (!(ColliderManager::GetInst()->isFacingtheSameDirection(chaseVec, enemyDir)))
     {
@@ -262,7 +265,7 @@ void Level::StageBoss_Lvl::Update()
     }
     else
     {
-        float deltaTime = AEFrameRateControllerGetFrameTime();
+        f32 deltaTime = static_cast<f32>(AEFrameRateControllerGetFrameTime());
         VibrationAccTime += deltaTime;
         f32 playerPosX = player_trs->GetPos().x;
         f32 playerPosY = player_trs->GetPos().y;
@@ -602,7 +605,7 @@ void Level::StageBoss_Lvl::Collision()
     EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy_TEST->FindComponent("EnemyAnimation");
     //Collision
     int cnt = 0;
-    float m_fDt = AEFrameRateControllerGetFrameTime();
+    f32 m_fDt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
     for (auto obj : GoManager::GetInst()->Allobj())
     {
         //Platform
@@ -633,13 +636,15 @@ void Level::StageBoss_Lvl::Collision()
         //패딩
         if (obj->GetName() == "BossBullet")
         {
+            BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {
                 auto res_padding = ResourceManager::GetInst()->Get("sfx_paddingBoss", "Assets/padding2.wav");
                 AudioResource* bgm_res = static_cast<AudioResource*>(res_padding);
-                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0.f);
+                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
 
-                BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+                //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+
                 if (!bullet_comp->GetState())
                 {
                     bullet_comp->SetState();
@@ -668,11 +673,11 @@ void Level::StageBoss_Lvl::Collision()
 
             //Player Death
             //이 부분도 새론운 Collision 추가
-            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible())
+            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible() && bullet_comp->EnemyShoot)
             {
                 auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDeadToBoss", "Assets/Dead1.wav");
                 AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
-                bgm_resDead->PlayMusicOrSFX(bgm_resDead, Sound::SFX, 1.f, 1.f, 0.f);
+                bgm_resDead->PlayMusicOrSFX(bgm_resDead, Sound::SFX, 1.f, 1.f, 0);
                 player_comp->TakeDamge();
             }
         }
@@ -706,7 +711,7 @@ void Level::StageBoss_Lvl::Collision()
         }
         if (obj->GetBossTakeDamage() == false)
         {
-           float m_fDt = AEFrameRateControllerGetFrameTime();
+           f32 m_fDt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
            obj->TakeDamageCoolTime += m_fDt;
            if (obj->TakeDamageCoolTime >= 1.f)
            {
@@ -716,12 +721,12 @@ void Level::StageBoss_Lvl::Collision()
         }
         if (obj->GetSturn() == true&& obj->GetHP() % 3 != 0)
         {
-            float m_fDt = AEFrameRateControllerGetFrameTime();
-            obj->SturnAccTime += m_fDt;            
+            f32 m_fDt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
+            obj->SturnAccTime += m_fDt;
 
             ColliderManager::GetInst()->SetPlayerSearchOnOff(false);
             EnemyTest_trs->AddPos(0.f, 0.f);
-            Enemy_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);
+            Enemy_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1f);
         }
         bool KnockBack = false;
         if (obj->SturnAccTime >= 1.0f)
@@ -772,13 +777,13 @@ void Level::StageBoss_Lvl::Collision()
         {
             Enemy_TEST->KnockBack = false;
             Enemy_TEST->KnockBackAccTime = 0.f;
-            Enemy_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
+            Enemy_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1f);
         }
         else 
         {
             EnemyTest_trs->AddPos({ 0.f,0.f });
             player_trs->AddPos(Enemy_TEST->unitKnockBackChase.x * 500.f * m_fDt, Enemy_TEST->unitKnockBackChase.y * 500.f * m_fDt);
-            Enemy_ani->ChangeAnimation("KnockBack", 1, 8, 8, 0.1);
+            Enemy_ani->ChangeAnimation("KnockBack", 1, 8, 8, 0.1f);
         }
     }
     //1초당 보스의 피격을 위해서
@@ -798,7 +803,7 @@ void Level::StageBoss_Lvl::Collision()
         Enemy_TEST->SturnAccTime += m_fDt;
         ColliderManager::GetInst()->SetPlayerSearchOnOff(false);
         EnemyTest_trs->AddPos(0.f, 0.f);
-        Enemy_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1);
+        Enemy_ani->ChangeAnimation("BossSturn", 1, 2, 2, 0.1f);
     }
     //스턴이 끝났다면
     if (Enemy_TEST->SturnAccTime >= 1.0f)
@@ -813,13 +818,13 @@ void Level::StageBoss_Lvl::Collision()
     //여기가 보스랑 플레이어가 부딫히는 부분
     if (ColliderManager::GetInst()->GetPlayerSearchOnOff() == true)
     {
-        if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, 0.1, 1, 1) && !player_comp->GetInvincible())
+        if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, 0.1f, 1.f, 1.f) && !player_comp->GetInvincible())
         {
-            Enemy_ani->ChangeAnimation("BossAtk", 1, 4, 4, 0.1);
+            Enemy_ani->ChangeAnimation("BossAtk", 1, 4, 4, 0.1f);
             m_fDt = (f32)AEFrameRateControllerGetFrameTime();
             if (player_comp->GetManiActive())
             {
-                melee_DelayAtk += m_fDt * 0.1;
+                melee_DelayAtk += m_fDt * 0.1f;
             }
             else
             {

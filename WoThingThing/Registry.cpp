@@ -38,4 +38,6 @@ BaseRTTI* Registry::FindAndCreate(const std::string& type)
 	{		
 		return nullptr;
 	}
+
+	return nullptr;
 }

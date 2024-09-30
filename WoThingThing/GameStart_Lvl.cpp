@@ -64,7 +64,7 @@ void Level::GameStart_Lvl::Init()
 void Level::GameStart_Lvl::Update()
 {
 	preTime = totallogoTime;
-	totallogoTime += AEFrameRateControllerGetFrameTime();
+	totallogoTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 
 	if ((preTime <= 3.f && totallogoTime > 3.f) || (preTime <= 6.f && totallogoTime > 6.f) || (preTime <= 9.f && totallogoTime > 9.f))
 	{
@@ -74,7 +74,7 @@ void Level::GameStart_Lvl::Update()
 	SpriteComponent* digipenLogo_spr = (SpriteComponent*)DigipenLogo->FindComponent("Sprite");
 	SpriteComponent* teamLogo_spr = (SpriteComponent*)TeamLogo->FindComponent("Sprite");
 
-	logoSec += AEFrameRateControllerGetFrameTime();
+	logoSec += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	logoVec += logoSec / 100;
 	if (totallogoTime <= 3.f)
 	{

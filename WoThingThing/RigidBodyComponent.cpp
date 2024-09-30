@@ -51,7 +51,7 @@ void RigidBodyComponent::Update()
 	//}
 
 	AEVec2 pos = static_cast<TransComponent*>(obj)->GetPos();
-	float dt = AEFrameRateControllerGetFrameTime();
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
 	timeManipul = maniCapacity;
 	if (ShouldSlowTime) 
@@ -130,7 +130,7 @@ void RigidBodyComponent::jump(float jumpVal)
 {
 	TransComponent* EnemyTEST_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 	AEVec2 pos = static_cast<TransComponent*>(EnemyTEST_trs)->GetPos();
-	float dt = AEFrameRateControllerGetFrameTime();
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	jumpVelocity.y = jumpVal;
 	pos.y += jumpVelocity.y * dt;
 	static_cast<TransComponent*>(EnemyTEST_trs)->SetPos(pos);

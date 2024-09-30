@@ -11,7 +11,7 @@
 void ESM::IDLE_Sniper::Init()
 {
 	EnemyAnimationComponent* Enemy_sniperani = (EnemyAnimationComponent*)enemy->FindComponent("EnemyAnimation");
-	Enemy_sniperani->ChangeAnimation("SniperIdle", 1, 12, 12, 0.1);
+	Enemy_sniperani->ChangeAnimation("SniperIdle", 1, 12, 12, 0.1f);
 
 	accumulatedTime = 0;
 	//TimeManager::GetInst()->SetAccTime(0.0f);

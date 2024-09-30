@@ -37,9 +37,9 @@ void Level::GameOver_Lvl::Update()
 	AEGfxPrint(gameoverFont, test1, -w / 2, -h / 2, 1, 1, 1, 1, 1);
 
 	//AEGfxPrint(gameoverFont, "Press R Restart", -0.15, -0.3, 0.3, 1, 1, 1, 1);
-	AEGfxPrint(gameoverFont, test2, -0.15, -0.3, 0.3, 1, 1, 1, 1);
+	AEGfxPrint(gameoverFont, test2, -0.15f, -0.3f, 0.3f, 1.f, 1.f, 1.f, 1.f);
 	//AEGfxPrint(gameoverFont, "Press ESC Exit", -0.15, -0.4, 0.3, 1, 1, 1, 1);
-	AEGfxPrint(gameoverFont, test3, -0.15, -0.4, 0.3, 1, 1, 1, 1);
+	AEGfxPrint(gameoverFont, test3, -0.15f, -0.4f, 0.3f, 1.f, 1.f, 1.f, 1.f);
 
 
 

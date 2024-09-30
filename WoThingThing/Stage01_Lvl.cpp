@@ -85,8 +85,7 @@ void Level::Stage01_Lvl::Init()
     //player->AddComponent("Sprite", new SpriteComponent(player));
     //Add Image Resource??
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
-    player_trs->SetScale({ 80, 80 });    
-    player_trs->SetPos({ 10000.f,300.f });
+    player_trs->SetScale({ 80, 80 });        
 
     playerAnim = new GameObject("PlayerAnim");
     GoManager::GetInst()->AddObject(playerAnim); //GetInst() == GetPtr()
@@ -110,7 +109,7 @@ void Level::Stage01_Lvl::Init()
         AiComponent* Enemy_state = (AiComponent*)Enemy[i]->FindComponent("Ai");
 
         EnemyAnimationComponent* Enemy_ani = (EnemyAnimationComponent*)Enemy[i]->FindComponent("EnemyAnimation");        
-        Enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1);
+        Enemy_ani->ChangeAnimation("MeleeIdle", 1, 8, 8, 0.1f);
 
         Enemy_state->SetTarget(player);//순서중요 trager부터 먼저 세팅 해준다 그리고 먼저 palyer부터 만들어준다.
         Enemy_state->Setdir(true);//true가 오른쪽, false가 왼쪽
@@ -151,10 +150,7 @@ void Level::Stage01_Lvl::Update()
 {                   
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
-    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp"); 
-
-    std::cout << player_trs->GetPos().x << " | " << player_trs->GetPos().y << std::endl;
-    player_comp->SetInvincible(true);
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");    
     
     float dt = AEFrameRateControllerGetFrameTime();
     if (player_comp->GetManiActive() == true)
@@ -196,8 +192,8 @@ void Level::Stage01_Lvl::Update()
         const char* cstr1 = str1.c_str();
         const char* cstr2 = str2.c_str();
     
-        AEGfxPrint(pFont->GetFont(), cstr1, -0.85, 0.8, 20/72.f, 1, 1, 1, 1);
-        AEGfxPrint(pFont->GetFont(), cstr2, -0.95, 0.8, 20/72.f, 1, 1, 1, 1);
+        AEGfxPrint(pFont->GetFont(), cstr1, -0.85f, 0.8f, 20.f/72.f, 1.f, 1.f, 1.f, 1.f);
+        AEGfxPrint(pFont->GetFont(), cstr2, -0.95f, 0.8f, 20.f/72.f, 1.f, 1.f, 1.f, 1.f);
     }
     
     
@@ -213,7 +209,7 @@ void Level::Stage01_Lvl::Update()
     }
     else
     {
-        float deltaTime = AEFrameRateControllerGetFrameTime();
+        f32 deltaTime = static_cast<f32>(AEFrameRateControllerGetFrameTime());
         AccTime += deltaTime;
         f32 playerPosX = player_trs->GetPos().x;
         f32 playerPosY = player_trs->GetPos().y;
@@ -408,10 +404,11 @@ void Level::Stage01_Lvl::Collision()
         //Enemy Bullet
         if (obj->GetName() == "EnemyBullet")
         {
+            BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
             //with Player's Melee ==> Parrying
             if (ColliderManager::GetInst()->IsCollision(player_comp->GetMelee(), obj))
             {                             
-                BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
+                //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
                 if(!bullet_comp->GetState())
                 {
                     bullet_comp->SetState();
@@ -431,7 +428,7 @@ void Level::Stage01_Lvl::Collision()
             }
            //Player Death
            //새로운 Collision box사용
-            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible())
+            if (ColliderManager::GetInst()->handle_Player_EnemyAtk_Collision(player, obj) && !player_comp->GetInvincible()  && bullet_comp->EnemyShoot)
             {               
 
                //BulletComponent* bullet_comp = (BulletComponent*)obj->FindComponent("Bullet");
@@ -565,7 +562,7 @@ void Level::Stage01_Lvl::Collision()
 
                             auto res = ResourceManager::GetInst()->Get("sfx_EnemyDeadToBullet", "Assets/Dead2.mp3");
                             AudioResource* bgm_res = static_cast<AudioResource*>(res);
-                            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f, 1.0f, 0.f);
+                            bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.0f, 1.0f, 0);
                         }
                     }
                 }
@@ -595,7 +592,7 @@ void Level::Stage01_Lvl::Collision()
                 //audio
                 auto res = ResourceManager::GetInst()->Get("sfx_EnemyDeadToMelee", "Assets/kill1.mp3");
                 AudioResource* sfx_res = static_cast<AudioResource*>(res);
-                sfx_res->PlayMusicOrSFX(sfx_res, Sound::SFX, 1.0f, 1.0f, 0.f);
+                sfx_res->PlayMusicOrSFX(sfx_res, Sound::SFX, 1.0f, 1.0f, 0);
             }
         }
 

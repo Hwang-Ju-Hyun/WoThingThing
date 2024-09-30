@@ -56,7 +56,7 @@ void ESM::TargetAim_Sniper::Update()
 	//실질적인 부분
 	if (ColliderManager::GetInst()->PlayerSearch(TargetAim_enemy, Player, dir_state, 18.f, 18.f, 10.f))
 	{
-		Enemy_sniperani->ChangeAnimation("SniperShoot", 1, 5, 5, 0.15);
+		Enemy_sniperani->ChangeAnimation("SniperShoot", 1, 5, 5, 0.15f);
 		m_fDt_Target = 0.0f;
 		Search_outTime = 0.0f;
 
@@ -95,7 +95,7 @@ void ESM::TargetAim_Sniper::Update()
 	}
 	else
 	{
-		Enemy_sniperani->ChangeAnimation("SniperShootIdle", 1, 1, 1, 0.1);
+		Enemy_sniperani->ChangeAnimation("SniperShootIdle", 1, 1, 1, 0.1f);
 		m_fDt_Target = (f32)AEFrameRateControllerGetFrameTime();
 		Search_outTime += m_fDt_Target;
 		if (Search_outTime < 2.0f)
@@ -104,7 +104,7 @@ void ESM::TargetAim_Sniper::Update()
 			m_fDt = (f32)AEFrameRateControllerGetFrameTime();
 			if (ShouldSlowTime)
 			{
-				AttackDelay += m_fDt * 0.1;
+				AttackDelay += m_fDt * 0.1f;
 			}
 			else
 			{

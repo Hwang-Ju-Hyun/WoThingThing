@@ -26,9 +26,9 @@ void Level::Congratulation::Init()
 
 void Level::Congratulation::Update()
 {
-	AEGfxPrint(CongratulationFont, "Congratulation!", -0.3, 0, 1, 1, 1, 1, 1);
+	AEGfxPrint(CongratulationFont, "Congratulation!", -0.3f, 0.f, 1.f, 1.f, 1.f, 1.f, 1.f);
 	
-	AEGfxPrint(CongratulationFont, "Press ESC Exit", -0.15, -0.4, 0.3, 1, 1, 1, 1);
+	AEGfxPrint(CongratulationFont, "Press ESC Exit", -0.15f, -0.4f, 0.3f, 1.f, 1.f, 1.f, 1.f);
 
 	if (AEInputCheckCurr(AEVK_ESCAPE))
 	{

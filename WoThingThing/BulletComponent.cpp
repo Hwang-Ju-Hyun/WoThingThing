@@ -49,7 +49,7 @@ void BulletComponent::Update()
 	PlayerComponent* temp_comp = (PlayerComponent*)tempPlayer->FindComponent("PlayerComp");
 	bool manipulActive = temp_comp->GetManiActive();
 
-	float dt = AEFrameRateControllerGetFrameTime();
+	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	if (AEInputCheckCurr(AEVK_LSHIFT) && manipulActive)
 	{
 		bullet_pos.x += bullet_Vec.x * dt;

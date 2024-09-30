@@ -43,7 +43,7 @@ void NaveMeshManager::FindShortestPath(int startNode, int endNode,int currentCos
 	{
 		if (currentCost < minCost)
 		{			
-			minCost = currentCost;
+			minCost = static_cast<f32>(currentCost);
 			FoundedPath = path;
 			FoundedPath.push_back(endNode);
 		}
@@ -309,7 +309,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 				// 이동 방향 계산
 				if (obj->GetSturn() == false && _obj->KnockBack == false)
 				{
-					float dt = AEFrameRateControllerGetFrameTime();
+					f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 					AEVec2 direction = { _nextNode.node_pos.x - _nodeInfo.node_pos.x, 0 };
 					AEVec2 normalize_dir;
 					AEVec2Normalize(&normalize_dir, &direction);
@@ -322,7 +322,7 @@ void NaveMeshManager::Walk::Move(GameObject* _obj, TransComponent::Node _nodeInf
 						obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f });
 					}
 					//obj_trs->AddPos({ normalize_dir.x * 10.f, 0.f }); // 이동
-					obj_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
+					obj_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1f);
 				}
 				else
 				{
@@ -391,7 +391,7 @@ void NaveMeshManager::Jump::Move(GameObject* _obj, TransComponent::Node _nodeInf
 			AEVec2 direction = { _nextNode.node_pos.x - _nodeInfo.node_pos.x, _nextNode.node_pos.y - _nodeInfo.node_pos.y };
 			AEVec2 normalize_dir;
 			AEVec2Normalize(&normalize_dir, &direction);
-			float dt = AEFrameRateControllerGetFrameTime();
+			f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 			if (player_comp->GetManiActive())
 			{
 				obj_trs->AddPos({ normalize_dir.x * dt * 10.f, 0.f });

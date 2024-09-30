@@ -152,6 +152,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 		return false;
 	BaseComponent* enemy_trs = _obj1->FindComponent("Transform");
 	BaseComponent* obj_trs2 = _obj2->FindComponent("Transform");
+
 	AEVec2 enemy_Pos = static_cast<TransComponent*>(enemy_trs)->GetPos();
 	AEVec2 obj2_Pos = static_cast<TransComponent*>(obj_trs2)->GetPos();
 	

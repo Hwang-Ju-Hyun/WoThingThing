@@ -13,7 +13,7 @@ void BulletAnimationComponent::Initialize()
 	current_sprite_uv_offset_y = 0.f;
 }
 
-void BulletAnimationComponent::ChangeAnimation(std::string _name, f32 rows, f32 cols, f32 max, f32 duration)
+void BulletAnimationComponent::ChangeAnimation(std::string _name, u32 rows, u32 cols, u32 max, f32 duration)
 {
 	if (this->current != _name)
 	{
@@ -53,7 +53,7 @@ BulletAnimationComponent::BulletAnimationComponent(GameObject* _owner) : BaseCom
 {
 	ResourceManager::GetInst()->Get("BulletAnim", "Assets/Bullet_SpriteSheet.png");
 
-	ChangeAnimation("BulletAnim", 1, 4, 4, 0.1);
+	ChangeAnimation("BulletAnim", 1, 4, 4, 0.1f);
 
 }
 
