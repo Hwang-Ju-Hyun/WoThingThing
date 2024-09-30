@@ -48,7 +48,7 @@ namespace Level
         float bgm_pitch = 1.0f;
         float bgm_volume = 1.43f;
 
-        int EnemyDeathCnt = Enemy.size() + EnemySniper.size();
+        int EnemyDeathCnt = 36;
     public:
         float ChangeAniAccTime = 0.f;
     private:        

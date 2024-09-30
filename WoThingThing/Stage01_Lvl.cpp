@@ -152,13 +152,13 @@ void Level::Stage01_Lvl::Update()
     RigidBodyComponent* player_rig = (RigidBodyComponent*)player->FindComponent("RigidBody");
     PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");    
     
-    float dt = AEFrameRateControllerGetFrameTime();
+    f64 dt = AEFrameRateControllerGetFrameTime();
     if (player_comp->GetManiActive() == true)
     {        
         float vol = bgm_res->GetPitch();
         if (vol >= 0.3)
         {
-            bgm_res->SetPitch(vol - dt);
+            bgm_res->SetPitch(vol - float(dt));
             AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());            
         }  
         player_comp->SetTriggeredButton(true);
@@ -168,7 +168,7 @@ void Level::Stage01_Lvl::Update()
         float vol = bgm_res->GetPitch();
         if (vol <= 1.0)
         {
-            bgm_res->SetPitch(vol + dt);
+            bgm_res->SetPitch(vol + float(dt));
             AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());
         }
     }
@@ -315,13 +315,13 @@ void Level::Stage01_Lvl::Update()
             SetIsKnockBack(false);
             KnockBackAccTime = 0.f;
         }
-        AEGfxPrint(KnockBackFont, "Enemy is still alive", -0.3, 0.8, 1, 1, 1, 1, 1);
-        KnockBackAccTime += dt;
+        AEGfxPrint(KnockBackFont, "Enemy is still alive", -0.3f, 0.8f, 1.f, 1.f, 1.f, 1.f, 1.f);
+        KnockBackAccTime += float(dt);
         player_trs->AddPos({ unitKnockBackChase.x*20.f,0.f });
     }
 
 
-    player_comp->AddAccTime(dt);
+    player_comp->AddAccTime(float(dt));
     
 
     Collision();    
