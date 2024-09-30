@@ -110,6 +110,11 @@ public:
 
     void SetManipulate(bool _mani) { manipulActive=_mani; }
     const bool GetManipulate() { return manipulActive; }     
+private:
+    float ChangeWeaponCoolTime = 0.f;
+public:
+    void SetChangeWeaponCoolTime(float _time) { ChangeWeaponCoolTime = _time; }
+    float GetChangeWeaponCoolTime() { return ChangeWeaponCoolTime; }
 public:
     void AddAccTime(float _dt);
     float GetAccTime();

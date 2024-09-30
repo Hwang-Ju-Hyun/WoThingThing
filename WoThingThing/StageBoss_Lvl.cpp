@@ -364,7 +364,7 @@ void Level::StageBoss_Lvl::Update()
     //}
 
 
-        if (ColliderManager::GetInst()->IsCollision(Enemy_TEST, node[EnemyTest_node]))
+    if (ColliderManager::GetInst()->IsCollision(Enemy_TEST, node[EnemyTest_node]))
     {
         NaveMeshManager::GetInst()->FindShortestPath(EnemyTest_node, player_node, 0);        
     }
@@ -714,7 +714,7 @@ void Level::StageBoss_Lvl::Collision()
                obj->TakeDamageCoolTime = 0.f;
            }
         }
-        if (obj->GetSturn() == true)
+        if (obj->GetSturn() == true&& obj->GetHP() % 3 != 0)
         {
             float m_fDt = AEFrameRateControllerGetFrameTime();
             obj->SturnAccTime += m_fDt;            
@@ -737,12 +737,7 @@ void Level::StageBoss_Lvl::Collision()
             //obj->KnockBackChase.x = EnemyTest_trs->GetPos().x - player_trs->GetPos().x;
             //obj->KnockBackChase.y = EnemyTest_trs->GetPos().y - player_trs->GetPos().y;
             AEVec2Normalize(&obj->unitKnockBackChase, &obj->KnockBackChase);
-            KnockBack = true;
-
-            if (ColliderManager::GetInst()->KnockBackCollision(player_comp->GetMelee(), obj)&&obj->GetHP()%3==0)
-            {
-               
-            }            
+            KnockBack = true;            
         }
         if (KnockBack)
         {            
@@ -779,7 +774,7 @@ void Level::StageBoss_Lvl::Collision()
             Enemy_TEST->KnockBackAccTime = 0.f;
             Enemy_ani->ChangeAnimation("BossRun", 1, 6, 6, 0.1);
         }
-        else
+        else 
         {
             EnemyTest_trs->AddPos({ 0.f,0.f });
             player_trs->AddPos(Enemy_TEST->unitKnockBackChase.x * 500.f * m_fDt, Enemy_TEST->unitKnockBackChase.y * 500.f * m_fDt);

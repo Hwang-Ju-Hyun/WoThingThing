@@ -63,6 +63,9 @@ void Level::Stage01_Lvl::Init()
     bg_spr->SetTexture(bgResource->GetImage());
     bg_spr->SetAlpha(0.5f);
 
+    //Font
+    KnockBackFont = AEGfxCreateFont("Assets/esamanru-Bold.ttf", 72);
+
     //Object and Component Init
     ResourceManager::GetInst()->Get("MeleeIdle", "Assets/meleeEnemyIdle.png");
     ResourceManager::GetInst()->Get("MeleeChase", "Assets/meleeEnemyChase.png");
@@ -83,6 +86,7 @@ void Level::Stage01_Lvl::Init()
     //Add Image Resource??
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });    
+    player_trs->SetPos({ 10000.f,300.f });
 
     playerAnim = new GameObject("PlayerAnim");
     GoManager::GetInst()->AddObject(playerAnim); //GetInst() == GetPtr()
@@ -315,12 +319,14 @@ void Level::Stage01_Lvl::Update()
             SetIsKnockBack(false);
             KnockBackAccTime = 0.f;
         }
+        AEGfxPrint(KnockBackFont, "Enemy is still alive", -0.3, 0.8, 1, 1, 1, 1, 1);
         KnockBackAccTime += dt;
-        player_trs->AddPos({ unitKnockBackChase.x*100.f,0.f });
+        player_trs->AddPos({ unitKnockBackChase.x*20.f,0.f });
     }
 
 
     player_comp->AddAccTime(dt);
+    
 
     Collision();    
 
@@ -354,7 +360,7 @@ void Level::Stage01_Lvl::Collision()
                 if (obj->GetID() == 26)
                 {
                     if (EnemyDeathCnt == 0)
-                    {
+                    {                        
                         GSM::GameStateManager::GetInst()->ChangeLevel(new Level::StageBoss_Lvl);
                         return;
                     }

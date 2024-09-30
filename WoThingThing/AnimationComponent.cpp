@@ -194,8 +194,6 @@ void AnimationComponent::Update()
 			my_trs->SetScale({ 80,80 });
 		}
 
-
-
 		//Long Attack
 		if (player_comp->GetShotAction() && AEInputCheckTriggered(AEVK_LBUTTON))
 		{
@@ -222,11 +220,11 @@ void AnimationComponent::Update()
 			my_trs->SetScale({ 110,100 });
 		}
 		longattackTimer += (f32)AEFrameRateControllerGetFrameTime();
-		if (longattackState && longattackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
-		{
-			longattackState = false;
-			my_trs->SetScale({ 80,80 });
-		}
+		//if (longattackState && longattackTimer >= animation_duration_per_frame * spritesheet_max_sprites)
+		//{
+		//	longattackState = false;
+		//	my_trs->SetScale({ 80,80 });
+		//}
 	}
 	
 	animation_timer += (f32)AEFrameRateControllerGetFrameTime() /* * delay*/;
