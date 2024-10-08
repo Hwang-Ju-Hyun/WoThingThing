@@ -233,7 +233,7 @@ void Level::StageBoss_Lvl::Update()
         float vol = bgm_res->GetPitch();
         if (vol >= 0.3)
         {
-            bgm_res->SetPitch(vol - dt);
+            bgm_res->SetPitch(vol - float(dt));
             AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());
         }
         player_comp->SetTriggeredButton(true);
@@ -243,7 +243,7 @@ void Level::StageBoss_Lvl::Update()
         float vol = bgm_res->GetPitch();
         if (vol <= 1.0)
         {
-            bgm_res->SetPitch(vol + dt);
+            bgm_res->SetPitch(vol + float(dt));
             AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());
         }
     }
@@ -483,10 +483,10 @@ void Level::StageBoss_Lvl::Update()
                 auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
                 AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
                 bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
-                /* bgm_res->SetSFXorMusic(Sound::SFX);
-                 auto bgm_audio = bgm_res->GetAudio();
-                 auto bgm_audioGroup = bgm_res->GetAudioGroup();
-                 AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);*/
+                bgm_res->SetSFXorMusic(Sound::SFX);
+                auto bgm_audio = bgm_res->GetAudio();
+                auto bgm_audioGroup = bgm_res->GetAudioGroup();
+                 AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
                 CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
                 nor_dVec.y += 0.05f;
                 CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
@@ -524,7 +524,7 @@ void Level::StageBoss_Lvl::Update()
             if (Boss_bullet_count3) 
             {
                 Boss_bullet_count3 = false;
-                auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
+                auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossGun", "Assets/BossGun3.mp3");
                 AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
                 bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
                 CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
@@ -864,6 +864,9 @@ void Level::StageBoss_Lvl::Collision()
         if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, 0.1f, 1.f, 1.f) && !player_comp->GetInvincible())
         {
             Enemy_ani->ChangeAnimation("BossAtk", 1, 4, 4, 0.1f);
+            auto res = ResourceManager::GetInst()->Get("sfx_BossMelee", "Assets/BossSword.mp3");
+            AudioResource* sfx_res = static_cast<AudioResource*>(res);
+            sfx_res->PlayMusicOrSFX(sfx_res, Sound::SFX, 1.0f, 1.0f, 0);
             m_fDt = (f32)AEFrameRateControllerGetFrameTime();
             if (player_comp->GetManiActive())
             {

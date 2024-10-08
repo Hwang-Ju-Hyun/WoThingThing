@@ -83,13 +83,12 @@ void PlayerComponent::Dash(AEVec2 directVec)
 
 	dashVelocity.x = directVec.x * dash_const.x;
 	dashVelocity.y = directVec.y * dash_const.y;
-
-
 }
 void PlayerComponent::MoveMent()
 {
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
+		
 	//D 와 SHIFT를 눌렀을때만 적용 됨 --> 그냥 SHIFT를 누르고 있으면 전체적으로 적용되게 변경	
 	if (DoNotMove==false)
 	{
@@ -141,17 +140,20 @@ void PlayerComponent::MoveMent()
 	}
 	//Landing	
 	// 황주현 코드 수정 -> 밑에 코드를 setjumpcntzero ::Stage01 handleCollision에서 구현
-	if (AEInputCheckCurr(AEVK_W) && AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_SPACE))
-		Dash({ 1, 1 });
+	if (AEInputCheckCurr(AEVK_W) && AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_SPACE) )
+	{
+		Dash({ 1, 1 });		
+	}
+		
 
 	if (AEInputCheckCurr(AEVK_A))
 	{
 		//player_trs->AddPos(-5.f, 0.f);
  		player_trs->MovePos(-10.f, 0.f, manipulActive, dt);
 		//Dash
-		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
+ 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
 		{
-			AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
+ 			AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());			
 			auto res = ResourceManager::GetInst()->Get("sfx_dash1", "Assets/dash.mp3");
 			AudioResource* bgm_res = static_cast<AudioResource*>(res);
 			bgm_res->SetSFXorMusic(Sound::SFX);
@@ -163,11 +165,15 @@ void PlayerComponent::MoveMent()
 				AEAudioStopGroup(bgm_audioGroup);
 				AccTime = 0;
 			}
-			Dash({ -1, 1 });
+			if (CanDash)
+			{
+				Dash({ -1, 1 });				
+			}
 		}
 
 		else if (AEInputCheckTriggered(AEVK_SPACE))
 		{
+   			
 			AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 			auto res = ResourceManager::GetInst()->Get("sfx_dash2", "Assets/dash.mp3");
 			AudioResource* bgm_res = static_cast<AudioResource*>(res);
@@ -180,7 +186,10 @@ void PlayerComponent::MoveMent()
 				AEAudioStopGroup(bgm_audioGroup);
 				AccTime = 0;
 			}
-			Dash({ -1, 0 });
+			if (CanDash)
+			{
+				Dash({ -1, 0 }); 				
+			}						
 		}
 
 	}
@@ -191,8 +200,8 @@ void PlayerComponent::MoveMent()
 		//player_trs->AddPos(5.f, 0.f);
 		player_trs->MovePos(10.f, 0.f, manipulActive, dt);
 		//Dash
-		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
-		{
+ 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
+		{			
 			AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 			auto res = ResourceManager::GetInst()->Get("sfx_dash3", "Assets/dash.mp3");
 			AudioResource* bgm_res = static_cast<AudioResource*>(res);
@@ -205,23 +214,30 @@ void PlayerComponent::MoveMent()
 				AEAudioStopGroup(bgm_audioGroup);
 				AccTime = 0;
 			}
-			Dash({ 1, 1 });
+			if (CanDash)
+			{
+				Dash({ 1, 1 });				
+			}
+			
 		}
 		else if (AEInputCheckTriggered(AEVK_SPACE))
-		{
+		{ 			
 			AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 			auto res = ResourceManager::GetInst()->Get("sfx_dash4", "Assets/dash.mp3");
 			AudioResource* bgm_res = static_cast<AudioResource*>(res);
 			bgm_res->SetSFXorMusic(Sound::SFX);
 			auto bgm_audio = bgm_res->GetAudio();
-			auto bgm_audioGroup = bgm_res->GetAudioGroup();
+  			auto bgm_audioGroup = bgm_res->GetAudioGroup();
 			AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
 			if (AccTime > 1.5)
 			{
 				AEAudioStopGroup(bgm_audioGroup);
 				AccTime = 0;
 			}
-			Dash({ 1, 0 });
+			if (CanDash)
+			{
+				Dash({ 1, 0 });				
+			}				
 		}
 	}
 	AEVec2 pos = static_cast<TransComponent*>(player_trs)->GetPos();

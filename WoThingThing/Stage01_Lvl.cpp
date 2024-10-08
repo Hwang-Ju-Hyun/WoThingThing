@@ -163,7 +163,7 @@ void Level::Stage01_Lvl::Update()
         float vol = bgm_res->GetPitch();
         if (vol >= 0.3)
         {
-            bgm_res->SetPitch(vol - dt);
+            bgm_res->SetPitch(vol - float(dt));
             AEAudioSetGroupPitch(bgm_res->GetAudioGroup(), bgm_res->GetPitch());            
         }
         player_comp->SetTriggeredButton(true);

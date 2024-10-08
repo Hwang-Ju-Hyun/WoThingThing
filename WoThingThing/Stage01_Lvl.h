@@ -47,6 +47,7 @@ namespace Level
         bool bgm_flag = false;
         float bgm_pitch = 1.0f;
         float bgm_volume = 1.43f;
+
         int EnemyDeathCnt = 36;
     public:
         float ChangeAniAccTime = 0.f;

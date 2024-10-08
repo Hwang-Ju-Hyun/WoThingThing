@@ -177,9 +177,9 @@ void Level::StageTutorial_Lvl::Init()
     CameraManager::GetInst()->SetAim(aimTrace);
 
     //Audio
-    /*bgm = ResourceManager::GetInst()->Get("BossBGM", "Assets/BossBgm.mp3");
+    bgm = ResourceManager::GetInst()->Get("BossBGM", "Assets/BossBgm.mp3");
     bgm_res = static_cast<AudioResource*>(bgm);
-    bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);    */
+    bgm_res->PlayMusicOrSFX(bgm_res, Sound::MUSIC, 1.0f, 1.0f, -1);    
 
     const std::vector<GameObject*> all_objs = GoManager::GetInst()->Allobj();
 

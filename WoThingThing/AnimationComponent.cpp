@@ -69,7 +69,7 @@ AnimationComponent::AnimationComponent(GameObject* _owner) : BaseComponent(_owne
 	ChangeAnimation("Idle", 1, 8, 8, 0.1f);
 
 	dashState = false, jumpState = false, attackState = false, longattackState = false;
-	dashTimer = 0.f, jumpTimer = 0.f, attackTimer = 0.f, longattackTimer = 0.f;
+	dashTimer = 1.f, jumpTimer = 0.f, attackTimer = 0.f, longattackTimer = 0.f;
 	flip = false;
 }
 
@@ -126,7 +126,8 @@ void AnimationComponent::Update()
 
 		//Dash
 		if (AEInputCheckTriggered(AEVK_SPACE) && !jumpState && !attackState && !longattackState)
-		{
+		{  			
+
 			player_comp->SetInvincible(true);
 			dashState = true;
 			dashTimer = 0.f;
