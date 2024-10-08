@@ -185,7 +185,7 @@ void Level::StageBoss_Lvl::Update()
     TransComponent* boss_drone_trs = (TransComponent*)Boss_drone->FindComponent("Transform");
     EnemyAnimationComponent* boss_drone_ani = (EnemyAnimationComponent*)Boss_drone->FindComponent("EnemyAnimation");
     playerPos = player_trs->GetPos();
-    enemyTestPos = EnemyTest_trs->GetPos();
+    enemyTestPos = EnemyTest_trs->GetPos();    
     chaseVec.x = playerPos.x - enemyTestPos.x;
     chaseVec.y = playerPos.y - enemyTestPos.y;
 

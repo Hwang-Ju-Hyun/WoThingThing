@@ -91,8 +91,8 @@ void PlayerComponent::MoveMent()
 		
 	//D 와 SHIFT를 눌렀을때만 적용 됨 --> 그냥 SHIFT를 누르고 있으면 전체적으로 적용되게 변경	
 	if (DoNotMove==false)
-	{
-		if (AEInputCheckCurr(AEVK_LSHIFT))
+	{		
+		if (AEInputCheckCurr(AEVK_LCTRL))
 		{
 			manipulActive = true;
 			timeManipul -= dt;
@@ -104,7 +104,7 @@ void PlayerComponent::MoveMent()
 				timeManipul = 0.f;
 			}
 		}
-		if (!AEInputCheckCurr(AEVK_LSHIFT))
+		if (!AEInputCheckCurr(AEVK_LCTRL))
 		{
 			manipulActive = false;
 			if (timeManipul < maniCapacity)
@@ -114,7 +114,7 @@ void PlayerComponent::MoveMent()
 	}
 
 	//Jump
-	if (AEInputCheckTriggered(AEVK_W))
+	if (AEInputCheckTriggered(AEVK_SPACE))
 	{
 		jumpCnt++;
 		if (jumpCnt <= 2)
@@ -140,7 +140,7 @@ void PlayerComponent::MoveMent()
 	}
 	//Landing	
 	// 황주현 코드 수정 -> 밑에 코드를 setjumpcntzero ::Stage01 handleCollision에서 구현
-	if (AEInputCheckCurr(AEVK_W) && AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_SPACE) )
+	if (AEInputCheckCurr(AEVK_SPACE) && AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_LSHIFT))
 	{
 		Dash({ 1, 1 });		
 	}
@@ -151,7 +151,7 @@ void PlayerComponent::MoveMent()
 		//player_trs->AddPos(-5.f, 0.f);
  		player_trs->MovePos(-10.f, 0.f, manipulActive, dt);
 		//Dash
- 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
+ 		if (AEInputCheckCurr(AEVK_SPACE) && AEInputCheckTriggered(AEVK_LSHIFT))
 		{
  			AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());			
 			auto res = ResourceManager::GetInst()->Get("sfx_dash1", "Assets/dash.mp3");
@@ -171,7 +171,7 @@ void PlayerComponent::MoveMent()
 			}
 		}
 
-		else if (AEInputCheckTriggered(AEVK_SPACE))
+		else if (AEInputCheckTriggered(AEVK_LSHIFT))
 		{
    			
 			AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
@@ -200,7 +200,7 @@ void PlayerComponent::MoveMent()
 		//player_trs->AddPos(5.f, 0.f);
 		player_trs->MovePos(10.f, 0.f, manipulActive, dt);
 		//Dash
- 		if (AEInputCheckCurr(AEVK_W) && AEInputCheckTriggered(AEVK_SPACE))
+ 		if (AEInputCheckCurr(AEVK_SPACE) && AEInputCheckTriggered(AEVK_LSHIFT))
 		{			
 			AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 			auto res = ResourceManager::GetInst()->Get("sfx_dash3", "Assets/dash.mp3");
@@ -220,7 +220,7 @@ void PlayerComponent::MoveMent()
 			}
 			
 		}
-		else if (AEInputCheckTriggered(AEVK_SPACE))
+		else if (AEInputCheckTriggered(AEVK_LSHIFT))
 		{ 			
 			AccTime += static_cast<f32>(AEFrameRateControllerGetFrameTime());
 			auto res = ResourceManager::GetInst()->Get("sfx_dash4", "Assets/dash.mp3");
@@ -243,7 +243,7 @@ void PlayerComponent::MoveMent()
 	AEVec2 pos = static_cast<TransComponent*>(player_trs)->GetPos();
 
 	//left shift : time manipulation
-	if (AEInputCheckCurr(AEVK_LSHIFT) && manipulActive)
+	if (AEInputCheckCurr(AEVK_LCTRL) && manipulActive)
 		//if (manipulActive)
 		dt *= 0.1f;
 
@@ -261,7 +261,7 @@ void PlayerComponent::MoveMent()
 
 	//Gravity
 	float accelGravity = 1.f;
-	if (AEInputCheckCurr(AEVK_LCTRL))
+	if (AEInputCheckCurr(AEVK_S))
 	{
 
 		accelGravity = 10.5f;

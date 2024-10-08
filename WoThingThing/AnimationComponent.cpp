@@ -125,7 +125,7 @@ void AnimationComponent::Update()
 		}
 
 		//Dash
-		if (AEInputCheckTriggered(AEVK_SPACE) && !jumpState && !attackState && !longattackState)
+		if (AEInputCheckTriggered(AEVK_LSHIFT) && !jumpState && !attackState && !longattackState)
 		{  			
 
 			player_comp->SetInvincible(true);
@@ -149,7 +149,7 @@ void AnimationComponent::Update()
 
 		//Jump
 		//cf.) air상태일때 fall 애니메이션만 딱 작동이되고 Land 했을때 다시 Idle로 변하게.
-		if (AEInputCheckTriggered(AEVK_W) && !dashState && !attackState && !longattackState)
+		if (AEInputCheckTriggered(AEVK_SPACE) && !dashState && !attackState && !longattackState)
 		{
 			jumpState = true;
 			jumpTimer = 0.f;
