@@ -16,6 +16,7 @@
 
 #include "ResourceManager.h"
 #include"Stage01_Lvl.h"
+#include"StageBoss_Lvl.h"
 
 
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_line, int show)
@@ -31,7 +32,8 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	/*
 		*/
 	// Initialize the system
-	AESysInit(instanceH, show, 1600, 900, 0, 60, true, NULL);
+		AESysInit(instanceH, show, 1600, 900, 0, 60, true, NULL);
+		AESysSetFullScreen(1);
 
 
 	// Changing the window title
@@ -41,7 +43,7 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 
 	//Initialize GSM;
 	GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
-	gsm->ChangeLevel(new Level::MainMenu_Lvl);
+	gsm->ChangeLevel(new Level::GameStart_Lvl);
 
 	while(gsm->ShouldExit()==false)
 	{
