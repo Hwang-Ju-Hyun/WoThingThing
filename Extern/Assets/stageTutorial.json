@@ -326,7 +326,9 @@
         "CompData": {
           "RED": 125,
           "BLUE": 125,
-          "GREEN": 125
+          "GREEN": 125,
+          "TextureName": "LargePf",
+          "TexturePath": "Assets/LargePlatform.png"
         }
       },
       {
@@ -353,7 +355,9 @@
         "CompData": {
           "RED": 255,
           "BLUE": 125,
-          "GREEN": 125
+          "GREEN": 125,
+          "TextureName": "LargePf",
+          "TexturePath": "Assets/LargePlatform.png"
         }
       },
       {
@@ -380,7 +384,9 @@
         "CompData": {
           "RED": 255,
           "BLUE": 125,
-          "GREEN": 255
+          "GREEN": 255,
+          "TextureName": "LargePf",
+          "TexturePath": "Assets/LargePlatform.png"
         }
       },
       {
@@ -407,7 +413,9 @@
         "CompData": {
           "RED": 255,
           "BLUE": 255,
-          "GREEN": 0
+          "GREEN": 0,
+          "TextureName": "LPillar",
+          "TexturePath": "Assets/LargePlatformPillar.png"
         }
       },
       {
@@ -434,7 +442,9 @@
         "CompData": {
           "RED": 255,
           "BLUE": 125,
-          "GREEN": 255
+          "GREEN": 255,
+          "TextureName": "LargePf",
+          "TexturePath": "Assets/LargePlatform.png"
         }
       },
       {
@@ -461,7 +471,9 @@
         "CompData": {
           "RED": 255,
           "BLUE": 0,
-          "GREEN": 0
+          "GREEN": 0,
+          "TextureName": "Pillar",
+          "TexturePath": "Assets/BossStagePillar.png"
         }
       },
       {
@@ -488,7 +500,9 @@
         "CompData": {
           "RED": 0,
           "BLUE": 0,
-          "GREEN": 255
+          "GREEN": 255,
+          "TextureName": "SmallPf",
+          "TexturePath": "Assets/SmallPlatform.png"
         }
       },
       {

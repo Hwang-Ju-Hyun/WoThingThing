@@ -33,7 +33,7 @@ void Level::GameOver_Lvl::Update()
 	AEGfxGetPrintSize(gameoverFont, test1, 1.f, &w, &h);
 
 	//AEGfxPrint(gameoverFont, "YOU DIED", -0.3, 0, 1, 1, 1, 1, 1);
-	AEGfxPrint(gameoverFont, test1, w - 0.01, h, 1, 1, 1, 1, 1);
+	AEGfxPrint(gameoverFont, test1, w - 0.01, h, 1.f, 1.f, 1.f, 1, 1);
 	//AEGfxPrint(gameoverFont, test1, 0.5, 0.5, 1, 1, 1, 1, 1);
 
 	//AEGfxPrint(gameoverFont, test2, -0.15f, -0.3f, 0.3f, 1.f, 1.f, 1.f, 1.f);
