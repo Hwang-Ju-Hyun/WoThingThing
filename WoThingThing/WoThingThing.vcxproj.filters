@@ -317,9 +317,6 @@
     <ClCompile Include="GameOver_Lvl.cpp">
       <Filter>Level\GameOver</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationComponent.cpp">
-      <Filter>Main</Filter>
-    </ClCompile>
     <ClCompile Include="EnemyAnimationComponent.cpp">
       <Filter>Main</Filter>
     </ClCompile>
@@ -352,6 +349,9 @@
     </ClCompile>
     <ClCompile Include="Congratulation.cpp">
       <Filter>Level\GameOver</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>Component\Animation</Filter>
     </ClCompile>
     <ClCompile Include="AnimationComponent.cpp">
       <Filter>Component\Animation</Filter>
@@ -511,9 +511,6 @@
     <ClInclude Include="GameOver_Lvl.h">
       <Filter>Level\GameOver</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationComponent.h">
-      <Filter>Main</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyAnimationComponent.h">
       <Filter>Ai\AnimationAi</Filter>
     </ClInclude>
@@ -531,6 +528,9 @@
     </ClInclude>
     <ClInclude Include="BulletAnimationComponent.h">
       <Filter>Component\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Component\Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -125,9 +125,8 @@ void AnimationComponent::Update()
 		}
 
 		//Dash
-		if (AEInputCheckTriggered(AEVK_LSHIFT) && !jumpState && !attackState && !longattackState)
+		if (player_comp->GetDashAcitive() && AEInputCheckTriggered(AEVK_LSHIFT) && !jumpState && !attackState && !longattackState)
 		{  			
-
 			player_comp->SetInvincible(true);
 			dashState = true;
 			dashTimer = 0.f;
@@ -135,7 +134,6 @@ void AnimationComponent::Update()
 			if (AEInputCheckCurr(AEVK_A))
 			{
 				flip = true;
-
 			}
 
 			ChangeAnimation("Dash", 1, 6, 6, 0.1f);

@@ -45,7 +45,14 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	gauge->AddComponent("Transform", new TransComponent(gauge));
 	gauge->AddComponent("Sprite", new SpriteComponent(gauge));
 	//
-	
+
+	//
+	dashGauge = new GameObject("DashGauge");
+	GoManager::GetInst()->AddObject(dashGauge);
+	dashGauge->AddComponent("Transform", new TransComponent(dashGauge));
+	dashGauge->AddComponent("Sprite", new SpriteComponent(dashGauge));
+	//
+
 	melee = nullptr;
 	meleeState = false;
 	meleeCooldown = 0.f;
@@ -62,6 +69,10 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	invincibility = false;
 	
 	playerhealth = 1;
+
+	dashActive = true;
+	dashCooldown = 0.f;
+	dashCapacity = 3.f;
 }
 
 //About Player's movement
@@ -140,11 +151,20 @@ void PlayerComponent::MoveMent()
 	}
 	//Landing	
 	// 황주현 코드 수정 -> 밑에 코드를 setjumpcntzero ::Stage01 handleCollision에서 구현
-	if (AEInputCheckCurr(AEVK_SPACE) && AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_LSHIFT))
+	if (dashActive && AEInputCheckCurr(AEVK_SPACE) && AEInputCheckCurr(AEVK_D) && AEInputCheckTriggered(AEVK_LSHIFT))
 	{
-		Dash({ 1, 1 });		
+		dashActive = false;
+		Dash({ 1, 1 });
 	}
-		
+	if (dashCooldown <= 3.f && !dashActive)
+	{
+		dashCooldown += dt;
+	}
+	if (dashCooldown >= 3.f && !dashActive)
+	{
+		dashActive = true;
+		dashCooldown = 0.f;
+	}
 
 	if (AEInputCheckCurr(AEVK_A))
 	{
@@ -165,9 +185,10 @@ void PlayerComponent::MoveMent()
 				AEAudioStopGroup(bgm_audioGroup);
 				AccTime = 0;
 			}
-			if (CanDash)
+			if (dashActive)
 			{
-				Dash({ -1, 1 });				
+				dashActive = false;
+				Dash({ -1, 1 });
 			}
 		}
 
@@ -186,10 +207,11 @@ void PlayerComponent::MoveMent()
 				AEAudioStopGroup(bgm_audioGroup);
 				AccTime = 0;
 			}
-			if (CanDash)
+			if (dashActive)
 			{
-				Dash({ -1, 0 }); 				
-			}						
+				dashActive = false;
+				Dash({ -1, 0 });
+			}
 		}
 
 	}
@@ -214,11 +236,11 @@ void PlayerComponent::MoveMent()
 				AEAudioStopGroup(bgm_audioGroup);
 				AccTime = 0;
 			}
-			if (CanDash)
+			if (dashActive)
 			{
-				Dash({ 1, 1 });				
+				dashActive = false;
+				Dash({ 1, 1 });
 			}
-			
 		}
 		else if (AEInputCheckTriggered(AEVK_LSHIFT))
 		{ 			
@@ -234,10 +256,11 @@ void PlayerComponent::MoveMent()
 				AEAudioStopGroup(bgm_audioGroup);
 				AccTime = 0;
 			}
-			if (CanDash)
+			if (dashActive)
 			{
-				Dash({ 1, 0 });				
-			}				
+				dashActive = false;
+				Dash({ 1, 0 });
+			}
 		}
 	}
 	AEVec2 pos = static_cast<TransComponent*>(player_trs)->GetPos();
@@ -289,6 +312,11 @@ bool PlayerComponent::GetInvincible()
 void PlayerComponent::SetInvincible(bool sw)
 {
 	invincibility = sw;
+}
+
+bool PlayerComponent::GetDashAcitive()
+{
+	return dashActive;
 }
 
 //About mouse
@@ -522,12 +550,21 @@ void PlayerComponent::Gauge()
 {
 	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
 	TransComponent* gauge_trs = (TransComponent*)gauge->FindComponent("Transform");
-	AEVec2 player_Cam = CameraManager::GetInst()->GetLookAt();
 	gauge_trs->SetScale({ timeManipul * 20.f, 15 });
 	float len = maniCapacity * 20.f;
 	float curLen = timeManipul * 20.f;
 	gauge_trs->SetPos(player_trs->GetPos().x - 700 - ((len - curLen)/2.f), player_trs->GetPos().y + 400);
 
+}
+
+void PlayerComponent::DashGauge()
+{
+	TransComponent* player_trs = static_cast<TransComponent*>(m_pOwner->FindComponent("Transform"));
+	TransComponent* dashgauge_trs = (TransComponent*)dashGauge->FindComponent("Transform");
+	dashgauge_trs->SetScale({ dashCooldown * 20.f, 5 });
+	float len = dashCapacity * 20.f;
+	float curLen = dashCooldown * 20.f;
+	dashgauge_trs->SetPos(player_trs->GetPos().x  - ((len - curLen) / 2.f), player_trs->GetPos().y + 50);
 }
 
 void PlayerComponent::AddAccTime(float _dt)
@@ -548,6 +585,7 @@ void PlayerComponent::Update()
 		MouseAim();
 		Attack();
 		Gauge();
+		DashGauge();
 	}
 }
 
