@@ -43,8 +43,9 @@ class PlayerComponent : public BaseComponent
     bool IsMovementTutorial = false;
     bool IsTimeManipulateTutorial = false;
     bool IsAttackTutorial = false;    
-    bool DoNotMove = false;    
+    bool DoNotMove = false;       
 public:
+    
     PlayerComponent(GameObject* _owner);
     ~PlayerComponent() {};
     //About Player's movement
@@ -122,5 +123,7 @@ public:
     virtual void Update() override;
     virtual void LoadFromJson(const json& str)override;
     virtual json SaveToJson(const json& str)override;
-
+public:
+    bool CanDash = true;
+    float AccumulateTime = 0.f;
 };

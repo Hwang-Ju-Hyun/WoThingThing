@@ -44,7 +44,7 @@ void Level::MainMenu_Lvl::Init()
 	TransComponent* screen_trs = (TransComponent*)Screen->FindComponent("Transform");
 	screen_trs->SetPos(0, 0);
 	screen_trs->SetScale({ 1600, 900 });
-	SpriteComponent* screen_spr = (SpriteComponent*)Screen->FindComponent("Sprite");
+	SpriteComponent* screen_spr = (SpriteComponent*)Screen->FindComponent("Sprite");	
 	ResourceManager::GetInst()->Get("MainMenu", "Assets/MainMenu.png");
 	ImageResource* screenImg = (ImageResource*)ResourceManager::GetInst()->FindRes("MainMenu");
 	screen_spr->SetTexture(screenImg->GetImage());

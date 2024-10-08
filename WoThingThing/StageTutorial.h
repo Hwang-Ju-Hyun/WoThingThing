@@ -6,7 +6,9 @@
 class GameObject;
 class Resource;
 class AudioResource;
-
+class TransComponent;
+class RigidBodyComponent;
+class PlayerComponent;
 namespace Level
 {
 	class StageTutorial_Lvl :public GSM::BaseLevel
@@ -21,6 +23,17 @@ namespace Level
         GameObject* player;
         GameObject* mouseAim;
         GameObject* aimTrace;
+
+        GameObject* platform_attack = nullptr;
+        GameObject* platform_move = nullptr;
+        GameObject* platform_time = nullptr;
+
+        TransComponent* player_trs = nullptr;
+        RigidBodyComponent* player_rig = nullptr;
+        PlayerComponent* player_comp = nullptr;
+
+        TransComponent* bg_trs = nullptr;
+
         float AccTime = 0.f;
         float AttackDelayTime = 0.f;
         bool gameOver;
@@ -60,6 +73,10 @@ namespace Level
         virtual void Init() override;
         virtual void Update() override;
         virtual void Exit() override;
+        void Collision_WallvsPlayer(GameObject* wall, GameObject* p, bool b = false);
+        void Collision_Bullet_Parry(GameObject* wall, GameObject* p);
+        void Collision_Bullet_Player(GameObject* bull, GameObject* p);
 	};
+
 
 }

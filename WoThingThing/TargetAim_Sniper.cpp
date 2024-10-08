@@ -102,7 +102,7 @@ void ESM::TargetAim_Sniper::Update()
 		{
 			//여기 부분에 위에랑 똑같이 타켓하고 공격하는 기능 넣기
 			m_fDt = (f32)AEFrameRateControllerGetFrameTime();
-			if (ShouldSlowTime)
+			if (player_comp->GetManiActive())
 			{
 				AttackDelay += m_fDt * 0.1f;
 			}

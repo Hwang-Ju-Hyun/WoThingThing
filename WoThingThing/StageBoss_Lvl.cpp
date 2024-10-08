@@ -54,7 +54,7 @@ void Level::StageBoss_Lvl::Init()
     GoManager::GetInst()->AddObject(background);
     background->AddComponent("Transform", new TransComponent(background));
     background->AddComponent("Sprite", new SpriteComponent(background));
-    ResourceManager::GetInst()->Get("BackgroundImg", "Assets/BossBackgroundImage.png");
+    ResourceManager::GetInst()->Get("BackgroundImg", "Assets/BackgroundNightImage.png");
     SpriteComponent* bg_spr = (SpriteComponent*)background->FindComponent("Sprite");
     ImageResource* bgResource = (ImageResource*)ResourceManager::GetInst()->FindRes("BackgroundImg");
     bg_spr->SetTexture(bgResource->GetImage());
@@ -76,14 +76,8 @@ void Level::StageBoss_Lvl::Init()
     player = new GameObject("Player");
     GoManager::GetInst()->AddObject(player); //GetInst() == GetPtr()
     player->AddComponent("Transform", new TransComponent(player));
-    //player->AddComponent("Sprite", new SpriteComponent(player));
-    player->AddComponent("PlayerComp", new PlayerComponent(player));
-    //player->AddComponent("Animation", new AnimationComponent(player));
     TransComponent* player_trs = (TransComponent*)player->FindComponent("Transform");
     player_trs->SetScale({ 80, 80 });
-
-    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
-    player_comp->SetObtain();
 
 
     playerAnim = new GameObject("PlayerAnim");
@@ -158,6 +152,10 @@ void Level::StageBoss_Lvl::Init()
     Boss_bullet_count1 = true;
     Boss_bullet_count2 = true;
     Boss_bullet_count3 = true;
+
+    player->AddComponent("PlayerComp", new PlayerComponent(player));
+    PlayerComponent* player_comp = (PlayerComponent*)player->FindComponent("PlayerComp");
+    player_comp->SetObtain();
 
 }
 
@@ -301,12 +299,10 @@ void Level::StageBoss_Lvl::Update()
         }
     }
     
-    player_comp->SetInvincible(true);
 
 
     Collision();
-
-    //CameraManager::GetInst()->Update();    
+ 
 
 
     GoManager::GetInst()->RemoveDeathObj();
@@ -318,10 +314,17 @@ void Level::StageBoss_Lvl::Update()
 
     if (!(player_comp->IsAlive()))
     {
-        GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
-        gsm->ChangeLevel(new Level::GameOver_Lvl);
+        AnimationComponent* player_anim = (AnimationComponent*)playerAnim->FindComponent("Animation");
+        player_anim->ChangeAnimation("Death", 1, 24, 24, 0.1f);
 
-        return;
+        duringDeath += static_cast<f32>(AEFrameRateControllerGetFrameTime());
+        if (duringDeath >= 2.4f)
+        {
+            GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
+            gsm->ChangeLevel(new Level::GameOver_Lvl);
+
+            return;
+        }
     }
    
     
@@ -332,6 +335,7 @@ void Level::StageBoss_Lvl::Update()
     RigidBodyComponent* EnemyTEST_rg = static_cast<RigidBodyComponent*>(Enemy_TEST->FindComponent("RigidBody"));
     PathFindMoveComponent* EnemyTEST_pf = static_cast<PathFindMoveComponent*>(Enemy_TEST->FindComponent("PathFindMove"));
     EnemyAnimationComponent* Boss_drone_ani = (EnemyAnimationComponent*)Boss_drone->FindComponent("EnemyAnimation");
+    
 
     NaveMeshManager::GetInst()->SetMinCost(10000.f);
     //플레이어한테서 가장 가까운 노드를 찾는다
@@ -426,11 +430,19 @@ void Level::StageBoss_Lvl::Update()
 
     if (Enemy_TEST->GetHP() >= 15 && Enemy_TEST->GetHP() <= 20)
     {
+        
         AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
         AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
         AEVec2Normalize(&nor_dVec, &dVec);
         float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
-        AttackDelayTime += deltaTime;
+        if (player_comp->GetManipulate()) 
+        {
+            AttackDelayTime += deltaTime * 0.1f;
+        }
+        else 
+        {
+            AttackDelayTime += deltaTime;
+        }
         if (AttackDelayTime > 2.4f)
         {
             if (Boss_bullet_count1)
@@ -450,24 +462,31 @@ void Level::StageBoss_Lvl::Update()
     }
     else if (Enemy_TEST->GetHP() >= 10&& Enemy_TEST->GetHP()<15)
     {
-        //Boss_drone_ani->ChangeAnimation("Boss_drone_Atk", 1, 12, 12, 0.3);
+        Boss_drone_ani->ChangeAnimation("Boss_drone_Atk", 1, 12, 12, 0.3f);
         AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
         AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
         AEVec2Normalize(&nor_dVec, &dVec);
         float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
-        AttackDelayTime += deltaTime;
+        if (player_comp->GetManipulate())
+        {
+            AttackDelayTime += deltaTime * 0.1f;
+        }
+        else
+        {
+            AttackDelayTime += deltaTime;
+        }
         if (AttackDelayTime > 1.8f)
         {
-
+            if (Boss_bullet_count2)
+            {
                 Boss_bullet_count2 = false;
                 auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossShotgun", "Assets/BossShotgun.mp3");
                 AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
                 bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
-
-                /* bgm_res->SetSFXorMusic(Sound::SFX);
-                 auto bgm_audio = bgm_res->GetAudio();
-                 auto bgm_audioGroup = bgm_res->GetAudioGroup();
-                 AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);*/
+                bgm_res->SetSFXorMusic(Sound::SFX);
+                auto bgm_audio = bgm_res->GetAudio();
+                auto bgm_audioGroup = bgm_res->GetAudioGroup();
+                 AEAudioPlay(bgm_audio, bgm_audioGroup, 1.f, 1.f, 0);
                 CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
                 nor_dVec.y += 0.05f;
                 CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
@@ -476,22 +495,45 @@ void Level::StageBoss_Lvl::Update()
                 nor_dVec.y -= 0.15f;
                 CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
                 nor_dVec.y -= 0.30f;
+            }
+            if (AttackDelayTime > 3.6f) 
+            {
                 AttackDelayTime = 0.f;
                 Boss_bullet_count2 = true;
+            }
 
         }
     }
     else if (Enemy_TEST->GetHP() < 10)
     {
+        Boss_drone_ani->ChangeAnimation("Boss_drone_Atk", 1, 12, 12, 0.1f);
         AEVec2 dVec = { -(EnemyTest_trs->GetPos().x - player_trs->GetPos().x), -(EnemyTest_trs->GetPos().y - player_trs->GetPos().y) }; //direction Vector
         AEVec2 nor_dVec{ 0,0 }; //Normailize direction Vector
         AEVec2Normalize(&nor_dVec, &dVec);
         float deltaTime = (f32)AEFrameRateControllerGetFrameTime();
-        AttackDelayTime += deltaTime;
-        if (AttackDelayTime > 0.5f)
+        if (player_comp->GetManipulate())
         {
-            CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);            
-            AttackDelayTime = 0.f;
+            AttackDelayTime += deltaTime * 0.1f;
+        }
+        else
+        {
+            AttackDelayTime += deltaTime;
+        }
+        if (AttackDelayTime > 0.6f)
+        {
+            if (Boss_bullet_count3) 
+            {
+                Boss_bullet_count3 = false;
+                auto res_BossShotgun = ResourceManager::GetInst()->Get("sfx_BossGun", "Assets/BossGun3.mp3");
+                AudioResource* bgm_res = static_cast<AudioResource*>(res_BossShotgun);
+                bgm_res->PlayMusicOrSFX(bgm_res, Sound::SFX, 1.f, 1.f, 0);
+                CreateBullet(EnemyTest_trs->GetPos(), nor_dVec, "BossBullet", true);
+            }
+            else 
+            {
+                Boss_bullet_count3 = true;
+                AttackDelayTime = 0.f;
+            }
         }
     }
 }
@@ -677,7 +719,8 @@ void Level::StageBoss_Lvl::Collision()
             {
                 auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDeadToBoss", "Assets/Dead1.wav");
                 AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
-                bgm_resDead->PlayMusicOrSFX(bgm_resDead, Sound::SFX, 1.f, 1.f, 0);
+                if (player_comp->IsAlive())
+                    bgm_resDead->PlayMusicOrSFX(bgm_resDead, Sound::SFX, 1.f, 1.f, 0);
                 player_comp->TakeDamge();
             }
         }
@@ -821,6 +864,9 @@ void Level::StageBoss_Lvl::Collision()
         if (ColliderManager::GetInst()->PlayerSearch(Enemy_TEST, player, enemyDir, 0.1f, 1.f, 1.f) && !player_comp->GetInvincible())
         {
             Enemy_ani->ChangeAnimation("BossAtk", 1, 4, 4, 0.1f);
+            auto res = ResourceManager::GetInst()->Get("sfx_BossMelee", "Assets/BossSword.mp3");
+            AudioResource* sfx_res = static_cast<AudioResource*>(res);
+            sfx_res->PlayMusicOrSFX(sfx_res, Sound::SFX, 1.0f, 1.0f, 0);
             m_fDt = (f32)AEFrameRateControllerGetFrameTime();
             if (player_comp->GetManiActive())
             {
@@ -833,6 +879,11 @@ void Level::StageBoss_Lvl::Collision()
 
             if (melee_DelayAtk > 0.4f)
             {
+                auto resDead = ResourceManager::GetInst()->Get("sfx_PlayerDeadToBoss", "Assets/Dead1.wav");
+                AudioResource* bgm_resDead = static_cast<AudioResource*>(resDead);
+                if (player_comp->IsAlive())
+                    bgm_resDead->PlayMusicOrSFX(bgm_resDead, Sound::SFX, 1.f, 1.f, 0);
+
                 player_comp->TakeDamge();
             }
 

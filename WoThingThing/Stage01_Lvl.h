@@ -14,7 +14,7 @@ namespace Level
     {
         GameObject* background;
         GameObject* player;
-        GameObject* playerAnim;
+        GameObject* playerAnim; 
         GameObject* mouseAim;
         AEGfxTexture* pTex;
         AEGfxVertexList* pMesh;
@@ -24,7 +24,7 @@ namespace Level
         float AccTime = 0;
     public:
         Stage01_Lvl();
-        ~Stage01_Lvl();
+        ~Stage01_Lvl() override;
 
         virtual void Init() override;
         virtual void Update() override;
@@ -62,8 +62,15 @@ namespace Level
         int counter = 0;
         const int GetAllEnemyDeathCnt();
     public:
+        f32 probalGun = 0.45f;
+        f32 probalBullet = 0.3f;
+
+        f32 duringDeath;
+
         void HandleCollision(GameObject* obj1, GameObject* obj2);
         void Collision();
+        f32 Probability();
+
     };
 }
 

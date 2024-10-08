@@ -423,8 +423,7 @@ void TransComponent::SetRot(const float& _rot)
 
 void TransComponent::Update()
 {
-	CalculateMatrix();
-	
+	CalculateMatrix();	
 }
 
 BaseRTTI* TransComponent::CreateTransformComp()
