@@ -100,6 +100,12 @@ void Level::GameStart_Lvl::Update()
 		GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
 		gsm->ChangeLevel(new Level::MainMenu_Lvl);
 	}
+
+	if (AEInputCheckCurr(AEVK_ESCAPE))
+	{
+		GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
+		gsm->ChangeLevel(new Level::MainMenu_Lvl);
+	}
 }
 
 void Level::GameStart_Lvl::Exit()
