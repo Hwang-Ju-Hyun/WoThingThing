@@ -311,6 +311,7 @@ TransComponent::TransComponent(GameObject* _owner) : BaseComponent(_owner), m_ma
 		m_fRot = 0.f;
 	}
 
+
 	if (_owner->GetName() == "Boss_drone")
 	{
 		m_vPos = { 2000,90 };
