@@ -125,7 +125,7 @@ void AnimationComponent::Update()
 		}
 
 		//Dash
-		if (AEInputCheckTriggered(AEVK_SPACE) && !jumpState && !attackState && !longattackState)
+		if (player_comp->GetDashAcitive() && AEInputCheckTriggered(AEVK_SPACE) && !jumpState && !attackState && !longattackState)
 		{
 			player_comp->SetInvincible(true);
 			dashState = true;

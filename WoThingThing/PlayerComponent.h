@@ -26,24 +26,30 @@ class PlayerComponent : public BaseComponent
     GameObject* melee;
     bool meleeState;
     f32 meleeCooldown;
-    GameObject* gauge;
 
     int jumpCnt;
     bool meleeAction, shotAction, obtainGun;
 
+    GameObject* gauge;
     bool manipulActive;
+    f32 maniCapacity;
     f32 timeManipul;
+
     int playerhealth;
-    float maniCapacity;
     float AccTime=0.f;
     bool IsTriggeredButton=false;
     bool invincibility;
+    
+    GameObject* dashGauge;
+    bool dashActive;
+    f32 dashCapacity;
+    f32 dashCooldown;
 
     bool IsTutorialStage = false;
     bool IsMovementTutorial = false;
     bool IsTimeManipulateTutorial = false;
     bool IsAttackTutorial = false;    
-    bool DoNotMove = false;    
+    bool DoNotMove = false;   
 public:
     PlayerComponent(GameObject* _owner);
     ~PlayerComponent() {};
@@ -55,6 +61,10 @@ public:
 
     bool GetInvincible();
     void SetInvincible(bool sw);
+    bool GetDashAcitive();
+
+    void Gauge();
+    void DashGauge();
     ///////////////////////////
 
     //About mouse
@@ -91,7 +101,6 @@ public:
 
     void TakeDamge();
     bool IsAlive();
-    void Gauge();
 public:
     void SetIsTutorialStage(bool _IsTutorialStage) { IsTutorialStage = _IsTutorialStage; }
     const bool GetIsTutorialStage() { return IsMovementTutorial; }

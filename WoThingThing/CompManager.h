@@ -14,7 +14,7 @@ private:
 
 	//I'm using the container vector now, but Is it good choice? 
 	//vector? list? queue?
-	std::vector<BaseComponent*> m_vecCompMgr;	
+	std::vector<BaseComponent*> m_vecCompMgr;
 public:
 	void AddComponent(std::string _name,BaseComponent* _comp);
 	//void RemoveComponent();
