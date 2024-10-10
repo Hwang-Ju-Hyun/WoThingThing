@@ -41,7 +41,7 @@ void ESM::IDLE::Update()
 	accumulatedTime = TimeManager::GetInst()->GetAccTime();
 	EnemyAnimationComponent* Enemy_meleeani = (EnemyAnimationComponent*)enemy->FindComponent("EnemyAnimation");
 	TransComponent* enemy_trs = (TransComponent*)enemy->FindComponent("Transform");
-	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
+	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LCTRL);
 	//
 	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
 	f32 ct = static_cast<f32>(AEFrameRateControllerGetFrameTime());

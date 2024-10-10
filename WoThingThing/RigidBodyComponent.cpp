@@ -52,7 +52,7 @@ void RigidBodyComponent::Update()
 
 	AEVec2 pos = static_cast<TransComponent*>(obj)->GetPos();
 	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
-	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
+	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LCTRL);
 	timeManipul = maniCapacity;
 	if (ShouldSlowTime) 
 	{
@@ -64,7 +64,7 @@ void RigidBodyComponent::Update()
 			timeManipul = 0.f;
 	    }
 	}
-	if (!AEInputCheckCurr(AEVK_LSHIFT))
+	if (!AEInputCheckCurr(AEVK_LCTRL))
 	{
 		manipulActive = false;
 		if (timeManipul < maniCapacity)

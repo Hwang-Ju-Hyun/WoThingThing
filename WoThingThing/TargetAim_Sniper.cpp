@@ -52,7 +52,7 @@ void ESM::TargetAim_Sniper::Update()
 
 	//총알 Noramlize
 	AEVec2Normalize(&nor_dVec, &chaseVec);
-	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
+	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LCTRL);
 	//실질적인 부분
 	if (ColliderManager::GetInst()->PlayerSearch(TargetAim_enemy, Player, dir_state, 18.f, 18.f, 10.f))
 	{

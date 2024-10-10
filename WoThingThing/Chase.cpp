@@ -54,7 +54,7 @@ void ESM::Chase::Update()
 
 	bool isEnemyNotOnPlatformEdge = ColliderManager::GetInst()->EdgeSearch(Chase_enemy, PlatForm, dir_state, 3.f, -1.f, 2.f);
 	bool isPlayerInsideTheRadar = ColliderManager::GetInst()->PlayerSearch(Chase_enemy, Player, dir_state, 16.f, 8.f, 1.f);
-	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LSHIFT);
+	bool ShouldSlowTime = AEInputCheckCurr(AEVK_LCTRL);
 
 	//3초 쿨타임 적용파트
 	f32 ct = static_cast<f32>(AEFrameRateControllerGetFrameTime());

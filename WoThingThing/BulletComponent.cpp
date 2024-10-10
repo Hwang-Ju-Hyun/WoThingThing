@@ -50,7 +50,7 @@ void BulletComponent::Update()
 	bool manipulActive = temp_comp->GetManiActive();
 
 	f32 dt = static_cast<f32>(AEFrameRateControllerGetFrameTime());
-	if (AEInputCheckCurr(AEVK_LSHIFT) && manipulActive)
+	if (AEInputCheckCurr(AEVK_LCTRL) && manipulActive)
 	{
 		bullet_pos.x += bullet_Vec.x * dt;
 		bullet_pos.y += bullet_Vec.y * dt;
