@@ -145,7 +145,7 @@ bool ColliderManager::handle_Player_EnemyAtk_Collision(GameObject* _obj1, GameOb
 }
 
 //근접 캐릭터용, range부분 더 늘리기?
-bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool enemy_dir, float x_range, float y_range,float bottom_y_range)
+bool ColliderManager::EdgeSearch(GameObject* _obj1, GameObject* _obj2, bool enemy_dir, float x_range, float y_range,float bottom_y_range)
 {
 	if (_obj1 == nullptr || _obj2 == nullptr)
 		return false;
@@ -170,13 +170,75 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 	{
 		//이 부분 그리게 하기 나중에 코드 작성
 		float Search_LeftArea_X = enemy_Pos.x - enemy_Scale.x; //왼쪽 방향으로 가고 있을 때
-		float L_SearchPlayer_RightX = Search_LeftArea_X + enemy_Scale.x;
+		float L_SearchPlayer_RightX = Search_LeftArea_X + enemy_Scale.x / 2.f;
 		float L_SearchPlayer_LeftX = Search_LeftArea_X - x_range * (enemy_Scale.x / 2.f);//x축 범위
 		float L_SearchPlayer_TopY = enemy_Pos.y + y_range * (enemy_Scale.y / 2.f);//y축 범위
 		float L_SearchPlayer_BotY = enemy_Pos.y - bottom_y_range * (enemy_Scale.y / 2.f);
 	
 	
 	
+		//그리기영역
+		//DrawRect(L_SearchPlayer_LeftX, L_SearchPlayer_BotY, L_SearchPlayer_RightX, L_SearchPlayer_TopY, 0, 0, 1);
+		//--------------
+		if (TestCollisionRectRectInclusive(L_SearchPlayer_RightX, L_SearchPlayer_LeftX, L_SearchPlayer_TopY, L_SearchPlayer_BotY,
+			obj2Right, obj2Left, obj2TopY, obj2BotY))
+		{
+			//std::cout << "SearchPlayerLeft" << std::endl;
+			return true;
+		}
+	}
+	else if (enemy_dir == false)
+	{
+		float Search_RightArea_X = enemy_Pos.x + enemy_Scale.x;//오른쪽 방향으로 가고 있을 때
+		float R_SearchPlayer_LeftX = Search_RightArea_X - enemy_Scale.x / 2.f;
+		float R_SearchPlayer_RightX = Search_RightArea_X + x_range * (enemy_Scale.x / 2.f);
+		float R_SearchPlayer_TopY = enemy_Pos.y + y_range * (enemy_Scale.y / 2.f);
+		float R_SearchPlayer_BotY = enemy_Pos.y - bottom_y_range * (enemy_Scale.y / 2.f);
+	
+		//DrawRect(R_SearchPlayer_LeftX, R_SearchPlayer_BotY, R_SearchPlayer_RightX, R_SearchPlayer_TopY, 0, 0, 1);
+		if (TestCollisionRectRectInclusive(R_SearchPlayer_RightX, R_SearchPlayer_LeftX, R_SearchPlayer_TopY, R_SearchPlayer_BotY,
+			obj2Right, obj2Left, obj2TopY, obj2BotY))
+		{
+			//std::cout << "SearchPlayerLeft" << std::endl;
+			return true;
+		}
+	}
+	return false;
+}
+
+
+bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool enemy_dir, float x_range, float y_range, float bottom_y_range)
+{
+	if (_obj1 == nullptr || _obj2 == nullptr)
+		return false;
+	BaseComponent* enemy_trs = _obj1->FindComponent("Transform");
+	BaseComponent* obj_trs2 = _obj2->FindComponent("Transform");
+
+	AEVec2 enemy_Pos = static_cast<TransComponent*>(enemy_trs)->GetPos();
+	AEVec2 obj2_Pos = static_cast<TransComponent*>(obj_trs2)->GetPos();
+
+	AEVec2 enemy_Scale = static_cast<TransComponent*>(enemy_trs)->GetScale();
+	AEVec2 obj2_Scale = static_cast<TransComponent*>(obj_trs2)->GetScale();
+
+	float obj2Right = obj2_Pos.x + obj2_Scale.x / 2.f;
+	float obj2Left = obj2_Pos.x - obj2_Scale.x / 2.f;
+	float obj2TopY = obj2_Pos.y + obj2_Scale.y / 2.f;
+	float obj2BotY = obj2_Pos.y - obj2_Scale.y / 2.f;
+
+	//DrawRect(obj2Left, obj2BotY, obj2Right, obj2TopY, 1, 0, 0);
+
+	//영역의 좌표(정사각형 기준)
+	if (enemy_dir == true) //보는 방향에 따른 영역 변환
+	{
+		//이 부분 그리게 하기 나중에 코드 작성
+		float Search_LeftArea_X = enemy_Pos.x - enemy_Scale.x; //왼쪽 방향으로 가고 있을 때
+		float L_SearchPlayer_RightX = Search_LeftArea_X + enemy_Scale.x;
+		float L_SearchPlayer_LeftX = Search_LeftArea_X - x_range * (enemy_Scale.x / 2.f);//x축 범위
+		float L_SearchPlayer_TopY = enemy_Pos.y + y_range * (enemy_Scale.y / 2.f);//y축 범위
+		float L_SearchPlayer_BotY = enemy_Pos.y - bottom_y_range * (enemy_Scale.y / 2.f);
+
+
+
 		//그리기영역
 		//DrawRect(L_SearchPlayer_LeftX, L_SearchPlayer_BotY, L_SearchPlayer_RightX, L_SearchPlayer_TopY, 1, 0, 0);
 		//--------------
@@ -194,7 +256,7 @@ bool ColliderManager::PlayerSearch(GameObject* _obj1, GameObject* _obj2, bool en
 		float R_SearchPlayer_RightX = Search_RightArea_X + x_range * (enemy_Scale.x / 2.f);
 		float R_SearchPlayer_TopY = enemy_Pos.y + y_range * (enemy_Scale.y / 2.f);
 		float R_SearchPlayer_BotY = enemy_Pos.y - bottom_y_range * (enemy_Scale.y / 2.f);
-	
+
 		//DrawRect(R_SearchPlayer_LeftX, R_SearchPlayer_BotY, R_SearchPlayer_RightX, R_SearchPlayer_TopY, 1, 0, 0);
 		if (TestCollisionRectRectInclusive(R_SearchPlayer_RightX, R_SearchPlayer_LeftX, R_SearchPlayer_TopY, R_SearchPlayer_BotY,
 			obj2Right, obj2Left, obj2TopY, obj2BotY))

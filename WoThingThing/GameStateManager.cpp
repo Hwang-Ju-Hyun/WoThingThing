@@ -44,14 +44,14 @@ void GSM::GameStateManager::Update()
 void GSM::GameStateManager::Exit()
 {
 	
-	if (m_pCurrentLevel == nullptr)
-	{		
-		#ifdef DEBUG
-			std::cerr << "GSM Exit Error! : CurrentLevel is nullptr" << std::endl;			
-		#endif 	
-		return;
-	}
-	m_pCurrentLevel->Exit();
+		if (m_pCurrentLevel == nullptr)
+		{		
+			#ifdef DEBUG
+				std::cerr << "GSM Exit Error! : CurrentLevel is nullptr" << std::endl;			
+			#endif 	
+			return;
+		}
+		m_pCurrentLevel->Exit();
 }
 
 void GSM::GameStateManager::ChangeLevel(BaseLevel* newLvl)
