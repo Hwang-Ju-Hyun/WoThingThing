@@ -63,6 +63,7 @@ void ESM::IDLE::Update()
 	
 	if (!(isOnFirstPlace(enemy_trs->GetPos(), FirstPlacePos))) 
 	{
+		Enemy_meleeani->ChangeAnimation("MeleeChase", 1, 8, 8, 0.1f);
 		//std::cout << FirstPlacePos.x << std::endl;
 		enemyPos = enemy_trs->GetPos();
 		returnVec.x = FirstPlacePos.x - enemyPos.x;

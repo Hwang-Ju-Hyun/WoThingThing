@@ -9,19 +9,19 @@ CompManager::CompManager()
 CompManager::~CompManager()
 {
 	
-}
+}		
 
 void CompManager::AddComponent(std::string _name, BaseComponent* _comp)
 {
 
-	if (_comp == nullptr)
-	{
-		//std::cerr << "AddComponent Error!(CompManger) : new Component is nullptr" << std::endl;
-		return;
-	}
-	//m_mapCompMgr.insert({ _name,_comp });
-	_comp->SetName(_name);
-	m_vecCompMgr.push_back(_comp );
+		if (_comp == nullptr)
+		{
+			//std::cerr << "AddComponent Error!(CompManger) : new Component is nullptr" << std::endl;
+			return;
+		}
+		//m_mapCompMgr.insert({ _name,_comp });
+		_comp->SetName(_name);
+		m_vecCompMgr.push_back(_comp );
 	//vectorø° ¿˙¿Â
 }
 
