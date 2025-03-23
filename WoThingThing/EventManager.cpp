@@ -4,6 +4,9 @@
 #include "GameObject.h"
 #include "TransComponent.h"
 #include "RigidBodyComponent.h"
+#include "PlayerComponent.h"
+#include"Chase.h"
+
 
 EventManager::EventManager()
 {
@@ -19,66 +22,78 @@ void EventManager::AddEvent(Event* ev)
 	allEvents.push_back(ev);
 }
 
-Event* EventManager::FindEvent(std::string& str)
+
+void EventManager::AddEntity(const std::string& evt_name, Entity* et)
 {
-	std::list<Event*>::iterator iter;
-	for (iter = allEvents.begin(); iter != allEvents.end(); iter++)
+	std::map<std::string /*event의 아이디*/, std::list<Entity*>/*구독자들*/>::iterator iter = registeredEntities.find(evt_name);
+	if (iter != registeredEntities.end())
 	{
-		if ((*iter)->GetEventName() == str)
-		{
-			return (*iter);
+  		std::list<Entity*>& subscribers = iter->second;
+		subscribers.push_back(et);
+	}
+	else
+	{
+		std::list<Entity*> newPerson;
+		newPerson.push_back(et);
+		registeredEntities.insert({ evt_name,newPerson });
+	}
+}
+
+void EventManager::RemoveEntity(const std::string& evt_name, Entity* et)
+{
+	std::list<Entity*>* list_name = FindEntityList(evt_name);
+	if (list_name) 
+	{
+		//구독자들 중에 et를 찾아서 삭제
+		auto it = std::find(list_name->begin(), list_name->end(), et);
+		if (it != list_name->end()) {
+			// 요소 삭제
+			list_name->erase(it);
 		}
 	}
-	return nullptr;
 }
 
-void EventManager::AddEntity(Entity* et)
-{
-	m_listEntity.push_back(et);
-}
 
-Entity* EventManager::FindEntity(std::string& str)
+void EventManager::RemoveAllEvent()
 {	
-	return nullptr;
-}
-
-void EventManager::AddEntityList(const std::string& ev_Key, std::list<Entity*>listEntity)
-{
-	registeredEntities.insert({ ev_Key,listEntity });
+	auto iter = allEvents.begin();
+	for (iter; iter != allEvents.end(); iter++)
+	{		
+		delete *iter;
+		*iter = nullptr;
+	}	
+	allEvents.clear();
 }
 
 std::list<Entity*>* EventManager::FindEntityList(std::string ev_Key)
 {
-	for (auto iter = registeredEntities.begin(); iter != registeredEntities.end(); iter++)
-	{
-		if ((*iter).first == ev_Key)
-		{
-			return &(*iter).second;
-		}
-	}
-	return nullptr;
+	auto listEntity = registeredEntities.find(ev_Key);
+	if (listEntity == registeredEntities.end())
+		return nullptr;
+	return &(listEntity->second);		
 }
 
-void EventManager::DispatchEvent(std::string ev_Key)
-{
-	Event* ev = FindEvent(ev_Key);
+void EventManager::DispatchEvent(Event* ev)
+{	
 	if (ev == nullptr)
 		return;
 
-	std::list<Entity*>* listEt = FindEntityList(ev_Key);
+	std::list<Entity*>* listEt = FindEntityList(ev->GetEventName());
 
 	if (listEt == nullptr)
 		return;
-
-	for (auto iter = listEt->begin(); iter != listEt->end(); iter++)
-	{
-		(*iter)->OnEvent(ev);
+	if (allEvents.size()<=0)
+	{		
+		return;
 	}
-}
-
-std::list<Entity*> EventManager::GetEntityList()
-{
-	return m_listEntity;
+	else
+	{
+		for (auto iter = listEt->begin(); iter != listEt->end(); iter++)
+		{
+			(*iter)->OnEvent(ev);
+		
+		}
+	}
 }
 
 void EventManager::Update()
@@ -86,96 +101,29 @@ void EventManager::Update()
 	//모든 이벤트를 DispatchEvent
 	for (auto iter = allEvents.begin(); iter != allEvents.end(); iter++)
 	{
-		DispatchEvent((*iter)->GetEventName());
+		DispatchEvent(*iter);
+		delete (*iter);
 	}
 	allEvents.clear();
 }
 
-void RePosition::OnEvent(Event* ev)
+
+
+
+
+void ChasePlatFormSettor::OnEvent(Event* ev)
 {
-	Collision* colEvent = static_cast<Collision*>(ev);
-
-	GameObject* obj1 = colEvent->GetObject1();
-	GameObject* obj2 = colEvent->GetObject2();
-
-	TransComponent* obj1_trs = static_cast<TransComponent*>(obj1->FindComponent("Transform"));
-	TransComponent* obj2_trs = static_cast<TransComponent*>(obj2->FindComponent("Transform"));
-
-	if (obj1->GetName() == "Ball" || obj2->GetName() == "Ball")
+	Enemy_Platform_Collision_Event* e_p_c_e = static_cast<Enemy_Platform_Collision_Event*>(ev);
+	if (e_p_c_e->enemy == Enemy_Chase->GetOwner())
 	{
-		if (obj1->GetName() == "Player1" || obj2->GetName() == "Player1")
-		{
-			TransComponent* ball_trs = obj1->GetName() == "Ball" ? obj1_trs : obj2_trs;
-			TransComponent* player1_trs = obj1->GetName() == "Player1" ? obj1_trs : obj2_trs;
-			
-			ball_trs->SetPos(player1_trs->GetPos().x + player1_trs->GetScale().x + ball_trs->GetScale().x / 2.f,ball_trs->GetPos().y);
-			RigidBodyComponent* ball_rb = dynamic_cast<RigidBodyComponent*>(ball_trs->GetOwner()->FindComponent("RigidBody"));
-			
-			if(ball_rb!=nullptr)
-				ball_rb->SetVelocityXNegative();
-		}
-		else if (obj1->GetName() == "Player2" || obj2->GetName() == "Player2")
-		{
-			TransComponent* ball_trs = obj1->GetName() == "Ball" ? obj1_trs : obj2_trs;
-			TransComponent* player2_trs = obj1->GetName() == "Player2" ? obj1_trs : obj2_trs;
-			
-			ball_trs->SetPos(player2_trs->GetPos().x - player2_trs->GetScale().x - ball_trs->GetScale().x / 2.f,ball_trs->GetPos().y);
-
-			RigidBodyComponent* ball_rb = dynamic_cast<RigidBodyComponent*>(ball_trs->GetOwner()->FindComponent("RigidBody"));
-			
-			if (ball_rb != nullptr)
-				ball_rb->SetVelocityXNegative();
-		}
-		else if (obj1->GetName() == "UpperPost" || obj2->GetName() == "UpperPost")
-		{			
-			TransComponent* ball_trs = obj1->GetName() == "Ball" ? obj1_trs : obj2_trs;
-			TransComponent* upperPost_trs = obj1->GetName() == "UpperPost" ? obj1_trs : obj2_trs;
-			
-			ball_trs->SetPos(ball_trs->GetPos().x,upperPost_trs->GetPos().y - upperPost_trs->GetScale().y - 20.f);
-
-			RigidBodyComponent* ball_rb = dynamic_cast<RigidBodyComponent*>(ball_trs->GetOwner()->FindComponent("RigidBody"));
-			
-			if (ball_rb != nullptr)
-				ball_rb->SetVelocityYNegative();
-		}		
-		else if (obj1->GetName() == "DownPost" || obj2->GetName() == "DownPost")
-		{
-			TransComponent* ball_trs = obj1->GetName() == "Ball" ? obj1_trs : obj2_trs;
-			TransComponent* downPost_trs = obj1->GetName() == "DownPost" ? obj1_trs : obj2_trs;
-			
-			ball_trs->SetPos(ball_trs->GetPos().x,downPost_trs->GetPos().y + downPost_trs->GetScale().y + 20.f);
-			
-			RigidBodyComponent* ball_rb = dynamic_cast<RigidBodyComponent*>(ball_trs->GetOwner()->FindComponent("RigidBody"));
-			
-			if (ball_rb != nullptr)
-				ball_rb->SetVelocityYNegative();
-		}
-		else if (obj1->GetName() == "GoalPost1" || obj2->GetName() == "GoalPost1")
-		{
-			TransComponent* ball_trs = obj1->GetName() == "Ball" ? obj1_trs : obj2_trs;
-			TransComponent* downPost_trs = obj1->GetName() == "GoalPost1" ? obj1_trs : obj2_trs;
-			
-			ball_trs->SetPos({0.f,0.f});
-
-			RigidBodyComponent* ball_rb = dynamic_cast<RigidBodyComponent*>(ball_trs->GetOwner()->FindComponent("RigidBody"));
-
-			if (ball_rb != nullptr)
-				ball_rb->SetVelocityXNegative();
-		}
-		else if (obj1->GetName() == "GoalPost2" || obj2->GetName() == "GoalPost2")
-		{
-			TransComponent* ball_trs = obj1->GetName() == "Ball" ? obj1_trs : obj2_trs;
-			TransComponent* downPost_trs = obj1->GetName() == "GoalPost2" ? obj1_trs : obj2_trs;
-
-			ball_trs->SetPos({ 0.f,0.f });
-
-			RigidBodyComponent* ball_rb = dynamic_cast<RigidBodyComponent*>(ball_trs->GetOwner()->FindComponent("RigidBody"));
-
-			if (ball_rb != nullptr)
-			{
-				ball_rb->SetVelocityXNegative();
-				ball_rb->SetVelocityYNegative();
-			}
-		}
+		Enemy_Chase->PlatForm = e_p_c_e->platform;
+		//EventManager::GetInst()->RemoveEntity("EnemyPlatformCollisionEvent", this);
 	}
+}
+
+Enemy_Platform_Collision_Event::Enemy_Platform_Collision_Event(GameObject* _platform, GameObject* _enemy)
+{
+	platform = _platform;
+	enemy = _enemy;
+	SetEventName("EnemyPlatformCollisionEvent");
 }

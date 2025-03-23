@@ -61,6 +61,8 @@ void GSM::GameStateManager::ChangeLevel(BaseLevel* newLvl)
 		#ifdef DEBUG
 			std::cerr << "ChangeLevel Error! : new Level is nullptr" << std::endl;			
 		#endif 	
+		Exit();
+		delete m_pCurrentLevel;
 		m_pCurrentLevel = nullptr;
 		return;
 	}

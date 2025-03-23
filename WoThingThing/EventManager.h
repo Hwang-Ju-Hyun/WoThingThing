@@ -2,6 +2,10 @@
 
 #include "header.h"
 class GameObject;
+namespace ESM 
+{
+	class Chase;
+}
 
 struct Event
 {
@@ -18,29 +22,14 @@ public:
 	void SetEventName(const std::string& str) { name = str; }
 	std::string GetEventName()const { return name; }
 };
-
-struct Collision : public Event
+struct Enemy_Platform_Collision_Event:public Event
 {
 public:
-	Collision() = delete;
-	Collision(GameObject* obj1 = nullptr, GameObject* obj2 = nullptr)
-		:m_obj1(obj1)
-		,m_obj2(obj2)
-	{
-
-	}
-	~Collision()
-	{
-
-	}
-public:
-	GameObject* GetObject1() const {return m_obj1;}
-	GameObject* GetObject2() const {return m_obj2;}
-
-private:
-	GameObject* m_obj1;
-	GameObject* m_obj2;
+	Enemy_Platform_Collision_Event(GameObject* _platform, GameObject* _enemy);
+	GameObject* platform;
+	GameObject* enemy;
 };
+
 
 class Entity //handle the events
 {
@@ -48,8 +37,12 @@ public:
 	virtual void OnEvent(Event* ev) = 0;
 };
 
-class RePosition :public Entity
+
+
+class ChasePlatFormSettor :public Entity 
 {
+public:
+	ESM::Chase* Enemy_Chase;
 	virtual void OnEvent(Event* ev)override;
 };
 
@@ -63,8 +56,7 @@ public:
 	SINGLE(EventManager);
 private:
 	//이벤트들
-	std::list<Event*> allEvents;
-	std::list<Entity*> m_listEntity;
+	std::list<Event*> allEvents;	
 	std::map<std::string /*event의 아이디*/, std::list<Entity*>/*구독자들*/> registeredEntities;
 public:
 	//Interface :
@@ -75,17 +67,15 @@ public:
 	//		Register entities to certain event Type
 	//		Unregister entities to certain event Type
 public:
-	void AddEntity(Entity* et);
-	Entity* FindEntity(std::string& str);
+	void AddEntity(const std::string& evt_name, Entity* et);
+	void RemoveEntity(const std::string& evt_name, Entity* et);
 public:
-	void AddEntityList(const std::string& ev_Key, std::list<Entity*>listEntity);
+	void RemoveAllEvent();
+public:	
 	std::list<Entity*>* FindEntityList(std::string ev_Key);
 	// Dispatch All Events		
-	void DispatchEvent(std::string ev_Key);
-
+	void DispatchEvent(Event* ev);
 	// delete undispatched events if any on destructor
-public:
-	std::list<Entity*> GetEntityList();
 public:
 	void Update();
 };

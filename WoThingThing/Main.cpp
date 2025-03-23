@@ -6,21 +6,22 @@
 #include "TimeManager.h"
 #include "CompManager.h"
 #include "EventManager.h"
+#include "CameraManager.h"
 #include <memory>
-
-//float	 g_dt;
-//double	 g_appTime;
+#include "TestLevel.h"//추가부분(백무송)
 
 int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_line, int show)
 {
 	UNREFERENCED_PARAMETER(prevInstanceH);
 	UNREFERENCED_PARAMETER(command_line);
 
-	//// Enable run-time memory check for debug builds.
-	//#if defined(DEBUG) | defined(_DEBUG)
-	//	_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
-	//#endif	
+	// Enable run-time memory check for debug builds.
+	#if defined(DEBUG) | defined(_DEBUG)
+		_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+	#endif	
 
+	/*
+		*/
 	// Initialize the system
 	AESysInit(instanceH, show, 1600, 900, 0, 60, true, NULL);
 
@@ -32,36 +33,31 @@ int WINAPI WinMain(HINSTANCE instanceH, HINSTANCE prevInstanceH, LPSTR command_l
 	//Initialize GSM;
 	GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
 	
-		
+
 	Level::MainMenu_Lvl MainMenu_lvl;
 	Level::Stage01_Lvl Stage01_lvl;
-
-
+	Level::TestLevel Test;
 	gsm->ChangeLevel(new Level::MainMenu_Lvl);
-
-
 	while(gsm->ShouldExit()==false)
 	{
 		AESysFrameStart();
 
 		//set background color
-		AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);
+		AEGfxSetBackgroundColor(0.0f, 0.0f, 0.0f);	
 
 		//Update;
 		CompManager::GetInst()->Update();
 		TimeManager::GetInst()->Update();
-		EventManager::GetInst()->Update();
+		EventManager::GetInst()->Update();		
 		gsm->Update();
-
-
+		
 		// Informing the system about the loop's end
 		AESysFrameEnd();
 
 		// check if forcing the application to quit
 		if ((AESysDoesWindowExist() == false) || AEInputCheckTriggered(AEVK_ESCAPE))
 		{			
-			gsm->ChangeLevel(nullptr);
-			gsm->Exit();
+			gsm->ChangeLevel(nullptr);			
 		}							
 	}
 

@@ -36,9 +36,6 @@
     <Filter Include="Component\Transform">
       <UniqueIdentifier>{adebb184-1193-4bae-bfab-9c119511bf2f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Component\Sprite">
-      <UniqueIdentifier>{7c3a7664-1c34-48b4-8a6f-ca0aa5f872b2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Manager\CollisionMgr">
       <UniqueIdentifier>{860ee8e1-90a6-449d-8a5e-d501f71f9302}</UniqueIdentifier>
     </Filter>
@@ -68,6 +65,93 @@
     </Filter>
     <Filter Include="Manager\GSMgr">
       <UniqueIdentifier>{b27e9634-c134-477f-b871-5f69fb6bea16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RTTI">
+      <UniqueIdentifier>{2eda4ec4-47fb-42cd-85a3-a0f1e714b16e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\Serialize">
+      <UniqueIdentifier>{dc883ad3-a356-4549-b1a4-792402956706}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RTTI\Registry">
+      <UniqueIdentifier>{0f496fb5-cb14-4ff4-b929-0269ec4be456}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Json">
+      <UniqueIdentifier>{d9696803-b578-4afb-aa17-0fc3c0a5b9c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\CameraMgr">
+      <UniqueIdentifier>{4906040b-1b86-402e-a028-99cb8da10bc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\ESMgr">
+      <UniqueIdentifier>{bcd1f22c-2bd6-479f-aa1a-b65a672eb2e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\TestLevel">
+      <UniqueIdentifier>{919dfb86-5278-4c62-be0f-cf78bac682af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\AI">
+      <UniqueIdentifier>{1b416597-eecd-469f-91f8-4529be2ec0c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai">
+      <UniqueIdentifier>{138cfd1b-1c2c-43ee-9e33-53d19d26e96c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State">
+      <UniqueIdentifier>{eed70f19-9cd9-4979-94a6-136fc23f2b57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Melee">
+      <UniqueIdentifier>{5a9a5422-06e2-43e9-b884-9cb4b8b0d7dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Sniper">
+      <UniqueIdentifier>{3675102f-fb52-4a8a-be4a-7cdbed4bf76e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Boss">
+      <UniqueIdentifier>{1bd63408-f2e7-4758-878c-329c3d385711}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Aimanager">
+      <UniqueIdentifier>{0062f34b-4be9-484b-8cc2-bc78fdf7d197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Sprite">
+      <UniqueIdentifier>{7c3a7664-1c34-48b4-8a6f-ca0aa5f872b2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Bullet">
+      <UniqueIdentifier>{9617f689-3f9c-4f5a-958b-2b7aebadc83b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Melee\EnemyState">
+      <UniqueIdentifier>{c1a54eb2-2260-41eb-a702-498d1876595d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Melee\EnemyState\Chase">
+      <UniqueIdentifier>{f1a39447-5941-4555-9126-442eac3380ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Melee\EnemyState\Attack">
+      <UniqueIdentifier>{a665e672-98de-49c1-ac62-dd634274aa93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\Ai_State\Melee\EnemyState\Idle">
+      <UniqueIdentifier>{bd34e0ce-cff0-48f1-b532-509bd8c9aea7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\NaveMeshMgr">
+      <UniqueIdentifier>{a54f1c60-e204-445d-941c-38ed72b4a06d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\PathFindMove">
+      <UniqueIdentifier>{5ea3f037-1ba6-436e-8aa0-1e7533befba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component\Player">
+      <UniqueIdentifier>{4220cec6-3c8d-418c-9eb4-4581f485ada7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\StageBoss">
+      <UniqueIdentifier>{aca8ca4a-e857-453d-a092-e5f15406e485}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\MapEditorMgr">
+      <UniqueIdentifier>{fc593156-fe82-4531-8e72-3508c8e3967d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\MapEdit">
+      <UniqueIdentifier>{f3ffc5b3-8fc4-41e2-96c7-58ae625cf980}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Level\GameOver">
+      <UniqueIdentifier>{e5f148e4-4d81-45b1-9e14-43bd0685fae7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ai\AnimationAi">
+      <UniqueIdentifier>{01806367-0993-4a04-8ef5-b5a7710f7d74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\EnemyStateMgr">
+      <UniqueIdentifier>{7a4a7220-9308-461c-9d73-140ad5fbe6c2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -130,6 +214,111 @@
     </ClCompile>
     <ClCompile Include="TimeManager.cpp">
       <Filter>Manager\TimeMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseRTTI.cpp">
+      <Filter>RTTI</Filter>
+    </ClCompile>
+    <ClCompile Include="Serializer.cpp">
+      <Filter>Manager\Serialize</Filter>
+    </ClCompile>
+    <ClCompile Include="Registry.cpp">
+      <Filter>RTTI\Registry</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraManager.cpp">
+      <Filter>Manager\CameraMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Component\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStateManager.cpp">
+      <Filter>Manager\ESMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Level\TestLevel</Filter>
+    </ClCompile>
+    <ClCompile Include="AiComponent.cpp">
+      <Filter>Component\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseEnemyState.cpp">
+      <Filter>Ai\Ai_State\Melee\EnemyState</Filter>
+    </ClCompile>
+    <ClCompile Include="Chase.cpp">
+      <Filter>Ai\Ai_State\Melee\EnemyState\Chase</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAttack.cpp">
+      <Filter>Ai\Ai_State\Melee\EnemyState\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="IDLE.cpp">
+      <Filter>Ai\Ai_State\Melee\EnemyState\Idle</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLevel.cpp">
+      <Filter>Ai</Filter>
+    </ClCompile>
+    <ClCompile Include="Chase.cpp">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAttack.cpp">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="IDLE.cpp">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="IDLE_Sniper.cpp">
+      <Filter>Ai\Ai_State\Sniper</Filter>
+    </ClCompile>
+    <ClCompile Include="AiComponent.cpp">
+      <Filter>Ai\Aimanager</Filter>
+    </ClCompile>
+    <ClCompile Include="BaseEnemyState.cpp">
+      <Filter>Ai\Aimanager</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyStateManager.cpp">
+      <Filter>Ai\Aimanager</Filter>
+    </ClCompile>
+    <ClCompile Include="TargetAim_Sniper.cpp">
+      <Filter>Ai\Ai_State\Sniper</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerComponent.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletComponent.cpp">
+      <Filter>Component\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>GameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="Patrol.cpp">
+      <Filter>Ai\Ai_State\Melee\EnemyState</Filter>
+    </ClCompile>
+    <ClCompile Include="NaveMeshManager.cpp">
+      <Filter>Manager\NaveMeshMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="PathFindMoveComponent.cpp">
+      <Filter>Component\PathFindMove</Filter>
+    </ClCompile>
+    <ClCompile Include="StageBoss_Lvl.cpp">
+      <Filter>Level\StageBoss</Filter>
+    </ClCompile>
+    <ClCompile Include="MapEditor.cpp">
+      <Filter>Manager\MapEditorMgr</Filter>
+    </ClCompile>
+    <ClCompile Include="GameOver_Lvl.cpp">
+      <Filter>Level\GameOver</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageResource.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyAnimationComponent.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletAnimationComponent.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
+    <ClCompile Include="Congratulation.cpp">
+      <Filter>Main</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -196,5 +385,127 @@
     <ClInclude Include="TimeManager.h">
       <Filter>Manager\TimeMgr</Filter>
     </ClInclude>
+    <ClInclude Include="BaseRTTI.h">
+      <Filter>RTTI</Filter>
+    </ClInclude>
+    <ClInclude Include="Serializer.h">
+      <Filter>Manager\Serialize</Filter>
+    </ClInclude>
+    <ClInclude Include="Registry.h">
+      <Filter>RTTI\Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraManager.h">
+      <Filter>Manager\CameraMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Component\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStateManager.h">
+      <Filter>Manager\ESMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Level\TestLevel</Filter>
+    </ClInclude>
+    <ClInclude Include="AiComponent.h">
+      <Filter>Component\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEnemyState.h">
+      <Filter>Ai\Ai_State\Melee\EnemyState</Filter>
+    </ClInclude>
+    <ClInclude Include="Chase.h">
+      <Filter>Ai\Ai_State\Melee\EnemyState\Chase</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttack.h">
+      <Filter>Ai\Ai_State\Melee\EnemyState\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="IDLE.h">
+      <Filter>Ai\Ai_State\Melee\EnemyState\Idle</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLevel.h">
+      <Filter>Ai</Filter>
+    </ClInclude>
+    <ClInclude Include="Chase.h">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAttack.h">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="IDLE_Sniper.h">
+      <Filter>Ai\Ai_State\Sniper</Filter>
+    </ClInclude>
+    <ClInclude Include="IDLE.h">
+      <Filter>Ai\Ai_State\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="AiComponent.h">
+      <Filter>Ai\Aimanager</Filter>
+    </ClInclude>
+    <ClInclude Include="BaseEnemyState.h">
+      <Filter>Ai\Aimanager</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyStateManager.h">
+      <Filter>Ai\Aimanager</Filter>
+    </ClInclude>
+    <ClInclude Include="TargetAim_Sniper.h">
+      <Filter>Ai\Ai_State\Sniper</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerComponent.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletComponent.h">
+      <Filter>Component\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>GameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="Patrol.h">
+      <Filter>Ai\Ai_State\Melee\EnemyState</Filter>
+    </ClInclude>
+    <ClInclude Include="NaveMeshManager.h">
+      <Filter>Manager\NaveMeshMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="PathFindMoveComponent.h">
+      <Filter>Component\PathFindMove</Filter>
+    </ClInclude>
+    <ClInclude Include="StageBoss_Lvl.h">
+      <Filter>Level\StageBoss</Filter>
+    </ClInclude>
+    <ClInclude Include="MapEditor.h">
+      <Filter>Manager\MapEditorMgr</Filter>
+    </ClInclude>
+    <ClInclude Include="GameOver_Lvl.h">
+      <Filter>Level\GameOver</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageResource.h">
+      <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageResource.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageResource.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="EnemyAnimationComponent.h">
+      <Filter>Ai\AnimationAi</Filter>
+    </ClInclude>
+    <ClInclude Include="BulletAnimationComponent.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Congratulation.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageResource.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="stage01.json">
+      <Filter>Json</Filter>
+    </None>
+    <None Include="stageBoss.json">
+      <Filter>Json</Filter>
+    </None>
   </ItemGroup>
 </Project>

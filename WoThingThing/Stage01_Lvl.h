@@ -1,35 +1,54 @@
 #pragma once
 #include "BaseLevel.h"
+#include <vector>
+#include <array>
 
 class GameObject;
 class MainMenu_Lvl;
+
+
 namespace Level
 {
-    class Stage01_Lvl :
-        public GSM::BaseLevel
-    {    
+    class Stage01_Lvl : public GSM::BaseLevel
+    {
+        GameObject* background;
+        GameObject* player;
+        GameObject* playerAnim;
+        GameObject* mouseAim;
+        GameObject* aimTrace; 
+        AEGfxTexture* pTex;
+        AEGfxVertexList* pMesh;
+        int musicPlay=0;
+        bool gameOver;
+                
+        float AccTime = 0;
     public:
         Stage01_Lvl();
         ~Stage01_Lvl();
-    public:
+
         virtual void Init() override;
         virtual void Update() override;
         virtual void Exit() override;
+        bool IsVibration = false;
+        float plusX = 0;
+        float minusX = 0;
+        float plusY = 0;
+        float minusY = 0;
+        bool changeCamDir=false;                
     private:
-        GameObject* player1;
-        GameObject* player2;
-        GameObject* ball;
-        GameObject* goalPost1;
-        GameObject* goalPost2;
-        GameObject* UpperPost;
-        GameObject* DownPost;
-    private:
-        //0번째 인덱스 player1 스코어
-        //1번째 인덱스 player2 스코아
-        int score[2];
-        bool m_bWin = false;
+        std::vector<GameObject*> m_vecPlatforms;
+        GameObject* Platform;
+        std::array<GameObject*,21> Enemy;
+        std::array<GameObject*, 21> EnemySniper;
+        GameObject* Boss1;
+
+        GameObject* Enemy_TEST;
+
     public:       
         int counter = 0;
+    public:
+        void HandleCollision(GameObject* obj1, GameObject* obj2);
+        void Collision();
     };
 }
 

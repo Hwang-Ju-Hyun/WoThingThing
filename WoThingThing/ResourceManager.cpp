@@ -1,6 +1,7 @@
 #include "ResourceManager.h"
 #include "AudioResource.h"
 #include "TextResource.h"
+#include "ImageResource.h"
 
 ResourceManager::ResourceManager()
 {
@@ -47,7 +48,7 @@ Resource* ResourceManager::FindRes(const std::string& _name)
 			return iter->second;			
 		}
 	}
-	std::cerr << "Can't find Resource Path : ResourceManager FindRes" << std::endl;
+	//std::cerr << "Can't find Resource Path : ResourceManager FindRes" << std::endl;
 	return nullptr;
 }
 
@@ -80,9 +81,20 @@ Resource* ResourceManager::Get(const std::string& _resName,const std::string& _p
 			m_mapRes.insert({ _resName,resource });
 			break;
 		case ResourceManager::png:
+			resource = new ImageResource(_resName);
+			resource = static_cast<ImageResource*>(resource);
+			m_mapRes.insert({ _resName,resource });
+			break;
 		case ResourceManager::jpg:			
+			resource = new ImageResource(_resName);
+			resource = static_cast<ImageResource*>(resource);
+			m_mapRes.insert({ _resName,resource });
 			break;
 		case ResourceManager::wav:
+			resource = new AudioResource(_resName);
+			resource = static_cast<AudioResource*>(resource);
+			m_mapRes.insert({ _resName,resource });
+			break;
 		case ResourceManager::mp3:
 			resource = new AudioResource(_resName);
 			resource = static_cast<AudioResource*>(resource);										
