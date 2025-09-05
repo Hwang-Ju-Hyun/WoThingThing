@@ -45,7 +45,7 @@ void Level::GameOver_Lvl::Update()
 	if (AEInputCheckCurr(AEVK_R))
 	{
 		GSM::GameStateManager* gsm = GSM::GameStateManager::GetInst();
-		gsm->ChangeLevel(new Level::Stage01_Lvl);
+		gsm->ChangeLevel(new Level::StageBoss_Lvl);
 	}
 	if (AEInputCheckCurr(AEVK_ESCAPE))
 	{

@@ -68,7 +68,7 @@ PlayerComponent::PlayerComponent(GameObject* _owner) : BaseComponent(_owner)
 	
 	invincibility = false;
 	
-	playerhealth = 1;
+	playerhealth = 1000000;
 
 	dashActive = true;
 	dashCooldown = 0.f;

@@ -347,8 +347,8 @@ void Level::StageBoss_Lvl::Update()
     auto node_link = NaveMeshManager::GetInst()->GetvecLink();
     auto node = NaveMeshManager::GetInst()->GetallNode();
     
-    /*for (auto it : NaveMeshManager::GetInst()->GetallNode())
-        NaveMeshManager::GetInst()->DrawNode(it.node_pos.x - 25, it.node_pos.y - 35, it.node_pos.x + 25, it.node_pos.y + 35, 1.0f, 1.0f, 0);*/
+    for (auto it : NaveMeshManager::GetInst()->GetallNode())
+        NaveMeshManager::GetInst()->DrawNode(it.node_pos.x - 25, it.node_pos.y - 35, it.node_pos.x + 25, it.node_pos.y + 35, 1.0f, 1.0f, 0);
 
     int i = 0;
 

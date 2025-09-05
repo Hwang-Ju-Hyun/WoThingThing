@@ -76,8 +76,7 @@ void NaveMeshManager::FindShortestPath(int startNode, int endNode,int currentCos
 		{
 			FindShortestPath(nextNode, endNode,currentCost+cost);
 		}
-	}
-	//Áß¿ä
+	}	
 	//´Ù Å½»öÇÏ¿´À¸¸é ´Ù½Ã ÇÏ³ª¾¿ »©Áà¾ßÇÔ
 	path.pop_back();
 	//»©ÁáÀ¸¸é visited=false·Î °¡¾ßÇÔ
@@ -250,6 +249,7 @@ void NaveMeshManager::ClearNode()
 
 void NaveMeshManager::DrawAllNode()
 {	
+
 }
 
 void NaveMeshManager::DrawNode(float bottomleft_x, float bottomleft_y, float topRight_x, float topRight_y, float r, float g, float b)
