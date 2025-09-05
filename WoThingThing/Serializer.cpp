@@ -26,15 +26,15 @@ static int nodeID = 0;
 //털끝 하나 건들지 말것 ↓
 void Serializer::LoadLevel(const std::string& s)
 {
-	static bool IsNodeCheck = false;
+	static bool IsNodeCheck = false;	 
 	//open file
-	std::fstream file;
+	std::fstream file;	
+
 	file.open(s, std::fstream::in);
 	//Check the file is valid
 	if (!file.is_open())
-	{
-		//Print error
-		//return;
+	{		
+		return;
 	}
 	json AllData;
 	file >> AllData;	//The json has all the file data
